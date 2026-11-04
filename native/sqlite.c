@@ -34,12 +34,15 @@ typedef struct {
 } Blob;
 typedef struct { Database db[DBS]; Statement stmt[STMTS]; Blob blob[BLOBS]; } Registry;
 static pthread_key_t registry_key;
+static _Thread_local Registry *thread_registry;
 static int key_error;
 static pthread_once_t registry_once = PTHREAD_ONCE_INIT;
 static _Atomic uint64_t generation = 1;
 
 static void destroy_registry(void *p) {
     Registry *r = p;
+    /* The key is already clear. Cleanup callbacks may install a fresh registry. */
+    thread_registry = NULL;
     for (int i = 0; i < STMTS; ++i) if (r->stmt[i].ptr) sqlite3_finalize(r->stmt[i].ptr);
     for (int i = 0; i < BLOBS; ++i) if (r->blob[i].ptr) sqlite3_blob_close(r->blob[i].ptr);
     for (int i = 0; i < DBS; ++i) if (r->db[i].ptr) sqlite3_close(r->db[i].ptr);
@@ -47,12 +50,13 @@ static void destroy_registry(void *p) {
 }
 static void create_key(void) { key_error = pthread_key_create(&registry_key, destroy_registry); }
 static Registry *registry(int create) {
+    Registry *r = thread_registry;
+    if (r || !create) return r;
     if (pthread_once(&registry_once, create_key) || key_error) return NULL;
-    Registry *r = pthread_getspecific(registry_key);
-    if (!r && create) {
-        r = calloc(1, sizeof(*r));
-        if (r && pthread_setspecific(registry_key, r)) { free(r); r = NULL; }
-    }
+    r = calloc(1, sizeof(*r));
+    if (r && pthread_setspecific(registry_key, r)) { free(r); r = NULL; }
+    /* Publish only after destructor ownership is registered successfully. */
+    thread_registry = r;
     return r;
 }
 static uint64_t new_token(int index) {

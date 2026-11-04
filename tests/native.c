@@ -61,6 +61,41 @@ static void *abandon_explicit_returning(void *p) {
     assert(gq_step(explicit_write) == SQLITE_ROW);
     return NULL; /* Close must roll back the still-open explicit transaction. */
 }
+/* A trusted native cleanup callback can re-enter during thread destruction. */
+typedef struct { uint64_t token; } Cleanup;
+static _Thread_local Cleanup *cleanup_context;
+static _Thread_local int reentering;
+static int cleanup_calls;
+static void cleanup_scalar(sqlite3_context *c,int argc,sqlite3_value **argv) {
+    (void)argc; (void)argv; sqlite3_result_null(c);
+}
+static void cleanup_reenter(void *p) {
+    Cleanup *c=p;
+    if (!c->token || reentering) { free(c); return; }
+    reentering=1; cleanup_context=NULL;
+    int64_t value=123;
+    assert(gq_status(c->token,2,&value)==GQ_HANDLE && value==0);
+    uint64_t fresh=open_db(":memory:",0,0), stmt=prepare(fresh,"SELECT 7");
+    assert(gq_step(stmt)==SQLITE_ROW && gq_integer(stmt,0,&value)==SQLITE_OK && value==7);
+    assert(gq_finalize(stmt)==SQLITE_OK && gq_close(fresh)==SQLITE_OK);
+    ++cleanup_calls; free(c); reentering=0;
+}
+static int cleanup_extension(sqlite3 *db,char **error,const sqlite3_api_routines *api) {
+    (void)error; (void)api;
+    Cleanup *c=calloc(1,sizeof(*c)); if (!c) return SQLITE_NOMEM;
+    int rc=sqlite3_create_function_v2(db,"test_registry_cleanup",0,SQLITE_UTF8,c,cleanup_scalar,NULL,NULL,cleanup_reenter);
+    if (rc==SQLITE_OK) cleanup_context=c;
+    return rc; /* SQLite destroys userdata on registration failure too. */
+}
+static void *abandon_with_callback(void *unused) {
+    (void)unused;
+    assert(sqlite3_auto_extension((void (*)(void))cleanup_extension)==SQLITE_OK);
+    uint64_t d=open_db(":memory:",0,0);
+    assert(cleanup_context); cleanup_context->token=d;
+    sqlite3_reset_auto_extension();
+    (void)prepare(d,"SELECT 1");
+    return NULL;
+}
 int main(void) {
     uint64_t d = open_db(":memory:", 0, 0), s = prepare(d, "SELECT ?1, ?2, ?3, ?4");
     uint8_t unaligned[17] = {0};
@@ -176,6 +211,11 @@ int main(void) {
     assert(gq_integer(s, 1, &sum) == SQLITE_OK && sum == 6);
     assert(gq_finalize(s) == SQLITE_OK && gq_close(d) == SQLITE_OK);
     assert(!unlink(path));
+    d=open_db(":memory:",0,0); s=prepare(d,"SELECT 11");
+    assert(!pthread_create(&worker,NULL,abandon_with_callback,NULL) && !pthread_join(worker,NULL));
+    assert(cleanup_calls==1 && gq_step(s)==SQLITE_ROW);
+    assert(gq_integer(s,0,&rows)==SQLITE_OK && rows==11);
+    assert(gq_finalize(s)==SQLITE_OK && gq_close(d)==SQLITE_OK);
     puts("sqlite native tests passed");
     return 0;
 }
