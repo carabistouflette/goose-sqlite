@@ -383,10 +383,18 @@ static int byte_column(uint64_t token, int64_t col, int64_t kind, const void **d
     if (rc != SQLITE_OK) return rc;
     if (kind != SQLITE_TEXT && kind != SQLITE_BLOB) return GQ_INPUT;
     if (sqlite3_column_type(s->ptr, (int)col) != kind) return GQ_TYPE;
+    /* A typed BLOB needs no encoding conversion to query its length. Preserve
+       that length before materialization: OOM can turn a zeroblob into NULL.
+       A connection-wide NOMEM may instead belong to another live statement. */
+    if (kind == SQLITE_BLOB) {
+        *n = sqlite3_column_bytes(s->ptr, (int)col);
+        /* Even an empty zeroblob can allocate when expanded. No bytes are needed. */
+        if (!*n) { *data = NULL; return SQLITE_OK; }
+    }
     *data = kind == SQLITE_TEXT ? (const void *)sqlite3_column_text(s->ptr, (int)col)
                                : sqlite3_column_blob(s->ptr, (int)col);
-    *n = sqlite3_column_bytes(s->ptr, (int)col);
-    if (!*data && (kind == SQLITE_TEXT || *n)) return SQLITE_NOMEM;
+    if (!*data) return SQLITE_NOMEM;
+    if (kind == SQLITE_TEXT) *n = sqlite3_column_bytes(s->ptr, (int)col);
     return *n > VALUE_MAX ? GQ_LIMIT : SQLITE_OK;
 }
 int64_t gq_size(uint64_t token, int64_t col, int64_t kind, void *out) {

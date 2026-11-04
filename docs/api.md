@@ -112,6 +112,12 @@ Only Row statements permit zero-based column reads:
   caller-owned growable byte array, empty on failure. Require exact storage type;
   NULL is TYPE_MISMATCH. Copies remain valid after stepping, reset or cleanup.
 
+Materializing a lazy BLOB or converting text can allocate and fail with NOMEM.
+Failure leaves native output bytes untouched and public growable output empty;
+inspect reset/finalize errors when recovering the statement. A zero-length BLOB
+remains a BLOB and requires no materialization. Errors on another live statement
+must not make a genuine empty BLOB look like an allocation failure.
+
 ## Limits and policies
 
 Per OS thread: 16 databases, 64 statements and 32 BLOB handles total. Allocation beyond a registry
