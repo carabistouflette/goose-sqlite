@@ -32,7 +32,8 @@ second statements and embedded SQL NUL rejected. SQL is application code; bind
 untrusted values. Filenames reject `file:` URIs; ordinary SQLite file access is
 not a filesystem sandbox. Defensive mode enabled, trusted schema disabled,
 foreign keys enabled, extension loading disabled. An authorizer rejects ATTACH,
-DETACH and all PRAGMA statements, preserving initial connection policies.
+DETACH, virtual table creation/deletion and all PRAGMA statements, preserving
+initial connection policies. Virtual tables and VACUUM are unsupported.
 
 Limits: SQL 64 KiB, values/encoded rows 1 MiB, columns 128, parameters 128,
 expression depth 64, compound SELECT terms 32, VDBE opcodes 250000, trigger
