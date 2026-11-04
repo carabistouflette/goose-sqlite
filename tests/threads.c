@@ -208,12 +208,17 @@ int main(int argc,char **argv) {
     if (argc==2 && !strcmp(argv[1],"identity")) {
         printf("{\"version\":\"%s\",\"source_id\":\"%s\"}\n",sqlite3_libversion(),sqlite3_sourceid());return 0;
     }
-    assert(argc==1);
+    int serial_init=argc==2 && !strcmp(argv[1],"--initialize-engine");
+    assert(argc==1 || serial_init);
+    /* Keep first wrapper/key initialization concurrent. The TSan run separately
+       initializes SQLite to exclude its engine isInit fastpath report. Ordinary
+       ASan/UBSan runs retain the fully concurrent cold engine start. */
+    if (serial_init) assert(sqlite3_initialize()==SQLITE_OK);
     char dir[]="/tmp/goose-threads-XXXXXX";assert(mkdtemp(dir));
     churn_phase(); /* No main-thread gq call may precede this phase. */
     teardown_phase(dir);int wal=wal_phase(dir);
     if (!wal) { char path[512];snprintf(path,sizeof path,"%s/wal.db",dir);assert(unlink(path)==0 || access(path,F_OK)!=0); }
     assert(!rmdir(dir));
-    printf("{\"threads\":%d,\"waves\":%d,\"registry_cycles\":%d,\"unique_tokens\":%zu,\"cleanup_callbacks\":%d,\"wal\":%s,\"committed\":%d,\"reader_snapshots\":%d,\"busy_retries\":%d}\n",THREADS,WAVES,THREADS*WAVES*LOOPS,sizeof minted/sizeof *minted,atomic_load(&cleanups),wal ? "true":"false",atomic_load(&committed),atomic_load(&read_count),atomic_load(&busy_count));
+    printf("{\"threads\":%d,\"waves\":%d,\"registry_cycles\":%d,\"unique_tokens\":%zu,\"cleanup_callbacks\":%d,\"engine_preinitialized\":%s,\"wal\":%s,\"committed\":%d,\"reader_snapshots\":%d,\"busy_retries\":%d}\n",THREADS,WAVES,THREADS*WAVES*LOOPS,sizeof minted/sizeof *minted,atomic_load(&cleanups),serial_init ? "true":"false",wal ? "true":"false",atomic_load(&committed),atomic_load(&read_count),atomic_load(&busy_count));
     assert(sqlite3_shutdown()==SQLITE_OK && sqlite3_memory_used()==0);return 0;
 }
