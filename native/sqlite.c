@@ -154,7 +154,7 @@ static int empty_tail(const char *p, const char *end) {
         if (end - p >= 2 && p[0] == '/' && p[1] == '*') {
             p += 2;
             while (end - p >= 2 && !(p[0] == '*' && p[1] == '/')) ++p;
-            if (end - p < 2) return 0;
+            if (end - p < 2) return 1; /* SQLite comments may end at EOF. */
             p += 2; continue;
         }
         return 0;

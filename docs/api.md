@@ -35,9 +35,10 @@ leaves the connection usable. Successful close invalidates all token copies and
 rolls back open transactions according to SQLite close semantics.
 
 `prepare(db,sql) -> Statement,code`: 1..65536 SQL bytes, no embedded NUL, exactly
-one executable statement. Trailing whitespace and terminated block/line comments
-are accepted; a second statement, extra semicolon, empty/comment-only SQL, or
-unterminated trailing block comment is rejected. SQL is trusted application code;
+one executable statement. Trailing whitespace and comments
+are accepted, including block comments ending at EOF. SQLite decides the grammar
+of the first statement, including leading empty statements. A second statement
+or extra semicolon in the suffix, and empty/comment-only SQL, are rejected. SQL is trusted application code;
 untrusted values must use parameters. Prepared statements use SQLite's persistent
 preparation hint and can be reused. Failure returns a zero-token Statement.
 

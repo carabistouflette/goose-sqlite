@@ -69,9 +69,14 @@ fn main() {
     assert(sqlite::column_text(empty, 0, text) == sqlite::OK && text.len == 0);
     assert(sqlite::column_blob(empty, 1, blob) == sqlite::OK && blob.len == 0);
     assert(sqlite::finalize(empty) == sqlite::OK);
-    for sql in ["", "-- only a comment", "SELECT 1; SELECT 2", "SELECT 1;;", "SELECT 1; /* unfinished", "SELECT 1\x00; DELETE FROM items"] {
+    for sql in ["", "-- only a comment", "SELECT 1; SELECT 2", "SELECT 1;;", "SELECT 1\x00; DELETE FROM items"] {
         let invalid, code = sqlite::prepare(db, sql);
         assert(code == sqlite::INVALID_INPUT && invalid.token == 0);
+    }
+    for sql in ["SELECT 1 /*unfinished", "SELECT 1; /*", "SELECT 1; /*unfinished", "; SELECT 1", "SELECT '/*not a comment'", "SELECT '--not a comment'"] {
+        let accepted, accepted_code = sqlite::prepare(db, sql);
+        assert(accepted_code == sqlite::OK && sqlite::step(accepted) == sqlite::ROW);
+        assert(sqlite::finalize(accepted) == sqlite::OK);
     }
     for sql in ["PRAGMA trusted_schema=ON", "PRAGMA busy_timeout=99999999", "ATTACH ':memory:' AS extra", "CREATE VIRTUAL TABLE docs USING fts5(body)"] {
         let denied, code = sqlite::prepare(db, sql);
