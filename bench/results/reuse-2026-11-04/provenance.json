@@ -1,0 +1,188 @@
+{
+  "source_commit": "7cf6e4adbb1dc17bd6c29ac62e0142242f0234f0",
+  "compiler_sha256": "2bdd604d01c3f46b03ddae80871b10de7f75e9e710ce92faa1a644b246472ab7",
+  "goose_revision": "eadca409f68210893f366e60d0c2f0dc29a339be",
+  "flags": [
+    "-O2"
+  ],
+  "cc": "cc (GCC) 16.2.1 20260810",
+  "cpu_affinity": [
+    2
+  ],
+  "platform": "Linux-7.2.11-arch1-1-x86_64-with-glibc2.44",
+  "scope": "Whole-process wall and child CPU, seven alternating-order passes; shared machine, no CPU isolation or fixed clock. Validation compares every returned byte. No benchmark fixture modifications between variants.",
+  "source_hashes": {
+    "baseline": {
+      ".github/workflows/ci.yml": "23b4fcc76a23ba43d61a763d3b938505a599f2077fb77370df40100e3e325007",
+      ".gitignore": "77a34669266fb6f5dca1a6a31d2125e57a23b6ff2ada193f9d496b0aa9071c88",
+      "CMakeLists.txt": "50ca2c1d7011dd5c1bc31ee52f3caae2a3106dad4dc7b04ca923602c700bafd6",
+      "CONTRIBUTING.md": "fb040d93a0d7b5ce54180fe81fb65f22725afc2c0966be5939dac4281897777d",
+      "GOOSE_REVISION": "64e14b181dfe96743211738fb0f1b1f7798ea940da2ca50ff122e6f028c24e15",
+      "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "Makefile": "799d8ade4a26eb10f7a2afb27ab9749fb63777ff588c6d56ef50b455974ab837",
+      "README.md": "158dba251c0cac2141b9fe6fa269e82806e05f3928d80fb60a28cbff421d9487",
+      "SECURITY.md": "53a62097d305f2390e6fbfea7b40cd5fbe76ea3508543f789a9d3d386a79e1dd",
+      "THIRD_PARTY_NOTICES.md": "8081c166c615b4544989842b1e6f057d4d6d713717dce143a2ba8f64dcfc9add",
+      "bench/README.md": "58e53517cfaffa9ec4117bc14bd2bca713f5b43437eb52e27680c43481897bae",
+      "bench/baseline.c": "56342ff99163050886d94a245fb12f3ee8e3677a271411d937f2e751e243529b",
+      "bench/bench.goose": "40d3b50c71d758169a8563f6f690d25fee1a603fd09bbd6f7d06b9aee30fb333",
+      "bench/measure.py": "a1d75efec6070f62c6a55b64cfd1b1cad8a7fffdab4a173153b0f61d6ac51739",
+      "bench/results/validated-2026-11-04/README.md": "93b4114f4a9123f2205de7e0d1b37d8b4cf1cc725f22c605364bdf243d754e12",
+      "bench/results/validated-2026-11-04/samples.json": "64df4637ddc19f6f45d74acc9615838f8ee307b4217349c8a459584eae12a8a6",
+      "docs/api.md": "9c7554ae37f7e25788b38376b53740d6be0a4f3e3b2f4fb20db5958985a3bb9d",
+      "docs/design.md": "b100185569c7b18bd9b0048cfde627ce9939b524d0f95e364b1fb8485cfe35f7",
+      "docs/platforms.md": "80d8b7c90b295f4e8d99867e6587cf750be91fb1da8f010dc1aa7be077397cc8",
+      "docs/results/compatibility-2026-11-04.json": "9443fdbc57fb4864d92150e0471844ae2c0a097f24c7459e73f704e1ca9e29b2",
+      "docs/validation.md": "661a54cc1a38855b585830523129af92217f8aedb8dc75867fcab9e3c6b76c9b",
+      "examples/items.goose": "167a84111c41ac58adc080f9acc57d71e303ee385cd2ac8615f1e2b784118257",
+      "native/sqlite.c": "579c11699d1f1119ca448d557b469173e4d51dbf4add6815a0bda4a1249be671",
+      "native/sqlite.h": "372d4664659d9d5c769ac87b3b5e7f3932c32b35d8556fd61af919d83828dbb8",
+      "scripts/native-manifest.py": "776376630b521033583d741e365ab4bb298f6b75f48383c813c177916aa403a7",
+      "scripts/setup-goose.sh": "399d4a87702b8ecf92138f0f78b7422a0225b942f0e24ad9965f09f06f4fbb84",
+      "scripts/test-files.py": "2110ee94553192009e101733b5cb9c002c728fbb61827c8347e10a36eddb2041",
+      "scripts/test-import.py": "9122386ce93dfe46a11bbe8843ce7d5456d1bf377f528ab5ab6fd8684c2e51ce",
+      "sqlite.build": "d9ca71e82e5ae1167765b1f028ee8d02e55533de66a534fd811cbb1a7fb467f0",
+      "sqlite.goose": "d4ddda4d4be25ae0e6d79a95eedfbaad5ed0a5d9dbc29a5b1018b5b472bd8d79",
+      "tests/api.goose": "d586455262082dcf5a532e73f3fab2bc72d34899bfb146915b9bba8e9080fb50",
+      "tests/corpus/0": "e004ebd5b5532a4b85984a62f8ad48a81aa3460c1ca07701f386135d72cdecf5",
+      "tests/corpus/1": "520e5389f542b2834fd2135889d177261f350bd4fe4a9a1c4a0756ab06df2551",
+      "tests/corpus/10": "e051ddeea4c4b69e7ea1c4b2a1308d463a119e156884fa4ed9d09d3a29ed31fb",
+      "tests/corpus/2": "564c1d3bf9104e3324b1e9e8c491dc4faaec28855941b819852cc76365e1e713",
+      "tests/corpus/3": "4e08a59e8b0dbb34af4dd6756c2819eaf95f587f282a9055ec51388ebb91ae95",
+      "tests/corpus/4": "80b28d8cc0818a9a581778710051fffe9280ffac614e78d2951e94133bd34b45",
+      "tests/corpus/5": "7bcedd3a84d3027b3187aebf36d52df923519ccd977cdd58ace5c54268a4b9f0",
+      "tests/corpus/6": "795615dccf13fa829164b42d17a0a05089d628d59fe996c37414fb4bdd9dfe41",
+      "tests/corpus/7": "8f34522928a0cfb8098ef4051739b8ae3a556959c6e11399aa9baea2601307a6",
+      "tests/corpus/8": "72b8148b8e4fcfcc0d260e87a3aec32dd8bf946cd5574b7699cf6b6b2294133c",
+      "tests/corpus/9": "9159db9b1d3bbf05c3ef40402766219341f3861806ed4614b5a4f46b8cee6df9",
+      "tests/files.goose": "a02b3d563c2aa3f3d7ab189031d67cd01e608aaafbfad2f1df27f012822f5f4d",
+      "tests/fuzz.c": "71f7f0a941fe1a300eea48afc9b8c2e900a928a5ddd4e225b1751786ff74cb75",
+      "tests/native.c": "d1a8b99717d0b1f609325b2fc3894e38b265966d6ebaa0372ff04133e421a7ec"
+    },
+    "reuse": {
+      ".github/workflows/ci.yml": "23b4fcc76a23ba43d61a763d3b938505a599f2077fb77370df40100e3e325007",
+      ".gitignore": "77a34669266fb6f5dca1a6a31d2125e57a23b6ff2ada193f9d496b0aa9071c88",
+      "CMakeLists.txt": "50ca2c1d7011dd5c1bc31ee52f3caae2a3106dad4dc7b04ca923602c700bafd6",
+      "CONTRIBUTING.md": "fb040d93a0d7b5ce54180fe81fb65f22725afc2c0966be5939dac4281897777d",
+      "GOOSE_REVISION": "64e14b181dfe96743211738fb0f1b1f7798ea940da2ca50ff122e6f028c24e15",
+      "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "Makefile": "799d8ade4a26eb10f7a2afb27ab9749fb63777ff588c6d56ef50b455974ab837",
+      "README.md": "158dba251c0cac2141b9fe6fa269e82806e05f3928d80fb60a28cbff421d9487",
+      "SECURITY.md": "53a62097d305f2390e6fbfea7b40cd5fbe76ea3508543f789a9d3d386a79e1dd",
+      "THIRD_PARTY_NOTICES.md": "8081c166c615b4544989842b1e6f057d4d6d713717dce143a2ba8f64dcfc9add",
+      "bench/README.md": "58e53517cfaffa9ec4117bc14bd2bca713f5b43437eb52e27680c43481897bae",
+      "bench/baseline.c": "56342ff99163050886d94a245fb12f3ee8e3677a271411d937f2e751e243529b",
+      "bench/bench.goose": "40d3b50c71d758169a8563f6f690d25fee1a603fd09bbd6f7d06b9aee30fb333",
+      "bench/measure.py": "a1d75efec6070f62c6a55b64cfd1b1cad8a7fffdab4a173153b0f61d6ac51739",
+      "bench/results/validated-2026-11-04/README.md": "93b4114f4a9123f2205de7e0d1b37d8b4cf1cc725f22c605364bdf243d754e12",
+      "bench/results/validated-2026-11-04/samples.json": "64df4637ddc19f6f45d74acc9615838f8ee307b4217349c8a459584eae12a8a6",
+      "docs/api.md": "9c7554ae37f7e25788b38376b53740d6be0a4f3e3b2f4fb20db5958985a3bb9d",
+      "docs/design.md": "b100185569c7b18bd9b0048cfde627ce9939b524d0f95e364b1fb8485cfe35f7",
+      "docs/platforms.md": "80d8b7c90b295f4e8d99867e6587cf750be91fb1da8f010dc1aa7be077397cc8",
+      "docs/results/compatibility-2026-11-04.json": "9443fdbc57fb4864d92150e0471844ae2c0a097f24c7459e73f704e1ca9e29b2",
+      "docs/validation.md": "661a54cc1a38855b585830523129af92217f8aedb8dc75867fcab9e3c6b76c9b",
+      "examples/items.goose": "167a84111c41ac58adc080f9acc57d71e303ee385cd2ac8615f1e2b784118257",
+      "native/sqlite.c": "579c11699d1f1119ca448d557b469173e4d51dbf4add6815a0bda4a1249be671",
+      "native/sqlite.h": "372d4664659d9d5c769ac87b3b5e7f3932c32b35d8556fd61af919d83828dbb8",
+      "scripts/native-manifest.py": "776376630b521033583d741e365ab4bb298f6b75f48383c813c177916aa403a7",
+      "scripts/setup-goose.sh": "399d4a87702b8ecf92138f0f78b7422a0225b942f0e24ad9965f09f06f4fbb84",
+      "scripts/test-files.py": "2110ee94553192009e101733b5cb9c002c728fbb61827c8347e10a36eddb2041",
+      "scripts/test-import.py": "9122386ce93dfe46a11bbe8843ce7d5456d1bf377f528ab5ab6fd8684c2e51ce",
+      "sqlite.build": "d9ca71e82e5ae1167765b1f028ee8d02e55533de66a534fd811cbb1a7fb467f0",
+      "sqlite.goose": "ef5369fdaf1fd0363fbb739738c38464de2fb43d09fa0513920beb48e216cd31",
+      "tests/api.goose": "d586455262082dcf5a532e73f3fab2bc72d34899bfb146915b9bba8e9080fb50",
+      "tests/corpus/0": "e004ebd5b5532a4b85984a62f8ad48a81aa3460c1ca07701f386135d72cdecf5",
+      "tests/corpus/1": "520e5389f542b2834fd2135889d177261f350bd4fe4a9a1c4a0756ab06df2551",
+      "tests/corpus/10": "e051ddeea4c4b69e7ea1c4b2a1308d463a119e156884fa4ed9d09d3a29ed31fb",
+      "tests/corpus/2": "564c1d3bf9104e3324b1e9e8c491dc4faaec28855941b819852cc76365e1e713",
+      "tests/corpus/3": "4e08a59e8b0dbb34af4dd6756c2819eaf95f587f282a9055ec51388ebb91ae95",
+      "tests/corpus/4": "80b28d8cc0818a9a581778710051fffe9280ffac614e78d2951e94133bd34b45",
+      "tests/corpus/5": "7bcedd3a84d3027b3187aebf36d52df923519ccd977cdd58ace5c54268a4b9f0",
+      "tests/corpus/6": "795615dccf13fa829164b42d17a0a05089d628d59fe996c37414fb4bdd9dfe41",
+      "tests/corpus/7": "8f34522928a0cfb8098ef4051739b8ae3a556959c6e11399aa9baea2601307a6",
+      "tests/corpus/8": "72b8148b8e4fcfcc0d260e87a3aec32dd8bf946cd5574b7699cf6b6b2294133c",
+      "tests/corpus/9": "9159db9b1d3bbf05c3ef40402766219341f3861806ed4614b5a4f46b8cee6df9",
+      "tests/files.goose": "a02b3d563c2aa3f3d7ab189031d67cd01e608aaafbfad2f1df27f012822f5f4d",
+      "tests/fuzz.c": "71f7f0a941fe1a300eea48afc9b8c2e900a928a5ddd4e225b1751786ff74cb75",
+      "tests/native.c": "d1a8b99717d0b1f609325b2fc3894e38b265966d6ebaa0372ff04133e421a7ec"
+    }
+  },
+  "binaries": {
+    "baseline": "a21f5569a972e0c3b2095ad5965b2d8ea8ff4744ccd90232fdd876dc4db3fb7c",
+    "reuse": "2d6db1c6cbfdea08e4c6c05e322215d2951098f80902fb678f27b896a3f6d4c0"
+  },
+  "native_archive_sha256": [
+    "959a885fe7ea413c4b89bd7c524b72b053c9c3518600c63b5ab7d2d3be353e72"
+  ],
+  "candidate_implementation_commit": "c03efc275ba22100233d16ee51d111eabe60dff0",
+  "candidate_note": "Recorded candidate differs from the committed implementation only in an unrelated execute() comment. Test/build/methodology changes occurred after this timing series.",
+  "runtime_capture_utc": "2026-11-04T10:43:42.133570+00:00",
+  "runtime_capture_note": "Captured after timing without rebuilding either measured executable; their recorded hashes still match. System libraries were not controlled by this experiment.",
+  "runtime_libraries": {
+    "baseline": [
+      {
+        "name": "libsqlite3.so.0",
+        "file": "libsqlite3.so.3.54.1",
+        "sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a"
+      },
+      {
+        "name": "libm.so.6",
+        "file": "libm.so.6",
+        "sha256": "965106704753eefe8c31ae7da6daba3ead3d18c52b19b5fcc41178bcc4aa999d"
+      },
+      {
+        "name": "libc.so.6",
+        "file": "libc.so.6",
+        "sha256": "02c8c3d06180beee9c7d0392aa85736c7d19f274a81e7f8f0b3d9e28e0641524"
+      },
+      {
+        "name": "/lib64/ld-linux-x86-64.so.2",
+        "file": "ld-linux-x86-64.so.2",
+        "sha256": "f5e11cc62f8f2c24dff532982559f4303dba3b17e7450551372a88c8e7ea8757"
+      }
+    ],
+    "reuse": [
+      {
+        "name": "libsqlite3.so.0",
+        "file": "libsqlite3.so.3.54.1",
+        "sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a"
+      },
+      {
+        "name": "libm.so.6",
+        "file": "libm.so.6",
+        "sha256": "965106704753eefe8c31ae7da6daba3ead3d18c52b19b5fcc41178bcc4aa999d"
+      },
+      {
+        "name": "libc.so.6",
+        "file": "libc.so.6",
+        "sha256": "02c8c3d06180beee9c7d0392aa85736c7d19f274a81e7f8f0b3d9e28e0641524"
+      },
+      {
+        "name": "/lib64/ld-linux-x86-64.so.2",
+        "file": "ld-linux-x86-64.so.2",
+        "sha256": "f5e11cc62f8f2c24dff532982559f4303dba3b17e7450551372a88c8e7ea8757"
+      }
+    ]
+  },
+  "sqlite_version": "3.54.1",
+  "sqlite_identity_capture": "System library identity captured after series; exact shared-library hashes are recorded above.",
+  "captured_native_compile_flags": [
+    [
+      [
+        "-O3 -DNDEBUG -fPIC",
+        "-Wall",
+        "-Wextra",
+        "-Werror"
+      ]
+    ],
+    [
+      [
+        "-O3 -DNDEBUG -fPIC",
+        "-Wall",
+        "-Wextra",
+        "-Werror"
+      ]
+    ]
+  ],
+  "sampling_driver_note": "Sampling loop retained in compare.py; it remeasures already-built baseline-bin and reuse-bin, not source export/build. Baseline/candidate compiler flags and source hashes are recorded; see README for build/reproduction instructions."
+}
