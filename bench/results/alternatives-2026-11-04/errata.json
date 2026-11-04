@@ -1,0 +1,17 @@
+{
+  "applies_to": [
+    "before-fetch.json",
+    "samples.json"
+  ],
+  "original_Rust_lto_false_field": "Incorrect requested-manifest value, overridden by Cargo user configuration",
+  "effective_Rust_profile": {
+    "opt-level": 2,
+    "lto": "thin",
+    "codegen-units": 16,
+    "incremental": true
+  },
+  "evidence": "Cargo config get profile.release/build.incremental and official Cargo profile precedence; captured after completed series. No CARGO_INCREMENTAL environment override was set.",
+  "runtime_identity": "All five loaded identical SQLite shared-library hashes; four explicitly queried source ID/options, Goose inferred from exact shared object.",
+  "dirty_final_record": "Only untracked stored result artifacts were present; measured tracked code was clean at recorded a834991. Hashes retained; do not change the raw dirty flag.",
+  "scope": "Results are checked API paths with recorded different policies, not equivalent Unicode/safety contracts or universal rankings."
+}

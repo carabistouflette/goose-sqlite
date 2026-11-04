@@ -54,6 +54,7 @@ def main():
         if key in ('CFLAGS','CXXFLAGS','CPPFLAGS','LDFLAGS','CMAKE_GENERATOR','CMAKE_TOOLCHAIN_FILE','CARGO_BUILD_TARGET','CARGO_TARGET_DIR','RUSTFLAGS','CARGO_ENCODED_RUSTFLAGS') or key.startswith('CARGO_PROFILE_RELEASE_'):
             env.pop(key, None)
     env['CARGO_ENCODED_RUSTFLAGS'] = ''
+    env['CARGO_INCREMENTAL'] = '1'
     build = ROOT / '.build' / 'alternatives'
     build.mkdir(parents=True, exist_ok=True)
     cpp = build / 'SQLiteCpp'
@@ -71,7 +72,7 @@ def main():
         if name == 'sqlitecpp': cmd += [build / 'cpp-build' / 'libSQLiteCpp.a']
         run([*cmd, '-lsqlite3', '-o', build / name])
     host = next(line.split(': ',1)[1] for line in output(['rustc','-vV']).splitlines() if line.startswith('host: '))
-    run(['cargo', 'build', '--locked', '--release', '--target', host, '--target-dir', build / 'rust-target', '--manifest-path', 'bench/alternatives/rust/Cargo.toml'], env=env)
+    run(['cargo', 'build', '--locked', '--release', '--target', host, '--target-dir', build / 'rust-target', '--manifest-path', 'bench/alternatives/rust/Cargo.toml', '--config', 'profile.release.opt-level=2', '--config', 'profile.release.lto="thin"', '--config', 'profile.release.codegen-units=16', '--config', 'profile.release.incremental=true'], env=env)
     goose = str(Path(args.goose).resolve())
     env['GOOSE_HOME'] = str(build / ('goose-cache-' + str(time.monotonic_ns())))
     run(['python3', 'scripts/native-manifest.py', '--check'])
@@ -130,7 +131,7 @@ def main():
                     goose_revision=(ROOT / 'GOOSE_REVISION').read_text().strip(), goose_sha256=digest(goose),
                     wrapper_versions={'SQLiteCpp': {'version': '3.4.0', 'revision': CPP_REV}, 'rusqlite': '0.41.1', 'Python': sys.version},
                     toolchains={tool: output([tool, '--version']).splitlines()[0] for tool in ('gcc', 'g++', 'rustc', 'cargo', 'cmake')},
-                    compiler_flags={'C++ caller': '-O2 -std=c++17, always-on checks', 'SQLiteCpp': '-O2 -DNDEBUG', 'Rust': 'opt-level=2,lto=false,normal assertions active', 'Goose': '--cc gcc -O2; native CMake Release'},
+                    compiler_flags={'C++ caller': '-O2 -std=c++17, always-on checks', 'SQLiteCpp': '-O2 -DNDEBUG', 'Rust': 'opt-level=2,lto=thin,codegen-units=16,incremental=true,normal assertions active', 'Goose': '--cc gcc -O2; native CMake Release'},
                     sqlite_identities=identities, sqlite_libraries=libraries,
                     binaries={name: digest(cmd[0]) for name, cmd in runners.items()},
                     source_hashes={str(p.relative_to(ROOT)): digest(p) for p in paths},
