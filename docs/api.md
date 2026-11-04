@@ -1,7 +1,7 @@
 # Interface
 
 All functions are in namespace `sqlite`. Interface is experimental. Connections
-and statements are thread-affine, synchronous resources. Storage is owned by the
+statements and BLOB handles are thread-affine, synchronous resources. Storage is owned by the
 application or SQLite; no SQLite pointer is exposed.
 
 ## Results
@@ -25,7 +25,7 @@ and therefore no error-message handle; inspect their numeric result.
 
 ## Connections and statements
 
-`Options { readonly=false, busy_ms=1000, work_budget=1000000 }`.
+`Options { readonly=false, wal=false, busy_ms=1000, work_budget=1000000 }`.
 `open(path,options) -> Database,code`. Path is 1..4095 bytes with no NUL or `file:`
 prefix. `:memory:` opens a private in-memory database. Other paths use ordinary
 SQLite file semantics; caller controls path trust and filesystem permissions.
@@ -33,7 +33,7 @@ Readonly uses SQLITE_OPEN_READONLY; writable opens/creates. Failed open returns
 an invalid zero-token Database and closes partially initialized SQLite state.
 No journal/synchronous/durability setting is weakened by this module.
 
-`close(db) -> code`: returns SQLITE_BUSY (5) while statements remain live. Busy
+`close(db) -> code`: returns SQLITE_BUSY (5) while statements or BLOB handles remain live. Busy
 leaves the connection usable. Successful close invalidates all token copies and
 rolls back open transactions according to SQLite close semantics.
 
@@ -92,9 +92,9 @@ Only Row statements permit zero-based column reads:
 
 ## Limits and policies
 
-Per OS thread: 16 databases, 64 statements total. Allocation beyond a registry
+Per OS thread: 16 databases, 64 statements and 32 BLOB handles total. Allocation beyond a registry
 limit returns LIMIT; finalizing/closing releases capacity. Tokens never repeat;
-exhaustion fails closed. Thread exit finalizes live statements then closes
+exhaustion fails closed. Thread exit finalizes live statements, closes BLOB handles, then closes
 connections. Finalization can commit implicit RETURNING writes that already
 produced rows; only transactions still open afterward, including uncommitted
 explicit transactions, roll back on close. Cleanup is not a cancellation request.
@@ -160,3 +160,92 @@ Explicit transactions and savepoints need no additional execution interface:
 RELEASE of an inner savepoint is not an independent commit. Use fixed/trusted
 names, preserve the original operation or COMMIT error, and check recovery errors
 separately. These operations are not destructor/RAII guards.
+
+## WAL at connection creation
+
+`Options.wal=true` requests WAL on the main file. The connection must be writable
+and file-backed: readonly+wal is INVALID_INPUT; an in-memory mode fallback is
+an error. Initialization verifies the actual journal mode and sets synchronous
+at least FULL (preserving EXTRA), including on engines compiled with a weaker WAL
+default. Arbitrary PRAGMAs remain denied throughout the public connection lifetime.
+Failure returns a zero token and closes native state, but a journal-mode change
+may already have persisted to the file; open is not a filesystem transaction.
+The default `wal=false` preserves the engine/file journal mode.
+
+SQLite's [WAL-reset corruption fix](https://sqlite.org/wal.html#walresetbug) is
+required: recognized versions are 3.51.3+, 3.50.7..3.50.x, or 3.44.6..3.44.x.
+Other versions return SQLITE_MISUSE (21) when WAL is requested or detected at
+open, even if a distributor independently backported the fix. This conservative
+check cannot police external connections switching the file to WAL later.
+**Every participant must use an updated engine.** The minimum 3.37 supports
+rollback-journal operations; it is not a WAL safety endorsement.
+
+WAL permits snapshot readers alongside a writer, but does not permit multiple
+simultaneous writers. All processes must be on one host with a suitable local
+filesystem. Sidecar -wal/-shm files, directory permissions, checkpoints and busy
+results follow SQLite. Readonly connections preserve existing WAL on recognized
+fixed versions when the engine can open its sidecars. This library does not offer
+manual checkpoints, journal-mode switching on a live handle, or weaker durability.
+
+## Incremental BLOB access
+
+`blob_open(db,table,column,rowid,writable) -> Blob,code` opens byte-oriented access
+in the main schema. Table and column names are exact SQLite API strings, not SQL
+fragments: 1..1024 bytes, no NUL. Rowid is signed. No pointer escapes. SQLite allows
+TEXT or BLOB storage in supported ordinary rowid tables; it rejects NULL/scalars,
+missing rows, views, virtual/WITHOUT ROWID tables and tables with generated
+columns. Writable indexed/primary/unique/foreign-key child columns, and some
+expression-index tables, are rejected by the engine. Failed open has a zero token.
+Values larger than 1 MiB are rejected and their partial handle is closed.
+
+Writable access requires an explicit transaction (autocommit disabled), otherwise
+INVALID_STATE. Use BEGIN, check all writes and close results, then COMMIT. A live
+writable BLOB can make COMMIT return BUSY. ROLLBACK expires the handle; close it
+and inspect errors before recovery. Close normally and do not rely on thread exit.
+
+`blob_size(blob) -> size,code` probes validity and reports zero on failure.
+`blob_read(blob,offset,count,out)` replaces owned output, empty on error.
+`blob_write(blob,offset,bytes)` copies bytes synchronously into SQLite. Ranges must
+fit the original value; offset/count cannot be negative, overflow, or extend it.
+Reads accept count 0..1048576; empty access still asks SQLite to detect readonly
+writes and expiration. Reads/writes do not resize the stored value. Use SQL
+zeroblob to allocate it. Copied read buffers survive handle close/transaction end.
+
+Updating/deleting the row (including an unrelated column), or rolling back, can
+expire the handle. Further accesses return SQLite errors such as ABORT or extended
+ABORT_ROLLBACK, rather than an empty-value success. `blob_close(blob)` always
+destroys the token, even when reporting an engine error; all aliases become stale.
+Connection close stays BUSY until all handles are destroyed.
+
+**Incremental writes bypass SQL CHECK constraints and UPDATE triggers.** Use a
+normal SQL UPDATE when those semantics are required. Existing column restrictions
+and foreign-key policy still follow SQLite, but are not a substitute for CHECKs.
+There is no implicit retry, reopen, transaction commit or rollback. On failure,
+explicitly recover the transaction; earlier successful writes are not automatically
+undone by this wrapper. See SQLite's [BLOB contract](https://sqlite.org/c3ref/blob_open.html)
+and [close contract](https://sqlite.org/c3ref/blob_close.html).
+
+## Bounded online backup
+
+`backup(source,destination,max_pages) -> code` copies main to main synchronously.
+Both databases must be distinct live handles on the current thread. Destination
+must be writable, in autocommit, and have no live statements or BLOB handles;
+violations return READONLY or INVALID_STATE. A source read transaction is allowed
+and supplies its snapshot; an active source write transaction is INVALID_STATE.
+Different connections to the same file are left to SQLite locking rules.
+
+max_pages accepts 1..1048576. Calls request at most 64 pages per engine step and
+charge every requested page, including if concurrent changes restart the backup.
+DONE plus successful finish returns OK; budget exhaustion returns LIMIT. BUSY,
+LOCKED and other errors are returned without wrapper retry. Finish always runs;
+incomplete copies roll back destination changes using SQLite's backup transaction.
+A failed finish is reported even after DONE. Back up to a separate file and verify
+success before treating it as a recovery copy. Underlying I/O/hardware failures
+remain SQLite/filesystem concerns. Source handles and the original file are not
+modified by this operation.
+
+A page budget bounds requested copying work, not elapsed time, allocator use,
+disk space or total source size. Busy timeout and I/O can block within a step.
+Page-size mismatches with an in-memory/WAL destination can fail (READONLY), as
+specified by the [SQLite backup API](https://sqlite.org/c3ref/backup_finish.html).
+No backup resource escapes the call; there is no hidden asynchronous operation.

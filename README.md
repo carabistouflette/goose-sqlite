@@ -5,7 +5,8 @@ Small, synchronous SQLite connections and prepared statements for the
 Experimental interface; no tagged release yet. Initially tested on Linux x86-64.
 
 Typed parameter binding, strict typed reads, explicit transactions, copied text
-and blobs, bounded input/work, and checked resource handles. No ORM or pool.
+and blobs, incremental BLOB ranges, bounded backup, opt-in WAL, bounded input/work,
+and checked resource handles. No ORM or pool.
 SQLite is a required native dependency, not vendored in this repository.
 
 ## Quickstart
@@ -88,3 +89,10 @@ Named parameters and metadata are available through `parameter_count`,
 `autocommit` expose checked connection status. See [alternative features](docs/alternatives.md)
 and the [matched-engine benchmark methodology](bench/alternatives/README.md) for
 scope, remaining gaps and performance comparison rules.
+
+`Options.wal` provides verified WAL initialization on recognized engines with
+SQLite's WAL-reset fix, preserving at least FULL synchronization. `blob_open`,
+`blob_size`, `blob_read`, `blob_write`, `blob_close` and `backup` add checked storage
+operations. Writable BLOBs require explicit transactions and bypass SQL CHECKs
+and UPDATE triggers; read [the contract and limits](docs/api.md) before using them.
+WAL requires a suitable local filesystem and patched engines for all participants.

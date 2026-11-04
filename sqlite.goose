@@ -19,12 +19,14 @@ const NULL:           i64 = 5;
 
 struct Database { token: u64 = 0 }
 struct Statement { token: u64 = 0 }
+struct Blob { token: u64 = 0 }
 struct Options {
     readonly:    bool = false,
+    wal:         bool = false,
     busy_ms:     i64  = 1000,
     work_budget: i64  = 1000000,
 }
-extern fn native_open(path: const u8[:], readonly: i64, busy_ms: i64, budget: i64, token: u64&) -> i64 = "gq_open";
+extern fn native_open(path: const u8[:], readonly: i64, busy_ms: i64, budget: i64, wal: i64, token: u64&) -> i64 = "gq_open_config";
 extern fn native_close(token: u64) -> i64 = "gq_close";
 extern fn native_prepare(token: u64, sql: const u8[:], out: u64&) -> i64 = "gq_prepare";
 extern fn native_finalize(token: u64) -> i64 = "gq_finalize";
@@ -42,7 +44,7 @@ extern fn native_message(token: u64, out: u8[:]) -> i64 = "gq_message";
 
 fn open(path: const u8[:], options: const Options&) -> Database, i64 {
     var token: u64 = 0;
-    let code = native_open(path, if options.readonly { 1 } else { 0 }, options.busy_ms, options.work_budget, token);
+    let code = native_open(path, if options.readonly { 1 } else { 0 }, options.busy_ms, options.work_budget, if options.wal { 1 } else { 0 }, token);
     return Database { token }, code;
 }
 fn close(db: Database) -> i64 { return native_close(db.token); }
@@ -139,4 +141,38 @@ fn last_insert_rowid(db: Database) -> i64, i64 {
 }
 fn autocommit(db: Database) -> bool, i64 {
     var value: i64 = 0; let code = native_status(db.token, 2, value); return value != 0, code;
+}
+
+// Incremental access is byte oriented and limited to main schema rowid tables.
+// Writable access requires an explicit transaction and bypasses SQL CHECKs/triggers.
+extern fn native_blob_open(token: u64, table: const u8[:], column: const u8[:], rowid: i64, writable: i64, out: u64&) -> i64 = "gq_blob_open";
+extern fn native_blob_close(token: u64) -> i64 = "gq_blob_close";
+extern fn native_blob_size(token: u64, size: i64&) -> i64 = "gq_blob_size";
+extern fn native_blob_read(token: u64, offset: i64, out: u8[:]) -> i64 = "gq_blob_read";
+extern fn native_blob_write(token: u64, offset: i64, bytes: const u8[:]) -> i64 = "gq_blob_write";
+extern fn native_backup(source: u64, destination: u64, max_pages: i64) -> i64 = "gq_backup";
+fn blob_open(db: Database, table: const u8[:], column: const u8[:], rowid: i64, writable: bool) -> Blob, i64 {
+    var token: u64 = 0;
+    let code = native_blob_open(db.token, table, column, rowid, if writable { 1 } else { 0 }, token);
+    return Blob { token }, code;
+}
+fn blob_close(blob: Blob) -> i64 { return native_blob_close(blob.token); }
+fn blob_size(blob: Blob) -> i64, i64 {
+    var size: i64 = 0;
+    let code = native_blob_size(blob.token, size);
+    return size, code;
+}
+fn blob_read(blob: Blob, offset: i64, count: i64, out: u8[>..]&) -> i64 {
+    if offset < 0 || count < 0 || count > 1048576 { out.clear(); return INVALID_INPUT; }
+    out.resize(count, 0);
+    let code = native_blob_read(blob.token, offset, out[..]);
+    if code != OK { out.clear(); }
+    return code;
+}
+fn blob_write(blob: Blob, offset: i64, bytes: const u8[:]) -> i64 {
+    return native_blob_write(blob.token, offset, bytes);
+}
+// Whole main database copy. Incomplete copies roll back destination changes.
+fn backup(source: Database, destination: Database, max_pages: i64) -> i64 {
+    return native_backup(source.token, destination.token, max_pages);
 }

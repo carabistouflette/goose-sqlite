@@ -81,6 +81,47 @@ static void lifecycle(uint64_t db, const uint8_t *data, size_t size) {
     }
     CHECK(gq_finalize(stmt) == SQLITE_OK);
 }
+static void run_sql(uint64_t db, const char *sql) {
+    uint64_t stmt = 0;
+    CHECK(gq_prepare(db,(gq_input){(const uint8_t *)sql,(int64_t)strlen(sql)},&stmt) == SQLITE_OK);
+    CHECK(gq_step(stmt) == SQLITE_DONE && gq_finalize(stmt) == SQLITE_OK);
+}
+static void blob_lifecycle(const uint8_t *data, size_t size) {
+    uint64_t db = 0, b = 0, stale = 0;
+    CHECK(gq_open((gq_input){(const uint8_t *)":memory:",8},0,0,1000000,&db) == SQLITE_OK);
+    run_sql(db,"CREATE TABLE t(x)"); run_sql(db,"INSERT INTO t VALUES(zeroblob(256))");
+    run_sql(db,"BEGIN");
+    const gq_input table = {(const uint8_t *)"t",1}, col = {(const uint8_t *)"x",1};
+    CHECK(gq_blob_open(db,table,col,1,1,&b) == SQLITE_OK);
+    uint8_t model[256] = {0}, out[256];
+    for (size_t i = 0; i < size && i < 32; ++i) {
+        int offset = data[i], n = 256 - offset;
+        if ((size_t)n > size - i) n = (int)(size - i);
+        switch (data[i] % 6) {
+        case 0:
+            CHECK(gq_blob_write(b,offset,(gq_input){data+i,n}) == SQLITE_OK);
+            memcpy(model+offset,data+i,(size_t)n); break;
+        case 1:
+            CHECK(gq_blob_read(b,offset,(gq_output){out,n}) == SQLITE_OK);
+            CHECK(!memcmp(model+offset,out,(size_t)n)); break;
+        case 2: CHECK(gq_blob_read(b,INT64_MAX,(gq_output){out,1}) == GQ_INPUT); break;
+        case 3: {
+            int64_t length = -1;
+            CHECK(gq_blob_size(b,&length) == SQLITE_OK && length == 256); break;
+        }
+        case 4:
+            stale = b; CHECK(gq_blob_close(b) == SQLITE_OK);
+            CHECK(gq_blob_open(db,table,col,1,1,&b) == SQLITE_OK);
+            CHECK(gq_blob_close(stale) == GQ_HANDLE); break;
+        case 5: CHECK(gq_blob_write(b,256,(gq_input){NULL,0}) == SQLITE_OK); break;
+        }
+    }
+    CHECK(gq_blob_read(b,0,(gq_output){out,256}) == SQLITE_OK && !memcmp(model,out,256));
+    run_sql(db,"ROLLBACK");
+    int64_t rc = gq_blob_read(b,0,(gq_output){NULL,0}); CHECK(rc > 0 && (rc & 255) == SQLITE_ABORT);
+    rc = gq_blob_close(b); CHECK(rc > 0 && (rc & 255) == SQLITE_ABORT);
+    CHECK(gq_blob_close(b) == GQ_HANDLE && gq_close(db) == SQLITE_OK);
+}
 int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     if (size > 4096) return 0;
     uint64_t db = 0, s = 0;
@@ -111,6 +152,7 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     CHECK(gq_type(s, 4) == GQ_INPUT);
     CHECK(gq_finalize(s) == SQLITE_OK);
     lifecycle(db, data, size);
+    blob_lifecycle(data, size);
     CHECK(gq_close(db) == SQLITE_OK);
     return 0;
 }

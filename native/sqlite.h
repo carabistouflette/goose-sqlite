@@ -9,6 +9,7 @@ typedef struct { uint8_t *data; int64_t len; } gq_output;
 #pragma pack(pop)
 enum { GQ_INPUT = -1, GQ_HANDLE = -2, GQ_STATE = -3, GQ_TYPE = -4, GQ_LIMIT = -5 };
 int64_t gq_open(gq_input path, int64_t readonly, int64_t busy_ms, int64_t budget, void *token);
+int64_t gq_open_config(gq_input path, int64_t readonly, int64_t busy_ms, int64_t budget, int64_t wal, void *token);
 int64_t gq_close(uint64_t token);
 int64_t gq_prepare(uint64_t db, gq_input sql, void *token);
 int64_t gq_finalize(uint64_t token);
@@ -28,4 +29,10 @@ int64_t gq_parameter_count(uint64_t token);
 int64_t gq_parameter_index(uint64_t token, gq_input name);
 int64_t gq_name(uint64_t token, int64_t column, gq_output out, void *length);
 int64_t gq_status(uint64_t token, int64_t kind, void *out);
+int64_t gq_blob_open(uint64_t db, gq_input table, gq_input column, int64_t rowid, int64_t writable, void *out);
+int64_t gq_blob_close(uint64_t token);
+int64_t gq_blob_size(uint64_t token, void *out);
+int64_t gq_blob_read(uint64_t token, int64_t offset, gq_output out);
+int64_t gq_blob_write(uint64_t token, int64_t offset, gq_input in);
+int64_t gq_backup(uint64_t source, uint64_t destination, int64_t max_pages);
 #endif

@@ -49,5 +49,25 @@ fn main() {
     }
     let recovered, recovered_code = sqlite::open(":memory:", options);
     assert(recovered_code == sqlite::OK && sqlite::close(recovered) == sqlite::OK);
+    let wal_options = sqlite::Options { wal: true, busy_ms: 1 };
+    let wal_path = str(argv[1], ".wal-test");
+    let writer, wal_code = sqlite::open(wal_path, wal_options);
+    if wal_code == 21 { assert(writer.token == 0); } // Old/unrecognized WAL engine: fail closed.
+    else {
+        assert(wal_code == sqlite::OK);
+        assert(sqlite::execute(writer, "CREATE TABLE t(x)") == sqlite::OK);
+        assert(sqlite::execute(writer, "INSERT INTO t VALUES(1)") == sqlite::OK);
+        let read_options = sqlite::Options { .. };
+        let reader, reader_code = sqlite::open(wal_path, read_options);
+        assert(reader_code == sqlite::OK && sqlite::execute(reader, "BEGIN") == sqlite::OK);
+        let snapshot, snapshot_code = sqlite::prepare(reader, "SELECT x FROM t");
+        assert(snapshot_code == sqlite::OK && sqlite::step(snapshot) == sqlite::ROW);
+        assert(sqlite::execute(writer, "UPDATE t SET x=2") == sqlite::OK);
+        let old, old_code = sqlite::column_integer(snapshot, 0);
+        assert(old_code == sqlite::OK && old == 1);
+        assert(sqlite::finalize(snapshot) == sqlite::OK && sqlite::execute(reader, "COMMIT") == sqlite::OK);
+        assert(sqlite::execute(writer, "PRAGMA journal_mode") == 23);
+        assert(sqlite::close(reader) == sqlite::OK && sqlite::close(writer) == sqlite::OK);
+    }
     print("sqlite file API tests passed");
 }

@@ -28,7 +28,9 @@ use memcpy because Goose references may be byte-aligned.
 ## Policies and limits
 
 Defensive mode, foreign keys, untrusted schemas and disabled extension loading
-are checked at connection creation. All SQL PRAGMAs, ATTACH/DETACH and virtual
+are checked at connection creation. The opt-in WAL mode uses fixed private
+initialization SQL before the public authorizer and verifies its result, preserving
+at least FULL synchronization. All caller SQL PRAGMAs, ATTACH/DETACH and virtual
 table creation/deletion are denied. URI filenames are rejected independently of
 SQLite's process-global URI configuration. Ordinary filenames follow SQLite's
 normal filesystem semantics, including symlinks.
@@ -49,3 +51,17 @@ process injects SQLite allocation failures and checks recovery/cleanup; allocato
 hooks are test-only and installed before SQLite initialization. The dynamically linked system SQLite itself is not sanitizer-instrumented
 by these checks. Initial validation is Linux x86-64; other platforms are unverified.
 See [the validation record](docs/validation.md) for exact completed checks.
+
+## Storage features
+
+WAL is accepted only on recognized SQLite versions containing the WAL-reset
+corruption fix (see [API version rules](docs/api.md)). Unknown backports fail
+closed; all other processes using that file must also use a patched engine.
+Opening is not atomic with external changes of journal mode.
+
+Incremental BLOB reads copy owned ranges with checked arithmetic. Writable BLOBs
+require an explicit transaction, but **bypass CHECK constraints and UPDATE
+triggers**, as SQLite specifies; use SQL UPDATE when those checks are required.
+Always close handles, inspect errors, and explicitly recover failed transactions.
+Backup bounds requested pages and always finishes its internal handle; it does
+not impose a disk/heap/time limit. Verify success before relying on a backup.

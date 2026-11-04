@@ -13,20 +13,25 @@ check:
 	python3 scripts/native-manifest.py --check
 	"$(GOOSE)" format --check sqlite.goose examples tests bench
 	"$(GOOSE)" check tests/api.goose
+	"$(GOOSE)" check tests/storage.goose
 	"$(GOOSE)" check tests/metadata.goose
 	"$(GOOSE)" check tests/files.goose
 	"$(GOOSE)" check examples/items.goose
+	"$(GOOSE)" check bench/storage/runner.goose
 	"$(GOOSE)" check bench/bench.goose
 	"$(GOOSE)" check bench/alternatives/runner.goose
 test:
 	python3 scripts/native-manifest.py --check
 	"$(GOOSE)" run tests/api.goose
+	"$(GOOSE)" run tests/storage.goose
 	"$(GOOSE)" run tests/metadata.goose
 	mkdir -p .build
 	"$(GOOSE)" build tests/api.goose -o .build/api
 	./.build/api
 	"$(GOOSE)" build tests/metadata.goose -o .build/metadata
 	./.build/metadata
+	"$(GOOSE)" build tests/storage.goose -o .build/storage
+	./.build/storage
 	python3 scripts/test-files.py "$(GOOSE)"
 	"$(GOOSE)" run examples/items.goose
 	$(MAKE) test-import
@@ -37,6 +42,7 @@ test-native:
 	cmake --build .build/native-$(notdir $(CC)) --parallel 2
 	UBSAN_OPTIONS=halt_on_error=1 .build/native-$(notdir $(CC))/goose_sqlite_test
 	UBSAN_OPTIONS=halt_on_error=1 .build/native-$(notdir $(CC))/goose_sqlite_fault_test
+	UBSAN_OPTIONS=halt_on_error=1 .build/native-$(notdir $(CC))/goose_sqlite_storage_test
 fuzz-native:
 	cmake -S . -B .build/fuzz -DCMAKE_C_COMPILER="$(FUZZ_CC)" -DCMAKE_BUILD_TYPE=Debug -DGOOSE_SQLITE_FUZZ=ON
 	cmake --build .build/fuzz --parallel 2

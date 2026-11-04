@@ -10,10 +10,11 @@
 
 #define DBS 16
 #define STMTS 64
+#define BLOBS 32
 #define SQL_MAX 65536
 #define VALUE_MAX 1048576
 /* Registry slots are encoded in seven low token bits; generations never wrap. */
-_Static_assert(DBS + STMTS <= 128, "token index width");
+_Static_assert(DBS + STMTS + BLOBS <= 128, "token index width");
 typedef struct {
     sqlite3 *ptr;
     uint64_t token;
@@ -25,7 +26,13 @@ typedef struct {
     Database *db;
     enum { READY, ROW, FINISHED } state;
 } Statement;
-typedef struct { Database db[DBS]; Statement stmt[STMTS]; } Registry;
+typedef struct {
+    sqlite3_blob *ptr;
+    uint64_t token;
+    Database *db;
+    int size;
+} Blob;
+typedef struct { Database db[DBS]; Statement stmt[STMTS]; Blob blob[BLOBS]; } Registry;
 static pthread_key_t registry_key;
 static int key_error;
 static pthread_once_t registry_once = PTHREAD_ONCE_INIT;
@@ -34,6 +41,7 @@ static _Atomic uint64_t generation = 1;
 static void destroy_registry(void *p) {
     Registry *r = p;
     for (int i = 0; i < STMTS; ++i) if (r->stmt[i].ptr) sqlite3_finalize(r->stmt[i].ptr);
+    for (int i = 0; i < BLOBS; ++i) if (r->blob[i].ptr) sqlite3_blob_close(r->blob[i].ptr);
     for (int i = 0; i < DBS; ++i) if (r->db[i].ptr) sqlite3_close(r->db[i].ptr);
     free(r);
 }
@@ -65,6 +73,12 @@ static Statement *statement(uint64_t token) {
     unsigned i = token & 127;
     return r && token && i >= DBS && i < DBS + STMTS && r->stmt[i - DBS].token == token
         ? &r->stmt[i - DBS] : NULL;
+}
+static Blob *blob(uint64_t token) {
+    Registry *r = registry(0);
+    unsigned i = token & 127;
+    return r && token && i >= DBS + STMTS && i < DBS + STMTS + BLOBS &&
+        r->blob[i - DBS - STMTS].token == token ? &r->blob[i - DBS - STMTS] : NULL;
 }
 static int valid_input(gq_input x, int64_t max) {
     return x.len >= 0 && x.len <= max && (!x.len || x.data);
@@ -102,15 +116,69 @@ static int configure(Database *d, int busy_ms) {
     sqlite3_limit(d->ptr, SQLITE_LIMIT_ATTACHED, 0);
     sqlite3_limit(d->ptr, SQLITE_LIMIT_WORKER_THREADS, 0);
     sqlite3_progress_handler(d->ptr, 1000, progress, d);
-    return sqlite3_set_authorizer(d->ptr, authorize, NULL);
+    return SQLITE_OK;
+}
+/* Fixed private PRAGMAs run only before installing the permanent authorizer. */
+static int journal_mode(Database *d, int enable, int *wal) {
+    sqlite3_stmt *s = NULL;
+    d->remaining = d->budget;
+    int rc = sqlite3_prepare_v2(d->ptr, enable ? "PRAGMA main.journal_mode=WAL" :
+        "PRAGMA main.journal_mode", -1, &s, NULL);
+    if (rc == SQLITE_OK) {
+        rc = sqlite3_step(s);
+        if (rc == SQLITE_ROW) {
+            const unsigned char *mode = sqlite3_column_text(s, 0);
+            if (!mode) rc = SQLITE_NOMEM;
+            else {
+                *wal = sqlite3_column_bytes(s, 0) == 3 && !memcmp(mode, "wal", 3);
+                rc = sqlite3_step(s);
+                if (rc == SQLITE_DONE) rc = SQLITE_OK;
+            }
+        } else if (rc == SQLITE_DONE) rc = SQLITE_ERROR;
+    }
+    int final = sqlite3_finalize(s);
+    return rc == SQLITE_OK ? final : rc;
+}
+static int wal_fixed(void) {
+    int n = sqlite3_libversion_number();
+    return n >= 3051003 || (n >= 3050007 && n < 3051000) || (n >= 3044006 && n < 3045000);
+}
+static int set_wal(Database *d) {
+    /* Preserve EXTRA; guarantee at least FULL, even with DEFAULT_WAL_SYNCHRONOUS=1. */
+    sqlite3_stmt *s = NULL;
+    d->remaining = d->budget;
+    int rc = sqlite3_prepare_v2(d->ptr, "PRAGMA main.synchronous", -1, &s, NULL);
+    int sync = 2;
+    if (rc == SQLITE_OK) {
+        rc = sqlite3_step(s);
+        if (rc == SQLITE_ROW) {
+            if (sqlite3_column_int(s, 0) > sync) sync = 3;
+            rc = sqlite3_step(s);
+            if (rc == SQLITE_DONE) rc = SQLITE_OK;
+        } else if (rc == SQLITE_DONE) rc = SQLITE_ERROR;
+    }
+    int final = sqlite3_finalize(s);
+    if (rc != SQLITE_OK) return rc;
+    if (final != SQLITE_OK) return final;
+    int wal = 0;
+    rc = journal_mode(d, 1, &wal);
+    if (rc != SQLITE_OK) return rc;
+    if (!wal) return SQLITE_ERROR; /* No silent fallback for in-memory databases. */
+    d->remaining = d->budget;
+    return sqlite3_exec(d->ptr, sync == 3 ? "PRAGMA main.synchronous=EXTRA" :
+        "PRAGMA main.synchronous=FULL", NULL, NULL, NULL);
 }
 int64_t gq_open(gq_input path, int64_t readonly, int64_t busy_ms, int64_t budget, void *token) {
+    return gq_open_config(path, readonly, busy_ms, budget, 0, token);
+}
+int64_t gq_open_config(gq_input path, int64_t readonly, int64_t busy_ms, int64_t budget, int64_t wal, void *token) {
     if (!token) return GQ_INPUT;
     uint64_t zero = 0; memcpy(token, &zero, sizeof zero);
     if (!valid_input(path, 4095) || !path.len || memchr(path.data, 0, (size_t)path.len) ||
         (path.len >= 5 && !memcmp(path.data, "file:", 5)) ||
         (readonly != 0 && readonly != 1) || busy_ms < 0 || busy_ms > 30000 ||
-        budget < 1000 || budget > 100000000) return GQ_INPUT;
+        budget < 1000 || budget > 100000000 || (wal != 0 && wal != 1) || (wal && readonly)) return GQ_INPUT;
+    if (wal && !wal_fixed()) return SQLITE_MISUSE;
     if (sqlite3_threadsafe() == 0 || sqlite3_libversion_number() < 3037000) return SQLITE_MISUSE;
     Registry *r = registry(1);
     if (!r) return SQLITE_NOMEM;
@@ -124,6 +192,13 @@ int64_t gq_open(gq_input path, int64_t readonly, int64_t busy_ms, int64_t budget
     int rc = sqlite3_open_v2(name, &d->ptr, flags, NULL);
     d->budget = budget;
     if (rc == SQLITE_OK) rc = configure(d, (int)busy_ms);
+    if (rc == SQLITE_OK && !wal_fixed()) {
+        int existing_wal = 0;
+        rc = journal_mode(d, 0, &existing_wal);
+        if (rc == SQLITE_OK && existing_wal) rc = SQLITE_MISUSE;
+    }
+    if (rc == SQLITE_OK && wal) rc = set_wal(d);
+    if (rc == SQLITE_OK) rc = sqlite3_set_authorizer(d->ptr, authorize, NULL);
     if (rc == SQLITE_OK) {
         d->token = new_token(i);
         if (!d->token) rc = GQ_LIMIT;
@@ -355,4 +430,105 @@ int64_t gq_status(uint64_t token, int64_t kind, void *out) {
     else return GQ_INPUT;
     memcpy(out, &value, sizeof value);
     return SQLITE_OK;
+}
+
+int64_t gq_blob_open(uint64_t token, gq_input table, gq_input column, int64_t rowid, int64_t writable, void *out) {
+    if (!out) return GQ_INPUT;
+    uint64_t zero = 0; memcpy(out, &zero, sizeof zero);
+    Database *d = database(token);
+    if (!d) return GQ_HANDLE;
+    if (!valid_input(table, 1024) || !table.len || memchr(table.data, 0, (size_t)table.len) ||
+        !valid_input(column, 1024) || !column.len || memchr(column.data, 0, (size_t)column.len) ||
+        (writable != 0 && writable != 1)) return GQ_INPUT;
+    /* Avoid an implicit commit (and possible commit failure) on blob_close. */
+    if (writable && sqlite3_get_autocommit(d->ptr)) return GQ_STATE;
+    Registry *r = registry(0);
+    int i = 0; while (i < BLOBS && r->blob[i].ptr) ++i;
+    if (i == BLOBS) return GQ_LIMIT;
+    Blob *b = &r->blob[i];
+    char t[1025], c[1025];
+    memcpy(t, table.data, (size_t)table.len); t[table.len] = 0;
+    memcpy(c, column.data, (size_t)column.len); c[column.len] = 0;
+    d->remaining = d->budget;
+    int rc = sqlite3_blob_open(d->ptr, "main", t, c, rowid, (int)writable, &b->ptr);
+    if (rc == SQLITE_OK) {
+        b->size = sqlite3_blob_bytes(b->ptr);
+        if (b->size > VALUE_MAX) rc = GQ_LIMIT;
+    }
+    if (rc == SQLITE_OK) {
+        b->token = new_token(DBS + STMTS + i);
+        if (!b->token) rc = GQ_LIMIT;
+    }
+    if (rc != SQLITE_OK) {
+        if (b->ptr) sqlite3_blob_close(b->ptr);
+        memset(b, 0, sizeof(*b));
+        return rc;
+    }
+    b->db = d;
+    memcpy(out, &b->token, sizeof b->token);
+    return SQLITE_OK;
+}
+int64_t gq_blob_close(uint64_t token) {
+    Blob *b = blob(token);
+    if (!b) return GQ_HANDLE;
+    int rc = sqlite3_blob_close(b->ptr);
+    memset(b, 0, sizeof(*b));
+    return rc;
+}
+int64_t gq_blob_size(uint64_t token, void *out) {
+    if (!out) return GQ_INPUT;
+    int64_t size = 0; memcpy(out, &size, sizeof size);
+    Blob *b = blob(token);
+    if (!b) return GQ_HANDLE;
+    /* bytes() alone returns zero for an expired blob; probe to report ABORT. */
+    uint8_t sentinel;
+    b->db->remaining = b->db->budget;
+    int rc = sqlite3_blob_read(b->ptr, &sentinel, 0, 0);
+    if (rc == SQLITE_OK) { size = b->size; memcpy(out, &size, sizeof size); }
+    return rc;
+}
+static int blob_range(Blob *b, int64_t offset, int64_t count) {
+    return offset >= 0 && offset <= b->size && count >= 0 && count <= b->size - offset;
+}
+int64_t gq_blob_read(uint64_t token, int64_t offset, gq_output out) {
+    Blob *b = blob(token);
+    if (!b) return GQ_HANDLE;
+    if (!blob_range(b, offset, out.len) || (out.len && !out.data)) return GQ_INPUT;
+    uint8_t sentinel;
+    b->db->remaining = b->db->budget;
+    return sqlite3_blob_read(b->ptr, out.len ? out.data : &sentinel, (int)out.len, (int)offset);
+}
+int64_t gq_blob_write(uint64_t token, int64_t offset, gq_input in) {
+    Blob *b = blob(token);
+    if (!b) return GQ_HANDLE;
+    if (!blob_range(b, offset, in.len) || (in.len && !in.data)) return GQ_INPUT;
+    b->db->remaining = b->db->budget;
+    return sqlite3_blob_write(b->ptr, in.len ? (const void *)in.data : (const void *)"", (int)in.len, (int)offset);
+}
+int64_t gq_backup(uint64_t source, uint64_t destination, int64_t max_pages) {
+    Database *src = database(source), *dst = database(destination);
+    if (!src || !dst) return GQ_HANDLE;
+    if (src == dst || max_pages < 1 || max_pages > 1048576) return GQ_INPUT;
+    if (!sqlite3_get_autocommit(dst->ptr) || sqlite3_txn_state(src->ptr, "main") == SQLITE_TXN_WRITE)
+        return GQ_STATE;
+    if (sqlite3_db_readonly(dst->ptr, "main") != 0) return SQLITE_READONLY;
+    Registry *r = registry(0);
+    for (int i = 0; i < STMTS; ++i) if (r->stmt[i].ptr && r->stmt[i].db == dst) return GQ_STATE;
+    for (int i = 0; i < BLOBS; ++i) if (r->blob[i].ptr && r->blob[i].db == dst) return GQ_STATE;
+    src->remaining = src->budget; dst->remaining = dst->budget;
+    sqlite3_backup *b = sqlite3_backup_init(dst->ptr, "main", src->ptr, "main");
+    if (!b) {
+        int rc = sqlite3_extended_errcode(dst->ptr);
+        return rc == SQLITE_OK ? SQLITE_ERROR : rc;
+    }
+    /* Do not access the destination connection until finish, even for errors.
+       Charge requested pages: source changes can restart SQLite's progress. */
+    int rc = SQLITE_OK;
+    while (max_pages > 0 && rc == SQLITE_OK) {
+        int pages = max_pages > 64 ? 64 : (int)max_pages;
+        max_pages -= pages;
+        rc = sqlite3_backup_step(b, pages);
+    }
+    int final = sqlite3_backup_finish(b);
+    return rc == SQLITE_DONE ? final : rc == SQLITE_OK ? GQ_LIMIT : rc;
 }

@@ -29,6 +29,8 @@ int main(void) {
     hooks.xMalloc = allocate; hooks.xRealloc = reallocate;
     assert(sqlite3_config(SQLITE_CONFIG_MALLOC, &hooks) == SQLITE_OK);
     assert(sqlite3_config(SQLITE_CONFIG_MEMSTATUS, 1) == SQLITE_OK);
+    /* Disable lookaside so internal BLOB allocations reach the injected allocator. */
+    assert(sqlite3_config(SQLITE_CONFIG_LOOKASIDE, 0, 0) == SQLITE_OK);
     assert(sqlite3_initialize() == SQLITE_OK);
     sqlite3_int64 baseline = sqlite3_memory_used();
     int open_failures = 0, prepare_failures = 0, bind_failures = 0, step_failures = 0;
@@ -80,6 +82,35 @@ int main(void) {
         assert(gq_close(db) == SQLITE_OK);
         assert(sqlite3_memory_used() == baseline);
     }
+    int blob_failures = 0, backup_failures = 0;
+    for (int n = 0; n < 128; ++n) {
+        uint64_t db = open_db(), stmt = 0, blob = 123;
+        assert(gq_prepare(db,text("CREATE TABLE t(x)"),&stmt) == SQLITE_OK);
+        assert(gq_step(stmt) == SQLITE_DONE && gq_finalize(stmt) == SQLITE_OK);
+        assert(gq_prepare(db,text("INSERT INTO t VALUES(zeroblob(4096))"),&stmt) == SQLITE_OK);
+        assert(gq_step(stmt) == SQLITE_DONE && gq_finalize(stmt) == SQLITE_OK);
+        countdown = n;
+        int64_t rc = gq_blob_open(db,text("t"),text("x"),1,0,&blob);
+        countdown = -1;
+        if (rc == SQLITE_OK) assert(blob && gq_blob_close(blob) == SQLITE_OK);
+        else { assert(nomem(rc) && blob == 0); ++blob_failures; }
+        assert(gq_close(db) == SQLITE_OK && sqlite3_memory_used() == baseline);
+    }
+    for (int n = 0; n < 128; ++n) {
+        uint64_t src = open_db(), dst = open_db(), stmt = 0;
+        assert(gq_prepare(src,text("CREATE TABLE t(x)"),&stmt) == SQLITE_OK);
+        assert(gq_step(stmt) == SQLITE_DONE && gq_finalize(stmt) == SQLITE_OK);
+        assert(gq_prepare(src,text("INSERT INTO t VALUES(zeroblob(16384))"),&stmt) == SQLITE_OK);
+        assert(gq_step(stmt) == SQLITE_DONE && gq_finalize(stmt) == SQLITE_OK);
+        countdown = n;
+        int64_t rc = gq_backup(src,dst,100);
+        countdown = -1;
+        if (rc != SQLITE_OK) { assert(nomem(rc)); ++backup_failures; }
+        assert(gq_close(src) == SQLITE_OK && gq_close(dst) == SQLITE_OK);
+        assert(sqlite3_memory_used() == baseline);
+    }
+    assert(blob_failures > 0 && backup_failures > 0);
+    printf("sqlite storage allocation failures: blob=%d backup=%d\n",blob_failures,backup_failures);
     /* Force a stored UTF-16 TEXT -> UTF-8 conversion in the byte getter. */
     char path[] = "/tmp/goose-sqlite-encoding-XXXXXX";
     int fd = mkstemp(path); assert(fd >= 0); assert(close(fd) == 0);

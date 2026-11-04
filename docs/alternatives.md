@@ -152,8 +152,7 @@ The checked metadata/status slice below is now implemented and regression-tested
 The same interface continues to support transactions and savepoints through
 checked SQL. This closes practical convenience gaps in the other Goose bindings
 and Python/Rust/C++ wrappers without adding unsafe callback blocks or raw pointers.
-It does not establish complete feature parity: WAL configuration, online backup,
-incremental BLOB handles, UDFs/extensions, Rust/C++ RAII, bundled deployment and
+It does not establish complete feature parity: UDFs/extensions, Rust/C++ RAII, bundled deployment and
 broader platform coverage remain differences. In particular, the comparison does
 not justify weakening the permanent authorizer or pretending thread-exit cleanup
 is a destructor guard.
@@ -325,3 +324,20 @@ CPU model/governor/affinity/load, SQLite loaded-object hash/source ID/compile
 options, database effective policies, fixture sizes, checksums, timestamps,
 wall/CPU time and any RSS measurement method. This is the evidence needed for
 independent review and reproduction, not a CI speed threshold.
+
+## Storage parity follow-up
+
+The next checked subset adds open-time opt-in WAL, bounded online main-schema
+backup and incremental BLOB handles. These cover capabilities present in Python
+sqlite3, rusqlite's optional backup/blob features and SQLite's C API. The production
+[contract](api.md) describes narrower limits: recognized WAL-fixed engines only,
+FULL-or-EXTRA synchronization, explicit transactions for BLOB writes, 32 thread-local
+BLOB slots, owned byte copies, and a requested-page budget for backup. SQL PRAGMA
+access, callbacks/extensions and automatic resource destructors remain absent.
+This is deliberate bounded parity, not complete equivalence or a portability claim.
+
+Incremental BLOB access avoids copying an entire value when only a range is needed.
+The [four-path comparison](../bench/storage/README.md) measures whole-column and
+range copies independently through Goose and the raw C API on one shared engine.
+Any improvement is an API/amount-of-copying benefit available to alternatives too,
+not a claim that the Goose binding makes SQLite itself faster.
