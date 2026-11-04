@@ -308,3 +308,44 @@ int64_t gq_message(uint64_t token, gq_output out) {
     if (n) memcpy(out.data, text, n);
     return (int64_t)n;
 }
+
+int64_t gq_parameter_count(uint64_t token) {
+    Statement *s = statement(token);
+    return s ? sqlite3_bind_parameter_count(s->ptr) : GQ_HANDLE;
+}
+int64_t gq_parameter_index(uint64_t token, gq_input name) {
+    Statement *s = statement(token);
+    if (!s) return GQ_HANDLE;
+    if (!valid_input(name, 1024) || !name.len || memchr(name.data, 0, (size_t)name.len) ||
+        (name.data[0] != ':' && name.data[0] != '@' && name.data[0] != '$' && name.data[0] != '?')) return GQ_INPUT;
+    char key[1025]; memcpy(key, name.data, (size_t)name.len); key[name.len] = 0;
+    return sqlite3_bind_parameter_index(s->ptr, key);
+}
+int64_t gq_name(uint64_t token, int64_t col, gq_output out, void *length) {
+    if (!length) return GQ_INPUT;
+    int64_t n = 0; memcpy(length, &n, sizeof n);
+    Statement *s = statement(token);
+    if (!s) return GQ_HANDLE;
+    if (col < 0 || col >= sqlite3_column_count(s->ptr) || out.len < 0 ||
+        out.len > SQL_MAX || (out.len && !out.data)) return GQ_INPUT;
+    const char *name = sqlite3_column_name(s->ptr, (int)col);
+    if (!name) return SQLITE_NOMEM;
+    while (n < SQL_MAX && name[n]) ++n;
+    if (n == SQL_MAX && name[n]) return GQ_LIMIT;
+    memcpy(length, &n, sizeof n);
+    if (n > out.len) return GQ_LIMIT;
+    if (n) memcpy(out.data, name, (size_t)n);
+    return SQLITE_OK;
+}
+int64_t gq_status(uint64_t token, int64_t kind, void *out) {
+    if (!out) return GQ_INPUT;
+    int64_t value = 0; memcpy(out, &value, sizeof value);
+    Database *d = database(token);
+    if (!d) return GQ_HANDLE;
+    if (kind == 0) value = sqlite3_changes64(d->ptr);
+    else if (kind == 1) value = sqlite3_last_insert_rowid(d->ptr);
+    else if (kind == 2) value = sqlite3_get_autocommit(d->ptr);
+    else return GQ_INPUT;
+    memcpy(out, &value, sizeof value);
+    return SQLITE_OK;
+}

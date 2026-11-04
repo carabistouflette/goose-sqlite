@@ -28,6 +28,12 @@ static void *foreign(void *p) {
     uint64_t *tokens = p;
     assert(gq_close(tokens[0]) == GQ_HANDLE);
     assert(gq_step(tokens[1]) == GQ_HANDLE);
+    assert(gq_parameter_count(tokens[1]) == GQ_HANDLE);
+    assert(gq_parameter_index(tokens[1], text(":x")) == GQ_HANDLE);
+    int64_t value = 17;
+    assert(gq_status(tokens[0], 0, &value) == GQ_HANDLE && value == 0);
+    uint8_t bytes[8];
+    assert(gq_name(tokens[1], 0, (gq_output){bytes, 8}, &value) == GQ_HANDLE && value == 0);
     uint64_t d = open_db(":memory:", 0, 0);
     uint64_t s = prepare(d, "SELECT 7");
     assert(gq_step(s) == SQLITE_ROW);
@@ -57,6 +63,22 @@ static void *abandon_explicit_returning(void *p) {
 int main(void) {
     uint64_t d = open_db(":memory:", 0, 0), s = prepare(d, "SELECT ?1, ?2, ?3, ?4");
     uint8_t unaligned[17] = {0};
+    assert(gq_parameter_count(s) == 4);
+    assert(gq_parameter_index(s, text("?1")) == 1);
+    assert(gq_parameter_count(d) == GQ_HANDLE);
+    uint8_t guards[] = {17,18,19,20,21,22};
+    assert(gq_name(s, 0, (gq_output){guards+1, 1}, unaligned+1) == GQ_LIMIT);
+    int64_t name_size; memcpy(&name_size, unaligned+1, 8); assert(name_size == 2);
+    assert(guards[0] == 17 && guards[1] == 18 && guards[5] == 22);
+    assert(gq_name(s, 0, (gq_output){guards+1, 2}, unaligned+1) == SQLITE_OK);
+    assert(guards[0] == 17 && guards[1] == '?' && guards[2] == '1' && guards[3] == 20);
+    assert(gq_name(s, 9, (gq_output){guards, 6}, unaligned+1) == GQ_INPUT);
+    memcpy(&name_size, unaligned+1, 8); assert(name_size == 0);
+    assert(gq_status(d, 2, unaligned+1) == SQLITE_OK);
+    memcpy(&name_size, unaligned+1, 8); assert(name_size == 1);
+    assert(gq_status(s, 0, unaligned+1) == GQ_HANDLE);
+    memcpy(&name_size, unaligned+1, 8); assert(name_size == 0);
+
     assert(gq_bind(s, 1, SQLITE_INTEGER, INT64_MIN, 0, text("")) == SQLITE_OK);
     assert(gq_bind(s, 2, SQLITE_FLOAT, 0, 1.25, text("")) == SQLITE_OK);
     assert(gq_bind(s, 3, SQLITE_TEXT, 0, 0, (gq_input){NULL, 0}) == SQLITE_OK);

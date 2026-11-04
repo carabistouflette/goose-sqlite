@@ -106,3 +106,32 @@ fn execute(db: Database, sql: const u8[:]) -> i64 {
     if stepped != DONE { return stepped; }
     return finished;
 }
+
+extern fn native_parameter_count(token: u64) -> i64 = "gq_parameter_count";
+extern fn native_parameter_index(token: u64, name: const u8[:]) -> i64 = "gq_parameter_index";
+extern fn native_name(token: u64, column: i64, out: u8[:], length: i64&) -> i64 = "gq_name";
+extern fn native_status(token: u64, kind: i64, value: i64&) -> i64 = "gq_status";
+fn parameter_count(stmt: Statement) -> i64 { return native_parameter_count(stmt.token); }
+fn parameter_index(stmt: Statement, name: const u8[:]) -> i64 { return native_parameter_index(stmt.token, name); }
+fn column_name(stmt: Statement, column: i64, out: u8[>..]&) -> i64 {
+    var length: i64 = 0;
+    out.resize(256, 0);
+    var code = native_name(stmt.token, column, out[..], length);
+    if code == LIMIT && length > 256 && length <= 65536 {
+        out.resize(length, 0);
+        code = native_name(stmt.token, column, out[..], length);
+    }
+    if code != OK { out.clear(); return code; }
+    if length < 0 || length > out.len { out.clear(); return LIMIT; }
+    out.resize(length);
+    return OK;
+}
+fn changes(db: Database) -> i64, i64 {
+    var value: i64 = 0; let code = native_status(db.token, 0, value); return value, code;
+}
+fn last_insert_rowid(db: Database) -> i64, i64 {
+    var value: i64 = 0; let code = native_status(db.token, 1, value); return value, code;
+}
+fn autocommit(db: Database) -> bool, i64 {
+    var value: i64 = 0; let code = native_status(db.token, 2, value); return value != 0, code;
+}

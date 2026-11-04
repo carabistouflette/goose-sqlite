@@ -126,3 +126,37 @@ SQL cannot override these initial policies. Virtual tables and VACUUM are
 unsupported; some SQLite features internally use denied operations. Files, SQL
 and databases are not isolated from other trusted native libraries in the same
 process. See SECURITY.md for trust assumptions and testing scope.
+
+## Named parameters, metadata and connection status
+
+`parameter_count(stmt)` reports SQLite's largest parameter index, in any live
+statement state. Sparse `?5` reserves five slots, and repeated `:name` shares an
+index. `parameter_index(stmt,name)` returns that one-based index, zero if absent,
+or a negative wrapper error. Names must include their exact `:`, `@`, `$` or `?`
+prefix, contain no NUL and be 1..1024 bytes; spelling/case are not normalized.
+Bind the returned positive index through the existing typed bind functions.
+
+`column_name(stmt,column,out)` copies a result name in any live statement state,
+including before execution and after reset/DONE. Columns are zero-based; invalid
+indices/handles clear output. Names are bounded to 65536 bytes, may be empty or
+duplicate, and survive statement cleanup after copying. Use SQL aliases for
+stable names; SQLite can rename generated expressions or reprepare statements.
+Allocation failures return SQLITE_NOMEM, never a name-length disguised as status.
+
+`changes(db) -> count,code` uses SQLite's 64-bit direct-DML counter, excluding
+auxiliary trigger/foreign-key effects. It is not a committed-row receipt and can
+retain a previous DML count across unrelated statements. `last_insert_rowid(db)
+-> id,code` returns connection state: IDs may be negative, WITHOUT ROWID inserts
+do not update it, and rollback does not restore its previous value.
+`autocommit(db) -> enabled,code` queries the engine's actual autocommit mode.
+Check it after errors: ordinary constraint failures can leave an explicit
+transaction active, whereas INSERT OR ROLLBACK can end it. Scalar outputs are
+zero/false on invalid handles; always check the accompanying status.
+
+Explicit transactions and savepoints need no additional execution interface:
+`execute(db,"BEGIN IMMEDIATE")`, `execute(db,"SAVEPOINT fixed_name")`,
+`execute(db,"ROLLBACK TO fixed_name")`, `execute(db,"RELEASE fixed_name")` and
+`execute(db,"COMMIT")` all report errors. ROLLBACK TO leaves the savepoint active;
+RELEASE of an inner savepoint is not an independent commit. Use fixed/trusted
+names, preserve the original operation or COMMIT error, and check recovery errors
+separately. These operations are not destructor/RAII guards.

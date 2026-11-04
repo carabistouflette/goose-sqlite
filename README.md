@@ -82,3 +82,9 @@ copies. Foreign-thread/stale/default handles return `INVALID_HANDLE`.
 [Contributing](CONTRIBUTING.md) ·
 [Benchmarks](bench/README.md) · [Validation](docs/validation.md) ·
 [Third-party notices](THIRD_PARTY_NOTICES.md)
+
+Named parameters and metadata are available through `parameter_count`,
+`parameter_index` and copied `column_name`. `changes`, `last_insert_rowid` and
+`autocommit` expose checked connection status. See [alternative features](docs/alternatives.md)
+and the [matched-engine benchmark methodology](bench/alternatives/README.md) for
+scope, remaining gaps and performance comparison rules.

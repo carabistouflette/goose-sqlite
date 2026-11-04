@@ -13,15 +13,19 @@ check:
 	python3 scripts/native-manifest.py --check
 	"$(GOOSE)" format --check sqlite.goose examples tests bench
 	"$(GOOSE)" check tests/api.goose
+	"$(GOOSE)" check tests/metadata.goose
 	"$(GOOSE)" check tests/files.goose
 	"$(GOOSE)" check examples/items.goose
 	"$(GOOSE)" check bench/bench.goose
 test:
 	python3 scripts/native-manifest.py --check
 	"$(GOOSE)" run tests/api.goose
+	"$(GOOSE)" run tests/metadata.goose
 	mkdir -p .build
 	"$(GOOSE)" build tests/api.goose -o .build/api
 	./.build/api
+	"$(GOOSE)" build tests/metadata.goose -o .build/metadata
+	./.build/metadata
 	python3 scripts/test-files.py "$(GOOSE)"
 	"$(GOOSE)" run examples/items.goose
 	$(MAKE) test-import
@@ -40,3 +44,7 @@ fuzz-native:
 	UBSAN_OPTIONS=halt_on_error=1 .build/fuzz/goose_sqlite_fuzz .build/corpus -artifact_prefix=.build/artifacts/ -dict=tests/fuzz.dict -seed=219 -max_len=4096 -runs=$(FUZZ_RUNS)
 bench:
 	python3 bench/measure.py --goose "$(GOOSE)" --iterations $(BENCH_ITERATIONS) --output .build/bench-results
+
+.PHONY: bench-alternatives
+bench-alternatives:
+	python3 bench/alternatives/measure.py --goose "$(GOOSE)" --iterations $(BENCH_ITERATIONS) --output .build/alternative-results
