@@ -1,6 +1,6 @@
 # Interface
 
-All functions are in namespace `sqlite`. Interface is experimental. Connections
+All functions are in namespace `sqlite`. Interface is experimental. Connections,
 statements and BLOB handles are thread-affine, synchronous resources. Storage is owned by the
 application or SQLite; no SQLite pointer is exposed.
 
@@ -193,8 +193,9 @@ manual checkpoints, journal-mode switching on a live handle, or weaker durabilit
 in the main schema. Table and column names are exact SQLite API strings, not SQL
 fragments: 1..1024 bytes, no NUL. Rowid is signed. No pointer escapes. SQLite allows
 TEXT or BLOB storage in supported ordinary rowid tables; it rejects NULL/scalars,
-missing rows, views, virtual/WITHOUT ROWID tables and tables with generated
-columns. Writable indexed/primary/unique/foreign-key child columns, and some
+missing rows, views and virtual/WITHOUT ROWID tables. Tables with generated columns
+are also rejected on newer SQLite versions; some older engines permit access to
+ordinary columns in those tables. Writable indexed/primary/unique/foreign-key child columns, and some
 expression-index tables, are rejected by the engine. Failed open has a zero token.
 Values larger than 1 MiB are rejected and their partial handle is closed.
 

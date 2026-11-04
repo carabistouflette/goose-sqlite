@@ -40,3 +40,11 @@ configurations and CI evidence are recorded in [validation.md](validation.md).
 Independent connections can execute on separate OS threads. Handles cannot move
 between threads; each thread opens its own connection. No cross-process locking
 or transaction guarantees beyond SQLite's own engine/filesystem behavior are added.
+
+Optional WAL requires recognized SQLite versions containing the WAL-reset fix:
+3.51.3+, 3.50.7..3.50.x, or 3.44.6..3.44.x. Other versions, including unrecognized
+distributor backports, reject requested/detected WAL at open. Rollback-journal
+operations remain available on 3.37+. All processes participating in WAL access
+must use patched engines; open-time inspection cannot control external changes.
+WAL needs one host and a suitable local filesystem, sidecars and permissions.
+See [the complete storage contract](api.md) for limits and engine restrictions.
