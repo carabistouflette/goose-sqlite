@@ -63,6 +63,7 @@ def main():
     if args.cpu is not None: os.sched_setaffinity(0, {args.cpu})
     paths = [p for p in (ROOT / 'bench/alternatives').rglob('*') if p.is_file() and 'target' not in p.parts and '__pycache__' not in p.parts]
     paths += [ROOT / p for p in ('sqlite.goose', 'sqlite.build', 'CMakeLists.txt', 'native/sqlite.c', 'native/sqlite.h', 'GOOSE_REVISION')]
+    parent_started_utc = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())
     source_commit = output(['git', 'rev-parse', 'HEAD'])
     source_dirty = bool(output(['git', 'status', '--porcelain']))
     source_hashes = {str(p.relative_to(ROOT)): digest(p) for p in paths}
@@ -164,6 +165,7 @@ def main():
             rng.shuffle(order)
             for position, name in enumerate(order):
                 before = resource.getrusage(resource.RUSAGE_CHILDREN)
+                whole_start_utc_ns = time.time_ns()
                 start = time.perf_counter_ns()
                 try:
                     text, peak_rss_kib = measured([*runners[name], str(n), mode, str(size)], build)
@@ -172,12 +174,13 @@ def main():
                                                       iterations=n, run=repeat, returncode=error.returncode)) + '\n')
                     raise
                 whole = time.perf_counter_ns() - start
+                whole_end_utc_ns = time.time_ns()
                 after = resource.getrusage(resource.RUSAGE_CHILDREN)
                 elapsed, checksum = map(int, text.split())
                 if elapsed <= 0 or checksum != expected: raise RuntimeError(f'Bad result: {name}: {text}')
                 samples.append(dict(implementation=name, fixture=mode, bytes=size, iterations=n, operations=operations, peak_rss_kib=peak_rss_kib,
                                     run=repeat, order=position, loop_wall_ns=elapsed, checksum=checksum,
-                                    whole_wall_ns=whole, whole_cpu_ns=round((after.ru_utime + after.ru_stime - before.ru_utime - before.ru_stime) * 1e9)))
+                                    whole_wall_ns=whole, whole_start_utc_ns=whole_start_utc_ns, whole_end_utc_ns=whole_end_utc_ns, whole_cpu_ns=round((after.ru_utime + after.ru_stime - before.ru_utime - before.ru_stime) * 1e9)))
                 with journal.open('a') as stream:
                     stream.write(json.dumps(samples[-1]) + '\n')
     if output(['git','rev-parse','HEAD']) != source_commit or any(digest(ROOT / p) != h for p,h in source_hashes.items()):
@@ -187,7 +190,7 @@ def main():
     if {name: engine(cmd[0]) for name,cmd in runners.items() if name != 'python'} != {name: lib for name,lib in libraries.items() if name != 'python'} or engine(_sqlite3.__file__) != libraries['python']:
         raise RuntimeError('SQLite engine changed during the series')
 
-    metadata = dict(timestamp_utc=time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()), source_commit=source_commit, source_dirty=source_dirty,
+    metadata = dict(parent_started_utc=parent_started_utc, timestamp_utc=time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()), source_commit=source_commit, source_dirty=source_dirty,
                     goose_revision=(ROOT / 'GOOSE_REVISION').read_text().strip(), goose_sha256=digest(goose),
                     wrapper_versions={'SQLiteCpp': {'version': '3.4.0', 'revision': CPP_REV}, 'rusqlite': '0.41.1', 'Python': sys.version},
                     rss_measurement=dict(tool='GNU time %M, benchmark-child whole-lifetime peak KiB on Linux; includes startup/setup/verification and small native pre-exec launch overhead; no Python-parent RSS floor, no incremental-heap claim', version=output(['/usr/bin/time','--version']).splitlines()[0], sha256=digest('/usr/bin/time')),
