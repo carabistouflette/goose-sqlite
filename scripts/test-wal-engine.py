@@ -61,6 +61,7 @@ def main():
     if str(lib) not in linkage: raise RuntimeError('Test did not load pinned engine')
     for name in ('goose_sqlite_test','goose_sqlite_fault_test','goose_sqlite_storage_test'):
         run([native / name],env)
+    run(['python3','scripts/test-recovery.py','--binary',native / 'goose_sqlite_recovery_test','--output',build / 'recovery.json'],env)
     evidence = dict(url=URL, archive_sha256=ARCHIVE_SHA256, sqlite3_c_sha3_256=SOURCE_SHA3,
                     engine_sha256=hashlib.sha256(engine.read_bytes()).hexdigest(),
                     compiler=run([args.cc,'--version'],capture=True).stdout.splitlines()[0],

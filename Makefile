@@ -43,6 +43,7 @@ test-native:
 	UBSAN_OPTIONS=halt_on_error=1 .build/native-$(notdir $(CC))/goose_sqlite_test
 	UBSAN_OPTIONS=halt_on_error=1 .build/native-$(notdir $(CC))/goose_sqlite_fault_test
 	UBSAN_OPTIONS=halt_on_error=1 .build/native-$(notdir $(CC))/goose_sqlite_storage_test
+	python3 scripts/test-recovery.py --binary .build/native-$(notdir $(CC))/goose_sqlite_recovery_test --output .build/recovery-$(notdir $(CC)).json
 fuzz-native:
 	cmake -S . -B .build/fuzz -DCMAKE_C_COMPILER="$(FUZZ_CC)" -DCMAKE_BUILD_TYPE=Debug -DGOOSE_SQLITE_FUZZ=ON
 	cmake --build .build/fuzz --parallel 2
