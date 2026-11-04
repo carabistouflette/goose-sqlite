@@ -12,7 +12,9 @@
 /* Test-only, single-threaded forwarding VFS. No production injection hooks. */
 typedef struct { sqlite3_file file; sqlite3_file *real; sqlite3_io_methods methods; } File;
 static sqlite3_vfs *base, shim;
-static int armed, cut, seen, fired, sticky, sync_fault, full_fault, crash_fault;
+static int armed, cut, seen, fired, sticky, full_fault, crash_fault;
+enum { WRITE, SYNC, READ, TRUNCATE, DELETE, SHM_MAP, SHM_LOCK };
+static int target;
 static int phase, first_fault_phase;
 static int fault(void) {
     if (!armed) return 0;
@@ -29,16 +31,31 @@ static int close_file(sqlite3_file *f) {
     sqlite3_free(p->real); p->real=NULL; f->pMethods=NULL; return rc;
 }
 static int write_file(sqlite3_file *f,const void *p,int n,sqlite3_int64 off) {
-    if (!sync_fault && fault()) return full_fault ? SQLITE_FULL : SQLITE_IOERR_WRITE;
+    if (target==WRITE && fault()) return full_fault ? SQLITE_FULL : SQLITE_IOERR_WRITE;
     File *x=file(f); return x->real->pMethods->xWrite(x->real,p,n,off);
 }
 static int sync_file(sqlite3_file *f,int flags) {
-    if (sync_fault && fault()) return SQLITE_IOERR_FSYNC;
+    if (target==SYNC && fault()) return SQLITE_IOERR_FSYNC;
     File *x=file(f); return x->real->pMethods->xSync(x->real,flags);
 }
+static int read_file(sqlite3_file *f,void *p,int n,sqlite3_int64 off) {
+    if (target==READ && fault()) { memset(p,0,(size_t)n); return SQLITE_IOERR_READ; }
+    File *x=file(f); return x->real->pMethods->xRead(x->real,p,n,off);
+}
+static int truncate_file(sqlite3_file *f,sqlite3_int64 n) {
+    if (target==TRUNCATE && fault()) return SQLITE_IOERR_TRUNCATE;
+    File *x=file(f); return x->real->pMethods->xTruncate(x->real,n);
+}
+static int map_file(sqlite3_file *f,int i,int n,int w,void volatile **p) {
+    if (target==SHM_MAP && fault()) { *p=NULL; return SQLITE_IOERR_SHMMAP; }
+    File *x=file(f); return x->real->pMethods->xShmMap(x->real,i,n,w,p);
+}
+static int shm_lock(sqlite3_file *f,int i,int n,int flags) {
+    /* Leave releases functional so an injected acquisition error cannot leak locks. */
+    if (target==SHM_LOCK && (flags&SQLITE_SHM_LOCK) && fault()) return SQLITE_IOERR_SHMLOCK;
+    File *x=file(f); return x->real->pMethods->xShmLock(x->real,i,n,flags);
+}
 #define FORWARD(name, member, params, args) static int name params { File *x=file(f); return x->real->pMethods->member args; }
-FORWARD(read_file,xRead,(sqlite3_file *f,void *p,int n,sqlite3_int64 off),(x->real,p,n,off))
-FORWARD(truncate_file,xTruncate,(sqlite3_file *f,sqlite3_int64 n),(x->real,n))
 FORWARD(size_file,xFileSize,(sqlite3_file *f,sqlite3_int64 *n),(x->real,n))
 FORWARD(lock_file,xLock,(sqlite3_file *f,int n),(x->real,n))
 FORWARD(unlock_file,xUnlock,(sqlite3_file *f,int n),(x->real,n))
@@ -46,8 +63,6 @@ FORWARD(reserved_file,xCheckReservedLock,(sqlite3_file *f,int *n),(x->real,n))
 FORWARD(control_file,xFileControl,(sqlite3_file *f,int op,void *p),(x->real,op,p))
 FORWARD(sector_file,xSectorSize,(sqlite3_file *f),(x->real))
 FORWARD(device_file,xDeviceCharacteristics,(sqlite3_file *f),(x->real))
-FORWARD(map_file,xShmMap,(sqlite3_file *f,int i,int n,int w,void volatile **p),(x->real,i,n,w,p))
-FORWARD(shm_lock,xShmLock,(sqlite3_file *f,int i,int n,int flags),(x->real,i,n,flags))
 FORWARD(unmap_file,xShmUnmap,(sqlite3_file *f,int del),(x->real,del))
 FORWARD(fetch_file,xFetch,(sqlite3_file *f,sqlite3_int64 off,int n,void **p),(x->real,off,n,p))
 FORWARD(unfetch_file,xUnfetch,(sqlite3_file *f,sqlite3_int64 off,void *p),(x->real,off,p))
@@ -74,7 +89,7 @@ static int open_file(sqlite3_vfs *v,const char *name,sqlite3_file *out,int flags
     out->pMethods=&p->methods; return SQLITE_OK;
 }
 /* Every VFS callback receives the original parent pointer. */
-static int delete_file(sqlite3_vfs *v,const char *p,int sync) { (void)v; return base->xDelete(base,p,sync); }
+static int delete_file(sqlite3_vfs *v,const char *p,int sync) { (void)v; if (target==DELETE && fault()) return SQLITE_IOERR_DELETE; return base->xDelete(base,p,sync); }
 static int access_file(sqlite3_vfs *v,const char *p,int flags,int *out) { (void)v; return base->xAccess(base,p,flags,out); }
 static int pathname(sqlite3_vfs *v,const char *p,int n,char *out) { (void)v; return base->xFullPathname(base,p,n,out); }
 static void *dlopen_vfs(sqlite3_vfs *v,const char *p) { (void)v; return base->xDlOpen(base,p); }
@@ -102,9 +117,9 @@ static int64_t exec(uint64_t d,const char *sql) {
     rc=gq_step(s); int64_t final=gq_finalize(s); return rc==SQLITE_DONE ? final : rc;
 }
 static int cache(sqlite3 *db,char **error,const sqlite3_api_routines *api) {
-    (void)error; (void)api; return sqlite3_exec(db,"PRAGMA cache_size=8",NULL,NULL,NULL);
+    (void)error; (void)api; return sqlite3_exec(db,"PRAGMA cache_size=8; PRAGMA mmap_size=0",NULL,NULL,NULL);
 }
-static void fixture(const char *path,int epoch) {
+static void fixture(const char *path,int epoch,int padding) {
     sqlite3 *db=NULL; assert(sqlite3_open(path,&db)==SQLITE_OK);
     assert(sqlite3_exec(db,"PRAGMA page_size=4096; CREATE TABLE t(id INTEGER PRIMARY KEY,epoch,data); BEGIN",NULL,NULL,NULL)==SQLITE_OK);
     sqlite3_stmt *s=NULL; assert(sqlite3_prepare_v2(db,"INSERT INTO t VALUES(?1,?2,?3)",-1,&s,NULL)==SQLITE_OK);
@@ -115,9 +130,10 @@ static void fixture(const char *path,int epoch) {
         assert(sqlite3_step(s)==SQLITE_DONE && sqlite3_reset(s)==SQLITE_OK);
     }
     assert(sqlite3_finalize(s)==SQLITE_OK && sqlite3_exec(db,"COMMIT",NULL,NULL,NULL)==SQLITE_OK);
+    if (padding) assert(sqlite3_exec(db,"CREATE TABLE padding(data); INSERT INTO padding VALUES(zeroblob(65536))",NULL,NULL,NULL)==SQLITE_OK);
     assert(sqlite3_close(db)==SQLITE_OK);
 }
-static int verify(const char *path) {
+static int verify(const char *path,int backup_dest) {
     sqlite3 *db=NULL; assert(sqlite3_open_v2(path,&db,SQLITE_OPEN_READWRITE,NULL)==SQLITE_OK);
     sqlite3_stmt *s=NULL; assert(sqlite3_prepare_v2(db,"PRAGMA integrity_check",-1,&s,NULL)==SQLITE_OK);
     assert(sqlite3_step(s)==SQLITE_ROW && !strcmp((const char *)sqlite3_column_text(s,0),"ok"));
@@ -136,6 +152,18 @@ static int verify(const char *path) {
         for (int j=0;j<32768;++j) assert(p[j]==(epoch ? 'b' : 0));
     }
     assert(sqlite3_step(s)==SQLITE_DONE && sqlite3_finalize(s)==SQLITE_OK);
+    /* A larger old backup destination forces truncation. Its extra table must be
+       wholly present before replacement, wholly absent after replacement. */
+    assert(sqlite3_prepare_v2(db,"SELECT count(*) FROM sqlite_schema WHERE name='padding'",-1,&s,NULL)==SQLITE_OK);
+    assert(sqlite3_step(s)==SQLITE_ROW && sqlite3_column_int(s,0)==(backup_dest && !epoch));
+    assert(sqlite3_step(s)==SQLITE_DONE && sqlite3_finalize(s)==SQLITE_OK);
+    if (backup_dest && !epoch) {
+        assert(sqlite3_prepare_v2(db,"SELECT data FROM padding",-1,&s,NULL)==SQLITE_OK);
+        assert(sqlite3_step(s)==SQLITE_ROW && sqlite3_column_type(s,0)==SQLITE_BLOB && sqlite3_column_bytes(s,0)==65536);
+        const uint8_t *p=sqlite3_column_blob(s,0); assert(p);
+        for (int i=0;i<65536;++i) assert(p[i]==0);
+        assert(sqlite3_step(s)==SQLITE_DONE && sqlite3_finalize(s)==SQLITE_OK);
+    }
     assert(sqlite3_close(db)==SQLITE_OK); return epoch;
 }
 int main(int argc,char **argv) {
@@ -144,24 +172,29 @@ int main(int argc,char **argv) {
     }
     assert(argc==8);
     const char *scenario=argv[2], *mode=argv[4]; int wal=atoi(argv[3]);
+    int backup=!strcmp(scenario,"backup");
     cut=atoi(argv[5]); sticky=atoi(argv[6]); int expected=atoi(argv[7]);
     assert(cut>=0 && cut<=10000 && (sticky==0 || sticky==1));
     char dest[4096],src[4096];
     int n=snprintf(dest,sizeof dest,"%s/dest.db",argv[1]); assert(n>0 && n<(int)sizeof dest);
     n=snprintf(src,sizeof src,"%s/src.db",argv[1]); assert(n>0 && n<(int)sizeof src);
     if (!strcmp(mode,"verify")) {
-        int epoch=verify(dest); assert(expected<0 || epoch==expected);
-        if (!strcmp(scenario,"backup")) assert(verify(src)==1);
+        int epoch=verify(dest,backup); assert(expected<0 || epoch==expected);
+        if (!strcmp(scenario,"backup")) assert(verify(src,0)==1);
         printf("{\"epoch\":%d}\n",epoch); return 0;
     }
-    fixture(dest,0); if (!strcmp(scenario,"backup")) fixture(src,1);
+    fixture(dest,0,backup); if (backup) fixture(src,1,0);
     install(); assert(sqlite3_auto_extension((void (*)(void))cache)==SQLITE_OK);
     uint64_t d=0,source=0;
     int64_t rc=gq_open_config(text(dest),0,0,1000000,wal,&d);
     if (wal && rc==SQLITE_MISUSE) { puts("{\"skipped\":true}"); return 0; }
-    assert(rc==SQLITE_OK && d); sqlite3_reset_auto_extension();
+    assert(rc==SQLITE_OK && d);
     if (!strcmp(scenario,"backup")) assert(gq_open(text(src),0,0,1000000,&source)==SQLITE_OK);
-    sync_fault=strstr(mode,"sync")!=NULL; full_fault=!strcmp(mode,"full");
+    sqlite3_reset_auto_extension();
+    full_fault=!strcmp(mode,"full");
+    target=strstr(mode,"sync") ? SYNC : !strcmp(mode,"read") ? READ :
+           !strcmp(mode,"truncate") ? TRUNCATE : !strcmp(mode,"delete") ? DELETE :
+           !strcmp(mode,"shm-map") ? SHM_MAP : !strcmp(mode,"shm-lock") ? SHM_LOCK : WRITE;
     crash_fault=strncmp(mode,"crash-",6)==0;
     armed=strcmp(mode,"crash-after-ack")!=0; if (!cut) cut=10000;
     phase=4;
@@ -203,13 +236,13 @@ int main(int argc,char **argv) {
     if (source) assert(gq_close(source)==SQLITE_OK);
     assert(gq_close(d)==SQLITE_OK && gq_close(d)==GQ_HANDLE);
     assert(sqlite3_vfs_register(base,1)==SQLITE_OK && sqlite3_vfs_unregister(&shim)==SQLITE_OK);
-    int epoch=verify(dest); if (rc==SQLITE_OK) assert(epoch==1);
-    if (!strcmp(scenario,"backup")) assert(verify(src)==1);
+    int epoch=verify(dest,backup); if (rc==SQLITE_OK) assert(epoch==1);
+    if (!strcmp(scenario,"backup")) assert(verify(src,0)==1);
     /* Verify recovered state before a fresh checked transaction can change it. */
     assert(gq_open_config(text(dest),0,0,1000000,wal,&d)==SQLITE_OK);
     assert(exec(d,"BEGIN IMMEDIATE")==SQLITE_OK);
     assert(exec(d,"UPDATE t SET epoch=epoch")==SQLITE_OK && exec(d,"COMMIT")==SQLITE_OK);
-    assert(gq_close(d)==SQLITE_OK && verify(dest)==epoch);
+    assert(gq_close(d)==SQLITE_OK && verify(dest,backup)==epoch);
     printf("{\"skipped\":false,\"events\":%d,\"fired\":%d,\"code\":%lld,\"epoch\":%d,\"fault_phase\":%d}\n",seen,fired,(long long)rc,epoch,first_fault_phase);
     assert(sqlite3_shutdown()==SQLITE_OK && sqlite3_memory_used()==0);
     return 0;
