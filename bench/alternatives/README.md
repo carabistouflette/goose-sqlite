@@ -80,3 +80,49 @@ compilation, overriding the original manifest. Their raw lto=false metadata was
 incorrect. The published results include an explicit erratum rather than silently
 rewriting those records. The corrected harness enforces the observed profile for
 future comparisons. See the results README before interpreting any raw record.
+
+## Extended workload and memory series
+
+The maintained harness now includes three additional fixtures (ten total):
+
+- `scan`: 1024 fixed rows per complete pass, ordered by integer primary key, with
+  ID and owned 128-byte BLOB copied/verified for every row. Requested iterations
+  are divided by 1024 (minimum one pass); `operations` records actual returned rows.
+- `lookup`: a reused primary-key lookup for `(iteration*17)%1024`, verifying the
+  returned ID and all owned 128-byte BLOB bytes, then consuming DONE/reset.
+- `batch`: INSERT with integer primary key, a secondary group index and 128-byte
+  BLOB bound/copied each time, inside one explicit transaction. Full ID/group/BLOB
+  verification streams after timing; BEGIN/COMMIT are timed. No fetch-all lists.
+
+Binary payloads contain NUL and 0xff. New C/C++ string buffers, Rust Vec and Goose
+builders reuse owned output capacity; Rust borrows a ValueRef only long enough
+to copy into its owned buffer. Python's sqlite3 returns fresh immutable bytes.
+This differs from the older text/BLOB fixtures' allocation strategies, which
+remain unchanged. Python primes its SQL cache outside timing. Other callers hold
+prepared statements. SQLite C and SQLiteCpp BEGIN/COMMIT/setup still use raw exec
+as disclosed above. A shared-engine Python EXPLAIN preflight retains the intended
+scan/primary-key plans; inference across callers relies on identical schema/SQL
+and the verified common engine, not separate plan introspection in every wrapper.
+
+GNU `/usr/bin/time` is additionally required (Ubuntu package `time`). The harness
+records `%M` as benchmark-child whole-lifetime peak RSS in KiB on Linux, including
+startup, setup and verification. GNU time starts the target from a small native
+image, avoiding direct Python wait4 accounting's inherited-parent RSS floor.
+Its small native pre-exec launch footprint can still be part of the peak. This
+is not timed-loop-only memory, incremental allocation, private/PSS memory or total
+SQLite allocator usage. A peak may occur outside the timed region even though
+all callers stream validation. OS RSS accounting is approximate; retain spreads.
+Whole-process wall/CPU clocks include launcher overhead; target loop clocks do not.
+The GNU time version/hash is retained. This does not establish a universal memory
+ranking, particularly against a raw C API baseline implemented by a C++ driver.
+
+Source HEAD/hashes are captured before build and checked again after timing;
+changes reject the series. Cached SQLiteCpp must be clean at the exact revision,
+uses fresh CMake configuration, and its actual Release flags, external-engine
+setting, compiler and archive hash are recorded. This prevents cache reset from
+silently dropping optimization when compiler selection changes. Rust uses the
+resolved recorded compiler, explicit profile and disabled compiler wrappers.
+Goose's actual native compiler/flags/archive are retained too. Shared engine
+hashes are checked before and after the series. Principal data uses a clean
+measured commit. An exploratory smoke run exposed a cache-reset O0 build; it
+was corrected before principal timings and supplies no performance conclusions.

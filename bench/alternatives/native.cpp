@@ -36,12 +36,12 @@ struct Stmt {
 #ifdef USE_SQLITECPP
   SQLite::Statement s;
   Stmt(Db &d, const char *sql) : s(d.value, sql) {}
-  void integer(int64_t x) { s.bind(1, x); }
-  void bytes(const std::string &x, bool blob) {
+  void integer(int64_t x, int index = 1) { s.bind(index, x); }
+  void bytes(const std::string &x, bool blob, int index = 1) {
     if (blob)
-      s.bind(1, x.data(), static_cast<int>(x.size()));
+      s.bind(index, x.data(), static_cast<int>(x.size()));
     else
-      s.bind(1, x);
+      s.bind(index, x);
   }
   bool step() { return s.executeStep(); }
   int64_t integer(int column = 0) { return s.getColumn(column).getInt64(); }
@@ -54,13 +54,16 @@ struct Stmt {
                                nullptr) == SQLITE_OK);
   }
   ~Stmt() { require(sqlite3_finalize(s) == SQLITE_OK); }
-  void integer(int64_t x) { require(sqlite3_bind_int64(s, 1, x) == SQLITE_OK); }
-  void bytes(const std::string &x, bool blob) {
-    require((blob
-                 ? sqlite3_bind_blob(s, 1, x.data(), static_cast<int>(x.size()),
-                                     SQLITE_TRANSIENT)
-                 : sqlite3_bind_text(s, 1, x.data(), static_cast<int>(x.size()),
-                                     SQLITE_TRANSIENT)) == SQLITE_OK);
+  void integer(int64_t x, int index = 1) {
+    require(sqlite3_bind_int64(s, index, x) == SQLITE_OK);
+  }
+  void bytes(const std::string &x, bool blob, int index = 1) {
+    require(
+        (blob
+             ? sqlite3_bind_blob(s, index, x.data(), static_cast<int>(x.size()),
+                                 SQLITE_TRANSIENT)
+             : sqlite3_bind_text(s, index, x.data(), static_cast<int>(x.size()),
+                                 SQLITE_TRANSIENT)) == SQLITE_OK);
   }
   bool step() {
     int rc = sqlite3_step(s);
@@ -79,6 +82,20 @@ struct Stmt {
   }
   void reset() { require(sqlite3_reset(s) == SQLITE_OK); }
 #endif
+  void copy_blob(int column, std::string &out) {
+#ifdef USE_SQLITECPP
+    auto c = s.getColumn(column);
+    require(c.getType() == SQLITE_BLOB);
+    const void *p = c.getBlob();
+    int n = c.getBytes();
+#else
+    require(sqlite3_column_type(s, column) == SQLITE_BLOB);
+    const void *p = sqlite3_column_blob(s, column);
+    int n = sqlite3_column_bytes(s, column);
+#endif
+    require(p || !n);
+    out.assign(n ? static_cast<const char *>(p) : "", n);
+  }
 };
 int main(int argc, char **argv) {
   if (argc == 2 && std::string(argv[1]) == "identity") {
@@ -135,6 +152,80 @@ int main(int argc, char **argv) {
       s.reset();
     }
     elapsed = duration(start);
+  } else if (mode == "scan" || mode == "lookup" || mode == "batch") {
+    require(size >= 2);
+    std::string input(size, 'x');
+    input.front() = 0;
+    input.back() = static_cast<char>(255);
+    std::string out;
+    out.reserve(input.size());
+    db.exec("CREATE TABLE items(id INTEGER PRIMARY KEY,group_id "
+            "INTEGER,payload BLOB)");
+    db.exec("CREATE INDEX by_group ON items(group_id)");
+    if (mode != "batch") {
+      db.exec("BEGIN");
+      {
+        Stmt insert(db, "INSERT INTO items VALUES(?1,?1%17,?2)");
+        for (int64_t i = 0; i < 1024; ++i) {
+          insert.integer(i);
+          insert.bytes(input, true, 2);
+          require(!insert.step());
+          insert.reset();
+        }
+      }
+      db.exec("COMMIT");
+    }
+    if (mode == "batch") {
+      {
+        Stmt insert(db, "INSERT INTO items VALUES(?1,?1%17,?2)");
+        auto start = now();
+        db.exec("BEGIN");
+        for (int64_t i = 0; i < n; ++i) {
+          insert.integer(i);
+          insert.bytes(input, true, 2);
+          require(!insert.step());
+          insert.reset();
+        }
+        db.exec("COMMIT");
+        elapsed = duration(start);
+      }
+      Stmt q(db, "SELECT id,group_id,payload FROM items ORDER BY id");
+      for (int64_t i = 0; i < n; ++i) {
+        require(q.step() && q.integer() == i && q.integer(1) == i % 17);
+        q.copy_blob(2, out);
+        require(out == input);
+      }
+      require(!q.step());
+      checksum = n * size;
+    } else if (mode == "scan") {
+      Stmt q(db, "SELECT id,payload FROM items ORDER BY id");
+      auto start = now();
+      for (int64_t pass = 0; pass < n; ++pass) {
+        for (int64_t i = 0; i < 1024; ++i) {
+          require(q.step() && q.integer() == i);
+          q.copy_blob(1, out);
+          require(out == input);
+          checksum += out.size();
+        }
+        require(!q.step());
+        q.reset();
+      }
+      elapsed = duration(start);
+    } else {
+      Stmt q(db, "SELECT id,payload FROM items WHERE id=?1");
+      auto start = now();
+      for (int64_t i = 0; i < n; ++i) {
+        int64_t id = (i * 17) % 1024;
+        q.integer(id);
+        require(q.step() && q.integer() == id);
+        q.copy_blob(1, out);
+        require(out == input);
+        checksum += out.size();
+        require(!q.step());
+        q.reset();
+      }
+      elapsed = duration(start);
+    }
   } else {
     require(mode == "insert");
     db.exec("CREATE TABLE items(x INTEGER)");

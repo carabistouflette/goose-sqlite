@@ -80,6 +80,81 @@ fn main() -> rusqlite::Result<()> {
         }
         elapsed = start.elapsed();
         s.finalize()?;
+    } else if mode == "scan" || mode == "lookup" || mode == "batch" {
+        assert!(size >= 2);
+        let mut data = vec![b'x'; size];
+        data[0] = 0;
+        data[size - 1] = 255;
+        let mut out = Vec::<u8>::with_capacity(size);
+        db.execute_batch("CREATE TABLE items(id INTEGER PRIMARY KEY,group_id INTEGER,payload BLOB); CREATE INDEX by_group ON items(group_id)")?;
+        if mode != "batch" {
+            let mut insert = db.prepare("INSERT INTO items VALUES(?1,?1%17,?2)")?;
+            db.execute_batch("BEGIN")?;
+            for i in 0..1024i64 {
+                assert_eq!(insert.execute(rusqlite::params![i, &data])?, 1);
+            }
+            db.execute_batch("COMMIT")?;
+            insert.finalize()?;
+        }
+        if mode == "batch" {
+            let mut insert = db.prepare("INSERT INTO items VALUES(?1,?1%17,?2)")?;
+            let start = Instant::now();
+            db.execute_batch("BEGIN")?;
+            for i in 0..n {
+                assert_eq!(insert.execute(rusqlite::params![i, &data])?, 1);
+            }
+            db.execute_batch("COMMIT")?;
+            elapsed = start.elapsed();
+            insert.finalize()?;
+            let mut query = db.prepare("SELECT id,group_id,payload FROM items ORDER BY id")?;
+            {
+                let mut rows = query.query([])?;
+                for i in 0..n {
+                    let row = rows.next()?.unwrap();
+                    assert_eq!(row.get::<_, i64>(0)?, i);
+                    assert_eq!(row.get::<_, i64>(1)?, i % 17);
+                    out.clear();
+                    out.extend_from_slice(row.get_ref(2)?.as_blob().unwrap());
+                    assert_eq!(out, data);
+                }
+                assert!(rows.next()?.is_none());
+            }
+            query.finalize()?;
+            checksum = n * size as i64;
+        } else if mode == "scan" {
+            let mut query = db.prepare("SELECT id,payload FROM items ORDER BY id")?;
+            let start = Instant::now();
+            for _ in 0..n {
+                let mut rows = query.query([])?;
+                for i in 0..1024i64 {
+                    let row = rows.next()?.unwrap();
+                    assert_eq!(row.get::<_, i64>(0)?, i);
+                    out.clear();
+                    out.extend_from_slice(row.get_ref(1)?.as_blob().unwrap());
+                    assert_eq!(out, data);
+                    checksum += out.len() as i64;
+                }
+                assert!(rows.next()?.is_none());
+            }
+            elapsed = start.elapsed();
+            query.finalize()?;
+        } else {
+            let mut query = db.prepare("SELECT id,payload FROM items WHERE id=?1")?;
+            let start = Instant::now();
+            for i in 0..n {
+                let id = (i * 17) % 1024;
+                let mut rows = query.query([id])?;
+                let row = rows.next()?.unwrap();
+                assert_eq!(row.get::<_, i64>(0)?, id);
+                out.clear();
+                out.extend_from_slice(row.get_ref(1)?.as_blob().unwrap());
+                assert_eq!(out, data);
+                checksum += out.len() as i64;
+                assert!(rows.next()?.is_none());
+            }
+            elapsed = start.elapsed();
+            query.finalize()?;
+        }
     } else {
         assert_eq!(mode, "insert");
         db.execute_batch("CREATE TABLE items(x INTEGER)")?;

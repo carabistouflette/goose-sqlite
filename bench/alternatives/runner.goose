@@ -63,6 +63,76 @@ fn main() {
         }
         elapsed = clock_ns() - start;
         assert(sqlite::finalize(stmt) == sqlite::OK);
+    } else if argv[2] == "scan" || argv[2] == "lookup" || argv[2] == "batch" {
+        assert(size >= 2);
+        var input: u8[>..] = []; input.resize(size, 'x'); input[0] = 0; input[size - 1] = 255;
+        var out:   u8[>..] = []; out.resize(size, 0);
+        assert(sqlite::execute(db, "CREATE TABLE items(id INTEGER PRIMARY KEY,group_id INTEGER,payload BLOB)") == sqlite::OK);
+        assert(sqlite::execute(db, "CREATE INDEX by_group ON items(group_id)") == sqlite::OK);
+        if argv[2] != "batch" {
+            let insert, code = sqlite::prepare(db, "INSERT INTO items VALUES(?1,?1%17,?2)");
+            assert(code == sqlite::OK && sqlite::execute(db, "BEGIN") == sqlite::OK);
+            for i in 1024 {
+                assert(sqlite::bind_integer(insert, 1, i) == sqlite::OK);
+                assert(sqlite::bind_blob(insert, 2, input) == sqlite::OK);
+                assert(sqlite::step(insert) == sqlite::DONE && sqlite::reset(insert) == sqlite::OK);
+            }
+            assert(sqlite::execute(db, "COMMIT") == sqlite::OK && sqlite::finalize(insert) == sqlite::OK);
+        }
+        if argv[2] == "batch" {
+            let insert, code = sqlite::prepare(db, "INSERT INTO items VALUES(?1,?1%17,?2)");
+            assert(code == sqlite::OK);
+            start = clock_ns(); assert(sqlite::execute(db, "BEGIN") == sqlite::OK);
+            for i in iterations {
+                assert(sqlite::bind_integer(insert, 1, i) == sqlite::OK);
+                assert(sqlite::bind_blob(insert, 2, input) == sqlite::OK);
+                assert(sqlite::step(insert) == sqlite::DONE && sqlite::reset(insert) == sqlite::OK);
+            }
+            assert(sqlite::execute(db, "COMMIT") == sqlite::OK); elapsed = clock_ns() - start;
+            assert(sqlite::finalize(insert) == sqlite::OK);
+            let query, selected = sqlite::prepare(db, "SELECT id,group_id,payload FROM items ORDER BY id");
+            assert(selected == sqlite::OK);
+            for i in iterations {
+                assert(sqlite::step(query) == sqlite::ROW);
+                let id, id_code = sqlite::column_integer(query, 0);
+                let group, group_code = sqlite::column_integer(query, 1);
+                assert(id_code == sqlite::OK && id == i && group_code == sqlite::OK && group == i % 17);
+                assert(sqlite::column_blob(query, 2, out) == sqlite::OK && out == input);
+            }
+            assert(sqlite::step(query) == sqlite::DONE && sqlite::finalize(query) == sqlite::OK);
+            checksum = iterations * size;
+        } else if argv[2] == "scan" {
+            let query, selected = sqlite::prepare(db, "SELECT id,payload FROM items ORDER BY id");
+            assert(selected == sqlite::OK);
+            start = clock_ns();
+            for pass in iterations {
+                for i in 1024 {
+                    assert(sqlite::step(query) == sqlite::ROW);
+                    let id, id_code = sqlite::column_integer(query, 0);
+                    assert(id_code == sqlite::OK && id == i);
+                    assert(sqlite::column_blob(query, 1, out) == sqlite::OK && out == input);
+                    checksum += out.len;
+                }
+                assert(sqlite::step(query) == sqlite::DONE && sqlite::reset(query) == sqlite::OK);
+            }
+            elapsed = clock_ns() - start;
+            assert(sqlite::finalize(query) == sqlite::OK);
+        } else {
+            let query, selected = sqlite::prepare(db, "SELECT id,payload FROM items WHERE id=?1");
+            assert(selected == sqlite::OK);
+            start = clock_ns();
+            for i in iterations {
+                let wanted = (i * 17) % 1024;
+                assert(sqlite::bind_integer(query, 1, wanted) == sqlite::OK && sqlite::step(query) == sqlite::ROW);
+                let id, id_code = sqlite::column_integer(query, 0);
+                assert(id_code == sqlite::OK && id == wanted);
+                assert(sqlite::column_blob(query, 1, out) == sqlite::OK && out == input);
+                checksum += out.len;
+                assert(sqlite::step(query) == sqlite::DONE && sqlite::reset(query) == sqlite::OK);
+            }
+            elapsed = clock_ns() - start;
+            assert(sqlite::finalize(query) == sqlite::OK);
+        }
     } else {
         assert(argv[2] == "insert");
         assert(sqlite::execute(db, "CREATE TABLE items(x INTEGER)") == sqlite::OK);

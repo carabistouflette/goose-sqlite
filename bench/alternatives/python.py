@@ -41,6 +41,48 @@ elif mode in ('text', 'blob'):
         row = cursor.fetchone()
         assert row[0] == data and cursor.fetchone() is None
         checksum += len(row[0])
+elif mode in ('scan', 'lookup', 'batch'):
+    assert size >= 2
+    data = b'\x00' + b'x' * (size - 2) + b'\xff'
+    db.execute('CREATE TABLE items(id INTEGER PRIMARY KEY,group_id INTEGER,payload BLOB)')
+    db.execute('CREATE INDEX by_group ON items(group_id)')
+    insert = 'INSERT INTO items VALUES(?1,?1%17,?2)'
+    if mode != 'batch':
+        db.execute('BEGIN')
+        for i in range(1024): cursor.execute(insert, (i, data))
+        db.execute('COMMIT')
+    if mode == 'batch':
+        db.execute('BEGIN'); cursor.execute(insert, (-1, data)); db.execute('ROLLBACK')
+        start = time.perf_counter_ns(); db.execute('BEGIN')
+        for i in range(n): cursor.execute(insert, (i, data))
+        db.execute('COMMIT'); elapsed = time.perf_counter_ns() - start
+        cursor.execute('SELECT id,group_id,payload FROM items ORDER BY id')
+        for i in range(n): assert cursor.fetchone() == (i, i % 17, data)
+        assert cursor.fetchone() is None
+        checksum = n * size
+    elif mode == 'scan':
+        sql = 'SELECT id,payload FROM items ORDER BY id'
+        cursor.execute(sql)
+        for i in range(1024): assert cursor.fetchone() == (i, data)
+        assert cursor.fetchone() is None
+        start = time.perf_counter_ns()
+        for _ in range(n):
+            cursor.execute(sql)
+            for i in range(1024):
+                row = cursor.fetchone(); assert row == (i, data)
+                checksum += len(row[1])
+            assert cursor.fetchone() is None
+        elapsed = time.perf_counter_ns() - start
+    else:
+        sql = 'SELECT id,payload FROM items WHERE id=?1'
+        cursor.execute(sql, (-1,)); assert cursor.fetchone() is None
+        start = time.perf_counter_ns()
+        for i in range(n):
+            wanted = (i * 17) % 1024
+            cursor.execute(sql, (wanted,))
+            row = cursor.fetchone(); assert row == (wanted, data)
+            checksum += len(row[1]); assert cursor.fetchone() is None
+        elapsed = time.perf_counter_ns() - start
 else:
     assert mode == 'insert'
     db.execute('CREATE TABLE items(x INTEGER)')
@@ -54,7 +96,7 @@ else:
     elapsed = time.perf_counter_ns() - start
     assert db.execute('SELECT count(*), sum(x) FROM items').fetchone() == (n, n * (n - 1) // 2)
     checksum = n
-if mode != 'insert': elapsed = time.perf_counter_ns() - start
+if mode not in ('insert', 'scan', 'lookup', 'batch'): elapsed = time.perf_counter_ns() - start
 cursor.close()
 db.close()
 print(elapsed, checksum)
