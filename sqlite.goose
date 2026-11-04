@@ -3,19 +3,23 @@ namespace sqlite;
 import std;
 
 // Nonnegative codes are SQLite result codes (including extended codes).
-const OK:             i64 = 0;
-const ROW:            i64 = 100;
-const DONE:           i64 = 101;
-const INVALID_INPUT:  i64 = -1;
-const INVALID_HANDLE: i64 = -2;
-const INVALID_STATE:  i64 = -3;
-const TYPE_MISMATCH:  i64 = -4;
-const LIMIT:          i64 = -5;
-const INTEGER:        i64 = 1;
-const FLOAT:          i64 = 2;
-const TEXT:           i64 = 3;
-const BLOB:           i64 = 4;
-const NULL:           i64 = 5;
+const OK:                  i64 = 0;
+const ROW:                 i64 = 100;
+const DONE:                i64 = 101;
+const INVALID_INPUT:       i64 = -1;
+const INVALID_HANDLE:      i64 = -2;
+const INVALID_STATE:       i64 = -3;
+const TYPE_MISMATCH:       i64 = -4;
+const LIMIT:               i64 = -5;
+const INTEGER:             i64 = 1;
+const FLOAT:               i64 = 2;
+const TEXT:                i64 = 3;
+const BLOB:                i64 = 4;
+const NULL:                i64 = 5;
+const CHECKPOINT_PASSIVE:  i64 = 0;
+const CHECKPOINT_FULL:     i64 = 1;
+const CHECKPOINT_RESTART:  i64 = 2;
+const CHECKPOINT_TRUNCATE: i64 = 3;
 
 struct Database { token: u64 = 0 }
 struct Statement { token: u64 = 0 }
@@ -178,6 +182,15 @@ fn blob_write(blob: Blob, offset: i64, bytes: const u8[:]) -> i64 {
 // Whole main database copy. Incomplete copies roll back destination changes.
 fn backup(source: Database, destination: Database, max_pages: i64) -> i64 {
     return native_backup(source.token, destination.token, max_pages);
+}
+
+extern fn native_checkpoint(token: u64, mode: i64, log: i64&, checkpointed: i64&) -> i64 = "gq_checkpoint";
+// Frame counts may be unavailable (-1), including on BUSY. No hard I/O/time bound.
+fn checkpoint(db: Database, mode: i64) -> i64, i64, i64 {
+    var log:          i64 = -1;
+    var checkpointed: i64 = -1;
+    let code = native_checkpoint(db.token, mode, log, checkpointed);
+    return log, checkpointed, code;
 }
 
 // SQLite statement counters are engine-sized; VM steps above INT_MAX are undefined.

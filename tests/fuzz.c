@@ -125,6 +125,7 @@ static void blob_lifecycle(const uint8_t *data, size_t size) {
 }
 int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     if (size > 4096) return 0;
+    CHECK(gq_initialize() == SQLITE_OK);
     uint64_t db = 0, s = 0;
     CHECK(gq_open((gq_input){(const uint8_t *)":memory:", 8}, 0, 0, 1000, &db) == SQLITE_OK);
     gq_input input = {data, (int64_t)size};
@@ -154,6 +155,21 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     CHECK(gq_finalize(s) == SQLITE_OK);
     lifecycle(db, data, size);
     blob_lifecycle(data, size);
+    /* Memory-only checkpoint calls exercise validation without filesystem state. */
+    int64_t log = 123, checkpointed = 456;
+    int64_t mode = size ? (int64_t)data[0] - 2 : 0;
+    rc = gq_checkpoint(db, mode, &log, &checkpointed);
+    CHECK(log == -1 && checkpointed == -1);
+    int version = sqlite3_libversion_number();
+    int fixed = version >= 3051003 || (version >= 3050007 && version < 3051000) ||
+        (version >= 3044006 && version < 3045000);
+    if (mode < 0 || mode > 3) CHECK(rc == GQ_INPUT);
+    else if (!fixed) CHECK(rc == SQLITE_MISUSE);
+    else {
+        int64_t automatic = 0;
+        CHECK(gq_status(db, 2, &automatic) == SQLITE_OK);
+        CHECK(rc == (automatic ? SQLITE_OK : GQ_STATE));
+    }
     CHECK(gq_close(db) == SQLITE_OK);
     return 0;
 }

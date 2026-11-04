@@ -65,6 +65,10 @@ WAL is accepted only on recognized SQLite versions containing the WAL-reset
 corruption fix (see [API version rules](docs/api.md)). Unknown backports fail
 closed; all other processes using that file must also use a patched engine.
 Opening is not atomic with external changes of journal mode.
+Checkpoint accepts only four explicit modes on a writable, idle main connection.
+It preserves the SQL authorizer and synchronization policy. Its VM budget does
+not bound I/O or elapsed time, and BUSY can report partial progress. Frame counts
+are engine-sized; unavailable/error outputs are -1. See the API contract.
 
 Incremental BLOB reads copy owned ranges with checked arithmetic. Writable BLOBs
 require an explicit transaction, but **bypass CHECK constraints and UPDATE

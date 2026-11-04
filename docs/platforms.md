@@ -42,6 +42,11 @@ Ubuntu 24.04 and its packaged SQLite. Exact upstream 3.37.0 and Ubuntu noble-sec
 passed cross-engine checks on the initial Linux host. Exact completed checks,
 configurations and CI evidence are recorded in [validation.md](validation.md).
 
+Before starting workers, call sqlite::initialize on one startup thread after any
+native SQLite configuration and check its result. This supports deterministic
+startup and SQLITE_OMIT_AUTOINIT engines without changing ordinary open behavior.
+Initialization failures remain retryable; no public shutdown API is provided.
+
 Independent connections can execute on separate OS threads. Handles cannot move
 between threads; each thread opens its own connection. No cross-process locking
 or transaction guarantees beyond SQLite's own engine/filesystem behavior are added.

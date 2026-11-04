@@ -97,6 +97,9 @@ SQLite's WAL-reset fix, preserving at least FULL synchronization. `blob_open`,
 operations. Writable BLOBs require explicit transactions and bypass SQL CHECKs
 and UPDATE triggers; read [the contract and limits](docs/api.md) before using them.
 WAL requires a suitable local filesystem and patched engines for all participants.
+`checkpoint` adds explicit PASSIVE/FULL/RESTART/TRUNCATE control with checked frame
+counts, including partial progress on BUSY. Checkpoints are synchronous I/O and
+have no hard time or frame budget; see the API limits above.
 
 The [incremental-read results](bench/results/storage-2026-11-04/README.md) retain
 two complete nine-round series, including the disclosed CPU overlap. Partial reads

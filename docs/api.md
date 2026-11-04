@@ -49,6 +49,10 @@ prefix. `:memory:` opens a private in-memory database. Other paths use ordinary
 SQLite file semantics; caller controls path trust and filesystem permissions.
 Readonly uses SQLITE_OPEN_READONLY; writable opens/creates. Failed open returns
 an invalid zero-token Database and closes partially initialized SQLite state.
+File opens inspect existing journal mode before installing the permanent SQL
+authorizer, so an immediate checkpoint can discover an existing WAL. This may
+perform metadata I/O or report a malformed/unreadable file during open. Exact
+private :memory: does not require mode discovery on recognized fixed engines.
 No journal/synchronous/durability setting is weakened by this module.
 
 `close(db) -> code`: returns SQLITE_BUSY (5) while statements or BLOB handles remain live. Busy
@@ -202,8 +206,42 @@ WAL permits snapshot readers alongside a writer, but does not permit multiple
 simultaneous writers. All processes must be on one host with a suitable local
 filesystem. Sidecar -wal/-shm files, directory permissions, checkpoints and busy
 results follow SQLite. Readonly connections preserve existing WAL on recognized
-fixed versions when the engine can open its sidecars. This library does not offer
-manual checkpoints, journal-mode switching on a live handle, or weaker durability.
+fixed versions when the engine can open its sidecars. Journal-mode switching on
+a live handle and weaker durability are not offered.
+
+## WAL checkpoints
+
+`checkpoint(db,mode) -> log_frames,checkpointed_frames,code` synchronously calls
+SQLite's main-schema checkpoint API. Modes are CHECKPOINT_PASSIVE=0,
+CHECKPOINT_FULL=1, CHECKPOINT_RESTART=2 and CHECKPOINT_TRUNCATE=3. Other values
+are INVALID_INPUT. The connection must be writable, in autocommit, and have no
+active main-schema read or write transaction. Explicit BEGIN and implicit row
+cursors/BLOB reads holding a main-schema transaction return INVALID_STATE. Prepared idle statements are allowed
+and retain their bindings. Stale/default/foreign-thread handles are INVALID_HANDLE.
+All modes require the recognized WAL-fixed engine versions above, even when the
+database is not in WAL mode; other engines return SQLITE_MISUSE.
+
+PASSIVE checkpoints available frames without waiting for readers/writers; OK may
+still mean incomplete progress. FULL may wait for readers and the writer; RESTART
+also waits for WAL readers to finish; TRUNCATE additionally empties the WAL after
+successful completion. Blocking modes use the connection's busy handler where
+SQLite permits it, and may return BUSY with partial progress. A competing
+checkpoint can cause immediate BUSY without invoking that handler.
+
+Counts are engine-sized integers transported as i64, not 64-bit engine counters.
+They describe total WAL frames and total backfilled frames, including prior work,
+not just this call. A valid pair is nonnegative and checkpointed<=log. The wrapper
+preserves valid counts on OK or primary BUSY; otherwise both outputs are -1.
+Unavailable/overflowed counters also become -1/-1; this is not proof of non-WAL.
+An idle non-WAL database returns SQLite's OK with unavailable counters. Successful
+TRUNCATE on an active WAL returns 0/0. Inspect the code and counts together.
+
+This function does not begin/commit a transaction, lower synchronization, relax
+the SQL authorizer, or retry the operation. Original engine errors are returned.
+The work budget counts VM instructions and does not bound checkpoint I/O.
+There is no frame/page budget or hard memory/disk/time bound; even PASSIVE can
+perform slow I/O. This interface is synchronous. See SQLite's
+[checkpoint modes and locking contract](https://sqlite.org/c3ref/wal_checkpoint_v2.html).
 
 ## Incremental BLOB access
 

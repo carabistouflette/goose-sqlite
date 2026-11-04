@@ -18,6 +18,7 @@ check:
 	"$(GOOSE)" check tests/storage.goose
 	"$(GOOSE)" check tests/metadata.goose
 	"$(GOOSE)" check tests/files.goose
+	"$(GOOSE)" check tests/checkpoint.goose
 	"$(GOOSE)" check examples/transactions.goose
 	"$(GOOSE)" check examples/items.goose
 	"$(GOOSE)" check bench/storage/runner.goose
@@ -52,6 +53,7 @@ test-native:
 	UBSAN_OPTIONS=halt_on_error=1 .build/native-$(notdir $(CC))/goose_sqlite_test
 	UBSAN_OPTIONS=halt_on_error=1 .build/native-$(notdir $(CC))/goose_sqlite_fault_test
 	UBSAN_OPTIONS=halt_on_error=1 .build/native-$(notdir $(CC))/goose_sqlite_storage_test
+	UBSAN_OPTIONS=halt_on_error=1 .build/native-$(notdir $(CC))/goose_sqlite_checkpoint_test
 	python3 scripts/test-threads.py --binary .build/native-$(notdir $(CC))/goose_sqlite_thread_test --output .build/threads-$(notdir $(CC)).json
 	python3 scripts/test-recovery.py --binary .build/native-$(notdir $(CC))/goose_sqlite_recovery_test --output .build/recovery-$(notdir $(CC)).json
 fuzz-native:

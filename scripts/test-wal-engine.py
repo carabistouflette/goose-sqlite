@@ -76,6 +76,7 @@ def main():
     run(['python3','scripts/test-threads.py','--binary',native / 'goose_sqlite_thread_test',
          '--output',build / 'threads.json','--require-wal',
          *(['--initialize-engine'] if thread else [])],env)
+    run([native / 'goose_sqlite_checkpoint_test','--require-wal'],env)
     if not thread:
         for name in ('goose_sqlite_test','goose_sqlite_fault_test','goose_sqlite_storage_test'):
             run([native / name],env)

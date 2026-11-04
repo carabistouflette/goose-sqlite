@@ -198,10 +198,13 @@ int64_t gq_open_config(gq_input path, int64_t readonly, int64_t busy_ms, int64_t
     int rc = sqlite3_open_v2(name, &d->ptr, flags, NULL);
     d->budget = budget;
     if (rc == SQLITE_OK) rc = configure(d, (int)busy_ms);
-    if (rc == SQLITE_OK && !wal_fixed()) {
+    if (rc == SQLITE_OK && !wal && (!wal_fixed() || strcmp(name, ":memory:"))) {
+        /* Discover an existing WAL even when it was not explicitly requested.
+           Checkpoint must see the initialized pager on an otherwise idle open.
+           Exact private :memory: cannot use WAL and needs no discovery. */
         int existing_wal = 0;
         rc = journal_mode(d, 0, &existing_wal);
-        if (rc == SQLITE_OK && existing_wal) rc = SQLITE_MISUSE;
+        if (rc == SQLITE_OK && existing_wal && !wal_fixed()) rc = SQLITE_MISUSE;
     }
     if (rc == SQLITE_OK && wal) rc = set_wal(d);
     if (rc == SQLITE_OK) rc = sqlite3_set_authorizer(d->ptr, authorize, NULL);
@@ -222,6 +225,29 @@ int64_t gq_close(uint64_t token) {
     if (!d) return GQ_HANDLE;
     int rc = sqlite3_close(d->ptr);
     if (rc == SQLITE_OK) memset(d, 0, sizeof(*d));
+    return rc;
+}
+int64_t gq_checkpoint(uint64_t token, int64_t mode, void *log, void *checkpointed) {
+    int64_t unavailable = -1;
+    if (log) memcpy(log, &unavailable, sizeof unavailable);
+    if (checkpointed) memcpy(checkpointed, &unavailable, sizeof unavailable);
+    if (!log || !checkpointed) return GQ_INPUT;
+    Database *d = database(token);
+    if (!d) return GQ_HANDLE;
+    if (mode != SQLITE_CHECKPOINT_PASSIVE && mode != SQLITE_CHECKPOINT_FULL &&
+        mode != SQLITE_CHECKPOINT_RESTART && mode != SQLITE_CHECKPOINT_TRUNCATE) return GQ_INPUT;
+    if (!wal_fixed()) return SQLITE_MISUSE;
+    if (sqlite3_db_readonly(d->ptr, "main") != 0) return SQLITE_READONLY;
+    if (!sqlite3_get_autocommit(d->ptr) || sqlite3_txn_state(d->ptr, "main") != SQLITE_TXN_NONE) return GQ_STATE;
+    int frames = -1, copied = -1;
+    d->remaining = d->budget;
+    int rc = sqlite3_wal_checkpoint_v2(d->ptr, "main", (int)mode, &frames, &copied);
+    /* BUSY may report valid partial progress. Never publish error garbage or
+       engine-sized overflow as a useful frame count. */
+    if ((rc == SQLITE_OK || (rc & 255) == SQLITE_BUSY) && frames >= 0 && copied >= 0 && copied <= frames) {
+        int64_t n = frames, done = copied;
+        memcpy(log, &n, sizeof n); memcpy(checkpointed, &done, sizeof done);
+    }
     return rc;
 }
 /* Accept only whitespace/comments after the one compiled statement. No second

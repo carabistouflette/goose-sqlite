@@ -36,5 +36,6 @@ int64_t gq_blob_size(uint64_t token, void *out);
 int64_t gq_blob_read(uint64_t token, int64_t offset, gq_output out);
 int64_t gq_blob_write(uint64_t token, int64_t offset, gq_input in);
 int64_t gq_backup(uint64_t source, uint64_t destination, int64_t max_pages);
+int64_t gq_checkpoint(uint64_t token, int64_t mode, void *log, void *checkpointed);
 int64_t gq_stmt_status(uint64_t token, int64_t metric, int64_t reset, void *out);
 #endif

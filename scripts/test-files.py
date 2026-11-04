@@ -13,3 +13,6 @@ with tempfile.TemporaryDirectory(prefix='goose-sqlite-public-') as tmp:
     subprocess.run([goose, 'run', 'tests/files.goose', '--', str(path / 'runner.sqlite')], cwd=root, check=True)
     subprocess.run([goose, 'build', 'tests/files.goose', '-o', str(path / 'files')], cwd=root, check=True)
     subprocess.run([str(path / 'files'), str(path / 'native.sqlite')], cwd=root, check=True)
+    subprocess.run([goose, 'run', 'tests/checkpoint.goose', '--', str(path / 'checkpoint-runner.sqlite')], cwd=root, check=True)
+    subprocess.run([goose, 'build', 'tests/checkpoint.goose', '-o', str(path / 'checkpoint')], cwd=root, check=True)
+    subprocess.run([str(path / 'checkpoint'), str(path / 'checkpoint-native.sqlite')], cwd=root, check=True)
