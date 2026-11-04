@@ -1,0 +1,40 @@
+# Benchmark methodology
+
+```sh
+make setup
+make bench BENCH_ITERATIONS=10000
+# Or choose an existing pinned compiler:
+python3 bench/measure.py --goose /path/to/goose --iterations 10000 --runs 3 --output .build/bench-results
+```
+
+Requires GCC (override BENCH_CC with a single compiler executable), pkg-config,
+Python 3 and SQLite development files. The harness builds both callers at -O2, preserving assertions and the production
+adapter's safety policies. Goose builds the native CMake target in its normal
+Release configuration (-O3/-DNDEBUG on tested GCC). Both callers link that exact
+static archive and the exact SQLite library found by CMake. The native source has
+no assertions. A fresh temporary Goose cache excludes stale package options and
+ambient CFLAGS/CXXFLAGS/CPPFLAGS/LDFLAGS are removed for these builds. No LTO or CPU-specific flags are added.
+
+Nine fixtures: prepare/step/read/finalize SELECT 1; reused text binding/copy of
+0, 32, 4096 and 65536 bytes; BLOB binding/copy of 0, 4096 and 1048576 bytes; and reused inserts inside one explicit transaction.
+The largest text fixture uses one tenth the iteration count; the 1 MiB BLOB uses
+one hundredth. Insert validation checks both row count and inserted-value sum. Every sample checks
+its checksum; text workloads also check every copied byte against the input.
+All fixtures include connection open and close. Text C output is initialized to
+match Goose builder resize initialization. Each executable gets a separate warmup;
+recorded samples alternate execution order over three passes by default.
+
+The C baseline calls the same checked production adapter. It is not unrestricted
+raw SQLite and does not measure adapter overhead relative to raw SQLite. The
+comparison helps identify Goose caller/builder/foreign-call overhead with matched
+SQL and connection policies; allocation/runtime startup differs between languages.
+It is not a ranking against other libraries or database engines.
+
+samples.json records every whole-process wall and child user+system CPU sample,
+source hashes, executable/compiler hashes, Goose revision, runtime SQLite version/source ID/compile options,
+C compiler/flags, native CMake build type/flags/archive hash, build/runtime SQLite library hashes (required to match between callers),
+hardware, OS, CPU affinity and source revision/dirty status.
+Timing includes process startup, setup and cleanup; small runs are smoke tests,
+not useful performance estimates. The host is shared, CPU frequency is not fixed,
+and affinity does not imply exclusive cores. No timing thresholds in CI. Profile
+an actual workload before changing the simple two-call byte-copy interface.
