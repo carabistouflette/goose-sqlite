@@ -31,11 +31,12 @@ test-native:
 	cmake -S . -B .build/native-$(notdir $(CC)) -DCMAKE_C_COMPILER="$(CC)" -DCMAKE_BUILD_TYPE=Debug -DGOOSE_SQLITE_NATIVE_TESTS=ON
 	cmake --build .build/native-$(notdir $(CC)) --parallel 2
 	UBSAN_OPTIONS=halt_on_error=1 .build/native-$(notdir $(CC))/goose_sqlite_test
+	UBSAN_OPTIONS=halt_on_error=1 .build/native-$(notdir $(CC))/goose_sqlite_fault_test
 fuzz-native:
 	cmake -S . -B .build/fuzz -DCMAKE_C_COMPILER="$(FUZZ_CC)" -DCMAKE_BUILD_TYPE=Debug -DGOOSE_SQLITE_FUZZ=ON
 	cmake --build .build/fuzz --parallel 2
 	mkdir -p .build/corpus .build/artifacts
 	cp tests/corpus/* .build/corpus/
-	UBSAN_OPTIONS=halt_on_error=1 .build/fuzz/goose_sqlite_fuzz .build/corpus -artifact_prefix=.build/artifacts/ -seed=219 -max_len=4096 -runs=$(FUZZ_RUNS)
+	UBSAN_OPTIONS=halt_on_error=1 .build/fuzz/goose_sqlite_fuzz .build/corpus -artifact_prefix=.build/artifacts/ -dict=tests/fuzz.dict -seed=219 -max_len=4096 -runs=$(FUZZ_RUNS)
 bench:
 	python3 bench/measure.py --goose "$(GOOSE)" --iterations $(BENCH_ITERATIONS) --output .build/bench-results
