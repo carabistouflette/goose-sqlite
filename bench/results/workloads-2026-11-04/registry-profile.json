@@ -1,0 +1,13 @@
+{
+  "scope": "Callgrind instruction profile, complete native process including setup; not wall-time attribution.100 scan passes x1024 rows,128B BLOB, all bytes checked.",
+  "source_commit": "ccacd49c81b5e506ffb5c96d52d5771896b1d0a1",
+  "binary_sha256": "8a4ed70ee84ab668ebbefbefcd6049be89de0dc1540e0c3eeaa9bb3c9ac3d8c8",
+  "command": "valgrind --tool=callgrind --callgrind-out-file=profile.callgrind before-binary 100 scan 128",
+  "valgrind_version": "valgrind-3.25.1",
+  "total_Ir": 152245677,
+  "pthread_getspecific_Ir": 5295902,
+  "pthread_once_Ir": 1870099,
+  "redaction": "Only repository absolute paths replaced with $REPO in retained profile/annotation.",
+  "original_profile_sha256": "186fb3b55045b22ab849229c4252d0df13085f925009b31e12adbf80295869ef",
+  "retained_profile_sha256": "083c4818e8e9811d1b7221b6f7feb263e674863438dbd8f7186b2e70d0f9f21c"
+}

@@ -1,0 +1,15 @@
+{
+  "scope": "Linux launch-path check, not a SQLite benchmark. Direct child peak can include pre-exec Python RSS; GNU time launches the target from its small native image. Approximate accounting and native pre-exec floor remain.",
+  "allocated_parent_bytes": 67108864,
+  "parent_peak_kib": 84252,
+  "direct_wait4_child_peak_kib": 83936,
+  "gnu_time_target_peak_kib": 1536,
+  "python_version": "3.14.9 (main, Oct 25 2026, 14:52:47) [GCC 16.2.1 20260810]",
+  "gnu_time_version": "time (GNU Time) 1.10",
+  "binary_sha256": {
+    "python3": "122ce07db306cd111fd10e27125460362610452983a64903c470afd66b6403bd",
+    "time": "ccc576561484fe2c3f83bbceabfeba78408e59ac9c9a8161ad2a017b1037663d",
+    "true": "8398af7d1f94a88be3303caa083616ad22a12783e4dfee0373298bc61aef0662"
+  },
+  "probe_source_sha256": "debeddad411386ea8e594c5acd194e808185ea69e4e3d380f723f3e5f9f69eb2"
+}

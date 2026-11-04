@@ -26,7 +26,8 @@ def main():
     base = json.loads(args.baseline_results.read_text())
     if digest('/usr/bin/time') != base['rss_measurement']['sha256']:
         raise RuntimeError('Different RSS measurement tool')
-    after_build = json.loads(args.after_build.read_text())
+    after_build_data = json.loads(args.after_build.read_text())
+    after_build = after_build_data.get('native_build', after_build_data)
     bins = {'before': args.before.resolve(), 'after': args.after.resolve()}
     hashes = {name: digest(path) for name,path in bins.items()}
     if hashes['before'] != base['binaries']['goose']: raise RuntimeError('Baseline binary mismatch')
@@ -37,7 +38,10 @@ def main():
         raise RuntimeError('Different SQLite engine')
     source_commit = output(['git','rev-parse','HEAD'])
     sources = {p: digest(ROOT / p) for p in base['source_hashes']}
-    changed = {p for p in sources if sources[p] != base['source_hashes'][p]}
+    compiled_inputs = {'native/sqlite.c','native/sqlite.h','CMakeLists.txt','sqlite.goose','sqlite.build','GOOSE_REVISION','bench/alternatives/runner.goose'}
+    changed = {p for p in compiled_inputs if sources[p] != base['source_hashes'][p]}
+    sources[str(Path(__file__).resolve().relative_to(ROOT))] = digest(Path(__file__))
+    source_dirty = bool(output(['git','status','--porcelain']))
     if changed != {'native/sqlite.c','sqlite.build'}:
         raise RuntimeError(f'Unexpected measured source changes: {changed}')
     args.output.parent.mkdir(parents=True,exist_ok=True)
@@ -69,7 +73,7 @@ def main():
         raise RuntimeError('Measured binary/engine changed')
     record = dict(started_utc=started,completed_utc=time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),
                   before_source_commit=base['source_commit'],after_source_commit=source_commit,
-                  after_source_dirty=bool(output(['git','status','--porcelain'])),after_source_hashes=sources,
+                  after_source_dirty=source_dirty,after_source_hashes=sources,
                   before_binary_sha256=hashes['before'],after_binary_sha256=hashes['after'],
                   before_native_build=base['native_build'],after_native_build=after_build,
                   sqlite_library=library,goose_revision=base['goose_revision'],goose_sha256=base['goose_sha256'],

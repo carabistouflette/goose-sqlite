@@ -1,0 +1,56 @@
+--------------------------------------------------------------------------------
+Profile data file '.build/workload-profile.callgrind' (creator: callgrind-3.25.1)
+--------------------------------------------------------------------------------
+I1 cache: 
+D1 cache: 
+LL cache: 
+Timerange: Basic block 0 - 36523044
+Trigger: Program termination
+Profiled target:  .build/workload-tls-before 100 scan 128 (PID 327132, part 1)
+Events recorded:  Ir
+Events shown:     Ir
+Event sort order: Ir
+Thresholds:       99
+Include dirs:     
+User annotated:   
+Auto-annotation:  off
+
+--------------------------------------------------------------------------------
+Ir                   
+--------------------------------------------------------------------------------
+152,245,677 (100.0%)  PROGRAM TOTALS
+
+--------------------------------------------------------------------------------
+Ir                    file:function
+--------------------------------------------------------------------------------
+152,245,677 (100.0%)  ???:0x00000000000217e0 [/usr/lib/ld-linux-x86-64.so.2]
+151,727,090 (99.66%)  ???:(below main) [$REPO/.build/workload-tls-before]
+151,727,078 (99.66%)  /usr/src/debug/glibc/glibc/csu/../csu/libc-start.c:__libc_start_main@@GLIBC_2.34 [/usr/lib/libc.so.6]
+151,726,909 (99.66%)  /usr/src/debug/glibc/glibc/csu/../sysdeps/nptl/libc_start_call_main.h:(below main) [/usr/lib/libc.so.6]
+151,724,905 (99.66%)  ???:main [$REPO/.build/workload-tls-before]
+ 74,473,314 (48.92%)  ???:gq_step [$REPO/.build/workload-tls-before]
+ 67,537,867 (44.36%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3_step [/usr/lib/libsqlite3.so.3.54.1]
+ 60,551,494 (39.77%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3VdbeExec.lto_priv.0 [/usr/lib/libsqlite3.so.3.54.1]
+ 37,275,079 (24.48%)  ???:gq_fetch [$REPO/.build/workload-tls-before]
+ 22,836,633 (15.00%)  ???:gq_integer [$REPO/.build/workload-tls-before]
+ 14,336,280 ( 9.42%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:columnMem [/usr/lib/libsqlite3.so.3.54.1]
+ 13,312,000 ( 8.74%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3_column_type [/usr/lib/libsqlite3.so.3.54.1]
+ 11,161,644 ( 7.33%)  ???:gs_memeq.part.0 [$REPO/.build/workload-tls-before]
+ 10,547,200 ( 6.93%)  ???:gs_memeq_long [$REPO/.build/workload-tls-before]
+ 10,342,400 ( 6.79%)  ???:statement [$REPO/.build/workload-tls-before]
+  7,372,800 ( 4.84%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3_column_blob [/usr/lib/libsqlite3.so.3.54.1]
+  7,347,430 ( 4.83%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:getCellInfo.lto_priv.0 [/usr/lib/libsqlite3.so.3.54.1]
+  7,168,000 ( 4.71%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3_column_bytes [/usr/lib/libsqlite3.so.3.54.1]
+  6,656,000 ( 4.37%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3_column_int64 [/usr/lib/libsqlite3.so.3.54.1]
+  5,295,902 ( 3.48%)  /usr/src/debug/glibc/glibc/nptl/pthread_getspecific.c:pthread_getspecific@@GLIBC_2.34 [/usr/lib/libc.so.6]
+  5,094,568 ( 3.35%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:btreeParseCellPtr [/usr/lib/libsqlite3.so.3.54.1]
+  4,729,924 ( 3.11%)  /usr/src/debug/glibc/glibc/string/../sysdeps/x86_64/multiarch/memmove-vec-unaligned-erms.S:__memcpy_avx_unaligned_erms [/usr/lib/libc.so.6]
+  2,811,806 ( 1.85%)  /usr/include/bits/string_fortified.h:sqlite3VdbeExec.lto_priv.0
+  2,515,712 ( 1.65%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3_mutex_enter [/usr/lib/libsqlite3.so.3.54.1]
+  2,511,311 ( 1.65%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3_mutex_leave [/usr/lib/libsqlite3.so.3.54.1]
+  2,469,306 ( 1.62%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3BtreeNext.isra.0 [/usr/lib/libsqlite3.so.3.54.1]
+  2,338,997 ( 1.54%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3BtreeInsert.lto_priv.0 [/usr/lib/libsqlite3.so.3.54.1]
+  2,252,822 ( 1.48%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3GetVarint32.lto_priv.0 [/usr/lib/libsqlite3.so.3.54.1]
+  1,870,099 ( 1.23%)  /usr/src/debug/glibc/glibc/nptl/pthread_once.c:pthread_once@@GLIBC_2.34 [/usr/lib/libc.so.6]
+  1,331,200 ( 0.87%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3_value_blob [/usr/lib/libsqlite3.so.3.54.1]
+
