@@ -117,7 +117,8 @@ static int64_t exec(uint64_t d,const char *sql) {
     rc=gq_step(s); int64_t final=gq_finalize(s); return rc==SQLITE_DONE ? final : rc;
 }
 static int cache(sqlite3 *db,char **error,const sqlite3_api_routines *api) {
-    (void)error; (void)api; return sqlite3_exec(db,"PRAGMA cache_size=8; PRAGMA mmap_size=0",NULL,NULL,NULL);
+    (void)error; (void)api;
+    return sqlite3_exec(db,"PRAGMA cache_size=8; PRAGMA mmap_size=0; PRAGMA wal_autocheckpoint=0",NULL,NULL,NULL);
 }
 static void fixture(const char *path,int epoch,int padding) {
     sqlite3 *db=NULL; assert(sqlite3_open(path,&db)==SQLITE_OK);
@@ -166,22 +167,61 @@ static int verify(const char *path,int backup_dest) {
     }
     assert(sqlite3_close(db)==SQLITE_OK); return epoch;
 }
+/* Every checkpoint trial commits the new generation before arming faults. */
+static int64_t update_generation(uint64_t d) {
+    uint64_t s=0; int64_t rc=gq_prepare(d,text("UPDATE t SET epoch=1,data=?1"),&s);
+    if (rc!=SQLITE_OK) return rc;
+    uint8_t bytes[32768]; memset(bytes,'b',sizeof bytes);
+    rc=gq_bind(s,1,SQLITE_BLOB,0,0,(gq_input){bytes,sizeof bytes});
+    if (rc==SQLITE_OK) { rc=gq_step(s); if (rc==SQLITE_DONE) rc=SQLITE_OK; }
+    int64_t final=gq_finalize(s); if (rc==SQLITE_OK) rc=final;
+    assert(gq_finalize(s)==GQ_HANDLE); return rc;
+}
+static sqlite3 *anchor_open(const char *path) {
+    sqlite3 *d=NULL; assert(sqlite3_open(path,&d)==SQLITE_OK);
+    /* Initialize its WAL pager, then leave no active read transaction. Keeping
+       this connection open prevents close-time checkpoints hiding API behavior. */
+    assert(sqlite3_exec(d,"PRAGMA wal_autocheckpoint=0; PRAGMA mmap_size=0; SELECT count(*) FROM t",NULL,NULL,NULL)==SQLITE_OK);
+    return d;
+}
+static void checkpoint_retry(const char *path,uint64_t *d) {
+    /* The caller holds an anchor and verified epoch1 before this close/reopen. */
+    if (*d) assert(gq_close(*d)==SQLITE_OK && gq_close(*d)==GQ_HANDLE);
+    assert(gq_open_config(text(path),0,0,1000000,1,d)==SQLITE_OK);
+    int64_t frames=-1,copied=-1;
+    assert(gq_checkpoint(*d,SQLITE_CHECKPOINT_TRUNCATE,&frames,&copied)==SQLITE_OK && frames==0 && copied==0);
+    assert(verify(path,0)==1); /* No application write may precede this check. */
+}
+static void checked_write(const char *path,int wal,int backup_dest,int epoch) {
+    uint64_t d=0; assert(gq_open_config(text(path),0,0,1000000,wal,&d)==SQLITE_OK);
+    assert(exec(d,"BEGIN IMMEDIATE")==SQLITE_OK);
+    assert(exec(d,"UPDATE t SET epoch=epoch")==SQLITE_OK && exec(d,"COMMIT")==SQLITE_OK);
+    assert(gq_close(d)==SQLITE_OK && verify(path,backup_dest)==epoch);
+}
 int main(int argc,char **argv) {
     if (argc==2 && !strcmp(argv[1],"identity")) {
         printf("{\"version\":\"%s\",\"source_id\":\"%s\"}\n",sqlite3_libversion(),sqlite3_sourceid()); return 0;
     }
     assert(argc==8);
     const char *scenario=argv[2], *mode=argv[4]; int wal=atoi(argv[3]);
-    int backup=!strcmp(scenario,"backup");
+    int backup=!strcmp(scenario,"backup"),checkpoint=!strcmp(scenario,"checkpoint");
+    assert(!checkpoint || wal==1);
     cut=atoi(argv[5]); sticky=atoi(argv[6]); int expected=atoi(argv[7]);
     assert(cut>=0 && cut<=10000 && (sticky==0 || sticky==1));
     char dest[4096],src[4096];
     int n=snprintf(dest,sizeof dest,"%s/dest.db",argv[1]); assert(n>0 && n<(int)sizeof dest);
     n=snprintf(src,sizeof src,"%s/src.db",argv[1]); assert(n>0 && n<(int)sizeof src);
     if (!strcmp(mode,"verify")) {
+        sqlite3 *anchor=checkpoint ? anchor_open(dest) : NULL;
         int epoch=verify(dest,backup); assert(expected<0 || epoch==expected);
-        if (!strcmp(scenario,"backup")) assert(verify(src,0)==1);
-        printf("{\"epoch\":%d}\n",epoch); return 0;
+        if (backup) assert(verify(src,0)==1);
+        if (checkpoint) {
+            assert(epoch==1); uint64_t fresh=0; checkpoint_retry(dest,&fresh);
+            assert(gq_close(fresh)==SQLITE_OK); checked_write(dest,1,0,1);
+            assert(sqlite3_close(anchor)==SQLITE_OK);
+            puts("{\"epoch\":1,\"checkpoint_retry\":true}");
+        } else printf("{\"epoch\":%d}\n",epoch);
+        assert(sqlite3_shutdown()==SQLITE_OK && sqlite3_memory_used()==0); return 0;
     }
     fixture(dest,0,backup); if (backup) fixture(src,1,0);
     install(); assert(sqlite3_auto_extension((void (*)(void))cache)==SQLITE_OK);
@@ -191,26 +231,28 @@ int main(int argc,char **argv) {
     assert(rc==SQLITE_OK && d);
     if (!strcmp(scenario,"backup")) assert(gq_open(text(src),0,0,1000000,&source)==SQLITE_OK);
     sqlite3_reset_auto_extension();
+    sqlite3 *anchor=NULL;
+    if (checkpoint) {
+        anchor=anchor_open(dest);
+        assert(exec(d,"BEGIN IMMEDIATE")==SQLITE_OK);
+        assert(update_generation(d)==SQLITE_OK && exec(d,"COMMIT")==SQLITE_OK);
+        assert(verify(dest,0)==1);
+    }
     full_fault=!strcmp(mode,"full");
     target=strstr(mode,"sync") ? SYNC : !strcmp(mode,"read") ? READ :
            !strcmp(mode,"truncate") ? TRUNCATE : !strcmp(mode,"delete") ? DELETE :
            !strcmp(mode,"shm-map") ? SHM_MAP : !strcmp(mode,"shm-lock") ? SHM_LOCK : WRITE;
     crash_fault=strncmp(mode,"crash-",6)==0;
     armed=strcmp(mode,"crash-after-ack")!=0; if (!cut) cut=10000;
-    phase=4;
-    if (!strcmp(scenario,"backup")) rc=gq_backup(source,d,1000);
+    phase=4; int64_t frames=-1,copied=-1;
+    if (checkpoint) { phase=6; rc=gq_checkpoint(d,SQLITE_CHECKPOINT_TRUNCATE,&frames,&copied); }
+    else if (!strcmp(scenario,"backup")) rc=gq_backup(source,d,1000);
     else {
         phase=0; rc=exec(d,"BEGIN IMMEDIATE");
-        uint8_t bytes[32768]; memset(bytes,'b',sizeof bytes);
         if (!strcmp(scenario,"commit") && rc==SQLITE_OK) {
-            phase=1; uint64_t s=0; rc=gq_prepare(d,text("UPDATE t SET epoch=1,data=?1"),&s);
-            if (rc==SQLITE_OK) {
-                rc=gq_bind(s,1,SQLITE_BLOB,0,0,(gq_input){bytes,sizeof bytes});
-                if (rc==SQLITE_OK) { rc=gq_step(s); if (rc==SQLITE_DONE) rc=SQLITE_OK; }
-                int64_t final=gq_finalize(s); if (rc==SQLITE_OK) rc=final;
-                assert(gq_finalize(s)==GQ_HANDLE);
-            }
+            phase=1; rc=update_generation(d);
         } else if (!strcmp(scenario,"blob")) {
+            uint8_t bytes[32768]; memset(bytes,'b',sizeof bytes);
             for (int i=1;i<=4 && rc==SQLITE_OK;++i) {
                 phase=5; uint64_t b=0; rc=gq_blob_open(d,text("t"),text("data"),i,1,&b);
                 if (rc==SQLITE_OK) {
@@ -233,17 +275,22 @@ int main(int argc,char **argv) {
     assert(rc>=0);
     int64_t autocommit=0; assert(gq_status(d,2,&autocommit)==SQLITE_OK);
     if (!autocommit) assert(exec(d,"ROLLBACK")==SQLITE_OK);
+    if (checkpoint) {
+        assert(verify(dest,0)==1);
+        if (rc==SQLITE_OK) assert(frames==0 && copied==0);
+        else assert(frames==-1 && copied==-1);
+        checkpoint_retry(dest,&d);
+    }
     if (source) assert(gq_close(source)==SQLITE_OK);
     assert(gq_close(d)==SQLITE_OK && gq_close(d)==GQ_HANDLE);
+    if (anchor) assert(sqlite3_close(anchor)==SQLITE_OK);
     assert(sqlite3_vfs_register(base,1)==SQLITE_OK && sqlite3_vfs_unregister(&shim)==SQLITE_OK);
-    int epoch=verify(dest,backup); if (rc==SQLITE_OK) assert(epoch==1);
+    int epoch=verify(dest,backup); if (rc==SQLITE_OK || checkpoint) assert(epoch==1);
     if (!strcmp(scenario,"backup")) assert(verify(src,0)==1);
     /* Verify recovered state before a fresh checked transaction can change it. */
-    assert(gq_open_config(text(dest),0,0,1000000,wal,&d)==SQLITE_OK);
-    assert(exec(d,"BEGIN IMMEDIATE")==SQLITE_OK);
-    assert(exec(d,"UPDATE t SET epoch=epoch")==SQLITE_OK && exec(d,"COMMIT")==SQLITE_OK);
-    assert(gq_close(d)==SQLITE_OK && verify(dest,backup)==epoch);
-    printf("{\"skipped\":false,\"events\":%d,\"fired\":%d,\"code\":%lld,\"epoch\":%d,\"fault_phase\":%d}\n",seen,fired,(long long)rc,epoch,first_fault_phase);
+    checked_write(dest,wal,backup,epoch);
+    if (checkpoint) printf("{\"skipped\":false,\"events\":%d,\"fired\":%d,\"code\":%lld,\"epoch\":%d,\"fault_phase\":%d,\"frames\":%lld,\"checkpointed\":%lld,\"checkpoint_retry\":true}\n",seen,fired,(long long)rc,epoch,first_fault_phase,(long long)frames,(long long)copied);
+    else printf("{\"skipped\":false,\"events\":%d,\"fired\":%d,\"code\":%lld,\"epoch\":%d,\"fault_phase\":%d}\n",seen,fired,(long long)rc,epoch,first_fault_phase);
     assert(sqlite3_shutdown()==SQLITE_OK && sqlite3_memory_used()==0);
     return 0;
 }
