@@ -23,6 +23,24 @@ an engine error and before another SQLite operation; it may describe a previous
 engine operation after a wrapper error. Open failures have no live connection
 and therefore no error-message handle; inspect their numeric result.
 
+## Process initialization
+
+`initialize() -> code` calls SQLite's process initialization without creating a
+connection or registry. Call it on one startup thread, after any native
+`sqlite3_config` setup and before starting workers or other SQLite users. Check
+for OK before continuing. Failed initialization remains retryable; there is no
+cached failure, wrapper mutex or shutdown API. Repeated successful calls preserve
+live handles. Applications must coordinate process-global configuration/shutdown
+with every SQLite user, including other packages.
+
+Ordinary `open` keeps SQLite's automatic initialization for compatibility with
+standard engines. Builds using SQLITE_OMIT_AUTOINIT require explicit initialization.
+This startup API gives callers control over sequencing; it does not resolve the
+retained concurrent-cold-start engine TSan diagnostics. The scoped TSan test uses
+this production API before racing first registry use. See
+[the exact validation scope](../tests/CONCURRENCY.md) and SQLite's
+[initialization contract](https://sqlite.org/c3ref/initialize.html).
+
 ## Connections and statements
 
 `Options { readonly=false, wal=false, busy_ms=1000, work_budget=1000000 }`.

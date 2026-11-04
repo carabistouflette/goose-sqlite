@@ -31,6 +31,8 @@ fn reused_output(db: sqlite::Database) {
     assert(sqlite::column_text(stmt, 0, out) == sqlite::INVALID_HANDLE && out.len == 0);
 }
 fn main() {
+    assert(sqlite::initialize() == sqlite::OK);
+    assert(sqlite::initialize() == sqlite::OK);
     var options = sqlite::Options { .. };
     let db, opened = sqlite::open(":memory:", options);
     assert(opened == sqlite::OK);
@@ -40,6 +42,7 @@ fn main() {
     let insert, prepared = sqlite::prepare(db, "INSERT INTO items VALUES(?1, ?2, ?3, ?4, ?5)");
     assert(prepared == sqlite::OK);
     assert(sqlite::close(db) == 5); // SQLITE_BUSY: live statement retains connection.
+    assert(sqlite::initialize() == sqlite::OK);
     var name: u8[>..] = []; name.append("a\x00b");
     assert(sqlite::bind_integer(insert, 0, 1) == sqlite::INVALID_INPUT);
     assert(sqlite::bind_integer(insert, 1, -9223372036854775807 - 1) == sqlite::OK);

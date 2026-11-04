@@ -8,6 +8,7 @@ typedef struct { const uint8_t *data; int64_t len; } gq_input;
 typedef struct { uint8_t *data; int64_t len; } gq_output;
 #pragma pack(pop)
 enum { GQ_INPUT = -1, GQ_HANDLE = -2, GQ_STATE = -3, GQ_TYPE = -4, GQ_LIMIT = -5 };
+int64_t gq_initialize(void);
 int64_t gq_open(gq_input path, int64_t readonly, int64_t busy_ms, int64_t budget, void *token);
 int64_t gq_open_config(gq_input path, int64_t readonly, int64_t busy_ms, int64_t budget, int64_t wal, void *token);
 int64_t gq_close(uint64_t token);

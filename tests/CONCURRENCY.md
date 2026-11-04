@@ -40,9 +40,10 @@ upstream diagnostics; they are not a passing concurrent cold-start TSan result.
 SQLite documents initialize as thread-safe and also recommends explicit
 [initialization](https://sqlite.org/c3ref/initialize.html) for portability.
 
-The maintained TSan invocation therefore explicitly calls sqlite3_initialize on
-the main thread before creating workers. It still races the first-ever wrapper
-registry/key/token use, and exercises the complete teardown/WAL phases with both
+The maintained TSan invocation calls the production gq_initialize entry (exposed
+as sqlite::initialize) on the main thread before creating workers. It directly
+calls sqlite3_initialize without caching failures or adding a lock. It still races
+the first-ever registry/key/token use and exercises the teardown/WAL phases with both
 engine and adapter instrumented. The executable reports engine_preinitialized,
 which the driver checks and records. It does not test concurrent SQLite cold
 initialization under TSan. No engine source or production adapter is changed to

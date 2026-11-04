@@ -210,12 +210,12 @@ int main(int argc,char **argv) {
     }
     int serial_init=argc==2 && !strcmp(argv[1],"--initialize-engine");
     assert(argc==1 || serial_init);
-    /* Keep first wrapper/key initialization concurrent. The TSan run separately
+    /* Keep first registry/key initialization concurrent. The TSan run separately
        initializes SQLite to exclude its engine isInit fastpath report. Ordinary
        ASan/UBSan runs retain the fully concurrent cold engine start. */
-    if (serial_init) assert(sqlite3_initialize()==SQLITE_OK);
+    if (serial_init) assert(gq_initialize()==SQLITE_OK && gq_initialize()==SQLITE_OK);
     char dir[]="/tmp/goose-threads-XXXXXX";assert(mkdtemp(dir));
-    churn_phase(); /* No main-thread gq call may precede this phase. */
+    churn_phase(); /* No main-thread registry/key use may precede this phase. */
     teardown_phase(dir);int wal=wal_phase(dir);
     if (!wal) { char path[512];snprintf(path,sizeof path,"%s/wal.db",dir);assert(unlink(path)==0 || access(path,F_OK)!=0); }
     assert(!rmdir(dir));

@@ -97,7 +97,9 @@ static void *abandon_with_callback(void *unused) {
     return NULL;
 }
 int main(void) {
+    assert(gq_initialize() == SQLITE_OK);
     uint64_t d = open_db(":memory:", 0, 0), s = prepare(d, "SELECT ?1, ?2, ?3, ?4");
+    assert(gq_initialize() == SQLITE_OK && gq_parameter_count(s) == 4);
     uint8_t unaligned[17] = {0};
     assert(gq_stmt_status(s,SQLITE_STMTSTATUS_RUN,0,unaligned+1) == SQLITE_OK);
     int64_t status; memcpy(&status,unaligned+1,8); assert(status == 0);

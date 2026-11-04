@@ -26,6 +26,7 @@ struct Options {
     busy_ms:     i64  = 1000,
     work_budget: i64  = 1000000,
 }
+extern fn native_initialize() -> i64 = "gq_initialize";
 extern fn native_open(path: const u8[:], readonly: i64, busy_ms: i64, budget: i64, wal: i64, token: u64&) -> i64 = "gq_open_config";
 extern fn native_close(token: u64) -> i64 = "gq_close";
 extern fn native_prepare(token: u64, sql: const u8[:], out: u64&) -> i64 = "gq_prepare";
@@ -42,6 +43,8 @@ extern fn native_size(token: u64, column: i64, kind: i64, size: i64&) -> i64 = "
 extern fn native_copy(token: u64, column: i64, kind: i64, out: u8[:]) -> i64 = "gq_copy";
 extern fn native_message(token: u64, out: u8[:]) -> i64 = "gq_message";
 
+// Call on the startup thread, after native SQLite configuration and before workers.
+fn initialize() -> i64 { return native_initialize(); }
 fn open(path: const u8[:], options: const Options&) -> Database, i64 {
     var token: u64 = 0;
     let code = native_open(path, if options.readonly { 1 } else { 0 }, options.busy_ms, options.work_budget, if options.wal { 1 } else { 0 }, token);

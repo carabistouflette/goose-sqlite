@@ -38,6 +38,7 @@ import sqlite from "../goose-sqlite";
 import std;
 
 fn main() {
+    assert(sqlite::initialize() == sqlite::OK);
     let options = sqlite::Options { .. };
     let db, opened = sqlite::open(":memory:", options);
     assert(opened == sqlite::OK);

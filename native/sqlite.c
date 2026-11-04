@@ -172,6 +172,8 @@ static int set_wal(Database *d) {
     return sqlite3_exec(d->ptr, sync == 3 ? "PRAGMA main.synchronous=EXTRA" :
         "PRAGMA main.synchronous=FULL", NULL, NULL, NULL);
 }
+/* No cached result: failed initialization must remain retryable. */
+int64_t gq_initialize(void) { return sqlite3_initialize(); }
 int64_t gq_open(gq_input path, int64_t readonly, int64_t busy_ms, int64_t budget, void *token) {
     return gq_open_config(path, readonly, busy_ms, budget, 0, token);
 }

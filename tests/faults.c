@@ -31,7 +31,21 @@ int main(void) {
     assert(sqlite3_config(SQLITE_CONFIG_MEMSTATUS, 1) == SQLITE_OK);
     /* Disable lookaside so internal BLOB allocations reach the injected allocator. */
     assert(sqlite3_config(SQLITE_CONFIG_LOOKASIDE, 0, 0) == SQLITE_OK);
-    assert(sqlite3_initialize() == SQLITE_OK);
+    /* A failure must not poison later startup. Retry before any shutdown. */
+    int init_failures = 0;
+    for (int n = 0; n < 32; ++n) {
+        countdown = n;
+        int64_t rc = gq_initialize();
+        countdown = -1;
+        if (rc != SQLITE_OK) { assert(nomem(rc)); ++init_failures; }
+        assert(gq_initialize() == SQLITE_OK && gq_initialize() == SQLITE_OK);
+        uint64_t db = open_db();
+        assert(gq_close(db) == SQLITE_OK);
+        assert(sqlite3_shutdown() == SQLITE_OK && sqlite3_memory_used() == 0);
+    }
+    assert(init_failures > 0);
+    printf("sqlite initialization failures recovered: %d\n", init_failures);
+    assert(gq_initialize() == SQLITE_OK);
     sqlite3_int64 baseline = sqlite3_memory_used();
     int open_failures = 0, prepare_failures = 0, bind_failures = 0, step_failures = 0;
     for (int n = 0; n < 256; ++n) {

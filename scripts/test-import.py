@@ -25,6 +25,8 @@ def main():
 import std;
 
 fn main() {
+    assert(sqlite::initialize() == sqlite::OK);
+    assert(sqlite::initialize() == sqlite::OK);
     let options = sqlite::Options { .. };
     let db, opened = sqlite::open(":memory:", options);
     assert(opened == sqlite::OK);
@@ -46,6 +48,7 @@ fn main() {
     assert(sqlite::bind_integer(stmt, 1, 42) == sqlite::OK);
     assert(sqlite::bind_text(stmt, 2, "Goose's bytes") == sqlite::OK);
     assert(sqlite::step(stmt) == sqlite::ROW);
+    assert(sqlite::initialize() == sqlite::OK);
     let value, read = sqlite::column_integer(stmt, 0);
     assert(read == sqlite::OK && value == 42);
     var bytes: u8[>..] = [];
