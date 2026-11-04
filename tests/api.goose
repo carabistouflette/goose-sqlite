@@ -112,6 +112,27 @@ fn main() {
         let invalid, code = sqlite::open(path, options);
         assert(code == sqlite::INVALID_INPUT && invalid.token == 0);
     }
+    var ordinary = sqlite::Options { .. };
+    let limits, limit_opened = sqlite::open(":memory:", ordinary);
+    assert(limit_opened == sqlite::OK);
+    let bound, bound_prepared = sqlite::prepare(limits, "SELECT ?1");
+    assert(bound_prepared == sqlite::OK);
+    var large: u8[>..] = []; large.resize(1048576, 'x');
+    assert(sqlite::bind_blob(bound, 1, large) == sqlite::OK);
+    assert(sqlite::step(bound) == sqlite::ROW);
+    assert(sqlite::column_blob(bound, 0, blob) == sqlite::OK && blob == large);
+    assert(sqlite::reset(bound) == sqlite::OK);
+    large.push('x');
+    assert(sqlite::bind_blob(bound, 1, large) == sqlite::INVALID_INPUT);
+    assert(sqlite::finalize(bound) == sqlite::OK);
+    var oversized_sql: u8[>..] = []; oversized_sql.append("SELECT 1;");
+    oversized_sql.resize(65536, ' ');
+    let exact, exact_prepared = sqlite::prepare(limits, oversized_sql);
+    assert(exact_prepared == sqlite::OK && sqlite::finalize(exact) == sqlite::OK);
+    oversized_sql.push(' ');
+    let oversized, oversized_code = sqlite::prepare(limits, oversized_sql);
+    assert(oversized_code == sqlite::INVALID_INPUT && oversized.token == 0);
+    assert(sqlite::close(limits) == sqlite::OK);
     options.work_budget = 1000;
     let bounded, bounded_code = sqlite::open(":memory:", options);
     assert(bounded_code == sqlite::OK);

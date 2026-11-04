@@ -13,13 +13,16 @@ check:
 	python3 scripts/native-manifest.py --check
 	"$(GOOSE)" format --check sqlite.goose examples tests bench
 	"$(GOOSE)" check tests/api.goose
+	"$(GOOSE)" check tests/files.goose
 	"$(GOOSE)" check examples/items.goose
+	"$(GOOSE)" check bench/bench.goose
 test:
 	python3 scripts/native-manifest.py --check
 	"$(GOOSE)" run tests/api.goose
 	mkdir -p .build
 	"$(GOOSE)" build tests/api.goose -o .build/api
 	./.build/api
+	python3 scripts/test-files.py "$(GOOSE)"
 	"$(GOOSE)" run examples/items.goose
 test-native:
 	cmake -S . -B .build/native-$(notdir $(CC)) -DCMAKE_C_COMPILER="$(CC)" -DCMAKE_BUILD_TYPE=Debug -DGOOSE_SQLITE_NATIVE_TESTS=ON
