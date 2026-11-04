@@ -1,0 +1,12 @@
+{
+  "dataset": "overlap.json",
+  "scope": "Original complete 144-sample series, retained unmodified. Shared host, nonexclusive CPU7.",
+  "known_overlap": {
+    "config_parent_start_utc": "2026-11-04T13:39:27Z",
+    "sqlite_parent_start_utc": "2026-11-04T13:39:34Z",
+    "sqlite_metadata_before_timing_utc": "2026-11-04T13:39:47Z",
+    "sqlite_result_file_written_utc": "2026-11-04T13:41:38.339332+00:00",
+    "description": "CONFIG paired/native-binding/repeat timing used CPU7 concurrently with part of SQLite series. Neither was interrupted; no exclusive isolation claimed. Later CONFIG handoff repeat ran 13:42:57Z..13:43:58Z, after SQLite completed."
+  },
+  "provenance_limits": "Original native build flags/archive SHA and caller GCC version retained; native compiler path/version not independently stored in this first record. Maintained harness now records its actual compiler identity. No allocation/RSS/disk claims."
+}

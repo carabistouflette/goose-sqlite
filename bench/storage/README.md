@@ -23,7 +23,7 @@ allocation is required. Goose resizes/reuses its array; raw C reuses malloc stor
 
 This measures an application choosing a more suitable API. Both bindings can use
 incremental access; there is no exclusive Goose optimization. A 4 KiB range uses
-128 times fewer application output bytes than a 512 KiB value, but this does not
+128 times fewer bytes copied to output than a 512 KiB value, but this does not
 establish a 128-fold timing gain, bound SQLite's internal memory, or measure disk
 reads, RSS, WAL, durability, contention or lifecycle overhead. Copying from a held
 ROW also avoids repeated query/step work; this deliberately gives the whole path

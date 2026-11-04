@@ -49,6 +49,31 @@ static int fixed(void) {
     int n = sqlite3_libversion_number();
     return n >= 3051003 || (n >= 3050007 && n < 3051000) || (n >= 3044006 && n < 3045000);
 }
+/* Test-only auto-extension captures the engine connection for post-open inspection.
+   This does not add any production pointer or authorizer escape API. */
+static sqlite3 *captured;
+static int initial_sync;
+static int capture(sqlite3 *db, char **error, const sqlite3_api_routines *api) {
+    (void)error; (void)api;
+    captured = db;
+    return sqlite3_exec(db, initial_sync == 3 ? "PRAGMA synchronous=EXTRA" :
+        "PRAGMA synchronous=OFF", NULL,NULL,NULL);
+}
+static void check_sync(const char *path, int before, int expected) {
+    initial_sync = before; captured = NULL;
+    assert(sqlite3_auto_extension((void (*)(void))capture) == SQLITE_OK);
+    uint64_t d = 0;
+    assert(gq_open_config(text(path),0,0,1000000,1,&d) == SQLITE_OK && captured);
+    sqlite3_reset_auto_extension();
+    assert(exec(d,"PRAGMA synchronous") == SQLITE_AUTH);
+    /* Inspect ONLY after checking that public SQL cannot bypass authorization. */
+    assert(sqlite3_set_authorizer(captured,NULL,NULL) == SQLITE_OK);
+    sqlite3_stmt *s = NULL;
+    assert(sqlite3_prepare_v2(captured,"PRAGMA main.synchronous",-1,&s,NULL) == SQLITE_OK);
+    assert(sqlite3_step(s) == SQLITE_ROW && sqlite3_column_int(s,0) == expected);
+    assert(sqlite3_finalize(s) == SQLITE_OK && gq_close(d) == SQLITE_OK);
+    captured = NULL;
+}
 int main(void) {
     uint64_t d = open_db(":memory:");
     assert(exec(d, "CREATE TABLE t(id INTEGER PRIMARY KEY, x BLOB, y)") == SQLITE_OK);
@@ -180,6 +205,26 @@ int main(void) {
         assert(sqlite3_close(raw) == SQLITE_OK);
         assert(gq_open(text(path),0,0,1000000,&wal) == SQLITE_MISUSE && wal == 0);
     }
+    if (fixed()) {
+        check_sync(path,0,2); /* OFF is raised to FULL. */
+        check_sync(path,3,3); /* EXTRA survives WAL initialization. */
+    }
+    /* Page-size mismatch cannot overwrite an existing in-memory destination. */
+    char large_path[256]; snprintf(large_path,sizeof large_path,"%s/large.db",dir);
+    sqlite3 *large = NULL; assert(sqlite3_open(large_path,&large) == SQLITE_OK);
+    assert(sqlite3_exec(large,"PRAGMA page_size=8192; CREATE TABLE t(x); INSERT INTO t VALUES(zeroblob(10000))",NULL,NULL,NULL) == SQLITE_OK);
+    assert(sqlite3_close(large) == SQLITE_OK);
+    uint64_t source_large = open_db(large_path), small = open_db(":memory:");
+    assert(exec(small,"CREATE TABLE old(x)") == SQLITE_OK && exec(small,"INSERT INTO old VALUES(42)") == SQLITE_OK);
+    assert((gq_backup(source_large,small,100) & 255) == SQLITE_READONLY);
+    assert(scalar(small,"SELECT x FROM old") == 42 && gq_close(small) == SQLITE_OK);
+    if (fixed()) {
+        assert(gq_open_config(text(target),0,0,1000000,1,&small) == SQLITE_OK);
+        assert(exec(small,"CREATE TABLE old(x)") == SQLITE_OK && exec(small,"INSERT INTO old VALUES(42)") == SQLITE_OK);
+        assert((gq_backup(source_large,small,100) & 255) == SQLITE_READONLY);
+        assert(scalar(small,"SELECT x FROM old") == 42 && gq_close(small) == SQLITE_OK);
+    }
+    assert(gq_close(source_large) == SQLITE_OK && unlink(large_path) == 0);
     assert(unlink(path) == 0 && unlink(target) == 0);
     snprintf(sidecar,sizeof sidecar,"%s-wal",path); unlink(sidecar);
     snprintf(sidecar,sizeof sidecar,"%s-shm",path); unlink(sidecar);

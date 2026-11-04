@@ -60,7 +60,7 @@ def main():
         target_files = list(Path(cache).rglob('target-goose_sqlite_native-*.json'))
         if len(target_files) != 1: raise RuntimeError('Expected native target codemodel')
         target = json.loads(target_files[0].read_text())
-        native = dict(build_type=values['CMAKE_BUILD_TYPE'], flags=[[f['fragment'] for f in group.get('compileCommandFragments', [])] for group in target['compileGroups']],
+        native = dict(compiler=Path(values['CMAKE_C_COMPILER']).name, compiler_version=output([values['CMAKE_C_COMPILER'], '--version']).splitlines()[0], compiler_sha256=digest(Path(values['CMAKE_C_COMPILER']).resolve()), build_type=values['CMAKE_BUILD_TYPE'], flags=[[f['fragment'] for f in group.get('compileCommandFragments', [])] for group in target['compileGroups']],
                       archive_sha256=digest(next(Path(cache).rglob('libgoose_sqlite_native.a'))))
         subprocess.run(['gcc', '-O2', '-std=c11', '-Wall', '-Wextra', '-Werror', '-I', values['SQLite3_INCLUDE_DIR'], 'bench/storage/raw.c', values['SQLite3_LIBRARY'], '-o', str(build / 'raw')], cwd=ROOT, env=env, check=True)
     bins = {'goose': build / 'goose', 'sqlite-c-api': build / 'raw'}
