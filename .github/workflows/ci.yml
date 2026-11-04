@@ -41,6 +41,7 @@ jobs:
       - run: make fuzz-native FUZZ_RUNS=10000
       - run: make bench BENCH_ITERATIONS=10
       - run: /usr/bin/python3 bench/alternatives/measure.py --goose .toolchain/goose/build/goose --iterations 10 --runs 1 --output .build/alternative-smoke
+      - run: python3 bench/alternatives/paired.py --goose .toolchain/goose/build/goose --before-ref HEAD --after-ref HEAD --iterations 10 --runs 1 --output .build/paired-smoke
       - run: python3 bench/storage/measure.py --goose .toolchain/goose/build/goose --iterations 10 --runs 1 --output .build/storage-smoke
       - run: git diff --exit-code && git diff --check
   thread-sanitizer:
