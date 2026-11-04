@@ -48,7 +48,9 @@ execute, with normal Unicode text decoding. Reusable Python SQL is primed on the
 connection before timing; insert priming is rolled back. Python runs with -I so
 PYTHONOPTIMIZE cannot remove validation or DONE-fetch work. Rust holds a Statement, consumes Rows
 through reset and explicitly finalizes. SQLiteCpp uses prepare_v2 and RAII cleanup;
-its destructors do not expose finalization status. Goose/raw C use persistent
+its destructors do not expose finalization status. The shared C/C++ driver uses
+raw sqlite3_exec for setup and BEGIN/COMMIT; timed row operations use the public
+SQLiteCpp Statement/Column interface. Goose/raw C use persistent
 prepare_v3. Raw C/C++ copy byte outputs into std::string; Rust allocates owned
 String/Vec (String validates UTF-8), Python returns owned str/bytes, while Goose reuses a caller builder.
 Those API/allocator differences remain measured and are not hidden parity claims.
