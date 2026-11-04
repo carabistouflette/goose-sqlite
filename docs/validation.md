@@ -20,14 +20,21 @@ checks, not a security certification or a guarantee on other platforms.
   automatic thread-exit cleanup releasing an exclusive file lock, and errors
   returned by reset/finalize. System SQLite is dynamically linked and is not
   instrumented by this adapter sanitizer build.
-- Clang libFuzzer completed 100000 cases with seed 219 and input size up to 4096.
+- Clang libFuzzer completed 1000000 cases with seed 219 and input size up to
+  4096, followed by 100000 cases after the final comment-normalization change.
   The harness creates a fresh bounded in-memory database per input, fuzzes SQL,
   verifies arbitrary text/blob byte roundtrips, exact/undersized output copies
   and stale-token rejection. This does not exhaust SQL grammar, SQLite engine
   behavior or allocation-failure paths.
-- Benchmark smoke passes all nine fixtures with correct checksums. Measurement
-  scope and reproducibility are in bench/README.md. No universal performance
+- Benchmark smoke passes all nine fixtures with correct checksums. A full
+  three-pass recording retains 54 raw samples at 100000 ordinary iterations
+  (scaled for large values) in [the evidence directory](../bench/results/validated-2026-11-04/README.md).
+  Scope and reproducibility are in bench/README.md. No universal performance
   ranking follows from these measurements.
+- A clean standalone clone built the pinned compiler from source with `make
+  setup`, then passed `make check test` using that compiler. An independent
+  reviewer also validated a separate standalone clone with the shared pinned
+  compiler, both sanitizer builds, fuzz smoke and all benchmark fixtures.
 
 ## Independent review
 
@@ -46,6 +53,13 @@ flags/artifact hashes/runtime identity, and checks both insert count and values.
 The implementation retains its straightforward byte-copy interface; there is no
 measured justification for removing validation or adding a more complex path.
 
+Final independent security/correctness and quality/standalone reviews found no
+remaining confirmed blockers in their scope. Their final minor finding concerned
+SQLite accepting EOF block comments/leading empty statements while documentation
+implied stricter syntax. The suffix scanner, contract and public regression cases
+now consistently follow SQLite's first-statement grammar and prevent a second
+executable statement. Review is evidence within its scope, not a certification.
+
 ## Reproduce
 
 ```sh
@@ -53,8 +67,8 @@ make setup
 make check test
 make test-native CC=gcc
 make test-native CC=clang
-make fuzz-native FUZZ_RUNS=100000
-make bench BENCH_ITERATIONS=10000
+make fuzz-native FUZZ_RUNS=1000000
+make bench BENCH_ITERATIONS=100000
 git diff --check
 ```
 
