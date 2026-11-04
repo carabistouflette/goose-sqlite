@@ -20,8 +20,10 @@ Nine fixtures: prepare/step/read/finalize SELECT 1; reused text binding/copy of
 The largest text fixture uses one tenth the iteration count; the 1 MiB BLOB uses
 one hundredth. Insert validation checks both row count and inserted-value sum. Every sample checks
 its checksum; text workloads also check every copied byte against the input.
-All fixtures include connection open and close. Text C output is initialized to
-match Goose builder resize initialization. Each executable gets a separate warmup;
+All fixtures include connection open and close. C output is initialized once to match the first Goose builder resize.
+Successful reads reuse existing storage without clearing/reinitializing it; all
+returned bytes are still copied and compared. Only a newly grown suffix needs
+initialization in the Goose builder. Each executable gets a separate warmup;
 recorded samples alternate execution order over three passes by default.
 
 The C baseline calls the same checked production adapter. It is not unrestricted

@@ -2,10 +2,37 @@
 import sqlite from "..";
 import std;
 
+fn reused_output(db: sqlite::Database) {
+    var out:   u8[>..] = []; out.append("old output");
+    var first: u8[>..] = []; first.resize(4096, 'a');
+    var other: u8[>..] = []; other.resize(4096, 'b');
+    var large: u8[>..] = []; large.resize(8192, 'c');
+    let stmt, prepared = sqlite::prepare(db, "SELECT ?1, ?2, NULL");
+    assert(prepared == sqlite::OK);
+    assert(sqlite::column_text(stmt, 0, out) == sqlite::INVALID_STATE && out.len == 0);
+    let inputs: (const u8[:])[8] = [first[..], other[..], "small", "", large[..], "tiny", "a\x00b", large[..]];
+    for input in inputs {
+        assert(sqlite::bind_text(stmt, 1, input) == sqlite::OK);
+        assert(sqlite::bind_blob(stmt, 2, input) == sqlite::OK);
+        assert(sqlite::step(stmt) == sqlite::ROW);
+        assert(sqlite::column_text(stmt, 0, out) == sqlite::OK && out == input);
+        assert(sqlite::column_blob(stmt, 1, out) == sqlite::OK && out == input);
+        assert(sqlite::step(stmt) == sqlite::DONE);
+        assert(sqlite::reset(stmt) == sqlite::OK);
+    }
+    assert(sqlite::step(stmt) == sqlite::ROW);
+    assert(sqlite::column_text(stmt, 2, out) == sqlite::TYPE_MISMATCH && out.len == 0);
+    assert(sqlite::column_text(stmt, 0, out) == sqlite::OK && out == large);
+    assert(sqlite::column_text(stmt, -1, out) == sqlite::INVALID_INPUT && out.len == 0);
+    assert(sqlite::column_text(stmt, 0, out) == sqlite::OK && out == large);
+    assert(sqlite::finalize(stmt) == sqlite::OK);
+    assert(sqlite::column_text(stmt, 0, out) == sqlite::INVALID_HANDLE && out.len == 0);
+}
 fn main() {
     var options = sqlite::Options { .. };
     let db, opened = sqlite::open(":memory:", options);
     assert(opened == sqlite::OK);
+    reused_output(db);
     assert(sqlite::execute(db, "CREATE TABLE items(id INTEGER PRIMARY KEY, name TEXT, data BLOB, score REAL, absent)") == sqlite::OK);
     assert(sqlite::execute(db, "BEGIN") == sqlite::OK);
     let insert, prepared = sqlite::prepare(db, "INSERT INTO items VALUES(?1, ?2, ?3, ?4, ?5)");

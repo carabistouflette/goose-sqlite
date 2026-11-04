@@ -35,12 +35,12 @@ int main(int argc, char **argv) {
         int kind = !strcmp(argv[2], "text") ? SQLITE_TEXT : SQLITE_BLOB;
         uint8_t *input = malloc(size ? (size_t)size : 1), *out = malloc(size ? (size_t)size : 1);
         assert(input && out); memset(input, 'x', (size_t)size);
+        memset(out, 0, (size_t)size); /* Match the first Goose builder resize. */
         uint64_t s = prepare(db, "SELECT ?1");
         for (long i = 0; i < count; ++i) {
             assert(gq_bind(s, 1, kind, 0, 0, (gq_input){input, size}) == SQLITE_OK);
             assert(gq_step(s) == SQLITE_ROW);
             int64_t n = -1; assert(gq_size(s, 0, kind, &n) == SQLITE_OK && n == size);
-            memset(out, 0, (size_t)size); /* Match Goose builder resize initialization. */
             assert(gq_copy(s, 0, kind, (gq_output){out, size}) == SQLITE_OK);
             assert(!memcmp(out, input, (size_t)size)); checksum += n;
             assert(gq_step(s) == SQLITE_DONE); assert(gq_reset(s) == SQLITE_OK);

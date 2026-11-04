@@ -73,11 +73,10 @@ fn column_float(stmt: Statement, column: i64) -> f64, i64 {
     return value, code;
 }
 fn column_bytes(stmt: Statement, column: i64, kind: i64, out: u8[>..]&) -> i64 {
-    out.clear();
     var size: i64 = 0;
     let code = native_size(stmt.token, column, kind, size);
-    if code != OK { return code; }
-    if size < 0 || size > 1048576 { return LIMIT; }
+    if code != OK { out.clear(); return code; }
+    if size < 0 || size > 1048576 { out.clear(); return LIMIT; }
     out.resize(size, 0);
     let copied = native_copy(stmt.token, column, kind, out[..]);
     if copied != OK { out.clear(); }
@@ -93,7 +92,7 @@ fn error_message(db: Database, out: u8[>..]&) -> i64 {
     return OK;
 }
 // Execute a single statement that returns no rows. Use prepare/step for queries
-// and RETURNING; this helper reports INVALID_STATE if a row is produced.
+// and RETURNING; this helper rejects result columns before stepping.
 fn execute(db: Database, sql: const u8[:]) -> i64 {
     let stmt, prepared = prepare(db, sql);
     if prepared != OK { return prepared; }
