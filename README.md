@@ -78,6 +78,7 @@ copies. Foreign-thread/stale/default handles return `INVALID_HANDLE`.
   and virtual table creation/deletion. Virtual tables and VACUUM are unsupported.
   Filenames cannot be `file:` URIs. Ordinary file access is not sandboxed.
 
-[Security](SECURITY.md) · [Contributing](CONTRIBUTING.md) ·
+[Platforms and requirements](docs/platforms.md) · [Security](SECURITY.md) ·
+[Contributing](CONTRIBUTING.md) ·
 [Benchmarks](bench/README.md) · [Validation](docs/validation.md) ·
 [Third-party notices](THIRD_PARTY_NOTICES.md)
