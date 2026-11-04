@@ -30,9 +30,34 @@ fn reused_output(db: sqlite::Database) {
     assert(sqlite::finalize(stmt) == sqlite::OK);
     assert(sqlite::column_text(stmt, 0, out) == sqlite::INVALID_HANDLE && out.len == 0);
 }
+fn reprepare_columns() {
+    let options = sqlite::Options { .. };
+    let db, opened = sqlite::open(":memory:", options);
+    assert(opened == sqlite::OK);
+    assert(sqlite::execute(db, "CREATE TABLE shape(a)") == sqlite::OK);
+    assert(sqlite::execute(db, "INSERT INTO shape VALUES(11)") == sqlite::OK);
+    let query, prepared = sqlite::prepare(db, "SELECT * FROM shape");
+    assert(prepared == sqlite::OK);
+    assert(sqlite::execute(db, "ALTER TABLE shape ADD COLUMN b DEFAULT 22") == sqlite::OK);
+    assert(sqlite::step(query) == sqlite::ROW && sqlite::column_count(query) == 2);
+    let second, second_code = sqlite::column_integer(query, 1);
+    assert(second_code == sqlite::OK && second == 22);
+    let absent, absent_code = sqlite::column_integer(query, 2);
+    assert(absent_code == sqlite::INVALID_INPUT && absent == 0);
+    assert(sqlite::reset(query) == sqlite::OK);
+    assert(sqlite::execute(db, "ALTER TABLE shape DROP COLUMN b") == sqlite::OK);
+    assert(sqlite::step(query) == sqlite::ROW && sqlite::column_count(query) == 1);
+    let removed, removed_code = sqlite::column_integer(query, 1);
+    assert(removed_code == sqlite::INVALID_INPUT && removed == 0);
+    let first, first_code = sqlite::column_integer(query, 0);
+    assert(first_code == sqlite::OK && first == 11);
+    assert(sqlite::step(query) == sqlite::DONE && sqlite::finalize(query) == sqlite::OK);
+    assert(sqlite::close(db) == sqlite::OK);
+}
 fn main() {
     assert(sqlite::initialize() == sqlite::OK);
     assert(sqlite::initialize() == sqlite::OK);
+    reprepare_columns();
     var options = sqlite::Options { .. };
     let db, opened = sqlite::open(":memory:", options);
     assert(opened == sqlite::OK);

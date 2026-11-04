@@ -96,7 +96,39 @@ static void *abandon_with_callback(void *unused) {
     (void)prepare(d,"SELECT 1");
     return NULL;
 }
+static void reprepare_columns(void) {
+    uint64_t d=open_db(":memory:",0,0);
+    assert(exec(d,"CREATE TABLE shape(a)")==SQLITE_OK);
+    assert(exec(d,"INSERT INTO shape VALUES(11)")==SQLITE_OK);
+    uint64_t s=prepare(d,"SELECT * FROM shape");
+    assert(exec(d,"ALTER TABLE shape ADD COLUMN b DEFAULT 22")==SQLITE_OK);
+    assert(gq_step(s)==SQLITE_ROW && gq_columns(s)==2);
+    int64_t value=123;
+    assert(gq_integer(s,-1,&value)==GQ_INPUT && value==0);
+    assert(gq_integer(s,1,&value)==SQLITE_OK && value==22);
+    assert(gq_integer(s,2,&value)==GQ_INPUT && value==0);
+    assert(gq_integer(s,0,&value)==SQLITE_OK && value==11);
+    assert(gq_reset(s)==SQLITE_OK);
+    assert(gq_integer(s,0,&value)==GQ_STATE && value==0);
+    assert(exec(d,"ALTER TABLE shape DROP COLUMN b")==SQLITE_OK);
+    assert(gq_step(s)==SQLITE_ROW && gq_columns(s)==1);
+    assert(gq_integer(s,1,&value)==GQ_INPUT && value==0);
+    assert(gq_integer(s,0,&value)==SQLITE_OK && value==11);
+    assert(gq_step(s)==SQLITE_DONE && gq_integer(s,0,&value)==GQ_STATE && value==0);
+    assert(gq_reset(s)==SQLITE_OK);
+    assert(exec(d,"ALTER TABLE shape ADD COLUMN b DEFAULT 33")==SQLITE_OK);
+    assert(gq_step(s)==SQLITE_ROW && gq_integer(s,1,&value)==SQLITE_OK && value==33);
+    assert(gq_finalize(s)==SQLITE_OK && gq_integer(s,0,&value)==GQ_HANDLE && value==0);
+    s=prepare(d,"SELECT 11 UNION ALL SELECT 'x' UNION ALL SELECT x'ff'");
+    assert(gq_step(s)==SQLITE_ROW && gq_integer(s,0,&value)==SQLITE_OK && value==11);
+    assert(gq_step(s)==SQLITE_ROW && gq_integer(s,0,&value)==GQ_TYPE && value==0);
+    uint8_t byte=0;
+    assert(gq_copy(s,0,SQLITE_TEXT,(gq_output){&byte,1})==SQLITE_OK && byte=='x');
+    assert(gq_step(s)==SQLITE_ROW && gq_copy(s,0,SQLITE_BLOB,(gq_output){&byte,1})==SQLITE_OK && byte==255);
+    assert(gq_finalize(s)==SQLITE_OK && gq_close(d)==SQLITE_OK);
+}
 int main(void) {
+    reprepare_columns();
     assert(gq_initialize() == SQLITE_OK);
     uint64_t d = open_db(":memory:", 0, 0), s = prepare(d, "SELECT ?1, ?2, ?3, ?4");
     assert(gq_initialize() == SQLITE_OK && gq_parameter_count(s) == 4);

@@ -25,6 +25,7 @@ typedef struct {
     uint64_t token;
     Database *db;
     enum { READY, ROW, FINISHED } state;
+    int columns; /* Lazy count for this ROW only; shares existing struct padding. */
 } Statement;
 typedef struct {
     sqlite3_blob *ptr;
@@ -343,6 +344,7 @@ int64_t gq_step(uint64_t token) {
     s->db->remaining = s->db->budget;
     int rc = sqlite3_step(s->ptr);
     s->state = rc == SQLITE_ROW ? ROW : FINISHED;
+    s->columns = -1; /* Reprepare can change width. Never carry a count to a new row. */
     return rc;
 }
 int64_t gq_columns(uint64_t token) {
@@ -353,7 +355,9 @@ static int column(uint64_t token, int64_t col, Statement **out) {
     Statement *s = statement(token);
     if (!s) return GQ_HANDLE;
     if (s->state != ROW) return GQ_STATE;
-    if (col < 0 || col >= sqlite3_column_count(s->ptr)) return GQ_INPUT;
+    if (col < 0) return GQ_INPUT;
+    if (s->columns < 0) s->columns = sqlite3_column_count(s->ptr);
+    if (col >= s->columns) return GQ_INPUT;
     *out = s; return SQLITE_OK;
 }
 int64_t gq_type(uint64_t token, int64_t col) {
