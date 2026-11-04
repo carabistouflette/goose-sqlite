@@ -1,3 +1,5 @@
 .toolchain/
 .build/
 __pycache__/
+
+bench/alternatives/rust/target/
