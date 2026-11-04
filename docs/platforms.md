@@ -48,3 +48,9 @@ operations remain available on 3.37+. All processes participating in WAL access
 must use patched engines; open-time inspection cannot control external changes.
 WAL needs one host and a suitable local filesystem, sidecars and permissions.
 See [the complete storage contract](api.md) for limits and engine restrictions.
+
+Public test executables can use separate output directories with
+`make test PUBLIC_TEST_DIR=.build/public-host` (and a distinct GOOSE_HOME/native
+prefix for each engine). This prevents concurrent compatibility runs from sharing
+executable paths. The validated follow-up uses isolated directories and verifies
+the actual loaded engine; overlapping exploratory runs are not counted.

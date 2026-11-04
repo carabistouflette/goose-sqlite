@@ -1,5 +1,6 @@
 GOOSE ?= .toolchain/goose/build/goose
 CC ?= cc
+PUBLIC_TEST_DIR ?= .build
 FUZZ_CC ?= clang
 FUZZ_RUNS ?= 10000
 BENCH_ITERATIONS ?= 10000
@@ -28,19 +29,19 @@ test:
 	"$(GOOSE)" run tests/diagnostics.goose
 	"$(GOOSE)" run tests/storage.goose
 	"$(GOOSE)" run tests/metadata.goose
-	mkdir -p .build
-	"$(GOOSE)" build tests/api.goose -o .build/api
-	./.build/api
-	"$(GOOSE)" build tests/metadata.goose -o .build/metadata
-	./.build/metadata
-	"$(GOOSE)" build tests/storage.goose -o .build/storage
-	./.build/storage
-	"$(GOOSE)" build tests/diagnostics.goose -o .build/diagnostics
-	./.build/diagnostics
+	mkdir -p "$(PUBLIC_TEST_DIR)"
+	"$(GOOSE)" build tests/api.goose -o "$(PUBLIC_TEST_DIR)/api"
+	"$(PUBLIC_TEST_DIR)/api"
+	"$(GOOSE)" build tests/metadata.goose -o "$(PUBLIC_TEST_DIR)/metadata"
+	"$(PUBLIC_TEST_DIR)/metadata"
+	"$(GOOSE)" build tests/storage.goose -o "$(PUBLIC_TEST_DIR)/storage"
+	"$(PUBLIC_TEST_DIR)/storage"
+	"$(GOOSE)" build tests/diagnostics.goose -o "$(PUBLIC_TEST_DIR)/diagnostics"
+	"$(PUBLIC_TEST_DIR)/diagnostics"
 	python3 scripts/test-files.py "$(GOOSE)"
 	"$(GOOSE)" run examples/transactions.goose
-	"$(GOOSE)" build examples/transactions.goose -o .build/transactions
-	./.build/transactions
+	"$(GOOSE)" build examples/transactions.goose -o "$(PUBLIC_TEST_DIR)/transactions"
+	"$(PUBLIC_TEST_DIR)/transactions"
 	"$(GOOSE)" run examples/items.goose
 	$(MAKE) test-import
 test-import:
