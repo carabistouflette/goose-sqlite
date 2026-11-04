@@ -33,8 +33,9 @@ the supported interface limits are in api.md. Connection security configuration
 failures abort open rather than silently weakening policy.
 
 The initial host uses SQLite 3.54.1, GCC 16.2.1 and Clang 23. Hosted CI uses
-Ubuntu 24.04 and its packaged SQLite. Exact completed compatibility checks and
-CI evidence are recorded in validation.md.
+Ubuntu 24.04 and its packaged SQLite. Exact upstream 3.37.0 and Ubuntu noble-security 3.45.1-1ubuntu2.8 packages also
+passed cross-engine checks on the initial Linux host. Exact completed checks,
+configurations and CI evidence are recorded in [validation.md](validation.md).
 
 Independent connections can execute on separate OS threads. Handles cannot move
 between threads; each thread opens its own connection. No cross-process locking

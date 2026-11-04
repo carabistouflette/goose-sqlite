@@ -60,6 +60,38 @@ implied stricter syntax. The suffix scanner, contract and public regression case
 now consistently follow SQLite's first-statement grammar and prevent a second
 executable statement. Review is evidence within its scope, not a certification.
 
+## Publication compatibility review
+
+A fresh publication review independently rechecked native sanitizers, public
+payload/license/security boundaries and the retained benchmark fingerprints. All
+10 recorded source fingerprints still match the measured clean source and current
+production code. No confirmed publication blocker was reported in either review.
+
+Cross-engine tests used isolated engine prefixes and package caches on the Linux
+x86-64 host, not an Ubuntu VM. Exact versions, source IDs, compile options,
+archive/package/library hashes and outcomes are retained in
+[compatibility evidence](results/compatibility-2026-11-04.json):
+
+- Upstream SQLite 3.37.0: public runner/native suites, GCC/Clang ASan/UBSan,
+  external consumer runner/native imports and all nine benchmark-smoke fixtures.
+- Upstream SQLite 3.45.1: public runner/native suites and GCC ASan/UBSan.
+- Ubuntu noble-security SQLite 3.45.1-1ubuntu2.8 amd64 packages: public suites,
+  GCC/Clang ASan/UBSan, 10000 fuzz cases, external consumer runner/native imports
+  and all nine benchmark-smoke fixtures. Downloaded package SHA256 values were
+  checked against Ubuntu package metadata.
+
+The minimum/Ubuntu benchmark checks retain 54 smoke samples each and verify exact
+build/runtime SQLite identity. Small iteration counts establish execution and
+checksum correctness, not performance estimates. Production code and benchmark
+sources are unchanged from the previously recorded evidence; publication added
+platform documentation and a maintained isolated consumer test.
+
+`make test` now also runs `scripts/test-import.py` against a local path from an
+external temporary consumer and fresh package cache. To test a published Git pin,
+use `python3 scripts/test-import.py --goose /path/to/goose --source
+carabistouflette/goose-sqlite@<full-commit>`. Both runner and native executions must
+produce the expected values after resource cleanup.
+
 ## Reproduce
 
 ```sh
