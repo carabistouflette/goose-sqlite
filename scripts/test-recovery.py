@@ -38,6 +38,7 @@ def run(binary, directory, scenario, wal, mode, cut, sticky, expected=-1):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--binary', required=True, type=Path)
+    parser.add_argument('--require-wal', action='store_true', help='Fail if any WAL group is skipped')
     parser.add_argument('--output', required=True, type=Path)
     args = parser.parse_args()
     binary = args.binary.resolve(); args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -73,6 +74,8 @@ def main():
                     raise RuntimeError('Fault enumeration exceeded defensive cap')
             with tempfile.TemporaryDirectory(prefix='goose-recovery-') as directory:
                 control = run(binary, directory, scenario, wal, 'crash-after-ack', 0, 0)
+                if control.get('skipped') and args.require_wal:
+                    raise RuntimeError('Required acknowledged WAL coverage was skipped')
                 if not control.get('skipped'):
                     if not control['crashed'] or not control['acknowledged']:
                         raise RuntimeError('Missing crash after success acknowledgement')
