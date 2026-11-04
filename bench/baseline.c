@@ -40,8 +40,7 @@ int main(int argc, char **argv) {
         for (long i = 0; i < count; ++i) {
             assert(gq_bind(s, 1, kind, 0, 0, (gq_input){input, size}) == SQLITE_OK);
             assert(gq_step(s) == SQLITE_ROW);
-            int64_t n = -1; assert(gq_size(s, 0, kind, &n) == SQLITE_OK && n == size);
-            assert(gq_copy(s, 0, kind, (gq_output){out, size}) == SQLITE_OK);
+            int64_t n = -1; assert(gq_fetch(s, 0, kind, (gq_output){out, size}, &n) == SQLITE_OK && n == size);
             assert(!memcmp(out, input, (size_t)size)); checksum += n;
             assert(gq_step(s) == SQLITE_DONE); assert(gq_reset(s) == SQLITE_OK);
         }

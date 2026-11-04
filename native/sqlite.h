@@ -21,6 +21,7 @@ int64_t gq_type(uint64_t token, int64_t column);
 int64_t gq_integer(uint64_t token, int64_t column, void *value);
 int64_t gq_real(uint64_t token, int64_t column, void *value);
 int64_t gq_size(uint64_t token, int64_t column, int64_t kind, void *size);
+int64_t gq_fetch(uint64_t token, int64_t column, int64_t kind, gq_output out, void *length);
 int64_t gq_copy(uint64_t token, int64_t column, int64_t kind, gq_output out);
 int64_t gq_message(uint64_t token, gq_output out);
 int64_t gq_parameter_count(uint64_t token);

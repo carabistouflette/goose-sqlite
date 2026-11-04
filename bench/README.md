@@ -39,7 +39,10 @@ hardware, OS, CPU affinity and source revision/dirty status.
 Timing includes process startup, setup and cleanup; small runs are smoke tests,
 not useful performance estimates. The host is shared, CPU frequency is not fixed,
 and affinity does not imply exclusive cores. No timing thresholds in CI. Profile
-an actual workload before changing the simple two-call byte-copy interface.
+an actual workload before changing the checked byte-copy path. Repeated outputs
+that fit their current length use one bounded fetch; initial/growing outputs
+report a required size and retry. Legacy native size/copy entry points remain
+for compatibility.
 
 Initial [raw measurement evidence](results/validated-2026-11-04/README.md) is retained
 with all fixtures and provenance; see its limitations before interpreting timings.
@@ -49,3 +52,6 @@ matched before/after samples, instruction-profile summaries and a separate
 current caller record. Successful getters now reuse their existing buffer;
 only newly grown bytes are initialized before being overwritten. All failures
 still clear logical output, and the native size/copy checks remain in place.
+
+[Alternative wrappers](alternatives/README.md) now have a separate matched-engine,
+in-process benchmark; it measures API paths with explicitly different safety policies.

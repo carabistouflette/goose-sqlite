@@ -1,10 +1,13 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+#define _POSIX_C_SOURCE 200809L
 #include "../native/sqlite.h"
 #include <sqlite3.h>
 #include <assert.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 /* Separate executable: allocator configuration precedes all SQLite use. */
 static sqlite3_mem_methods original;
@@ -77,6 +80,31 @@ int main(void) {
         assert(gq_close(db) == SQLITE_OK);
         assert(sqlite3_memory_used() == baseline);
     }
+    /* Force a stored UTF-16 TEXT -> UTF-8 conversion in the byte getter. */
+    char path[] = "/tmp/goose-sqlite-encoding-XXXXXX";
+    int fd = mkstemp(path); assert(fd >= 0); assert(close(fd) == 0);
+    sqlite3 *fixture = NULL;
+    assert(sqlite3_open(path, &fixture) == SQLITE_OK);
+    assert(sqlite3_exec(fixture, "PRAGMA encoding='UTF-16le'; CREATE TABLE t(x); INSERT INTO t VALUES(printf('%1024s','x'));", NULL,NULL,NULL) == SQLITE_OK);
+    assert(sqlite3_close(fixture) == SQLITE_OK);
+    int conversion_failures = 0;
+    for (int n = 0; n < 16; ++n) {
+        uint64_t db = 0, stmt = 0;
+        assert(gq_open(text(path),0,0,1000000,&db) == SQLITE_OK);
+        assert(gq_prepare(db,text("SELECT x FROM t"),&stmt) == SQLITE_OK);
+        assert(gq_step(stmt) == SQLITE_ROW);
+        uint8_t output[1024]; memset(output,17,sizeof output);
+        int64_t length = -1;
+        countdown = n;
+        int64_t rc = gq_fetch(stmt,0,SQLITE_TEXT,(gq_output){output,sizeof output},&length);
+        countdown = -1;
+        if (rc == SQLITE_OK) { assert(length == 1024 && output[1023] == 'x'); }
+        else { assert(nomem(rc) && length == 0 && output[0] == 17); ++conversion_failures; }
+        int64_t final = gq_finalize(stmt); assert(final == SQLITE_OK || nomem(final));
+        assert(gq_close(db) == SQLITE_OK);
+        assert(sqlite3_memory_used() == baseline);
+    }
+    assert(unlink(path) == 0 && conversion_failures > 0);
     assert(open_failures > 0 && prepare_failures > 0 && bind_failures > 0 && step_failures > 0);
     printf("sqlite allocation-failure tests passed: open=%d prepare=%d bind=%d step=%d\n",
            open_failures, prepare_failures, bind_failures, step_failures);

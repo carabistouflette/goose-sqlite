@@ -21,6 +21,8 @@ fn reused_output(db: sqlite::Database) {
         assert(sqlite::reset(stmt) == sqlite::OK);
     }
     assert(sqlite::step(stmt) == sqlite::ROW);
+    out.resize(2097152, 'z');
+    assert(sqlite::column_text(stmt, 0, out) == sqlite::OK && out == large);
     assert(sqlite::column_text(stmt, 2, out) == sqlite::TYPE_MISMATCH && out.len == 0);
     assert(sqlite::column_text(stmt, 0, out) == sqlite::OK && out == large);
     assert(sqlite::column_text(stmt, -1, out) == sqlite::INVALID_INPUT && out.len == 0);

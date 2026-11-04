@@ -14,7 +14,7 @@ static void lifecycle(uint64_t db, const uint8_t *data, size_t size) {
     int state = 0, kind = SQLITE_NULL; /* Ready, Row, Done. */
     for (size_t i = 0; i < size && i < 64; ++i) {
         int64_t rc, expected = state == 0 ? SQLITE_OK : GQ_STATE;
-        switch (data[i] % 12) {
+        switch (data[i] % 16) {
         case 0:
             CHECK(gq_bind(stmt, 1, SQLITE_INTEGER, (int64_t)i, 0, (gq_input){NULL, 0}) == expected);
             if (!state) kind = SQLITE_INTEGER;
@@ -58,6 +58,17 @@ static void lifecycle(uint64_t db, const uint8_t *data, size_t size) {
             CHECK(gq_bind(stmt, 1, SQLITE_FLOAT, 0, 1.5, (gq_input){NULL, 0}) == expected);
             if (!state) kind = SQLITE_FLOAT;
             break;
+        case 12: CHECK(gq_parameter_count(stmt) == 1); break;
+        case 13: CHECK(gq_parameter_index(stmt, (gq_input){(const uint8_t *)"?1",2}) == 1); break;
+        case 14: {
+            uint8_t name[2]; int64_t n = -1;
+            CHECK(gq_name(stmt, 0, (gq_output){name,2}, &n) == SQLITE_OK && n == 2);
+            CHECK(name[0] == '?' && name[1] == '1'); break;
+        }
+        case 15: {
+            int64_t value = -1;
+            CHECK(gq_status(db, 2, &value) == SQLITE_OK && (value == 0 || value == 1)); break;
+        }
         case 11: {
             int64_t length = -1;
             rc = gq_size(stmt, 0, SQLITE_BLOB, &length);
@@ -92,7 +103,7 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     uint8_t out[4096];
     int64_t length = -1;
     CHECK(gq_size(s, 0, SQLITE_BLOB, &length) == SQLITE_OK && length == (int64_t)size);
-    CHECK(gq_copy(s, 0, SQLITE_BLOB, (gq_output){out, length}) == SQLITE_OK);
+    CHECK(gq_fetch(s, 0, SQLITE_BLOB, (gq_output){out, length}, &length) == SQLITE_OK && length == (int64_t)size);
     CHECK(!size || !memcmp(data, out, size));
     CHECK(gq_copy(s, 1, SQLITE_TEXT, (gq_output){out, length}) == SQLITE_OK);
     CHECK(!size || !memcmp(data, out, size));

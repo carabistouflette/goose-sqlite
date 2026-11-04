@@ -97,11 +97,17 @@ int main(void) {
     assert(!pthread_create(&worker, NULL, foreign, tokens)); assert(!pthread_join(worker, NULL));
     assert(gq_step(s) == SQLITE_DONE && gq_step(s) == GQ_STATE);
     assert(gq_reset(s) == SQLITE_OK);
+    int64_t invalid_length = 7;
+    assert(gq_fetch(s, 0, SQLITE_INTEGER, (gq_output){NULL,0}, &invalid_length) == GQ_STATE && invalid_length == 0);
+    assert(gq_fetch(s, 0, SQLITE_TEXT, (gq_output){NULL,1}, &invalid_length) == GQ_INPUT && invalid_length == 0);
+    assert(gq_fetch(s, 0, SQLITE_TEXT, (gq_output){NULL,0}, NULL) == GQ_INPUT);
     uint8_t bytes[] = {'a', 0, 255};
     assert(gq_bind(s, 3, SQLITE_TEXT, 0, 0, (gq_input){bytes, 3}) == SQLITE_OK);
     bytes[0] = 'z';
     assert(gq_step(s) == SQLITE_ROW);
     uint8_t guarded[] = {17, 18, 19, 20, 21};
+    assert(gq_fetch(s, 2, SQLITE_TEXT, (gq_output){guarded + 1, 2}, unaligned + 1) == GQ_LIMIT);
+    int64_t needed; memcpy(&needed, unaligned + 1, 8); assert(needed == 3);
     assert(gq_copy(s, 2, SQLITE_TEXT, (gq_output){guarded + 1, 2}) == GQ_LIMIT);
     assert(guarded[1] == 18 && guarded[3] == 20);
     assert(gq_copy(s, 2, SQLITE_TEXT, (gq_output){guarded + 1, 3}) == SQLITE_OK);

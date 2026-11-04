@@ -289,14 +289,21 @@ int64_t gq_size(uint64_t token, int64_t col, int64_t kind, void *out) {
     if (rc == SQLITE_OK) memcpy(out, &n, sizeof n);
     return rc;
 }
-int64_t gq_copy(uint64_t token, int64_t col, int64_t kind, gq_output out) {
+int64_t gq_fetch(uint64_t token, int64_t col, int64_t kind, gq_output out, void *length) {
+    if (!length) return GQ_INPUT;
+    int64_t n = 0; memcpy(length, &n, sizeof n);
     if (out.len < 0 || out.len > VALUE_MAX || (out.len && !out.data)) return GQ_INPUT;
-    const void *data = NULL; int64_t n = 0;
+    const void *data = NULL;
     int rc = byte_column(token, col, kind, &data, &n);
     if (rc != SQLITE_OK) return rc;
+    memcpy(length, &n, sizeof n);
     if (out.len < n) return GQ_LIMIT;
     if (n) memcpy(out.data, data, (size_t)n);
     return SQLITE_OK;
+}
+int64_t gq_copy(uint64_t token, int64_t col, int64_t kind, gq_output out) {
+    int64_t n = 0;
+    return gq_fetch(token, col, kind, out, &n);
 }
 int64_t gq_message(uint64_t token, gq_output out) {
     Database *d = database(token);

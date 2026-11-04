@@ -72,15 +72,20 @@ fn column_float(stmt: Statement, column: i64) -> f64, i64 {
     let code = native_real(stmt.token, column, value);
     return value, code;
 }
+extern fn native_fetch(token: u64, column: i64, kind: i64, out: u8[:], length: i64&) -> i64 = "gq_fetch";
 fn column_bytes(stmt: Statement, column: i64, kind: i64, out: u8[>..]&) -> i64 {
     var size: i64 = 0;
-    let code = native_size(stmt.token, column, kind, size);
+    var available = min(out.len, 1048576);
+    var code = native_fetch(stmt.token, column, kind, out[..available], size);
+    if code == LIMIT && size > available && size <= 1048576 {
+        out.resize(size, 0);
+        available = out.len;
+        code = native_fetch(stmt.token, column, kind, out[..available], size);
+    }
     if code != OK { out.clear(); return code; }
-    if size < 0 || size > 1048576 { out.clear(); return LIMIT; }
-    out.resize(size, 0);
-    let copied = native_copy(stmt.token, column, kind, out[..]);
-    if copied != OK { out.clear(); }
-    return copied;
+    if size < 0 || size > available { out.clear(); return LIMIT; }
+    out.resize(size);
+    return OK;
 }
 fn column_text(stmt: Statement, column: i64, out: u8[>..]&) -> i64 { return column_bytes(stmt, column, TEXT, out); }
 fn column_blob(stmt: Statement, column: i64, out: u8[>..]&) -> i64 { return column_bytes(stmt, column, BLOB, out); }

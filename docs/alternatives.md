@@ -91,7 +91,7 @@ API. “C escape” means accessing an exposed native handle; that is not equiva
 to a checked high-level wrapper method. Optional features and engine compile
 options must be recorded. Citations for each alternative's cells follow the table.
 
-| Capability | Current goose-sqlite | Python stdlib sqlite3 | Rust rusqlite | C++ SQLiteCpp | Raw SQLite C |
+| Capability | Baseline goose-sqlite at272193c | Python stdlib sqlite3 | Rust rusqlite | C++ SQLiteCpp | Raw SQLite C |
 |---|---|---|---|---|---|
 | Reusable prepared work | Explicit prepare/reset, persistent hint | SQL statement cache; cursor execute, no public prepared handle | Statement and cached preparation | Statement/reset | prepare/step/reset/finalize |
 | Typed values, NULL, whole text/blob | Strict storage types, caller-owned copies | Python values; owned str/bytes | Typed conversions; owned or borrowed results | Typed/coercing getters; borrowed pointers or owned strings | Storage-type inspection; coercing getters, borrowed pointers |
@@ -135,6 +135,31 @@ lookup, copied metadata, transaction guards and row mapping are wrapper
 conveniences. This package deliberately restricts PRAGMA, ATTACH/DETACH, virtual
 tables, extension loading and URI filenames, and forbids automatic reexecution
 and implicit coercion. Retain these distinctions when describing parity.
+
+## Implemented follow-up
+
+The checked metadata/status slice below is now implemented and regression-tested:
+
+| Gap in baseline | Current interface | Safety/semantic distinction retained |
+|---|---|---|
+| Named parameter lookup | parameter_index | Exact prefixed bytes, maximum1024, zero absent; typed binders unchanged |
+| Parameter count | parameter_count | Largest index, including sparse numbering; all live states |
+| Column names | column_name | Owned copy, empty/duplicate aliases supported, maximum64KiB, clears on error |
+| Changed rows | changes | 64-bit direct-DML result plus status; excludes trigger effects |
+| Last insert ID | last_insert_rowid | Signed ID plus status; rollback does not restore it |
+| Transaction state | autocommit | Actual engine state, including automatic rollback after failure |
+
+The same interface continues to support transactions and savepoints through
+checked SQL. This closes practical convenience gaps in the other Goose bindings
+and Python/Rust/C++ wrappers without adding unsafe callback blocks or raw pointers.
+It does not establish complete feature parity: WAL configuration, online backup,
+incremental BLOB handles, UDFs/extensions, Rust/C++ RAII, bundled deployment and
+broader platform coverage remain differences. In particular, the comparison does
+not justify weakening the permanent authorizer or pretending thread-exit cleanup
+is a destructor guard.
+
+[Measured alternatives](../bench/results/alternatives-2026-11-04/README.md)
+report the actual shared-engine experiment separately from the research snapshot.
 
 ## Recommended first expansion
 
