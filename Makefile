@@ -3,7 +3,7 @@ CC ?= cc
 FUZZ_CC ?= clang
 FUZZ_RUNS ?= 10000
 BENCH_ITERATIONS ?= 10000
-.PHONY: setup format check test test-native fuzz-native bench
+.PHONY: setup format check test test-import test-native fuzz-native bench
 setup:
 	./scripts/setup-goose.sh
 format:
@@ -24,6 +24,9 @@ test:
 	./.build/api
 	python3 scripts/test-files.py "$(GOOSE)"
 	"$(GOOSE)" run examples/items.goose
+	$(MAKE) test-import
+test-import:
+	python3 scripts/test-import.py --goose "$(GOOSE)"
 test-native:
 	cmake -S . -B .build/native-$(notdir $(CC)) -DCMAKE_C_COMPILER="$(CC)" -DCMAKE_BUILD_TYPE=Debug -DGOOSE_SQLITE_NATIVE_TESTS=ON
 	cmake --build .build/native-$(notdir $(CC)) --parallel 2
