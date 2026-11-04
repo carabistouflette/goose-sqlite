@@ -24,6 +24,8 @@ def main():
     if not 1 <= args.runs <= 100: ap.error('Invalid run count')
     if args.cpu is not None: os.sched_setaffinity(0, {args.cpu})
     base = json.loads(args.baseline_results.read_text())
+    if digest('/usr/bin/time') != base['rss_measurement']['sha256']:
+        raise RuntimeError('Different RSS measurement tool')
     after_build = json.loads(args.after_build.read_text())
     bins = {'before': args.before.resolve(), 'after': args.after.resolve()}
     hashes = {name: digest(path) for name,path in bins.items()}
@@ -72,7 +74,7 @@ def main():
                   before_native_build=base['native_build'],after_native_build=after_build,
                   sqlite_library=library,goose_revision=base['goose_revision'],goose_sha256=base['goose_sha256'],
                   baseline_results_sha256=digest(args.baseline_results),harness_sha256=digest(Path(__file__)),
-                  os=platform.platform(),affinity=sorted(os.sched_getaffinity(0)),order_seed=219,
+                  os=platform.platform(),cpu_model=next((line.split(':',1)[1].strip() for line in Path('/proc/cpuinfo').read_text().splitlines() if line.startswith('model name')), ''),rss_measurement=base['rss_measurement'],affinity=sorted(os.sched_getaffinity(0)),order_seed=219,
                   scope='Matched native executables, shuffled before/after per fixture. Same compiler/profile, runner and SQLite engine; only native registry lookup and native fingerprint differ. Shared host; no dynamic-runner timing or isolated-core claim.',samples=samples)
     args.output.write_text(json.dumps(record,indent=2)+'\n')
     print(f'{len(samples)} paired checked samples: {args.output}')
