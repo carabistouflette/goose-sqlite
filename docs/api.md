@@ -13,8 +13,11 @@ failure, primary 19. Test success against the documented exact success code;
 `code >= 0` does not mean success.
 
 Negative wrapper codes: `INVALID_INPUT=-1`, `INVALID_HANDLE=-2`,
-`INVALID_STATE=-3`, `TYPE_MISMATCH=-4`, `LIMIT=-5`. These do not overwrite SQLite's
-connection error text. `error_message(db,out)` copies the current SQLite message
+`INVALID_STATE=-3`, `TYPE_MISMATCH=-4`, `LIMIT=-5`. They do not have their own
+SQLite error messages. Wrapper validation that calls
+SQLite (for example, rejecting a prepared SQL suffix) can replace earlier engine
+error text, even when it returns a negative wrapper code.
+`error_message(db,out)` copies the current SQLite message
 (up to 4096 bytes), returning OK or a wrapper error. Copy it immediately after
 an engine error and before another SQLite operation; it may describe a previous
 engine operation after a wrapper error. Open failures have no live connection
@@ -92,7 +95,10 @@ Only Row statements permit zero-based column reads:
 Per OS thread: 16 databases, 64 statements total. Allocation beyond a registry
 limit returns LIMIT; finalizing/closing releases capacity. Tokens never repeat;
 exhaustion fails closed. Thread exit finalizes live statements then closes
-connections, rolling back pending transactions. Use explicit cleanup normally;
+connections. Finalization can commit implicit RETURNING writes that already
+produced rows; only transactions still open afterward, including uncommitted
+explicit transactions, roll back on close. Cleanup is not a cancellation request.
+Use explicit cleanup normally;
 process abort/exit is not a substitute for orderly cleanup. Threads do not share
 handles; each thread must open its own connection. The system SQLite must be
 built thread-safe and must not be configured globally in single-thread mode.

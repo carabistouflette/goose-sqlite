@@ -41,6 +41,19 @@ static void *abandon(void *p) {
     (void)prepare(d, "SELECT 1");
     return NULL; /* Registry destructor must roll back and release locks. */
 }
+static void *abandon_returning(void *p) {
+    uint64_t d = open_db(p, 0, 0);
+    uint64_t implicit = prepare(d, "INSERT INTO t VALUES(3) RETURNING x");
+    assert(gq_step(implicit) == SQLITE_ROW);
+    return NULL; /* Finalization can commit this implicit write. */
+}
+static void *abandon_explicit_returning(void *p) {
+    uint64_t d = open_db(p, 0, 0);
+    assert(exec(d, "BEGIN") == SQLITE_OK);
+    uint64_t explicit_write = prepare(d, "INSERT INTO t VALUES(4) RETURNING x");
+    assert(gq_step(explicit_write) == SQLITE_ROW);
+    return NULL; /* Close must roll back the still-open explicit transaction. */
+}
 int main(void) {
     uint64_t d = open_db(":memory:", 0, 0), s = prepare(d, "SELECT ?1, ?2, ?3, ?4");
     uint8_t unaligned[17] = {0};
@@ -117,7 +130,17 @@ int main(void) {
     assert(gq_close(d) == SQLITE_OK);
     assert(!pthread_create(&worker, NULL, abandon, path)); assert(!pthread_join(worker, NULL));
     d = open_db(path, 0, 0); assert(exec(d, "INSERT INTO t VALUES(2)") == SQLITE_OK);
-    assert(gq_close(d) == SQLITE_OK); assert(!unlink(path));
+    assert(gq_close(d) == SQLITE_OK);
+    assert(!pthread_create(&worker, NULL, abandon_returning, path)); assert(!pthread_join(worker, NULL));
+    assert(!pthread_create(&worker, NULL, abandon_explicit_returning, path)); assert(!pthread_join(worker, NULL));
+    d = open_db(path, 0, 0);
+    s = prepare(d, "SELECT count(*), sum(x) FROM t");
+    assert(gq_step(s) == SQLITE_ROW);
+    int64_t rows = 0, sum = 0;
+    assert(gq_integer(s, 0, &rows) == SQLITE_OK && rows == 3);
+    assert(gq_integer(s, 1, &sum) == SQLITE_OK && sum == 6);
+    assert(gq_finalize(s) == SQLITE_OK && gq_close(d) == SQLITE_OK);
+    assert(!unlink(path));
     puts("sqlite native tests passed");
     return 0;
 }
