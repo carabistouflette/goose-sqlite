@@ -11,3 +11,13 @@ by scripts/setup-goose.sh. Its code and bundled dependencies retain their own
 licenses and notices in that checkout; generated toolchain files are not
 redistributed as part of this source repository. pthreads and libc come from
 the host platform and retain their platform licenses.
+
+## Optional comparison harness
+
+The alternative benchmark downloads SQLiteCpp3.4.0 (MIT) at its recorded full
+commit and builds rusqlite0.41.1 (MIT) with the checked-in Cargo.lock. Their source
+and dependency notices remain in their fetched checkouts/crate sources; none is
+vendored into this library or linked into its production adapter. Python sqlite3
+uses the installed Python runtime (PSF license and historical notices). See
+[the cited comparison](docs/alternatives.md) for first-party license/source links.
+Generated comparison executables are ignored build artifacts, not source releases.

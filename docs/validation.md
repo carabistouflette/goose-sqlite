@@ -135,6 +135,46 @@ additions, as did a separate fresh 10000-case run by the reviewer. The longer
 local run reused its warmed corpus; seed alone does not specify the corpus. These tests do not exhaust all allocation failures,
 all SQL or all operation sequences; system SQLite remains a separate dependency.
 
+## Alternative feature and performance comparison
+
+[Primary-source research](alternatives.md) includes two other Goose bindings,
+Python sqlite3, rusqlite and SQLiteCpp. The follow-up implements checked named
+parameter lookup/count, copied column names, 64-bit direct change counts, signed
+insert IDs and actual autocommit status. Regression cases cover sparse/repeated
+names, copied empty/duplicate/long aliases, all live metadata states, stale and
+foreign-thread handles, unaligned outputs, negative/rolled-back IDs, triggers,
+WITHOUT ROWID tables and engine-driven transaction rollback. Remaining advanced
+feature gaps are explicit; this is practical parity in a bounded subset.
+
+The [alternative experiment](../bench/results/alternatives-2026-11-04/README.md)
+retains245 samples before and245 after the reusable checked-fetch improvement,
+with seven shuffled passes and seven fixtures per five implementations. The
+loaded SQLite object hash matches in all five; runtime identity/options are
+explicit for four callers and inferred from the same object for Goose. Requested
+Rust lto=false metadata was overridden by user configuration: an explicit erratum
+records actual Thin LTO/codegen/incremental settings without rewriting raw data.
+The maintained harness now enforces that observed profile. Python caching,
+Unicode conversion, Rust UTF-8 validation, owned allocations and Goose's security
+policy are differences in the measured API paths, not equivalent-policy claims.
+
+The private fetch helper removes a redundant FFI round trip when existing output
+length fits the next value. First/growing outputs retry with a bounded required
+length. It retains all byte_column validations and copied ownership; public
+failures still clear output, including oversized preseed arrays. Legacy native
+size/copy functions remain compatible. Native tests now force allocation failure
+during stored UTF-16 TEXT-to-UTF-8 conversion, checking SQLITE_NOMEM, untouched
+native buffers and resource recovery; total fault-position trials are656.
+GCC/Clang sanitizers, public runner/native/consumer tests and100000 updated
+state-model fuzz cases pass. SQLite3.37.0 also passes the expanded public and
+Clang native/fault suites. CI additionally executes all five alternative smoke
+runners with the system Python to preserve the shared-engine requirement.
+
+Two design reviews, a metadata implementation review, a checked-fetch review,
+benchmark review and fresh final safety/comparison audits informed this work.
+Actionable timing-boundary, Python optimization-environment and Rust profile
+provenance findings were corrected. No remaining confirmed native correctness
+or safety blocker was reported within those reviews' scope.
+
 ## Reproduce
 
 ```sh

@@ -106,7 +106,7 @@ int main(void) {
     }
     assert(unlink(path) == 0 && conversion_failures > 0);
     assert(open_failures > 0 && prepare_failures > 0 && bind_failures > 0 && step_failures > 0);
-    printf("sqlite allocation-failure tests passed: open=%d prepare=%d bind=%d step=%d\n",
-           open_failures, prepare_failures, bind_failures, step_failures);
+    printf("sqlite allocation-failure tests passed: open=%d prepare=%d bind=%d step=%d conversion=%d\n",
+           open_failures, prepare_failures, bind_failures, step_failures, conversion_failures);
     return 0;
 }

@@ -17,6 +17,7 @@ check:
 	"$(GOOSE)" check tests/files.goose
 	"$(GOOSE)" check examples/items.goose
 	"$(GOOSE)" check bench/bench.goose
+	"$(GOOSE)" check bench/alternatives/runner.goose
 test:
 	python3 scripts/native-manifest.py --check
 	"$(GOOSE)" run tests/api.goose
