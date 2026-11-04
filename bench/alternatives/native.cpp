@@ -27,7 +27,7 @@ struct Stmt {
     void integer(int64_t x) { s.bind(1,x); }
     void bytes(const std::string &x,bool blob) { if(blob)s.bind(1,x.data(),static_cast<int>(x.size())); else s.bind(1,x); }
     bool step() { return s.executeStep(); }
-    int64_t integer() { return s.getColumn(0).getInt64(); }
+    int64_t integer(int column=0) { return s.getColumn(column).getInt64(); }
     std::string bytes() { return s.getColumn(0).getString(); }
     void reset() { s.reset(); }
 #else
@@ -37,7 +37,7 @@ struct Stmt {
     void integer(int64_t x){ require(sqlite3_bind_int64(s,1,x)==SQLITE_OK); }
     void bytes(const std::string&x,bool blob){ require((blob?sqlite3_bind_blob(s,1,x.data(),static_cast<int>(x.size()),SQLITE_TRANSIENT):sqlite3_bind_text(s,1,x.data(),static_cast<int>(x.size()),SQLITE_TRANSIENT))==SQLITE_OK); }
     bool step(){int rc=sqlite3_step(s);require(rc==SQLITE_ROW||rc==SQLITE_DONE);return rc==SQLITE_ROW;}
-    int64_t integer(){require(sqlite3_column_type(s,0)==SQLITE_INTEGER);return sqlite3_column_int64(s,0);}
+    int64_t integer(int column=0){require(sqlite3_column_type(s,column)==SQLITE_INTEGER);return sqlite3_column_int64(s,column);}
     std::string bytes(){const void*p=sqlite3_column_blob(s,0);int n=sqlite3_column_bytes(s,0);require(p||!n);return n?std::string(static_cast<const char*>(p),n):std::string();}
     void reset(){require(sqlite3_reset(s)==SQLITE_OK);}
 #endif
@@ -51,6 +51,6 @@ int main(int argc,char**argv){
     if(mode=="prepare") {auto start=now();for(int64_t i=0;i<n;++i){Stmt s(db,"SELECT 1");require(s.step());checksum+=s.integer();require(!s.step());}elapsed=duration(start);}
     else if(mode=="scalar"){Stmt s(db,"SELECT ?1");auto start=now();for(int64_t i=0;i<n;++i){s.integer(i);require(s.step());require(s.integer()==i);checksum+=i;require(!s.step());s.reset();}elapsed=duration(start);}
     else if(mode=="text"||mode=="blob"){Stmt s(db,"SELECT ?1");std::string input(size,'x');auto start=now();for(int64_t i=0;i<n;++i){s.bytes(input,mode=="blob");require(s.step());auto out=s.bytes();require(out==input);checksum+=out.size();require(!s.step());s.reset();}elapsed=duration(start);}
-    else {require(mode=="insert");db.exec("CREATE TABLE items(x INTEGER)");{Stmt s(db,"INSERT INTO items VALUES(?1)");auto start=now();db.exec("BEGIN");for(int64_t i=0;i<n;++i){s.integer(i);require(!s.step());s.reset();}db.exec("COMMIT");elapsed=duration(start);}Stmt q(db,"SELECT sum(x) FROM items");require(q.step());require(q.integer()==n*(n-1)/2);require(!q.step());checksum=n;}
+    else {require(mode=="insert");db.exec("CREATE TABLE items(x INTEGER)");{Stmt s(db,"INSERT INTO items VALUES(?1)");auto start=now();db.exec("BEGIN");for(int64_t i=0;i<n;++i){s.integer(i);require(!s.step());s.reset();}db.exec("COMMIT");elapsed=duration(start);}Stmt q(db,"SELECT count(*), sum(x) FROM items");require(q.step());require(q.integer()==n && q.integer(1)==n*(n-1)/2);require(!q.step());checksum=n;}
     printf("%lld %lld\n",(long long)elapsed,(long long)checksum);
 }

@@ -49,6 +49,11 @@ def main():
     if not 1 <= args.iterations <= 10000000 or not 1 <= args.runs <= 100:
         ap.error('iterations/runs outside range')
     if args.cpu is not None: os.sched_setaffinity(0, {args.cpu})
+    env = os.environ.copy()
+    for key in list(env):
+        if key in ('CFLAGS','CXXFLAGS','CPPFLAGS','LDFLAGS','CMAKE_GENERATOR','CMAKE_TOOLCHAIN_FILE','CARGO_BUILD_TARGET','CARGO_TARGET_DIR','RUSTFLAGS','CARGO_ENCODED_RUSTFLAGS') or key.startswith('CARGO_PROFILE_RELEASE_'):
+            env.pop(key, None)
+    env['CARGO_ENCODED_RUSTFLAGS'] = ''
     build = ROOT / '.build' / 'alternatives'
     build.mkdir(parents=True, exist_ok=True)
     cpp = build / 'SQLiteCpp'
@@ -58,24 +63,23 @@ def main():
     run(['git', '-C', cpp, 'checkout', '--detach', CPP_REV])
     run(['cmake', '-S', cpp, '-B', build / 'cpp-build', '-DSQLITECPP_INTERNAL_SQLITE=OFF',
          '-DSQLITECPP_BUILD_TESTS=OFF', '-DSQLITECPP_BUILD_EXAMPLES=OFF', '-DCMAKE_BUILD_TYPE=Release',
-         '-DCMAKE_CXX_FLAGS_RELEASE=-O2 -DNDEBUG'])
+         '-DCMAKE_CXX_FLAGS_RELEASE=-O2 -DNDEBUG', '-DCMAKE_CXX_FLAGS='], env=env)
     run(['cmake', '--build', build / 'cpp-build', '--parallel', '2'])
     cpp_include = '-I' + str(cpp / 'include')
     for name, flags in [('raw-c-api', []), ('sqlitecpp', ['-DUSE_SQLITECPP', cpp_include])]:
         cmd = ['g++', '-std=c++17', '-O2', *flags, 'bench/alternatives/native.cpp']
         if name == 'sqlitecpp': cmd += [build / 'cpp-build' / 'libSQLiteCpp.a']
         run([*cmd, '-lsqlite3', '-o', build / name])
-    run(['cargo', 'build', '--locked', '--release', '--manifest-path', 'bench/alternatives/rust/Cargo.toml'])
+    host = next(line.split(': ',1)[1] for line in output(['rustc','-vV']).splitlines() if line.startswith('host: '))
+    run(['cargo', 'build', '--locked', '--release', '--target', host, '--target-dir', build / 'rust-target', '--manifest-path', 'bench/alternatives/rust/Cargo.toml'], env=env)
     goose = str(Path(args.goose).resolve())
-    env = os.environ.copy()
-    for key in ('CFLAGS', 'CXXFLAGS', 'CPPFLAGS', 'LDFLAGS', 'CMAKE_GENERATOR'): env.pop(key, None)
-    env['GOOSE_HOME'] = str(build / 'goose-cache')
+    env['GOOSE_HOME'] = str(build / ('goose-cache-' + str(time.monotonic_ns())))
     run(['python3', 'scripts/native-manifest.py', '--check'])
     run([goose, 'build', 'bench/alternatives/runner.goose', '--cc', 'gcc', '-O2', '-o', build / 'goose'], env=env)
-    rust = ROOT / 'bench/alternatives/rust/target/release/sqlite-alternative-bench'
+    rust = build / 'rust-target' / host / 'release/sqlite-alternative-bench'
     runners = {'goose': [str(build / 'goose')], 'raw-c-api': [str(build / 'raw-c-api')],
                'sqlitecpp': [str(build / 'sqlitecpp')], 'rusqlite': [str(rust)],
-               'python': [sys.executable, str(ROOT / 'bench/alternatives/python.py')]}
+               'python': [sys.executable, '-I', str(ROOT / 'bench/alternatives/python.py')]}
     identities = {name: output([*cmd, 'identity']).splitlines() for name, cmd in runners.items() if name != 'goose'}
     if len({tuple(v) for v in identities.values()}) != 1:
         raise RuntimeError('SQLite runtime versions/source IDs/compile options differ')

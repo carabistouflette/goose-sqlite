@@ -31,7 +31,8 @@ startup, open, fixture generation and reusable preparation. Whole-process wall
 and child CPU times are retained separately. Each executable gets an untimed
 warmup process; each measured sample is a new process/connection, with the warmup
 not reusing its statement cache. Seven orders are deterministically shuffled with
-seed219, retaining every sample and checksum. There are no timing CI thresholds.
+seed219, retaining every sample and checksum. Reusable preparation is primed inside each
+measured process before its clock starts. There are no timing CI thresholds.
 
 This compares ordinary checked API paths, NOT identical safety policies or
 query engines. Goose retains strict typed reads, copied ownership, TLS token
@@ -40,7 +41,9 @@ progress budget. The other wrappers use their ordinary policies with1000ms busy
 timeouts. Raw C, SQLiteCpp and Rust select NOMUTEX/private-cache like Goose;
 Python exposes neither connection mutex flags nor a held prepared statement.
 Python prepare disables caching; other fixtures use its SQL cache and cursor
-execute, with normal Unicode text decoding. Rust holds a Statement, consumes Rows
+execute, with normal Unicode text decoding. Reusable Python SQL is primed on the same
+connection before timing; insert priming is rolled back. Python runs with -I so
+PYTHONOPTIMIZE cannot remove validation or DONE-fetch work. Rust holds a Statement, consumes Rows
 through reset and explicitly finalizes. SQLiteCpp uses prepare_v2 and RAII cleanup;
 its destructors do not expose finalization status. Goose/raw C use persistent
 prepare_v3. Raw C/C++ copy byte outputs into std::string; Rust allocates owned
@@ -53,7 +56,9 @@ The other Goose bindings in docs/alternatives.md have separately bundled engine
 builds/policies; their advertised features are inspected, not timed in this matched
 shared-engine group. A bundled-engine comparison would be a separate experiment.
 
-Raw JSON records toolchains/interpreter, wrapper pins, source/binary hashes,
+Builds use an explicit Rust host/target directory and clear ambient release/
+Rust flag overrides; Goose uses a fresh package cache. CMake general C++ flags
+are explicitly reset. Raw JSON records toolchains/interpreter, wrapper pins, source/binary hashes,
 SQLite identities/library hashes, build flags, CPU/OS/affinity, order and all
 loop/whole-process samples. Shared-host load/frequency are uncontrolled; affinity
 is not exclusive isolation or statistical significance. Interpret all fixtures,

@@ -92,7 +92,11 @@ fn main() -> rusqlite::Result<()> {
         db.execute_batch("COMMIT")?;
         elapsed = start.elapsed();
         s.finalize()?;
-        let sum: i64 = db.query_row("SELECT sum(x) FROM items", [], |r| r.get(0))?;
+        let (count, sum): (i64, i64) =
+            db.query_row("SELECT count(*),sum(x) FROM items", [], |r| {
+                Ok((r.get(0)?, r.get(1)?))
+            })?;
+        assert_eq!(count, n);
         assert_eq!(sum, n * (n - 1) / 2);
         checksum = n;
     }

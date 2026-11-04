@@ -23,6 +23,8 @@ if mode == 'prepare':
         assert row == (1,) and cursor.fetchone() is None
         checksum += row[0]
 elif mode == 'scalar':
+    cursor.execute('SELECT ?1', (-1,))
+    assert cursor.fetchone() == (-1,) and cursor.fetchone() is None
     start = time.perf_counter_ns()
     for i in range(n):
         cursor.execute('SELECT ?1', (i,))
@@ -31,6 +33,8 @@ elif mode == 'scalar':
         checksum += row[0]
 elif mode in ('text', 'blob'):
     data = 'x' * size if mode == 'text' else b'x' * size
+    cursor.execute('SELECT ?1', (data,))
+    assert cursor.fetchone()[0] == data and cursor.fetchone() is None
     start = time.perf_counter_ns()
     for i in range(n):
         cursor.execute('SELECT ?1', (data,))
@@ -40,12 +44,15 @@ elif mode in ('text', 'blob'):
 else:
     assert mode == 'insert'
     db.execute('CREATE TABLE items(x INTEGER)')
+    db.execute('BEGIN')
+    cursor.execute('INSERT INTO items VALUES(?1)', (-1,))
+    db.execute('ROLLBACK')
     start = time.perf_counter_ns()
     db.execute('BEGIN')
     for i in range(n): cursor.execute('INSERT INTO items VALUES(?1)', (i,))
     db.execute('COMMIT')
     elapsed = time.perf_counter_ns() - start
-    assert db.execute('SELECT sum(x) FROM items').fetchone()[0] == n * (n - 1) // 2
+    assert db.execute('SELECT count(*), sum(x) FROM items').fetchone() == (n, n * (n - 1) // 2)
     checksum = n
 if mode != 'insert': elapsed = time.perf_counter_ns() - start
 cursor.close()
