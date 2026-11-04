@@ -43,3 +43,9 @@ an actual workload before changing the simple two-call byte-copy interface.
 
 Initial [raw measurement evidence](results/validated-2026-11-04/README.md) is retained
 with all fixtures and provenance; see its limitations before interpreting timings.
+
+The subsequent [buffer-reuse audit](results/reuse-2026-11-04/README.md) retains
+matched before/after samples, instruction-profile summaries and a separate
+current caller record. Successful getters now reuse their existing buffer;
+only newly grown bytes are initialized before being overwritten. All failures
+still clear logical output, and the native size/copy checks remain in place.

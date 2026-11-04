@@ -55,3 +55,12 @@ The maintained C baseline now initializes output once outside its fixed-size loo
 matching the committed Goose reuse path. Historical records retain their original
 source hashes. Allocation strategy differs between callers; these checked
 round-trip measurements do not establish pure fetch throughput or a general ranking.
+
+## Maintained caller benchmark
+
+[current-callers.json](current-callers.json) retains a separate 54-sample
+three-pass run on clean commit `78e906d65397cb0c9a0969fc00dab23666823e12`. It
+uses the updated C initialization policy, both callers' identical checked native
+archive/runtime SQLite, all nine maintained fixtures and their checksums. It was
+pinned to CPU6 while other validation work ran elsewhere. Interpret it as a
+shared-host checked workload record, not an isolated throughput measurement.

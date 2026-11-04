@@ -1,0 +1,65 @@
+{
+  "recorded_utc": "2026-11-04T10:49:49.009622+00:00",
+  "tested_implementation_commit": "c03efc275ba22100233d16ee51d111eabe60dff0",
+  "production_native_unchanged_since": "7cf6e4adbb1dc17bd6c29ac62e0142242f0234f0",
+  "sources": {
+    "native/sqlite.c": "579c11699d1f1119ca448d557b469173e4d51dbf4add6815a0bda4a1249be671",
+    "native/sqlite.h": "372d4664659d9d5c769ac87b3b5e7f3932c32b35d8556fd61af919d83828dbb8",
+    "sqlite.goose": "625e64f828a8d0e66e5d03aef215c2ca164ef8a81801aa776e522c24f63a1268",
+    "tests/api.goose": "e87814d1ffe5915e1c4159ff4ab4b25edf9628508bf2702c3ce50ddace377946",
+    "tests/native.c": "4a6374646be011d3adfcc91ca8408875bcdf0ab852509c090433101504cd0b6d",
+    "tests/faults.c": "40ac0942c2804b541b297334a08e013fe442dd98933300ab8062dad5109b8dc1",
+    "tests/fuzz.c": "5b26ea20cec231cd0cf805548f08a736f16bd054913270b90c88cfde5c7bcf93",
+    "tests/fuzz.dict": "7efbb1360fc6b85b673a5b35063f752e02731d6e2f054361a47d79d4b1b80ef2",
+    "CMakeLists.txt": "0576aab2c05ccc8992afa1d32f758b66c7d984f8c124d53f370c8c93d16c2ef0",
+    "Makefile": "36b1559b7e439796018ba2d2ee3a42426d6032329aa1c9dddae380b224770d4c"
+  },
+  "goose_revision": "eadca409f68210893f366e60d0c2f0dc29a339be",
+  "goose_binary_sha256": "2bdd604d01c3f46b03ddae80871b10de7f75e9e710ce92faa1a644b246472ab7",
+  "host_public_tests": "runner/native API, private-temp file suite, example and isolated consumer imports passed",
+  "system_native_tests": {
+    "gcc": "ASan/UBSan passed",
+    "clang": "ASan/UBSan passed",
+    "allocation_failure_positions": 640,
+    "reported_failures": {
+      "open": 106,
+      "prepare": 115,
+      "bind": 1,
+      "step": 6
+    }
+  },
+  "sqlite_3.37.0": {
+    "public_tests": "passed",
+    "clang_native_and_faults": "passed",
+    "reported_failures": {
+      "open": 21,
+      "prepare": 30,
+      "bind": 1,
+      "step": 6
+    }
+  },
+  "ubuntu_3.45.1_1ubuntu2.8": {
+    "public_tests": "passed",
+    "clang_native_and_faults": "passed",
+    "reported_failures": {
+      "open": 101,
+      "prepare": 31,
+      "bind": 1,
+      "step": 6
+    }
+  },
+  "engines_scope": "Cross-engine runs on host using prior verified prefixes/packages, not separate Ubuntu VM. Engine identities/hashes in compatibility-2026-11-04.json. Hosted CI is separate evidence.",
+  "fuzz": {
+    "seed": 219,
+    "max_len": 4096,
+    "runs": [
+      100000,
+      1000000
+    ],
+    "independent_fresh_review_runs": 10000,
+    "model_operations_per_input_max": 64,
+    "dictionary_sha256": "7efbb1360fc6b85b673a5b35063f752e02731d6e2f054361a47d79d4b1b80ef2",
+    "corpus": "Long local run reused warmed .build corpus; independent review also ran a fresh corpus. Seed alone is insufficient to reproduce the exact evolving corpus."
+  },
+  "limits": "Allocation hooks inject SQLite malloc/realloc failures in selected operations, not every failure path, registry allocation or pthread failure. Native adapter is sanitizer-instrumented; dynamically linked SQLite is not. No claim of exhaustive bug absence."
+}

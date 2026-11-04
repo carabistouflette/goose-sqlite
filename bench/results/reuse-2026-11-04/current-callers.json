@@ -1,0 +1,661 @@
+{
+  "timestamp_utc": "2026-11-04T10:45:51Z",
+  "source_commit": "78e906d65397cb0c9a0969fc00dab23666823e12",
+  "source_dirty": false,
+  "goose_revision": "eadca409f68210893f366e60d0c2f0dc29a339be",
+  "goose_binary_sha256": "2bdd604d01c3f46b03ddae80871b10de7f75e9e710ce92faa1a644b246472ab7",
+  "sqlite": "3.54.1",
+  "sqlite_source_id": "2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6alt1",
+  "sqlite_compile_options": [
+    "ATOMIC_INTRINSICS=1",
+    "COMPILER=gcc-16.2.1 20260810",
+    "DEFAULT_AUTOVACUUM",
+    "DEFAULT_CACHE_SIZE=-2000",
+    "DEFAULT_FILE_FORMAT=4",
+    "DEFAULT_JOURNAL_SIZE_LIMIT=-1",
+    "DEFAULT_MMAP_SIZE=0",
+    "DEFAULT_PAGE_SIZE=4096",
+    "DEFAULT_PCACHE_INITSZ=20",
+    "DEFAULT_RECURSIVE_TRIGGERS",
+    "DEFAULT_SECTOR_SIZE=4096",
+    "DEFAULT_SYNCHRONOUS=2",
+    "DEFAULT_WAL_AUTOCHECKPOINT=1000",
+    "DEFAULT_WAL_SYNCHRONOUS=2",
+    "DEFAULT_WORKER_THREADS=0",
+    "DIRECT_OVERFLOW_READ",
+    "ENABLE_COLUMN_METADATA",
+    "ENABLE_DBSTAT_VTAB",
+    "ENABLE_FTS3",
+    "ENABLE_FTS3_PARENTHESIS",
+    "ENABLE_FTS4",
+    "ENABLE_FTS5",
+    "ENABLE_MATH_FUNCTIONS",
+    "ENABLE_PERCENTILE",
+    "ENABLE_PREUPDATE_HOOK",
+    "ENABLE_RTREE",
+    "ENABLE_SESSION",
+    "ENABLE_STAT4",
+    "ENABLE_STMTVTAB",
+    "ENABLE_UNLOCK_NOTIFY",
+    "HAVE_ISNAN",
+    "MALLOC_SOFT_LIMIT=1024",
+    "MAX_ATTACHED=10",
+    "MAX_COLUMN=2000",
+    "MAX_COMPOUND_SELECT=500",
+    "MAX_DEFAULT_PAGE_SIZE=8192",
+    "MAX_EXPR_DEPTH=10000",
+    "MAX_FUNCTION_ARG=1000",
+    "MAX_LENGTH=1000000000",
+    "MAX_LIKE_PATTERN_LENGTH=50000",
+    "MAX_MMAP_SIZE=0x7fff0000",
+    "MAX_PAGE_COUNT=0xfffffffe",
+    "MAX_PAGE_SIZE=65536",
+    "MAX_SCHEMA=10000000",
+    "MAX_SQL_LENGTH=1000000000",
+    "MAX_TRIGGER_DEPTH=1000",
+    "MAX_VARIABLE_NUMBER=250000",
+    "MAX_VDBE_OP=250000000",
+    "MAX_WORKER_THREADS=8",
+    "MUTEX_PTHREADS",
+    "SECURE_DELETE",
+    "SYSTEM_MALLOC",
+    "TEMP_STORE=1",
+    "THREADSAFE=1"
+  ],
+  "runtime_sqlite_sha256": {
+    "goose": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a",
+    "c-adapter": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a"
+  },
+  "cc": "gcc (GCC) 16.2.1 20260810",
+  "c_flags": [
+    "-std=c11",
+    "-O2",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-pthread"
+  ],
+  "native": {
+    "archive_sha256": "959a885fe7ea413c4b89bd7c524b72b053c9c3518600c63b5ab7d2d3be353e72",
+    "build_type": "Release",
+    "flags": [
+      [
+        "-O3 -DNDEBUG -fPIC",
+        "-Wall",
+        "-Wextra",
+        "-Werror"
+      ]
+    ],
+    "sqlite_library": "libsqlite3.so",
+    "sqlite_sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a",
+    "compiler": "gcc (GCC) 16.2.1 20260810"
+  },
+  "goose_flags": [
+    "--cc",
+    "gcc",
+    "-O2"
+  ],
+  "platform": "Linux-7.2.11-arch1-1-x86_64-with-glibc2.44",
+  "cpu": "Intel(R) Core(TM) Ultra 7 258V",
+  "affinity": [
+    6
+  ],
+  "sources": {
+    "CMakeLists.txt": "0576aab2c05ccc8992afa1d32f758b66c7d984f8c124d53f370c8c93d16c2ef0",
+    "sqlite.goose": "625e64f828a8d0e66e5d03aef215c2ca164ef8a81801aa776e522c24f63a1268",
+    "GOOSE_REVISION": "64e14b181dfe96743211738fb0f1b1f7798ea940da2ca50ff122e6f028c24e15",
+    "sqlite.build": "15f3f69e3b427d609ba9d09ad59c638a71da02b1aa3d0c8a8e89a5fd9deaa2a0",
+    "native/sqlite.h": "372d4664659d9d5c769ac87b3b5e7f3932c32b35d8556fd61af919d83828dbb8",
+    "native/sqlite.c": "579c11699d1f1119ca448d557b469173e4d51dbf4add6815a0bda4a1249be671",
+    "bench/bench.goose": "40d3b50c71d758169a8563f6f690d25fee1a603fd09bbd6f7d06b9aee30fb333",
+    "bench/baseline.c": "9e050b66449e6af6939353fefe471567bd6643e6b2f2efa8861b65fb72aee16f",
+    "bench/measure.py": "a1d75efec6070f62c6a55b64cfd1b1cad8a7fffdab4a173153b0f61d6ac51739"
+  },
+  "binaries": {
+    "goose": "ad7bfd2624576418dedd97a8dbea4f4357487f6d0925ebcfd44fa74cd2520a37",
+    "c-adapter": "c9a6f67878f337f7bb3bdc47bfea67ff2046a7c2acfcf46ec45c1c0f2f46ae53"
+  },
+  "scope": "Whole-process wall and child CPU time, including startup/setup/cleanup. Same production adapter; C baseline is not unrestricted raw SQLite. Warmups excluded. Shared host, no CPU isolation.",
+  "samples": [
+    {
+      "implementation": "goose",
+      "fixture": "prepare",
+      "bytes": 0,
+      "iterations": 100000,
+      "run": 0,
+      "wall_ns": 173757060,
+      "cpu_ns": 171596000,
+      "checksum": 100000
+    },
+    {
+      "implementation": "c-adapter",
+      "fixture": "prepare",
+      "bytes": 0,
+      "iterations": 100000,
+      "run": 0,
+      "wall_ns": 174598691,
+      "cpu_ns": 172458000,
+      "checksum": 100000
+    },
+    {
+      "implementation": "c-adapter",
+      "fixture": "prepare",
+      "bytes": 0,
+      "iterations": 100000,
+      "run": 1,
+      "wall_ns": 170803983,
+      "cpu_ns": 168899000,
+      "checksum": 100000
+    },
+    {
+      "implementation": "goose",
+      "fixture": "prepare",
+      "bytes": 0,
+      "iterations": 100000,
+      "run": 1,
+      "wall_ns": 175386151,
+      "cpu_ns": 173255000,
+      "checksum": 100000
+    },
+    {
+      "implementation": "goose",
+      "fixture": "prepare",
+      "bytes": 0,
+      "iterations": 100000,
+      "run": 2,
+      "wall_ns": 171700860,
+      "cpu_ns": 169622000,
+      "checksum": 100000
+    },
+    {
+      "implementation": "c-adapter",
+      "fixture": "prepare",
+      "bytes": 0,
+      "iterations": 100000,
+      "run": 2,
+      "wall_ns": 172751613,
+      "cpu_ns": 170540000,
+      "checksum": 100000
+    },
+    {
+      "implementation": "goose",
+      "fixture": "text",
+      "bytes": 0,
+      "iterations": 100000,
+      "run": 0,
+      "wall_ns": 32172264,
+      "cpu_ns": 30815000,
+      "checksum": 0
+    },
+    {
+      "implementation": "c-adapter",
+      "fixture": "text",
+      "bytes": 0,
+      "iterations": 100000,
+      "run": 0,
+      "wall_ns": 31423008,
+      "cpu_ns": 30168000,
+      "checksum": 0
+    },
+    {
+      "implementation": "c-adapter",
+      "fixture": "text",
+      "bytes": 0,
+      "iterations": 100000,
+      "run": 1,
+      "wall_ns": 31134375,
+      "cpu_ns": 29837000,
+      "checksum": 0
+    },
+    {
+      "implementation": "goose",
+      "fixture": "text",
+      "bytes": 0,
+      "iterations": 100000,
+      "run": 1,
+      "wall_ns": 31993034,
+      "cpu_ns": 30691000,
+      "checksum": 0
+    },
+    {
+      "implementation": "goose",
+      "fixture": "text",
+      "bytes": 0,
+      "iterations": 100000,
+      "run": 2,
+      "wall_ns": 32486052,
+      "cpu_ns": 31092000,
+      "checksum": 0
+    },
+    {
+      "implementation": "c-adapter",
+      "fixture": "text",
+      "bytes": 0,
+      "iterations": 100000,
+      "run": 2,
+      "wall_ns": 32167175,
+      "cpu_ns": 30909000,
+      "checksum": 0
+    },
+    {
+      "implementation": "goose",
+      "fixture": "text",
+      "bytes": 32,
+      "iterations": 100000,
+      "run": 0,
+      "wall_ns": 31989391,
+      "cpu_ns": 30616000,
+      "checksum": 3200000
+    },
+    {
+      "implementation": "c-adapter",
+      "fixture": "text",
+      "bytes": 32,
+      "iterations": 100000,
+      "run": 0,
+      "wall_ns": 30151831,
+      "cpu_ns": 28927000,
+      "checksum": 3200000
+    },
+    {
+      "implementation": "c-adapter",
+      "fixture": "text",
+      "bytes": 32,
+      "iterations": 100000,
+      "run": 1,
+      "wall_ns": 30657936,
+      "cpu_ns": 29501000,
+      "checksum": 3200000
+    },
+    {
+      "implementation": "goose",
+      "fixture": "text",
+      "bytes": 32,
+      "iterations": 100000,
+      "run": 1,
+      "wall_ns": 31287174,
+      "cpu_ns": 30054000,
+      "checksum": 3200000
+    },
+    {
+      "implementation": "goose",
+      "fixture": "text",
+      "bytes": 32,
+      "iterations": 100000,
+      "run": 2,
+      "wall_ns": 32271186,
+      "cpu_ns": 30948000,
+      "checksum": 3200000
+    },
+    {
+      "implementation": "c-adapter",
+      "fixture": "text",
+      "bytes": 32,
+      "iterations": 100000,
+      "run": 2,
+      "wall_ns": 30738157,
+      "cpu_ns": 29532000,
+      "checksum": 3200000
+    },
+    {
+      "implementation": "goose",
+      "fixture": "text",
+      "bytes": 4096,
+      "iterations": 100000,
+      "run": 0,
+      "wall_ns": 107131831,
+      "cpu_ns": 105380000,
+      "checksum": 409600000
+    },
+    {
+      "implementation": "c-adapter",
+      "fixture": "text",
+      "bytes": 4096,
+      "iterations": 100000,
+      "run": 0,
+      "wall_ns": 103028027,
+      "cpu_ns": 101246000,
+      "checksum": 409600000
+    },
+    {
+      "implementation": "c-adapter",
+      "fixture": "text",
+      "bytes": 4096,
+      "iterations": 100000,
+      "run": 1,
+      "wall_ns": 102479844,
+      "cpu_ns": 100843000,
+      "checksum": 409600000
+    },
+    {
+      "implementation": "goose",
+      "fixture": "text",
+      "bytes": 4096,
+      "iterations": 100000,
+      "run": 1,
+      "wall_ns": 104896520,
+      "cpu_ns": 103167000,
+      "checksum": 409600000
+    },
+    {
+      "implementation": "goose",
+      "fixture": "text",
+      "bytes": 4096,
+      "iterations": 100000,
+      "run": 2,
+      "wall_ns": 103808759,
+      "cpu_ns": 102107000,
+      "checksum": 409600000
+    },
+    {
+      "implementation": "c-adapter",
+      "fixture": "text",
+      "bytes": 4096,
+      "iterations": 100000,
+      "run": 2,
+      "wall_ns": 103036694,
+      "cpu_ns": 101288000,
+      "checksum": 409600000
+    },
+    {
+      "implementation": "goose",
+      "fixture": "text",
+      "bytes": 65536,
+      "iterations": 10000,
+      "run": 0,
+      "wall_ns": 132165865,
+      "cpu_ns": 130230000,
+      "checksum": 655360000
+    },
+    {
+      "implementation": "c-adapter",
+      "fixture": "text",
+      "bytes": 65536,
+      "iterations": 10000,
+      "run": 0,
+      "wall_ns": 122769216,
+      "cpu_ns": 120729000,
+      "checksum": 655360000
+    },
+    {
+      "implementation": "c-adapter",
+      "fixture": "text",
+      "bytes": 65536,
+      "iterations": 10000,
+      "run": 1,
+      "wall_ns": 121286641,
+      "cpu_ns": 119517000,
+      "checksum": 655360000
+    },
+    {
+      "implementation": "goose",
+      "fixture": "text",
+      "bytes": 65536,
+      "iterations": 10000,
+      "run": 1,
+      "wall_ns": 120393150,
+      "cpu_ns": 118602000,
+      "checksum": 655360000
+    },
+    {
+      "implementation": "goose",
+      "fixture": "text",
+      "bytes": 65536,
+      "iterations": 10000,
+      "run": 2,
+      "wall_ns": 121594568,
+      "cpu_ns": 119740000,
+      "checksum": 655360000
+    },
+    {
+      "implementation": "c-adapter",
+      "fixture": "text",
+      "bytes": 65536,
+      "iterations": 10000,
+      "run": 2,
+      "wall_ns": 129988457,
+      "cpu_ns": 128046000,
+      "checksum": 655360000
+    },
+    {
+      "implementation": "goose",
+      "fixture": "blob",
+      "bytes": 0,
+      "iterations": 100000,
+      "run": 0,
+      "wall_ns": 32809504,
+      "cpu_ns": 31338000,
+      "checksum": 0
+    },
+    {
+      "implementation": "c-adapter",
+      "fixture": "blob",
+      "bytes": 0,
+      "iterations": 100000,
+      "run": 0,
+      "wall_ns": 32080799,
+      "cpu_ns": 30862000,
+      "checksum": 0
+    },
+    {
+      "implementation": "c-adapter",
+      "fixture": "blob",
+      "bytes": 0,
+      "iterations": 100000,
+      "run": 1,
+      "wall_ns": 33084561,
+      "cpu_ns": 31925000,
+      "checksum": 0
+    },
+    {
+      "implementation": "goose",
+      "fixture": "blob",
+      "bytes": 0,
+      "iterations": 100000,
+      "run": 1,
+      "wall_ns": 31091825,
+      "cpu_ns": 29817000,
+      "checksum": 0
+    },
+    {
+      "implementation": "goose",
+      "fixture": "blob",
+      "bytes": 0,
+      "iterations": 100000,
+      "run": 2,
+      "wall_ns": 29987524,
+      "cpu_ns": 28744000,
+      "checksum": 0
+    },
+    {
+      "implementation": "c-adapter",
+      "fixture": "blob",
+      "bytes": 0,
+      "iterations": 100000,
+      "run": 2,
+      "wall_ns": 31235995,
+      "cpu_ns": 29970000,
+      "checksum": 0
+    },
+    {
+      "implementation": "goose",
+      "fixture": "blob",
+      "bytes": 4096,
+      "iterations": 100000,
+      "run": 0,
+      "wall_ns": 82082013,
+      "cpu_ns": 80531000,
+      "checksum": 409600000
+    },
+    {
+      "implementation": "c-adapter",
+      "fixture": "blob",
+      "bytes": 4096,
+      "iterations": 100000,
+      "run": 0,
+      "wall_ns": 78245649,
+      "cpu_ns": 76650000,
+      "checksum": 409600000
+    },
+    {
+      "implementation": "c-adapter",
+      "fixture": "blob",
+      "bytes": 4096,
+      "iterations": 100000,
+      "run": 1,
+      "wall_ns": 80120700,
+      "cpu_ns": 78575000,
+      "checksum": 409600000
+    },
+    {
+      "implementation": "goose",
+      "fixture": "blob",
+      "bytes": 4096,
+      "iterations": 100000,
+      "run": 1,
+      "wall_ns": 80543836,
+      "cpu_ns": 78945000,
+      "checksum": 409600000
+    },
+    {
+      "implementation": "goose",
+      "fixture": "blob",
+      "bytes": 4096,
+      "iterations": 100000,
+      "run": 2,
+      "wall_ns": 81350136,
+      "cpu_ns": 79511000,
+      "checksum": 409600000
+    },
+    {
+      "implementation": "c-adapter",
+      "fixture": "blob",
+      "bytes": 4096,
+      "iterations": 100000,
+      "run": 2,
+      "wall_ns": 81618606,
+      "cpu_ns": 80130000,
+      "checksum": 409600000
+    },
+    {
+      "implementation": "goose",
+      "fixture": "blob",
+      "bytes": 1048576,
+      "iterations": 1000,
+      "run": 0,
+      "wall_ns": 229345309,
+      "cpu_ns": 226486000,
+      "checksum": 1048576000
+    },
+    {
+      "implementation": "c-adapter",
+      "fixture": "blob",
+      "bytes": 1048576,
+      "iterations": 1000,
+      "run": 0,
+      "wall_ns": 232185894,
+      "cpu_ns": 229651000,
+      "checksum": 1048576000
+    },
+    {
+      "implementation": "c-adapter",
+      "fixture": "blob",
+      "bytes": 1048576,
+      "iterations": 1000,
+      "run": 1,
+      "wall_ns": 236634601,
+      "cpu_ns": 233885000,
+      "checksum": 1048576000
+    },
+    {
+      "implementation": "goose",
+      "fixture": "blob",
+      "bytes": 1048576,
+      "iterations": 1000,
+      "run": 1,
+      "wall_ns": 244576027,
+      "cpu_ns": 241891000,
+      "checksum": 1048576000
+    },
+    {
+      "implementation": "goose",
+      "fixture": "blob",
+      "bytes": 1048576,
+      "iterations": 1000,
+      "run": 2,
+      "wall_ns": 258671277,
+      "cpu_ns": 248278000,
+      "checksum": 1048576000
+    },
+    {
+      "implementation": "c-adapter",
+      "fixture": "blob",
+      "bytes": 1048576,
+      "iterations": 1000,
+      "run": 2,
+      "wall_ns": 230080185,
+      "cpu_ns": 227481000,
+      "checksum": 1048576000
+    },
+    {
+      "implementation": "goose",
+      "fixture": "insert",
+      "bytes": 0,
+      "iterations": 100000,
+      "run": 0,
+      "wall_ns": 40416216,
+      "cpu_ns": 38975000,
+      "checksum": 100000
+    },
+    {
+      "implementation": "c-adapter",
+      "fixture": "insert",
+      "bytes": 0,
+      "iterations": 100000,
+      "run": 0,
+      "wall_ns": 39718368,
+      "cpu_ns": 38288000,
+      "checksum": 100000
+    },
+    {
+      "implementation": "c-adapter",
+      "fixture": "insert",
+      "bytes": 0,
+      "iterations": 100000,
+      "run": 1,
+      "wall_ns": 39237629,
+      "cpu_ns": 37828000,
+      "checksum": 100000
+    },
+    {
+      "implementation": "goose",
+      "fixture": "insert",
+      "bytes": 0,
+      "iterations": 100000,
+      "run": 1,
+      "wall_ns": 39419623,
+      "cpu_ns": 38033000,
+      "checksum": 100000
+    },
+    {
+      "implementation": "goose",
+      "fixture": "insert",
+      "bytes": 0,
+      "iterations": 100000,
+      "run": 2,
+      "wall_ns": 39600537,
+      "cpu_ns": 38127000,
+      "checksum": 100000
+    },
+    {
+      "implementation": "c-adapter",
+      "fixture": "insert",
+      "bytes": 0,
+      "iterations": 100000,
+      "run": 2,
+      "wall_ns": 38412220,
+      "cpu_ns": 37069000,
+      "checksum": 100000
+    }
+  ]
+}

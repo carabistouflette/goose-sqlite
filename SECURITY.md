@@ -43,7 +43,9 @@ are per thread, not per process. System SQLite must remain in a thread-safe mode
 
 Public Goose tests run under the in-process runner and a native executable.
 Native production adapter tests run with GCC/Clang ASan/UBSan, and its fuzzer
-exercises malformed SQL, arbitrary text/blob bytes, capacity checks and stale
-handles. The dynamically linked system SQLite itself is not sanitizer-instrumented
+exercises malformed SQL, arbitrary text/blob bytes, capacity checks, stale
+handles and a model of statement operation sequences. A separate native test
+process injects SQLite allocation failures and checks recovery/cleanup; allocator
+hooks are test-only and installed before SQLite initialization. The dynamically linked system SQLite itself is not sanitizer-instrumented
 by these checks. Initial validation is Linux x86-64; other platforms are unverified.
 See [the validation record](docs/validation.md) for exact completed checks.

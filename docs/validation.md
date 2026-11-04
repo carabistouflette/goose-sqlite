@@ -92,6 +92,49 @@ use `python3 scripts/test-import.py --goose /path/to/goose --source
 carabistouflette/goose-sqlite@<full-commit>`. Both runner and native executions must
 produce the expected values after resource cleanup.
 
+## Follow-up correctness and performance audit
+
+A separate correctness review reproduced two misleading contract statements.
+The interface documentation now explicitly distinguishes implicit RETURNING
+writes that finalization can commit from still-open explicit transactions that
+close rolls back. It also explains that wrapper validation involving SQLite
+operations can replace a prior engine error message. Native regressions verify
+both thread-exit transaction cases; no hidden cancellation/rollback behavior was
+added to production code.
+
+Profiling identified repeated zero initialization before full byte copies. The
+Goose getter now preserves existing output length until its size check succeeds,
+initializes only growth, and retains explicit clearing on all errors. All native
+handle/state/type/size checks and copied ownership remain unchanged. Public tests
+exercise changed contents at identical length, growth, shrinkage, empty bytes,
+embedded NUL, both byte APIs and recovery after errors. A fresh review verified
+these paths and matched the candidate's behavior to the measured variant.
+
+[Matched profiling/timing evidence](../bench/results/reuse-2026-11-04/README.md)
+retains seven alternating baseline/candidate passes and every fixture result.
+A separate clean-source record covers all nine maintained Goose/C fixtures after
+updating C output initialization for parity. Source/compiler/executable/native
+archive hashes, captured compile flags and runtime identities are retained with
+shared-host and measurement-scope limitations. Native instruction profiles did
+not justify weakening checks or complicating the two-call interface.
+
+Native test targets now include a separate process that installs test-only SQLite
+allocator hooks before initialization. It tries 640 allocation-failure positions
+across open, prepare, text binding and execution; checks returned errors/handles,
+cleanup and SQLite's outstanding allocation count after every trial. GCC/Clang
+ASan/UBSan suites pass. SQLite 3.37.0 and Ubuntu's 3.45.1-1ubuntu2.8 packages also
+pass the expanded public suites, isolated consumer imports and Clang native/fault
+checks. Counts of failing allocations differ by engine configuration. These hooks
+are not compiled into the production adapter or used to change its global policy.
+
+The fuzzer additionally checks a small model of up to 64 binding, clear, step,
+reset, getter and finalize/reprepare operations per input, including invalid
+states and stale tokens. SQL dictionary tokens improve grammar exploration.
+A 100000-case run and then a 1000000-case seed-219 run passed after these
+additions, as did a separate fresh 10000-case run by the reviewer. The longer
+local run reused its warmed corpus; seed alone does not specify the corpus. These tests do not exhaust all allocation failures,
+all SQL or all operation sequences; system SQLite remains a separate dependency.
+
 ## Reproduce
 
 ```sh
