@@ -115,7 +115,7 @@
     "959a885fe7ea413c4b89bd7c524b72b053c9c3518600c63b5ab7d2d3be353e72"
   ],
   "candidate_implementation_commit": "c03efc275ba22100233d16ee51d111eabe60dff0",
-  "candidate_note": "Recorded candidate differs from the committed implementation only in an unrelated execute() comment. Test/build/methodology changes occurred after this timing series.",
+  "candidate_note": "The recorded candidate's sqlite.goose differs from the committed module only in an unrelated execute() comment. Test/build/methodology changes occurred after this timing series.",
   "runtime_capture_utc": "2026-11-04T10:43:42.133570+00:00",
   "runtime_capture_note": "Captured after timing without rebuilding either measured executable; their recorded hashes still match. System libraries were not controlled by this experiment.",
   "runtime_libraries": {
