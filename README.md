@@ -5,7 +5,8 @@ Small, synchronous SQLite connections and prepared statements for the
 Experimental interface; no tagged release yet. Tested on Linux x86-64 and ARM64.
 
 Typed parameter binding, strict typed reads, explicit transactions, copied text
-and blobs, incremental BLOB ranges, bounded backup, opt-in WAL, bounded input/work,
+and blobs, incremental BLOB ranges, backup with a page budget, opt-in WAL,
+explicit checkpoints, input and VM limits,
 and checked resource handles. No ORM or pool.
 SQLite is a required native dependency, not vendored in this repository.
 

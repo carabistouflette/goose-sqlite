@@ -53,7 +53,7 @@ by the system-engine checks. The optional pinned-engine validation separately
 builds both SQLite and the adapter with ASan/UBSan and exercises positive WAL
 behavior with DEFAULT_WAL_SYNCHRONOUS=1. Native CI covers Linux x86-64 and
 ARM64. Separate x86-64 TSan validation instruments both engine and adapter after
-explicit serial engine initialization; first wrapper use remains concurrent. Cold
+explicit serial engine initialization; first registry/key use remains concurrent. Cold
 engine initialization under TSan produced unresolved upstream diagnostics, retained
 with the results. Ordinary ASan/UBSan runs retain concurrent cold initialization.
 See [concurrency methodology](tests/CONCURRENCY.md) for these exact limits.
