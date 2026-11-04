@@ -21,3 +21,10 @@ vendored into this library or linked into its production adapter. Python sqlite3
 uses the installed Python runtime (PSF license and historical notices). See
 [the cited comparison](docs/alternatives.md) for first-party license/source links.
 Generated comparison executables are ignored build artifacts, not source releases.
+
+The optional validation script scripts/test-wal-engine.py downloads SQLite 3.54.1
+into ignored build output, verifying a pinned archive SHA-256 and the upstream
+sqlite3.c SHA3-256 from its release record. That test-only engine is compiled with
+ASan/UBSan and DEFAULT_WAL_SYNCHRONOUS=1 to exercise positive WAL behavior on CI;
+it does not replace or vendor the production system dependency. SQLite is in the
+public domain: https://sqlite.org/copyright.html .

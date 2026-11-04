@@ -1,0 +1,11 @@
+{
+  "dataset": "handoff.json",
+  "scope": "Separate complete series after CONFIG explicitly released CPU7, not an isolated-host guarantee.",
+  "config_preceding_repeat_utc": {
+    "start": "2026-11-04T13:42:57Z",
+    "end": "2026-11-04T13:43:58Z"
+  },
+  "sqlite_metadata_before_timing_utc": "2026-11-04T13:46:29Z",
+  "sqlite_result_file_written_utc": "2026-11-04T13:47:23.234506+00:00",
+  "incidental_work": "SQLite compatibility/tests on CPU6 and source build on CPU5; other host work possible. No fixed frequency/cache/exclusivity claim. Both complete datasets retained; absolute across-window changes are not a controlled speedup."
+}

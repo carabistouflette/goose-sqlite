@@ -55,3 +55,11 @@ still clear logical output, and the native size/copy checks remain in place.
 
 [Alternative wrappers](alternatives/README.md) now have a separate matched-engine,
 in-process benchmark; it measures API paths with explicitly different safety policies.
+
+## Incremental storage access
+
+The [storage harness](storage/README.md) compares owned whole-column copies with
+incremental ranges through Goose and raw SQLite C. The [retained results](results/storage-2026-11-04/README.md)
+include both complete nine-round windows, known overlap, compiler/engine/source
+provenance, checksums and every sample. It measures less data copied for partial
+reads; full-value results and remaining wrapper overhead are reported too.

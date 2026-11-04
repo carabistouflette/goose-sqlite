@@ -20,6 +20,7 @@ jobs:
       - run: make check test
       - run: make test-native CC=gcc
       - run: make test-native CC=clang
+      - run: python3 scripts/test-wal-engine.py
       - run: make fuzz-native FUZZ_RUNS=10000
       - run: make bench BENCH_ITERATIONS=10
       - run: /usr/bin/python3 bench/alternatives/measure.py --goose .toolchain/goose/build/goose --iterations 10 --runs 1 --output .build/alternative-smoke

@@ -175,6 +175,56 @@ Actionable timing-boundary, Python optimization-environment and Rust profile
 provenance findings were corrected. No remaining confirmed native correctness
 or safety blocker was reported within those reviews' scope.
 
+## WAL, backup and incremental BLOB follow-up
+
+Production code is at d030ad327b833b76dcf8969b25b4f3b1d443708a; test/compatibility
+follow-ups are through b01179509d63a7e5e73b0de11de03dad4e2a81d2. New public tests
+run under the Goose runner and compiled executables; the isolated standalone
+consumer also exercises writable/read-only BLOBs and online backup.
+
+The current host passes make check/test, GCC and Clang ASan/UBSan native suites,
+and an updated 100000-case seed-219 fuzz campaign including a model of BLOB range
+writes/reads, stale token replacement, zero-length operations and rollback expiry.
+That campaign reused the warmed local corpus; seed alone does not identify it.
+Fault tests now cover 912 allocation positions (128 BLOB-open and 128 backup
+positions added). Test-only lookaside is disabled before SQLite initialization
+so allocations reach the injected allocator; production configuration is unchanged.
+All connections close and engine memory accounting returns to baseline per trial.
+
+Public runner/native/consumer and GCC/Clang sanitizer suites also pass against
+upstream SQLite 3.37.0 and Ubuntu 3.45.1-1ubuntu2.8. A generated-column restriction
+assumption was corrected after the minimum engine permitted an ordinary column
+in such a table; newer engine versions reject the table. Old/unrecognized engines
+reject requested or detected WAL, including unknown distributor backports; their
+rollback-journal tests continue to pass.
+
+The maintained scripts/test-wal-engine.py verifies the pinned 3.54.1 archive
+SHA-256 and its sqlite3.c SHA3-256 against the upstream release record, then builds
+**both engine and adapter with ASan/UBSan**, using DEFAULT_WAL_SYNCHRONOUS=1.
+Local native/912-position fault/storage suites pass under that instrumented engine.
+The test-only auto-extension captures a connection for post-open policy inspection:
+caller PRAGMA denial is checked first, then the test removes its authorizer only
+to verify synchronous=FULL after an OFF default and preserved EXTRA after EXTRA.
+There is no production pointer or authorizer bypass API. Backup tests verify
+READONLY on 8192-to-4096 page-size mismatches with existing in-memory/WAL targets,
+retaining their original row42. [Pinned-engine evidence](../bench/results/storage-2026-11-04/wal-engine-validation.json)
+records source, compiler, flags and hashes. CI runs this path separately from the
+packaged-engine suites and adds all four storage benchmark smoke paths.
+
+Two initial implementation reviewers, fresh final native/contract and benchmark
+reviewers, and a publication/provenance review inform this slice. The initial
+pointer-type build issue, old-engine test assumption and minor metadata/reporting
+findings were fixed. No confirmed production correctness or memory-safety blocker
+remained within the completed reviews' scope. Tests are evidence, not a proof
+against every possible bug or a security endorsement of old SQLite versions.
+
+[Storage results](../bench/results/storage-2026-11-04/README.md) retain two complete
+144-sample series. The original overlaps CONFIG timing on CPU7 and is unmodified;
+the separate repeat follows explicit release. All requested bytes/checksums match,
+loaded engines match, full-value regressions and sample spreads are reported.
+Both methods benefit from range access; no engine, disk, allocator or universal
+wrapper-performance claim follows.
+
 ## Reproduce
 
 ```sh
@@ -182,6 +232,7 @@ make setup
 make check test
 make test-native CC=gcc
 make test-native CC=clang
+python3 scripts/test-wal-engine.py
 make fuzz-native FUZZ_RUNS=1000000
 make bench BENCH_ITERATIONS=100000
 git diff --check

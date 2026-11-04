@@ -55,8 +55,8 @@ fn main() {
 ```
 
 Declare the package in your program's root file. A reviewed Git dependency can use
-`import sqlite from "carabistouflette/goose-sqlite@a834991cc73138fd1d8c7a70a88006e55dd79f5f";`.
-This pins the reviewed metadata/status interface and checked-fetch implementation. Imports and namespace are `sqlite`.
+`import sqlite from "carabistouflette/goose-sqlite@b01179509d63a7e5e73b0de11de03dad4e2a81d2";`.
+This pins the reviewed metadata/status, checked-fetch and storage interface. Imports and namespace are `sqlite`.
 Applications must handle errors and clean up resources on their own error paths;
 assertions above keep the example short. Native resource handles belong to their
 OS thread. Copied handles alias one resource; closing/finalizing invalidates all
@@ -96,3 +96,8 @@ SQLite's WAL-reset fix, preserving at least FULL synchronization. `blob_open`,
 operations. Writable BLOBs require explicit transactions and bypass SQL CHECKs
 and UPDATE triggers; read [the contract and limits](docs/api.md) before using them.
 WAL requires a suitable local filesystem and patched engines for all participants.
+
+The [incremental-read results](bench/results/storage-2026-11-04/README.md) retain
+two complete nine-round series, including the disclosed CPU overlap. Partial reads
+benefit from copying only the needed range; full-value reads favor column_blob.
+Both raw SQLite C and Goose can use this API. No universal ranking is claimed.

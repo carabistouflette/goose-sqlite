@@ -341,3 +341,8 @@ The [four-path comparison](../bench/storage/README.md) measures whole-column and
 range copies independently through Goose and the raw C API on one shared engine.
 Any improvement is an API/amount-of-copying benefit available to alternatives too,
 not a claim that the Goose binding makes SQLite itself faster.
+
+The [storage results](../bench/results/storage-2026-11-04/README.md) retain two
+144-sample windows. The first overlaps CONFIG on CPU7; the second follows an
+explicit handoff. Range access benefits both Goose and C. Full-value results favor
+the column API; no universal speed or identical-policy ranking follows.

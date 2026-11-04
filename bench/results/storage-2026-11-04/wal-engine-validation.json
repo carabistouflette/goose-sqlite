@@ -1,0 +1,30 @@
+{
+  "url": "https://sqlite.org/2026/sqlite-amalgamation-3540100.zip",
+  "archive_sha256": "0a9c8e34352dad46006aa82836d5383bff9dc6bc9ce5a60553c05aa30e6ad1f9",
+  "sqlite3_c_sha3_256": "e2b869d3003b33c942b7dd7063604fbc53553e1b66609570df39b9b7b558ee81",
+  "engine_sha256": "80a0db09bacc2c3d6a418780f741530ef01d5d20eeea2d9579c5e84356b78307",
+  "compiler": "clang version 23.1.4",
+  "flags": [
+    "-O1",
+    "-g",
+    "-fno-omit-frame-pointer",
+    "-fsanitize=address,undefined",
+    "-std=c11",
+    "-shared",
+    "-fPIC",
+    "SQLITE_THREADSAFE=1",
+    "SQLITE_DEFAULT_WAL_SYNCHRONOUS=1"
+  ],
+  "tests": "native, allocation failures, storage incl FULL/EXTRA and backup mismatch; engine+adapter ASan/UBSan",
+  "native_source_commit": "b01179509d63a7e5e73b0de11de03dad4e2a81d2",
+  "source_hashes": {
+    "native/sqlite.c": "aaaedd1cc6319b62bd971ab8707d5cae210faceb8995411ac2599d8f1019a0ba",
+    "native/sqlite.h": "33c94d8f8f74772e4bc39648836f8b26b5e1bdc8a70b20b0072ab26c4d4cebc6",
+    "CMakeLists.txt": "811a2ef8a89d12eebd65d26b71caa88faff89c9b35868b7e1d0f29f44fef1846",
+    "tests/native.c": "112da0f2ba8bdffe58985c4cce8030ce3af8876f08f9e004cd7f336a43a7dc36",
+    "tests/storage.c": "c27d0342adb9e3dad087409634189fb92070275a1b121f5ad2e0b8d14d0ae753",
+    "tests/faults.c": "89e87188497b355673b5adee9f3facc61dc0d9ce2c10dc52d8d73980bd797c40",
+    "scripts/test-wal-engine.py": "284510c197348868be95f2569fa7381ff05aa22b597d768d9fe9354eac4e55a7"
+  },
+  "record_note": "Engine build/test evidence supplemented after successful completion with hashes of unchanged tested native/test sources and the exact script used. Final documentation and CI wiring were uncommitted at local test time."
+}

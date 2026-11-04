@@ -48,8 +48,10 @@ Native production adapter tests run with GCC/Clang ASan/UBSan, and its fuzzer
 exercises malformed SQL, arbitrary text/blob bytes, capacity checks, stale
 handles and a model of statement operation sequences. A separate native test
 process injects SQLite allocation failures and checks recovery/cleanup; allocator
-hooks are test-only and installed before SQLite initialization. The dynamically linked system SQLite itself is not sanitizer-instrumented
-by these checks. Initial validation is Linux x86-64; other platforms are unverified.
+hooks are test-only and installed before SQLite initialization. The installed system SQLite itself is not sanitizer-instrumented
+by the system-engine checks. The optional pinned-engine validation separately
+builds both SQLite and the adapter with ASan/UBSan and exercises positive WAL
+behavior with DEFAULT_WAL_SYNCHRONOUS=1; CI runs that maintained path. Initial validation is Linux x86-64; other platforms are unverified.
 See [the validation record](docs/validation.md) for exact completed checks.
 
 ## Storage features
