@@ -55,8 +55,8 @@ fn main() {
 ```
 
 Declare the package in your program's root file. A reviewed Git dependency can use
-`import sqlite from "carabistouflette/goose-sqlite@b01179509d63a7e5e73b0de11de03dad4e2a81d2";`.
-This pins the reviewed metadata/status, checked-fetch and storage interface. Imports and namespace are `sqlite`.
+`import sqlite from "carabistouflette/goose-sqlite@e24de8ce7495c8146c6c9b408cf08686c981c182";`.
+This pins the reviewed metadata/status, storage and statement-diagnostics interface. Imports and namespace are `sqlite`.
 Applications must handle errors and clean up resources on their own error paths;
 assertions above keep the example short. Native resource handles belong to their
 OS thread. Copied handles alias one resource; closing/finalizing invalidates all
@@ -105,3 +105,9 @@ Both raw SQLite C and Goose can use this API. No universal ranking is claimed.
 Storage recovery checks inject I/O/full/sync errors and process crashes, including
 death after acknowledged commits. See [methodology and retained results](tests/RECOVERY.md)
 for the completed compiler/engine matrix and the process-crash/power-loss distinction.
+
+`statement_status` exposes checked scan/sort/VM/run and approximate statement-memory
+metrics. The [transaction/savepoint example](examples/transactions.goose) preserves
+original and recovery errors explicitly. [Realistic workload results](bench/results/workloads-2026-11-04/README.md)
+retain ten fixtures across five callers, whole-process peak RSS and matched registry
+measurements, including mixed/slower cases and the native-executable timing scope.

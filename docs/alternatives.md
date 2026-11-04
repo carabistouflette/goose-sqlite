@@ -346,3 +346,20 @@ The [storage results](../bench/results/storage-2026-11-04/README.md) retain two
 144-sample windows. The first overlaps CONFIG on CPU7; the second follows an
 explicit handoff. Range access benefits both Goose and C. Full-value results favor
 the column API; no universal speed or identical-policy ranking follows.
+
+## Diagnostics and realistic workloads
+
+Checked statement_status now exposes a narrow allowlist of engine scan/sort/
+automatic-index/VM/reprepare/run counters and approximate statement memory. Engine
+counter limits and reset semantics are explicit; the i64 transport is not a promise
+of 64-bit engine counters. The runnable transaction/savepoint example demonstrates
+error preservation, BEGIN ownership and automatic outer rollback, without claiming
+RAII or implicit retries. [The API contract](api.md) describes these details.
+
+[Realistic workload results](../bench/results/workloads-2026-11-04/README.md) add
+ordered row scans, indexed lookups and indexed128-byte BLOB batches to the five
+caller comparison. Native wrappers remain faster on several paths; Goose is close
+on indexed batches/lookups and this Python path is slower across the fixtures.
+The whole-process RSS measurements include runtime/setup/verification and cannot
+be interpreted as per-binding memory alone. All raw samples, mixed optimization
+results, profile/tool/source hashes and compiler/engine identities are retained.

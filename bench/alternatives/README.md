@@ -5,7 +5,7 @@ make setup
 python3 bench/alternatives/measure.py --goose .toolchain/goose/build/goose --iterations 100000 --runs 7 --cpu 7 --output .build/alternative-results
 ```
 
-Requires Python 3, Git/network access for the exact SQLiteCpp source commit,
+Requires Python 3, GNU time, Git/network access for the exact SQLiteCpp source commit,
 CMake, GCC/G++, Cargo/Rust and system SQLite headers/library. Cargo.lock fixes
 Rust dependency resolution; no bundled SQLite feature is enabled. Dependencies
 remain in ignored build/target directories, not vendored into the library.
@@ -19,7 +19,7 @@ SQLite shared-library hash. Four alternatives explicitly emit version/source ID/
 compile options; Goose's identity is inferred from its identical loaded library.
 The direct C API baseline is not the old checked-adapter C baseline.
 
-Seven fixtures use the same SQL/ASCII/byte inputs and iteration counts: uncached
+The original seven fixtures use the same SQL/ASCII/byte inputs and iteration counts: uncached
 prepare SELECT1; reused scalar bind/read; copied text at32B/4KiB/64KiB; copied4KiB
 BLOB; and reused inserts inside one explicit in-memory transaction. Text/blob
 outputs own their storage; every byte is compared inside the timed loop. Scalar

@@ -258,6 +258,39 @@ failures and power-loss durability. Host tests instrument the adapter; the pinne
 engine run instruments both engine and adapter. These are correctness checks,
 not performance measurements or proof against every storage failure.
 
+## Statement diagnostics, recovery examples and registry lookup
+
+New public diagnostics tests cover allowed metrics, Ready/Row/Done/Failed states,
+reset-returning-old-value semantics, the MEMUSED reset exception, unknown metrics,
+default/wrong-kind/stale handles and deterministic zero failure outputs. Native
+cases cover unaligned outputs, invalid reset flags and foreign-thread tokens.
+The runnable transaction example tests original/recovery error separation, failed
+BEGIN ownership, nested savepoints and INSERT OR ROLLBACK ending the outer scope.
+Host, minimum 3.37 and Ubuntu 3.45 runner/native/consumer/example suites pass using
+isolated public executable directories. Overlapping exploratory output paths were
+caught, excluded from validation and replaced with those isolated reruns.
+
+A Callgrind native scan profile identified repeated pthread registry calls. The
+small C11 TLS cache retains pthread-key ownership, all thread/token/generation
+validation and copied values. Publication follows successful key association;
+destructor entry clears the cache before SQLite callbacks can create fresh state.
+A trusted native userdata cleanup regression rejects old tokens during teardown,
+uses/closes a fresh registry, and verifies main-thread isolation. It passes on
+both original and optimized implementations. GCC/Clang ASan/UBSan and the pinned
+instrumented engine pass; minimum/Ubuntu native Clang checks also pass with the
+new diagnostics and teardown regression. The updated 100000-case seed 219 fuzz
+campaign passes after the cache change, using the warmed local corpus.
+
+[Workload evidence](../bench/results/workloads-2026-11-04/README.md) retains 350
+baseline, 140 paired and 350 final samples, common engine/profile checks, a launcher
+RSS probe and redacted instruction profile. Sources were clean/frozen and checked
+before/after measurement. Actual SQLiteCpp Release/external-engine flags are
+verified after fresh configuration; an exploratory cache-reset O0 build and an
+ambient Rust compiler-cache build failure were fixed before principal timings.
+Design/API/benchmark/registry implementation and final data reviews informed this
+follow-up. Mixed/slower results remain visible. Native-executable performance
+claims do not imply the dynamic runner has identical TLS code generation.
+
 ## Reproduce
 
 ```sh
