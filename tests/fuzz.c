@@ -67,7 +67,8 @@ static void lifecycle(uint64_t db, const uint8_t *data, size_t size) {
         }
         case 15: {
             int64_t value = -1;
-            CHECK(gq_status(db, 2, &value) == SQLITE_OK && (value == 0 || value == 1)); break;
+            CHECK(gq_status(db, 2, &value) == SQLITE_OK && (value == 0 || value == 1));
+            CHECK(gq_stmt_status(stmt, SQLITE_STMTSTATUS_RUN, 0, &value) == SQLITE_OK && value >= 0); break;
         }
         case 11: {
             int64_t length = -1;

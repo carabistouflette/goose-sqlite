@@ -31,6 +31,7 @@ static void *foreign(void *p) {
     assert(gq_parameter_count(tokens[1]) == GQ_HANDLE);
     assert(gq_parameter_index(tokens[1], text(":x")) == GQ_HANDLE);
     int64_t value = 17;
+    assert(gq_stmt_status(tokens[1],SQLITE_STMTSTATUS_RUN,0,&value) == GQ_HANDLE && value == 0);
     assert(gq_status(tokens[0], 0, &value) == GQ_HANDLE && value == 0);
     uint8_t bytes[8];
     assert(gq_name(tokens[1], 0, (gq_output){bytes, 8}, &value) == GQ_HANDLE && value == 0);
@@ -63,6 +64,12 @@ static void *abandon_explicit_returning(void *p) {
 int main(void) {
     uint64_t d = open_db(":memory:", 0, 0), s = prepare(d, "SELECT ?1, ?2, ?3, ?4");
     uint8_t unaligned[17] = {0};
+    assert(gq_stmt_status(s,SQLITE_STMTSTATUS_RUN,0,unaligned+1) == SQLITE_OK);
+    int64_t status; memcpy(&status,unaligned+1,8); assert(status == 0);
+    assert(gq_stmt_status(s,INT64_MAX,0,unaligned+1) == GQ_INPUT);
+    memcpy(&status,unaligned+1,8); assert(status == 0);
+    assert(gq_stmt_status(s,SQLITE_STMTSTATUS_RUN,2,unaligned+1) == GQ_INPUT);
+    assert(gq_stmt_status(s,SQLITE_STMTSTATUS_RUN,0,NULL) == GQ_INPUT);
     assert(gq_parameter_count(s) == 4);
     assert(gq_parameter_index(s, text("?1")) == 1);
     assert(gq_parameter_count(d) == GQ_HANDLE);

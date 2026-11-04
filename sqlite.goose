@@ -176,3 +176,18 @@ fn blob_write(blob: Blob, offset: i64, bytes: const u8[:]) -> i64 {
 fn backup(source: Database, destination: Database, max_pages: i64) -> i64 {
     return native_backup(source.token, destination.token, max_pages);
 }
+
+// SQLite statement counters are engine-sized; VM steps above INT_MAX are undefined.
+const STMT_FULLSCAN_STEPS: i64 = 1;
+const STMT_SORTS:          i64 = 2;
+const STMT_AUTOINDEX_ROWS: i64 = 3;
+const STMT_VM_STEPS:       i64 = 4;
+const STMT_REPREPARES:     i64 = 5;
+const STMT_RUNS:           i64 = 6;
+const STMT_MEMORY_USED:    i64 = 99;
+extern fn native_statement_status(token: u64, metric: i64, reset: i64, value: i64&) -> i64 = "gq_stmt_status";
+fn statement_status(stmt: Statement, metric: i64, reset_counter: bool) -> i64, i64 {
+    var value: i64 = 0;
+    let code = native_statement_status(stmt.token, metric, if reset_counter { 1 } else { 0 }, value);
+    return value, code;
+}

@@ -31,6 +31,8 @@ fn main() {
     let stmt, prepared = sqlite::prepare(db, "SELECT :number AS id, :label AS label");
     assert(prepared == sqlite::OK);
     assert(sqlite::parameter_count(stmt) == 2);
+    let runs, runs_code = sqlite::statement_status(stmt, sqlite::STMT_RUNS, false);
+    assert(runs_code == sqlite::OK && runs == 0);
     assert(sqlite::parameter_index(stmt, ":number") == 1);
     assert(sqlite::parameter_index(stmt, ":label") == 2);
     var column: u8[>..] = [];

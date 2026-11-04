@@ -532,3 +532,16 @@ int64_t gq_backup(uint64_t source, uint64_t destination, int64_t max_pages) {
     int final = sqlite3_backup_finish(b);
     return rc == SQLITE_DONE ? final : rc == SQLITE_OK ? GQ_LIMIT : rc;
 }
+
+int64_t gq_stmt_status(uint64_t token, int64_t metric, int64_t reset, void *out) {
+    if (!out) return GQ_INPUT;
+    int64_t value = 0; memcpy(out, &value, sizeof value);
+    Statement *s = statement(token);
+    if (!s) return GQ_HANDLE;
+    if ((metric < SQLITE_STMTSTATUS_FULLSCAN_STEP || metric > SQLITE_STMTSTATUS_RUN) &&
+        metric != SQLITE_STMTSTATUS_MEMUSED) return GQ_INPUT;
+    if (reset != 0 && reset != 1) return GQ_INPUT;
+    value = sqlite3_stmt_status(s->ptr, (int)metric, (int)reset);
+    memcpy(out, &value, sizeof value);
+    return SQLITE_OK;
+}

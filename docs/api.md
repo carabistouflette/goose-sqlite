@@ -250,3 +250,37 @@ disk space or total source size. Busy timeout and I/O can block within a step.
 Page-size mismatches with an in-memory/WAL destination can fail (READONLY), as
 specified by the [SQLite backup API](https://sqlite.org/c3ref/backup_finish.html).
 No backup resource escapes the call; there is no hidden asynchronous operation.
+
+## Statement diagnostics
+
+`statement_status(stmt,metric,reset_counter) -> value,code` reads an allowlisted
+SQLite statement metric in any live state, including Ready, Row, Done or Failed.
+It does not execute, reset or finalize the statement. Invalid/default/stale/
+foreign-thread/wrong-kind handles produce INVALID_HANDLE and zero output; an
+unknown metric produces INVALID_INPUT and zero output. Check code separately
+from the metric value.
+
+| Metric | Meaning |
+|---|---|
+| STMT_FULLSCAN_STEPS | Table scan forward steps; useful when checking indexed queries |
+| STMT_SORTS | Sort operations |
+| STMT_AUTOINDEX_ROWS | Rows inserted into transient automatic indexes |
+| STMT_VM_STEPS | VM operations, subject to SQLite's INT_MAX limit |
+| STMT_REPREPARES | Automatic statement recompilations |
+| STMT_RUNS | Executions started; increments on first step of each cycle |
+| STMT_MEMORY_USED | Approximate bytes used by the prepared statement |
+
+With reset_counter=true, the returned value is the previous counter and the
+engine resets that counter to zero. This is independent of sqlite::reset(stmt).
+STMT_MEMORY_USED is a gauge, so SQLite ignores reset_counter for that metric.
+It is not process RSS or total SQLite allocator usage. The i64 output transports
+SQLite's native int result; it does not create 64-bit counters. In particular,
+STMT_VM_STEPS is undefined above 2147483647 operations; inspect/reset counters
+periodically for long-running use. See the [engine counter contract](https://sqlite.org/c3ref/c_stmtstatus_counter.html).
+
+The [runnable transaction example](../examples/transactions.goose) shows ownership
+of a successful BEGIN, separate operation/recovery codes, nested savepoint cleanup,
+and autocommit checks after INSERT OR ROLLBACK ends the entire transaction. A failed
+BEGIN grants no right to roll back the caller's existing transaction. Inner RELEASE
+is not an independent commit. Its fixed SQL/savepoint names are trusted code;
+values use typed bindings. Both the runner and native example are tested.

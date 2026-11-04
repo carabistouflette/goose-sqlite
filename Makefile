@@ -13,9 +13,11 @@ check:
 	python3 scripts/native-manifest.py --check
 	"$(GOOSE)" format --check sqlite.goose examples tests bench
 	"$(GOOSE)" check tests/api.goose
+	"$(GOOSE)" check tests/diagnostics.goose
 	"$(GOOSE)" check tests/storage.goose
 	"$(GOOSE)" check tests/metadata.goose
 	"$(GOOSE)" check tests/files.goose
+	"$(GOOSE)" check examples/transactions.goose
 	"$(GOOSE)" check examples/items.goose
 	"$(GOOSE)" check bench/storage/runner.goose
 	"$(GOOSE)" check bench/bench.goose
@@ -23,6 +25,7 @@ check:
 test:
 	python3 scripts/native-manifest.py --check
 	"$(GOOSE)" run tests/api.goose
+	"$(GOOSE)" run tests/diagnostics.goose
 	"$(GOOSE)" run tests/storage.goose
 	"$(GOOSE)" run tests/metadata.goose
 	mkdir -p .build
@@ -32,7 +35,12 @@ test:
 	./.build/metadata
 	"$(GOOSE)" build tests/storage.goose -o .build/storage
 	./.build/storage
+	"$(GOOSE)" build tests/diagnostics.goose -o .build/diagnostics
+	./.build/diagnostics
 	python3 scripts/test-files.py "$(GOOSE)"
+	"$(GOOSE)" run examples/transactions.goose
+	"$(GOOSE)" build examples/transactions.goose -o .build/transactions
+	./.build/transactions
 	"$(GOOSE)" run examples/items.goose
 	$(MAKE) test-import
 test-import:
