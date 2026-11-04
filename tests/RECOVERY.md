@@ -25,7 +25,7 @@ For rollback journal and supported WAL engines, the driver enumerates separately
 Enumeration advances until the terminal no-hit successful trial, with a defensive
 10000-point cap. Every supported group must hit a fault. Unsupported WAL engines
 are reported as explicit group skips. The maintained pinned engine supplies the
-positive WAL paths. Child timeouts, unexpected diagnostics, signals and exit
+positive WAL paths with --require-wal, which rejects every skipped WAL group. Child timeouts, unexpected diagnostics, signals and exit
 statuses fail the test. UBSan halts on error, and deliberate crashes require an
 exact unbuffered marker/status pair.
 
@@ -52,3 +52,6 @@ follows SQLite's distinction between [I/O faults and crash testing](https://sqli
 Ignored .build/recovery-*.json and .jsonl files retain cutpoints, failure counts,
 primary/extended return codes, generation outcomes and acknowledgements. These
 are correctness records, not performance measurements.
+
+[Retained validation records](results/recovery-2026-11-04/README.md) describe the
+completed compiler/engine matrix, its source identities and remaining limits.

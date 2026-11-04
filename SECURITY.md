@@ -67,3 +67,10 @@ triggers**, as SQLite specifies; use SQL UPDATE when those checks are required.
 Always close handles, inspect errors, and explicitly recover failed transactions.
 Backup bounds requested pages and always finishes its internal handle; it does
 not impose a disk/heap/time limit. Verify success before relying on a backup.
+
+A separate test-only VFS now injects write/full/sync failures and process death
+across transaction, incremental BLOB and backup operations. Fresh connections
+verify integrity and complete old/new generations, and acknowledged commits must
+survive process termination. These finite tests preserve the OS cache; they do
+not simulate torn writes or power loss. See [recovery methodology](tests/RECOVERY.md)
+and its retained records for exact scope and completed checks.

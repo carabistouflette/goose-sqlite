@@ -225,6 +225,39 @@ loaded engines match, full-value regressions and sample spreads are reported.
 Both methods benefit from range access; no engine, disk, allocator or universal
 wrapper-performance claim follows.
 
+## Storage I/O and process-crash recovery
+
+The [test-only recovery harness](../tests/RECOVERY.md) covers prepared UPDATE
+transactions, explicit incremental BLOB writes and bounded online backup under
+rollback journal and recognized patched WAL engines. It enumerates write/sync
+cutpoints through a terminal no-hit success, including one-shot/persistent errors
+and actual process termination before callbacks or immediately after successful
+commit/backup acknowledgement. Strict storage types and all bytes are checked.
+
+The completed matrix contains 15214 trials and 14968 injected fault/crash points:
+GCC and Clang each pass 3456 trials on host SQLite 3.54.1, the fully instrumented
+pinned engine passes 3456 with WAL required, and SQLite 3.37.0 / Ubuntu 3.45.1 each
+pass 2423 with 27 explicit unsupported-WAL group skips. All 24 acknowledged-crash
+controls recover the complete new generation. Observed injected-error outcomes
+recover the complete old generation; the general error oracle allows a complete
+old or new generation, since an I/O error is not a commit receipt. Backup sources
+remain unchanged; fresh checked transactions succeed after recovery verification.
+
+[Records and provenance](../tests/results/recovery-2026-11-04/README.md) include
+all cutpoints, counts, source/binary/engine hashes and compiler details. Identical
+record streams across compiler/engine runs are stored once with hash references.
+Three independent design/implementation/final reviews informed the harness.
+Sanitizer-diagnostic handling, explicit acknowledged crash controls, strict integer
+oracles, verification-before-write ordering and mandatory pinned WAL coverage
+were strengthened during review. No production defect was confirmed by this
+campaign. Runtime code and its safety checks required no change.
+
+The failure model covers complete-call xWrite/xSync errors and process crashes.
+It excludes torn writes, reordered writes, real full disks, truncate/delete/SHM
+failures and power-loss durability. Host tests instrument the adapter; the pinned
+engine run instruments both engine and adapter. These are correctness checks,
+not performance measurements or proof against every storage failure.
+
 ## Reproduce
 
 ```sh

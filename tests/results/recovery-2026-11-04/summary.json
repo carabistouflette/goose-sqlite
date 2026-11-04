@@ -1,0 +1,236 @@
+{
+  "scope": "Correctness checks, not performance measurements. Simulated complete-call write/sync errors and OS-cache-preserving process crashes. No power-loss or torn-write model.",
+  "datasets": [
+    {
+      "provenance": {
+        "source_commit": "75ac69b06e125ec4f3b6453d386b02647fc60ae8",
+        "source_dirty": false,
+        "source_hashes": {
+          "native/sqlite.c": "aaaedd1cc6319b62bd971ab8707d5cae210faceb8995411ac2599d8f1019a0ba",
+          "native/sqlite.h": "33c94d8f8f74772e4bc39648836f8b26b5e1bdc8a70b20b0072ab26c4d4cebc6",
+          "CMakeLists.txt": "3619420681b4e19def59224cbb2a1f5e10e7cde4356363caac6ad021d0163b78",
+          "tests/recovery.c": "3edc50f807ac66fe4be67df44ffc4a5b3c45933e15a61649785f3a9902c25415",
+          "scripts/test-recovery.py": "76f393c318074b0923e7ac1346bcd76c54da5d421654f220a75936f9fc568ab9"
+        }
+      },
+      "test_compile_flags": [
+        "C_FLAGS = -g -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -Wall -Wextra -Werror -UNDEBUG"
+      ],
+      "sqlite_library": {
+        "file": "libsqlite3.so.3.54.1",
+        "sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a"
+      },
+      "sqlite_identity": {
+        "version": "3.54.1",
+        "source_id": "2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6alt1"
+      },
+      "binary_sha256": "507eaaaa23df64beea6bb3079dbe977fae8cb5ff090cfaedb9dda4307f185476",
+      "scope": "Single-threaded test-only VFS; failures before complete write/sync calls. Process crashes preserve OS cache; no torn-write/power-loss/reordering model. Fresh fixtures per cutpoint; all bytes and integrity checked.",
+      "name": "host-gcc",
+      "records_file": "records-1.jsonl",
+      "records_sha256": "db09d7b14e983ad04815bfa10f456e57ce1e685541113004f07e8e80a0c450e8",
+      "trials": 3456,
+      "fault_or_crash_points": 3408,
+      "wal_skipped_groups": 0,
+      "acknowledged_crashes": 6,
+      "blob_write_faults": 802,
+      "error_codes": {
+        "778": 1302,
+        "13": 1302,
+        "1034": 98
+      },
+      "record_written_utc": "2026-11-04T17:09:44.627806+00:00",
+      "compiler_after_run": {
+        "name": "gcc",
+        "version": "gcc (GCC) 16.2.1 20260810",
+        "sha256": "8aac907d6fbf40394b424b5fa4a2ad1aa291dac7d3a0315c5b415c1f5ace1287"
+      },
+      "compiler_note": "Collected after successful tests from the unchanged CMake build configuration. Driver captured source/binary/engine hashes; this is not a timing record."
+    },
+    {
+      "provenance": {
+        "source_commit": "75ac69b06e125ec4f3b6453d386b02647fc60ae8",
+        "source_dirty": false,
+        "source_hashes": {
+          "native/sqlite.c": "aaaedd1cc6319b62bd971ab8707d5cae210faceb8995411ac2599d8f1019a0ba",
+          "native/sqlite.h": "33c94d8f8f74772e4bc39648836f8b26b5e1bdc8a70b20b0072ab26c4d4cebc6",
+          "CMakeLists.txt": "3619420681b4e19def59224cbb2a1f5e10e7cde4356363caac6ad021d0163b78",
+          "tests/recovery.c": "3edc50f807ac66fe4be67df44ffc4a5b3c45933e15a61649785f3a9902c25415",
+          "scripts/test-recovery.py": "76f393c318074b0923e7ac1346bcd76c54da5d421654f220a75936f9fc568ab9"
+        }
+      },
+      "test_compile_flags": [
+        "C_FLAGS = -g -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -Wall -Wextra -Werror -UNDEBUG"
+      ],
+      "sqlite_library": {
+        "file": "libsqlite3.so.3.54.1",
+        "sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a"
+      },
+      "sqlite_identity": {
+        "version": "3.54.1",
+        "source_id": "2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6alt1"
+      },
+      "binary_sha256": "eea1b0e3ff500c29b9952bb068dc359252605be00dcd1fcf4fca17928c1ae2a5",
+      "scope": "Single-threaded test-only VFS; failures before complete write/sync calls. Process crashes preserve OS cache; no torn-write/power-loss/reordering model. Fresh fixtures per cutpoint; all bytes and integrity checked.",
+      "name": "host-clang",
+      "records_file": "records-1.jsonl",
+      "records_sha256": "db09d7b14e983ad04815bfa10f456e57ce1e685541113004f07e8e80a0c450e8",
+      "trials": 3456,
+      "fault_or_crash_points": 3408,
+      "wal_skipped_groups": 0,
+      "acknowledged_crashes": 6,
+      "blob_write_faults": 802,
+      "error_codes": {
+        "778": 1302,
+        "13": 1302,
+        "1034": 98
+      },
+      "record_written_utc": "2026-11-04T17:11:09.202072+00:00",
+      "compiler_after_run": {
+        "name": "clang",
+        "version": "clang version 23.1.4",
+        "sha256": "5cb1c0c669bf0d2655933374723967259e78704338c370101843575f524c91bb"
+      },
+      "compiler_note": "Collected after successful tests from the unchanged CMake build configuration. Driver captured source/binary/engine hashes; this is not a timing record."
+    },
+    {
+      "provenance": {
+        "source_commit": "744dfcd3a0d96ea66f28c13bbc6fa452d586794c",
+        "source_dirty": false,
+        "source_hashes": {
+          "native/sqlite.c": "aaaedd1cc6319b62bd971ab8707d5cae210faceb8995411ac2599d8f1019a0ba",
+          "native/sqlite.h": "33c94d8f8f74772e4bc39648836f8b26b5e1bdc8a70b20b0072ab26c4d4cebc6",
+          "CMakeLists.txt": "3619420681b4e19def59224cbb2a1f5e10e7cde4356363caac6ad021d0163b78",
+          "tests/recovery.c": "3edc50f807ac66fe4be67df44ffc4a5b3c45933e15a61649785f3a9902c25415",
+          "scripts/test-recovery.py": "4b9bc3fde2be6d0cf3e486c6868cf73d14a8bf82f9fa149f0ed4a7e4c62bf625"
+        }
+      },
+      "test_compile_flags": [
+        "C_FLAGS = -g -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -Wall -Wextra -Werror -UNDEBUG"
+      ],
+      "sqlite_library": {
+        "file": "libsqlite3.so.0",
+        "sha256": "80a0db09bacc2c3d6a418780f741530ef01d5d20eeea2d9579c5e84356b78307"
+      },
+      "sqlite_identity": {
+        "version": "3.54.1",
+        "source_id": "2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6ca76"
+      },
+      "binary_sha256": "9da8f1c58554027006a0e585a9503612d79a64c00a05a3a0c3b538429f0e7e06",
+      "scope": "Single-threaded test-only VFS; failures before complete write/sync calls. Process crashes preserve OS cache; no torn-write/power-loss/reordering model. Fresh fixtures per cutpoint; all bytes and integrity checked.",
+      "name": "pinned-clang",
+      "records_file": "records-1.jsonl",
+      "records_sha256": "db09d7b14e983ad04815bfa10f456e57ce1e685541113004f07e8e80a0c450e8",
+      "trials": 3456,
+      "fault_or_crash_points": 3408,
+      "wal_skipped_groups": 0,
+      "acknowledged_crashes": 6,
+      "blob_write_faults": 802,
+      "error_codes": {
+        "778": 1302,
+        "13": 1302,
+        "1034": 98
+      },
+      "record_written_utc": "2026-11-04T17:26:37.733024+00:00",
+      "compiler_after_run": {
+        "name": "clang",
+        "version": "clang version 23.1.4",
+        "sha256": "5cb1c0c669bf0d2655933374723967259e78704338c370101843575f524c91bb"
+      },
+      "compiler_note": "Collected after successful tests from the unchanged CMake build configuration. Driver captured source/binary/engine hashes; this is not a timing record."
+    },
+    {
+      "provenance": {
+        "source_commit": "3b2066f111dff538c425ce289fe1a40e1f1e1110",
+        "source_dirty": false,
+        "source_hashes": {
+          "native/sqlite.c": "aaaedd1cc6319b62bd971ab8707d5cae210faceb8995411ac2599d8f1019a0ba",
+          "native/sqlite.h": "33c94d8f8f74772e4bc39648836f8b26b5e1bdc8a70b20b0072ab26c4d4cebc6",
+          "CMakeLists.txt": "3619420681b4e19def59224cbb2a1f5e10e7cde4356363caac6ad021d0163b78",
+          "tests/recovery.c": "3edc50f807ac66fe4be67df44ffc4a5b3c45933e15a61649785f3a9902c25415",
+          "scripts/test-recovery.py": "33afb0ea994e3345e5b0465c46e702e7f375aae0501166b92d10ca101896d92d"
+        }
+      },
+      "test_compile_flags": [
+        "C_FLAGS = -g -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -Wall -Wextra -Werror -UNDEBUG"
+      ],
+      "sqlite_library": {
+        "file": "libsqlite3.so.0",
+        "sha256": "1378156fc837ae07b178373e14e37b7620795c7262fc0ed18dff22b980397d4b"
+      },
+      "sqlite_identity": {
+        "version": "3.37.0",
+        "source_id": "2021-11-27 14:13:22 bd41822c7424d393a30e92ff6cb254d25c26769889c1499a18a0b9339f5d6c8a"
+      },
+      "binary_sha256": "38ac14a441bec99b31661974935b5b625c62f7c95af9bd998dbb0ca43cf1a556",
+      "scope": "Single-threaded test-only VFS; failures before complete write/sync calls. Process crashes preserve OS cache; no torn-write/power-loss/reordering model. Fresh fixtures per cutpoint; all bytes and integrity checked.",
+      "name": "minimum-clang",
+      "records_file": "records-2.jsonl",
+      "records_sha256": "67bd6568ef05df2312e7867a45db22d16eff0e09962c1eb688f71d894bdca89f",
+      "trials": 2423,
+      "fault_or_crash_points": 2372,
+      "wal_skipped_groups": 27,
+      "acknowledged_crashes": 3,
+      "blob_write_faults": 580,
+      "error_codes": {
+        "778": 896,
+        "13": 896,
+        "1034": 86
+      },
+      "record_written_utc": "2026-11-04T17:21:11.151008+00:00",
+      "compiler_after_run": {
+        "name": "clang",
+        "version": "clang version 23.1.4",
+        "sha256": "5cb1c0c669bf0d2655933374723967259e78704338c370101843575f524c91bb"
+      },
+      "compiler_note": "Collected after successful tests from the unchanged CMake build configuration. Driver captured source/binary/engine hashes; this is not a timing record."
+    },
+    {
+      "provenance": {
+        "source_commit": "3b2066f111dff538c425ce289fe1a40e1f1e1110",
+        "source_dirty": false,
+        "source_hashes": {
+          "native/sqlite.c": "aaaedd1cc6319b62bd971ab8707d5cae210faceb8995411ac2599d8f1019a0ba",
+          "native/sqlite.h": "33c94d8f8f74772e4bc39648836f8b26b5e1bdc8a70b20b0072ab26c4d4cebc6",
+          "CMakeLists.txt": "3619420681b4e19def59224cbb2a1f5e10e7cde4356363caac6ad021d0163b78",
+          "tests/recovery.c": "3edc50f807ac66fe4be67df44ffc4a5b3c45933e15a61649785f3a9902c25415",
+          "scripts/test-recovery.py": "33afb0ea994e3345e5b0465c46e702e7f375aae0501166b92d10ca101896d92d"
+        }
+      },
+      "test_compile_flags": [
+        "C_FLAGS = -g -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -Wall -Wextra -Werror -UNDEBUG"
+      ],
+      "sqlite_library": {
+        "file": "libsqlite3.so.0.8.6",
+        "sha256": "85265a9d4afca6f4b325ceb078b669c754fb881abed4cafe91ccebe9d625d975"
+      },
+      "sqlite_identity": {
+        "version": "3.45.1",
+        "source_id": "2024-01-30 16:01:20 e876e51a0ed5c5b3126f52e532044363a014bc594cfefa87ffb5b82257ccalt1"
+      },
+      "binary_sha256": "733300336beaf1748bda16454ac21fbaa2a78b6a2e083a6e37f8459cf313b4f1",
+      "scope": "Single-threaded test-only VFS; failures before complete write/sync calls. Process crashes preserve OS cache; no torn-write/power-loss/reordering model. Fresh fixtures per cutpoint; all bytes and integrity checked.",
+      "name": "ubuntu-clang",
+      "records_file": "records-2.jsonl",
+      "records_sha256": "67bd6568ef05df2312e7867a45db22d16eff0e09962c1eb688f71d894bdca89f",
+      "trials": 2423,
+      "fault_or_crash_points": 2372,
+      "wal_skipped_groups": 27,
+      "acknowledged_crashes": 3,
+      "blob_write_faults": 580,
+      "error_codes": {
+        "778": 896,
+        "13": 896,
+        "1034": 86
+      },
+      "record_written_utc": "2026-11-04T17:22:35.226025+00:00",
+      "compiler_after_run": {
+        "name": "clang",
+        "version": "clang version 23.1.4",
+        "sha256": "5cb1c0c669bf0d2655933374723967259e78704338c370101843575f524c91bb"
+      },
+      "compiler_note": "Collected after successful tests from the unchanged CMake build configuration. Driver captured source/binary/engine hashes; this is not a timing record."
+    }
+  ],
+  "total_trials": 15214
+}

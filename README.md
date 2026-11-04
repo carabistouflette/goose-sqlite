@@ -101,3 +101,7 @@ The [incremental-read results](bench/results/storage-2026-11-04/README.md) retai
 two complete nine-round series, including the disclosed CPU overlap. Partial reads
 benefit from copying only the needed range; full-value reads favor column_blob.
 Both raw SQLite C and Goose can use this API. No universal ranking is claimed.
+
+Storage recovery checks inject I/O/full/sync errors and process crashes, including
+death after acknowledged commits. See [methodology and retained results](tests/RECOVERY.md)
+for the completed compiler/engine matrix and the process-crash/power-loss distinction.

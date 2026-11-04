@@ -92,7 +92,8 @@ def main():
                     for line in links if 'libsqlite3' in line and '=>' in line]
     if len(engine_paths) != 1: raise RuntimeError('Expected one shared SQLite engine')
     flags = binary.parent / 'CMakeFiles/goose_sqlite_recovery_test.dir/flags.make'
-    record = dict(provenance=provenance, test_compile_flags=[line for line in flags.read_text().splitlines() if line.startswith('C_FLAGS =')],
+    record = dict(provenance=provenance, test_compile_flags=[line for line in flags.read_text().splitlines() if line.startswith('C_FLAGS =')] if flags.exists() else [],
+                  compile_flags_note='CMake flags.make when available; empty for other generators',
                   sqlite_library=dict(file=engine_paths[0].name, sha256=hashlib.sha256(engine_paths[0].read_bytes()).hexdigest()), sqlite_identity=json.loads(subprocess.check_output([str(binary), 'identity'], text=True)), binary_sha256=hashlib.sha256(binary.read_bytes()).hexdigest(),
                   scope='Single-threaded test-only VFS; failures before complete write/sync calls. Process crashes preserve OS cache; no torn-write/power-loss/reordering model. Fresh fixtures per cutpoint; all bytes and integrity checked.',
                   records=records)
