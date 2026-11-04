@@ -1,0 +1,20 @@
+==================
+WARNING: ThreadSanitizer: data race (pid=715274)
+  Write of size 4 at 0x5555569f8658 by thread T2:
+    #0 increment <checkout>/tests/tsan-probe.c:6:44 (tsan-probe+0xed6b2) (BuildId: 9d42f3d0b2d7115480f368ee0fa69fc153fcb1bc)
+
+  Previous write of size 4 at 0x5555569f8658 by thread T1:
+    #0 increment <checkout>/tests/tsan-probe.c:6:44 (tsan-probe+0xed6b2) (BuildId: 9d42f3d0b2d7115480f368ee0fa69fc153fcb1bc)
+
+  Location is global 'value' of size 4 at 0x5555569f8658 (tsan-probe+0x14a4658)
+
+  Thread T2 (tid=715279, running) created by main thread at:
+    #0 pthread_create <null> (tsan-probe+0x6727e) (BuildId: 9d42f3d0b2d7115480f368ee0fa69fc153fcb1bc)
+    #1 main <checkout>/tests/tsan-probe.c:10:13 (tsan-probe+0xed5cd) (BuildId: 9d42f3d0b2d7115480f368ee0fa69fc153fcb1bc)
+
+  Thread T1 (tid=715278, finished) created by main thread at:
+    #0 pthread_create <null> (tsan-probe+0x6727e) (BuildId: 9d42f3d0b2d7115480f368ee0fa69fc153fcb1bc)
+    #1 main <checkout>/tests/tsan-probe.c:9:13 (tsan-probe+0xed5b1) (BuildId: 9d42f3d0b2d7115480f368ee0fa69fc153fcb1bc)
+
+SUMMARY: ThreadSanitizer: data race <checkout>/tests/tsan-probe.c:6:44 in increment
+==================

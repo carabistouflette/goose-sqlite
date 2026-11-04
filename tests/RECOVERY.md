@@ -67,5 +67,7 @@ Ignored .build/recovery-*.json and .jsonl files retain cutpoints, failure counts
 primary/extended return codes, generation outcomes and acknowledgements. These
 are correctness records, not performance measurements.
 
-[Retained validation records](results/recovery-2026-11-04/README.md) describe the
-completed compiler/engine matrix, its source identities and remaining limits.
+[Expanded validation records](results/concurrency-recovery-2026-11-04/README.md)
+describe the current compiler/engine matrix, source identities and remaining limits.
+[Earlier records](results/recovery-2026-11-04/README.md) retain the historical
+write/full/sync campaign and its narrower scope.

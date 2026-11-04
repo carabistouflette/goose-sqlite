@@ -1,0 +1,38 @@
+==================
+WARNING: ThreadSanitizer: data race (pid=2705)
+  Write of size 8 at 0x7f839933a448 by thread T2:
+    #0 sqlite3MutexInit <checkout>/.build/tsan-engine/sqlite3.c:30620:21 (libsqlite3.so.0+0x339de) (BuildId: 529f1734b137b6524a75109609055e356f2b17af)
+    #1 sqlite3Initialize <checkout>/.build/tsan-engine/sqlite3.c:188575:8 (libsqlite3.so.0+0x339de)
+    #2 sqlite3_initialize <checkout>/.build/tsan-engine/sqlite3.c:188728:12 (libsqlite3.so.0+0x3979a) (BuildId: 529f1734b137b6524a75109609055e356f2b17af)
+    #3 openDatabase <checkout>/.build/tsan-engine/sqlite3.c:191757:8 (libsqlite3.so.0+0x3979a)
+    #4 sqlite3_open_v2 <checkout>/.build/tsan-engine/sqlite3.c:192117:10 (libsqlite3.so.0+0x3a510) (BuildId: 529f1734b137b6524a75109609055e356f2b17af)
+    #5 gq_open_config <checkout>/native/sqlite.c:196:14 (goose_sqlite_thread_test+0xe3316) (BuildId: b47af78bfe31ff407b674734b9930c98004c96cf)
+    #6 gq_open <checkout>/native/sqlite.c:176:12 (goose_sqlite_thread_test+0xe3108) (BuildId: b47af78bfe31ff407b674734b9930c98004c96cf)
+    #7 open_db <checkout>/tests/threads.c:33:56 (goose_sqlite_thread_test+0xe11e3) (BuildId: b47af78bfe31ff407b674734b9930c98004c96cf)
+    #8 churn <checkout>/tests/threads.c:49:28 (goose_sqlite_thread_test+0xe11e3)
+
+  Previous write of size 8 at 0x7f839933a448 by thread T7:
+    #0 sqlite3MutexInit <checkout>/.build/tsan-engine/sqlite3.c:30620:21 (libsqlite3.so.0+0x339de) (BuildId: 529f1734b137b6524a75109609055e356f2b17af)
+    #1 sqlite3Initialize <checkout>/.build/tsan-engine/sqlite3.c:188575:8 (libsqlite3.so.0+0x339de)
+    #2 sqlite3_initialize <checkout>/.build/tsan-engine/sqlite3.c:188728:12 (libsqlite3.so.0+0x3979a) (BuildId: 529f1734b137b6524a75109609055e356f2b17af)
+    #3 openDatabase <checkout>/.build/tsan-engine/sqlite3.c:191757:8 (libsqlite3.so.0+0x3979a)
+    #4 sqlite3_open_v2 <checkout>/.build/tsan-engine/sqlite3.c:192117:10 (libsqlite3.so.0+0x3a510) (BuildId: 529f1734b137b6524a75109609055e356f2b17af)
+    #5 gq_open_config <checkout>/native/sqlite.c:196:14 (goose_sqlite_thread_test+0xe3316) (BuildId: b47af78bfe31ff407b674734b9930c98004c96cf)
+    #6 gq_open <checkout>/native/sqlite.c:176:12 (goose_sqlite_thread_test+0xe3108) (BuildId: b47af78bfe31ff407b674734b9930c98004c96cf)
+    #7 open_db <checkout>/tests/threads.c:33:56 (goose_sqlite_thread_test+0xe11e3) (BuildId: b47af78bfe31ff407b674734b9930c98004c96cf)
+    #8 churn <checkout>/tests/threads.c:49:28 (goose_sqlite_thread_test+0xe11e3)
+
+  Location is global 'sqlite3Config' of size 440 at 0x7f839933a3d0 (libsqlite3.so.0+0x1d4448)
+
+  Thread T2 (tid=2708, running) created by main thread at:
+    #0 pthread_create <null> (goose_sqlite_thread_test+0x619af) (BuildId: b47af78bfe31ff407b674734b9930c98004c96cf)
+    #1 churn_phase <checkout>/tests/threads.c:72:65 (goose_sqlite_thread_test+0xe0097) (BuildId: b47af78bfe31ff407b674734b9930c98004c96cf)
+    #2 main <checkout>/tests/threads.c:213:5 (goose_sqlite_thread_test+0xe0097)
+
+  Thread T7 (tid=2713, running) created by main thread at:
+    #0 pthread_create <null> (goose_sqlite_thread_test+0x619af) (BuildId: b47af78bfe31ff407b674734b9930c98004c96cf)
+    #1 churn_phase <checkout>/tests/threads.c:72:65 (goose_sqlite_thread_test+0xe0097) (BuildId: b47af78bfe31ff407b674734b9930c98004c96cf)
+    #2 main <checkout>/tests/threads.c:213:5 (goose_sqlite_thread_test+0xe0097)
+
+SUMMARY: ThreadSanitizer: data race <checkout>/.build/tsan-engine/sqlite3.c:30620:21 in sqlite3MutexInit
+==================

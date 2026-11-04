@@ -2,7 +2,7 @@
 
 Small, synchronous SQLite connections and prepared statements for the
 [Goose programming language](https://github.com/aardappel/goose). Apache-2.0.
-Experimental interface; no tagged release yet. Initially tested on Linux x86-64.
+Experimental interface; no tagged release yet. Tested on Linux x86-64 and ARM64.
 
 Typed parameter binding, strict typed reads, explicit transactions, copied text
 and blobs, incremental BLOB ranges, bounded backup, opt-in WAL, bounded input/work,
@@ -102,9 +102,12 @@ two complete nine-round series, including the disclosed CPU overlap. Partial rea
 benefit from copying only the needed range; full-value reads favor column_blob.
 Both raw SQLite C and Goose can use this API. No universal ranking is claimed.
 
-Storage recovery checks inject I/O/full/sync errors and process crashes, including
+Storage recovery checks inject read/write/full/sync/truncate/delete/SHM errors and process crashes, including
 death after acknowledged commits. See [methodology and retained results](tests/RECOVERY.md)
 for the completed compiler/engine matrix and the process-crash/power-loss distinction.
+[Concurrent connection checks](tests/CONCURRENCY.md) cover token lifetimes, thread-exit
+rollback and WAL snapshots. Separate TSan checks instrument both engine and adapter;
+their documented scope serializes SQLite engine initialization.
 
 `statement_status` exposes checked scan/sort/VM/run and approximate statement-memory
 metrics. The [transaction/savepoint example](examples/transactions.goose) preserves

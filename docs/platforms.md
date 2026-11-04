@@ -1,7 +1,11 @@
 # Platforms and build requirements
 
-The initial supported/tested platform is Linux x86-64 with GCC or Clang,
+Tested platforms are Linux x86-64 and Linux ARM64 with GCC or Clang,
 pthreads, libc development headers and a thread-safe system SQLite library.
+Native Ubuntu 24.04 CI runs the pinned Goose compiler, public runner/native/import
+tests, both native sanitizer suites, verified pinned-engine positive WAL checks,
+fuzz checks and benchmark correctness smoke checks on both architectures.
+Architecture-specific toolchain cache keys prevent cross-architecture reuse.
 Other architectures, libc implementations, macOS and Windows are unverified.
 The native adapter uses POSIX thread-local resource cleanup; Windows would need
 a reviewed platform implementation and tests.
@@ -14,7 +18,8 @@ a reviewed platform implementation and tests.
   thread-safety support. The application must not globally select SQLite's
   single-thread mode. SQLite is dynamically linked, not vendored.
 - Clang with ASan/UBSan/libFuzzer for fuzz checks, and GCC/Clang sanitizer runtimes
-  for their respective native test targets.
+  for their respective native test targets. Separate x86-64 TSan CI instruments
+  both the verified engine and adapter; see its [initialization scope](../tests/CONCURRENCY.md).
 - GCC by default for the optional benchmark harness; BENCH_CC may select another
   single compiler executable. Measurement tooling uses Linux ldd and process
   resource accounting.

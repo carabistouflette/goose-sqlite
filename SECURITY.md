@@ -51,7 +51,12 @@ process injects SQLite allocation failures and checks recovery/cleanup; allocato
 hooks are test-only and installed before SQLite initialization. The installed system SQLite itself is not sanitizer-instrumented
 by the system-engine checks. The optional pinned-engine validation separately
 builds both SQLite and the adapter with ASan/UBSan and exercises positive WAL
-behavior with DEFAULT_WAL_SYNCHRONOUS=1; CI runs that maintained path. Initial validation is Linux x86-64; other platforms are unverified.
+behavior with DEFAULT_WAL_SYNCHRONOUS=1. Native CI covers Linux x86-64 and
+ARM64. Separate x86-64 TSan validation instruments both engine and adapter after
+explicit serial engine initialization; first wrapper use remains concurrent. Cold
+engine initialization under TSan produced unresolved upstream diagnostics, retained
+with the results. Ordinary ASan/UBSan runs retain concurrent cold initialization.
+See [concurrency methodology](tests/CONCURRENCY.md) for these exact limits.
 See [the validation record](docs/validation.md) for exact completed checks.
 
 ## Storage features
@@ -68,7 +73,7 @@ Always close handles, inspect errors, and explicitly recover failed transactions
 Backup bounds requested pages and always finishes its internal handle; it does
 not impose a disk/heap/time limit. Verify success before relying on a backup.
 
-A separate test-only VFS now injects write/full/sync failures and process death
+A separate test-only VFS injects read/write/full/sync/truncate/delete/SHM failures and process death
 across transaction, incremental BLOB and backup operations. Fresh connections
 verify integrity and complete old/new generations, and acknowledged commits must
 survive process termination. These finite tests preserve the OS cache; they do

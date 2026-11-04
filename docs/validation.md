@@ -164,8 +164,8 @@ failures still clear output, including oversized preseed arrays. Legacy native
 size/copy functions remain compatible. Native tests now force allocation failure
 during stored UTF-16 TEXT-to-UTF-8 conversion, checking SQLITE_NOMEM, untouched
 native buffers and resource recovery; total fault-position trials are656.
-GCC/Clang sanitizers, public runner/native/consumer tests and100000 updated
-state-model fuzz cases pass. SQLite3.37.0 also passes the expanded public and
+GCC/Clang sanitizers, public runner/native/consumer tests and 100000 updated
+state-model fuzz cases pass. SQLite 3.37.0 also passes the expanded public and
 Clang native/fault suites. CI additionally executes all five alternative smoke
 runners with the system Python to preserve the shared-engine requirement.
 
@@ -290,6 +290,38 @@ ambient Rust compiler-cache build failure were fixed before principal timings.
 Design/API/benchmark/registry implementation and final data reviews informed this
 follow-up. Mixed/slower results remain visible. Native-executable performance
 claims do not imply the dynamic runner has identical TLS code generation.
+
+## Concurrent connections, expanded I/O and ARM64
+
+The follow-up uses final test source at 4a7e36368f25a00bb9a0ab722043aa2d2a642c67.
+[Retained results](../tests/results/concurrency-recovery-2026-11-04/README.md) include
+source/binary/engine/compiler hashes, all recovery cutpoints, concurrency counters,
+the intentional TSan positive control, and original cold-start TSan diagnostics.
+
+GCC/Clang host and fully instrumented pinned-engine ASan/UBSan recovery each passed
+4410 trials; minimum SQLite 3.37 passed 2915 trials with 57 explicit unsupported-WAL
+group skips. Total 16145 trials include 15710 fault/crash points and 21 crashes after
+acknowledged success. Added read/truncate/delete/SHM-map/SHM-lock kinds all have
+actual one-shot and persistent hits on modern engines. Complete old/new state,
+all data and padding bytes, source immutability and fresh integrity checks passed.
+Truncation errors can legitimately recover the complete new generation.
+
+Concurrent tests passed on host GCC/Clang, the pinned ASan/UBSan and TSan engines,
+and the minimum engine (explicit WAL skip). Each verifies 3072 unique tokens and 64
+reentrant thread-exit rollback callbacks. Positive WAL runs also require 256 final
+rows and at least 160 validated reader snapshots. TSan first detects an intentional
+race, then requires a diagnostic-free stress run after serial engine initialization.
+Concurrent SQLite cold start is outside that TSan result: initial local/hosted
+attempts produced unresolved engine diagnostics. ASan/UBSan retains cold starts;
+no engine patch or sanitizer suppression is used. See [methodology](../tests/CONCURRENCY.md).
+
+Native Ubuntu 24.04 x86-64 and ARM64 jobs, plus the separate x86-64 TSan job,
+passed [the complete source validation](https://github.com/carabistouflette/goose-sqlite/actions/runs/41901233631).
+Both architectures execute the pinned Goose compiler and runner/native/import
+suites, GCC/Clang sanitizer tests, verified pinned-engine positive WAL, fuzzing and
+benchmark correctness smoke checks. Architecture and 64-bit width are checked on
+ARM64. These smoke checks do not provide ARM performance measurements or rankings.
+The local public/import suites and 10000-input fuzz smoke also passed.
 
 ## Reproduce
 

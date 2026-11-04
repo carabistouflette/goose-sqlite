@@ -1,0 +1,229 @@
+{
+  "configurations": [
+    {
+      "adapter_compile_flags": [
+        "C_FLAGS = -g -fPIC -Wall -Wextra -Werror -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined"
+      ],
+      "architecture": "x86_64",
+      "binary_sha256": "d53763b1a1e05bf9ee213f4d86d81ca8f9d6e17947a37223d0ffc7ea6975cac9",
+      "compile_flags_note": "CMake C_FLAGS when available; empty for other generators",
+      "compiler": {
+        "binary_sha256": "8aac907d6fbf40394b424b5fa4a2ad1aa291dac7d3a0315c5b415c1f5ace1287",
+        "version": "gcc (GCC) 16.2.1 20260810"
+      },
+      "configuration": "host-gcc",
+      "counters": {
+        "busy_retries": 1,
+        "cleanup_callbacks": 64,
+        "committed": 256,
+        "engine_preinitialized": false,
+        "reader_snapshots": 160,
+        "registry_cycles": 1024,
+        "threads": 8,
+        "unique_tokens": 3072,
+        "wal": true,
+        "waves": 8
+      },
+      "engine_initialization": "concurrent cold start",
+      "scope": "Finite correctness stress; independent thread-affine connections, not shared-handle support or a performance benchmark",
+      "source_commit": "4a7e36368f25a00bb9a0ab722043aa2d2a642c67",
+      "source_dirty": false,
+      "source_hashes": {
+        "CMakeLists.txt": "bd67c28ad1ab236e1f613f9b1130a5f0958ee3947ecc4b71b6b14f9593426d60",
+        "native/sqlite.c": "45ce80fb65ceba45a7af3a7294ee2e5774a5735c8be51592f2ddcbbb3b075afd",
+        "native/sqlite.h": "c8d48e9b3f3d291281af2198c950ec87f1b719e226e27aec724e13b81780b440",
+        "scripts/test-threads.py": "a5991861aa5e3ab40101efbc95358b41cd235820cb063dbd6606095edc811224",
+        "tests/threads.c": "6e66e175050e4240452224adf2f4e6e8596d97ac1ffc99bb2a50251019df1cf1"
+      },
+      "sqlite_identity": {
+        "source_id": "2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6alt1",
+        "version": "3.54.1"
+      },
+      "sqlite_library_sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a",
+      "test_compile_flags": [
+        "C_FLAGS = -g -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -Wall -Wextra -Werror -UNDEBUG"
+      ],
+      "verified_matching_source_commit": "4a7e36368f25a00bb9a0ab722043aa2d2a642c67"
+    },
+    {
+      "adapter_compile_flags": [
+        "C_FLAGS = -g -fPIC -Wall -Wextra -Werror -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined"
+      ],
+      "architecture": "x86_64",
+      "binary_sha256": "a0883d3e8e92f1dc51ba9a8f0846487be467753e3b0b010c77631b63bd829931",
+      "compile_flags_note": "CMake C_FLAGS when available; empty for other generators",
+      "compiler": {
+        "binary_sha256": "5cb1c0c669bf0d2655933374723967259e78704338c370101843575f524c91bb",
+        "version": "clang version 23.1.4"
+      },
+      "configuration": "host-clang",
+      "counters": {
+        "busy_retries": 7,
+        "cleanup_callbacks": 64,
+        "committed": 256,
+        "engine_preinitialized": false,
+        "reader_snapshots": 160,
+        "registry_cycles": 1024,
+        "threads": 8,
+        "unique_tokens": 3072,
+        "wal": true,
+        "waves": 8
+      },
+      "engine_initialization": "concurrent cold start",
+      "scope": "Finite correctness stress; independent thread-affine connections, not shared-handle support or a performance benchmark",
+      "source_commit": "4a7e36368f25a00bb9a0ab722043aa2d2a642c67",
+      "source_dirty": false,
+      "source_hashes": {
+        "CMakeLists.txt": "bd67c28ad1ab236e1f613f9b1130a5f0958ee3947ecc4b71b6b14f9593426d60",
+        "native/sqlite.c": "45ce80fb65ceba45a7af3a7294ee2e5774a5735c8be51592f2ddcbbb3b075afd",
+        "native/sqlite.h": "c8d48e9b3f3d291281af2198c950ec87f1b719e226e27aec724e13b81780b440",
+        "scripts/test-threads.py": "a5991861aa5e3ab40101efbc95358b41cd235820cb063dbd6606095edc811224",
+        "tests/threads.c": "6e66e175050e4240452224adf2f4e6e8596d97ac1ffc99bb2a50251019df1cf1"
+      },
+      "sqlite_identity": {
+        "source_id": "2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6alt1",
+        "version": "3.54.1"
+      },
+      "sqlite_library_sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a",
+      "test_compile_flags": [
+        "C_FLAGS = -g -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -Wall -Wextra -Werror -UNDEBUG"
+      ],
+      "verified_matching_source_commit": "4a7e36368f25a00bb9a0ab722043aa2d2a642c67"
+    },
+    {
+      "adapter_compile_flags": [
+        "C_FLAGS = -g -fPIC -Wall -Wextra -Werror -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined"
+      ],
+      "architecture": "x86_64",
+      "binary_sha256": "7e2b4f09030009ab53e764f8f4daebb728da0fffed966c3f647c1ca19c47d61b",
+      "compile_flags_note": "CMake C_FLAGS when available; empty for other generators",
+      "compiler": {
+        "binary_sha256": "5cb1c0c669bf0d2655933374723967259e78704338c370101843575f524c91bb",
+        "version": "clang version 23.1.4"
+      },
+      "configuration": "pinned-engine-asan",
+      "counters": {
+        "busy_retries": 12,
+        "cleanup_callbacks": 64,
+        "committed": 256,
+        "engine_preinitialized": false,
+        "reader_snapshots": 160,
+        "registry_cycles": 1024,
+        "threads": 8,
+        "unique_tokens": 3072,
+        "wal": true,
+        "waves": 8
+      },
+      "engine_initialization": "concurrent cold start",
+      "scope": "Finite correctness stress; independent thread-affine connections, not shared-handle support or a performance benchmark",
+      "source_commit": "4a7e36368f25a00bb9a0ab722043aa2d2a642c67",
+      "source_dirty": false,
+      "source_hashes": {
+        "CMakeLists.txt": "bd67c28ad1ab236e1f613f9b1130a5f0958ee3947ecc4b71b6b14f9593426d60",
+        "native/sqlite.c": "45ce80fb65ceba45a7af3a7294ee2e5774a5735c8be51592f2ddcbbb3b075afd",
+        "native/sqlite.h": "c8d48e9b3f3d291281af2198c950ec87f1b719e226e27aec724e13b81780b440",
+        "scripts/test-threads.py": "a5991861aa5e3ab40101efbc95358b41cd235820cb063dbd6606095edc811224",
+        "tests/threads.c": "6e66e175050e4240452224adf2f4e6e8596d97ac1ffc99bb2a50251019df1cf1"
+      },
+      "sqlite_identity": {
+        "source_id": "2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6ca76",
+        "version": "3.54.1"
+      },
+      "sqlite_library_sha256": "80a0db09bacc2c3d6a418780f741530ef01d5d20eeea2d9579c5e84356b78307",
+      "test_compile_flags": [
+        "C_FLAGS = -g -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -Wall -Wextra -Werror -UNDEBUG"
+      ],
+      "verified_matching_source_commit": "4a7e36368f25a00bb9a0ab722043aa2d2a642c67"
+    },
+    {
+      "adapter_compile_flags": [
+        "C_FLAGS = -g -fPIC -Wall -Wextra -Werror -O1 -g -fno-omit-frame-pointer -fsanitize=thread"
+      ],
+      "architecture": "x86_64",
+      "binary_sha256": "482687542d25e5cb06dcc0fb42280579ebf69e98ce2732dde226979e8207fedd",
+      "compile_flags_note": "CMake C_FLAGS when available; empty for other generators",
+      "compiler": {
+        "binary_sha256": "5cb1c0c669bf0d2655933374723967259e78704338c370101843575f524c91bb",
+        "version": "clang version 23.1.4"
+      },
+      "configuration": "pinned-engine-tsan",
+      "counters": {
+        "busy_retries": 105,
+        "cleanup_callbacks": 64,
+        "committed": 256,
+        "engine_preinitialized": true,
+        "reader_snapshots": 160,
+        "registry_cycles": 1024,
+        "threads": 8,
+        "unique_tokens": 3072,
+        "wal": true,
+        "waves": 8
+      },
+      "engine_initialization": "serial",
+      "scope": "Finite correctness stress; independent thread-affine connections, not shared-handle support or a performance benchmark",
+      "source_commit": "4a7e36368f25a00bb9a0ab722043aa2d2a642c67",
+      "source_dirty": false,
+      "source_hashes": {
+        "CMakeLists.txt": "bd67c28ad1ab236e1f613f9b1130a5f0958ee3947ecc4b71b6b14f9593426d60",
+        "native/sqlite.c": "45ce80fb65ceba45a7af3a7294ee2e5774a5735c8be51592f2ddcbbb3b075afd",
+        "native/sqlite.h": "c8d48e9b3f3d291281af2198c950ec87f1b719e226e27aec724e13b81780b440",
+        "scripts/test-threads.py": "a5991861aa5e3ab40101efbc95358b41cd235820cb063dbd6606095edc811224",
+        "tests/threads.c": "6e66e175050e4240452224adf2f4e6e8596d97ac1ffc99bb2a50251019df1cf1"
+      },
+      "sqlite_identity": {
+        "source_id": "2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6ca76",
+        "version": "3.54.1"
+      },
+      "sqlite_library_sha256": "afd8bd75880e3542698c3b47f5d00f761793d28f36297a01b78fddc36bb75561",
+      "test_compile_flags": [
+        "C_FLAGS = -g -O1 -g -fno-omit-frame-pointer -fsanitize=thread -Wall -Wextra -Werror -UNDEBUG"
+      ],
+      "verified_matching_source_commit": "4a7e36368f25a00bb9a0ab722043aa2d2a642c67"
+    },
+    {
+      "adapter_compile_flags": [
+        "C_FLAGS = -fPIC -Wall -Wextra -Werror -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined"
+      ],
+      "architecture": "x86_64",
+      "binary_sha256": "3bf32d7d72a73c7a4c13eec453765b03f8e5e0a4ed88492172cca4b8568ff751",
+      "compile_flags_note": "CMake C_FLAGS when available; empty for other generators",
+      "compiler": {
+        "binary_sha256": "5cb1c0c669bf0d2655933374723967259e78704338c370101843575f524c91bb",
+        "version": "clang version 23.1.4"
+      },
+      "configuration": "minimum-engine-clang",
+      "counters": {
+        "busy_retries": 0,
+        "cleanup_callbacks": 64,
+        "committed": 0,
+        "engine_preinitialized": false,
+        "reader_snapshots": 0,
+        "registry_cycles": 1024,
+        "threads": 8,
+        "unique_tokens": 3072,
+        "wal": false,
+        "waves": 8
+      },
+      "engine_initialization": "concurrent cold start",
+      "scope": "Finite correctness stress; independent thread-affine connections, not shared-handle support or a performance benchmark",
+      "source_commit": "4a7e36368f25a00bb9a0ab722043aa2d2a642c67",
+      "source_dirty": false,
+      "source_hashes": {
+        "CMakeLists.txt": "bd67c28ad1ab236e1f613f9b1130a5f0958ee3947ecc4b71b6b14f9593426d60",
+        "native/sqlite.c": "45ce80fb65ceba45a7af3a7294ee2e5774a5735c8be51592f2ddcbbb3b075afd",
+        "native/sqlite.h": "c8d48e9b3f3d291281af2198c950ec87f1b719e226e27aec724e13b81780b440",
+        "scripts/test-threads.py": "a5991861aa5e3ab40101efbc95358b41cd235820cb063dbd6606095edc811224",
+        "tests/threads.c": "6e66e175050e4240452224adf2f4e6e8596d97ac1ffc99bb2a50251019df1cf1"
+      },
+      "sqlite_identity": {
+        "source_id": "2021-11-27 14:13:22 bd41822c7424d393a30e92ff6cb254d25c26769889c1499a18a0b9339f5d6c8a",
+        "version": "3.37.0"
+      },
+      "sqlite_library_sha256": "1378156fc837ae07b178373e14e37b7620795c7262fc0ed18dff22b980397d4b",
+      "test_compile_flags": [
+        "C_FLAGS = -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -Wall -Wextra -Werror -UNDEBUG"
+      ],
+      "verified_matching_source_commit": "4a7e36368f25a00bb9a0ab722043aa2d2a642c67"
+    }
+  ]
+}

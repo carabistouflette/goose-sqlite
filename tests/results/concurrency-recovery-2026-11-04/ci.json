@@ -1,0 +1,441 @@
+{
+  "conclusion": "success",
+  "goose_revision": "eadca409f68210893f366e60d0c2f0dc29a339be",
+  "jobs": [
+    {
+      "architecture_output": [],
+      "completed_at": "2026-11-04T19:53:55Z",
+      "conclusion": "success",
+      "id": 126823887373,
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "name": "thread-sanitizer",
+      "result_excerpts": [
+        "-- The C compiler identification is Clang 18.1.3",
+        "Pinned SQLite WAL engine and adapter sanitizer tests passed"
+      ],
+      "started_at": "2026-11-04T19:53:07Z",
+      "status": "completed",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run sudo apt-get update && sudo apt-get install -y libsqlite3-dev clang cmake",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run python3 scripts/test-wal-engine.py --sanitizer thread",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "status": "completed"
+        }
+      ],
+      "thread_counters": [
+        {
+          "busy_retries": 45,
+          "cleanup_callbacks": 64,
+          "committed": 256,
+          "engine_preinitialized": true,
+          "reader_snapshots": 160,
+          "registry_cycles": 1024,
+          "threads": 8,
+          "unique_tokens": 3072,
+          "wal": true,
+          "waves": 8
+        }
+      ],
+      "url": "https://github.com/carabistouflette/goose-sqlite/actions/runs/41901233631/job/126823887373"
+    },
+    {
+      "architecture_output": [
+        "x86_64",
+        "64",
+        "eadca409f68210893f366e60d0c2f0dc29a339be"
+      ],
+      "completed_at": "2026-11-04T20:03:34Z",
+      "conclusion": "success",
+      "id": 126823888164,
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "name": "test (ubuntu-24.04)",
+      "result_excerpts": [
+        "-- The C compiler identification is GNU 13.3.0",
+        "-- The CXX compiler identification is GNU 13.3.0",
+        "sqlite public API tests passed",
+        "sqlite statement diagnostics passed",
+        "sqlite storage tests passed",
+        "sqlite metadata/status tests passed",
+        "sqlite public API tests passed",
+        "sqlite metadata/status tests passed",
+        "sqlite storage tests passed",
+        "sqlite statement diagnostics passed",
+        "sqlite file API tests passed",
+        "sqlite file API tests passed",
+        "sqlite transaction recovery example passed",
+        "sqlite transaction recovery example passed",
+        "sqlite standalone import passed (runner and native, isolated consumer/cache)",
+        "-- The C compiler identification is GNU 13.3.0",
+        "sqlite native tests passed",
+        "sqlite allocation-failure tests passed: open=194 prepare=31 bind=1 step=6 conversion=1",
+        "sqlite storage native tests passed",
+        "Recovery passed: 2915 trials, 2804 fault/crash points, 57 unsupported WAL groups",
+        "-- The C compiler identification is Clang 18.1.3",
+        "sqlite native tests passed",
+        "sqlite allocation-failure tests passed: open=194 prepare=31 bind=1 step=6 conversion=1",
+        "sqlite storage native tests passed",
+        "Recovery passed: 2915 trials, 2804 fault/crash points, 57 unsupported WAL groups",
+        "-- The C compiler identification is Clang 18.1.3",
+        "sqlite native tests passed",
+        "sqlite allocation-failure tests passed: open=21 prepare=100 bind=1 step=6 conversion=1",
+        "sqlite storage native tests passed",
+        "Recovery passed: 4410 trials, 4302 fault/crash points, 0 unsupported WAL groups",
+        "Pinned SQLite WAL engine and adapter sanitizer tests passed",
+        "-- The C compiler identification is Clang 18.1.3",
+        "#10000\tDONE   cov: 503 ft: 2070 corp: 174/6602b lim: 83 exec/s: 5000 rss: 384Mb",
+        "-- The C compiler identification is GNU 13.3.0",
+        "-- The CXX compiler identification is GNU 13.3.0"
+      ],
+      "started_at": "2026-11-04T19:53:06Z",
+      "status": "completed",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Record and verify architecture",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run sudo apt-get update && sudo apt-get install -y libsqlite3-dev pkg-config clang time",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run make setup",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run make check test",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run make test-native CC=gcc",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run make test-native CC=clang",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run python3 scripts/test-wal-engine.py",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run make fuzz-native FUZZ_RUNS=10000",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run make bench BENCH_ITERATIONS=10",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run /usr/bin/python3 bench/alternatives/measure.py --goose .toolchain/goose/build/goose --iterations 10 --runs 1 --output .build/alternative-smoke",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run python3 bench/storage/measure.py --goose .toolchain/goose/build/goose --iterations 10 --runs 1 --output .build/storage-smoke",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run git diff --exit-code && git diff --check",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "status": "completed"
+        }
+      ],
+      "thread_counters": [
+        {
+          "busy_retries": 0,
+          "cleanup_callbacks": 64,
+          "committed": 0,
+          "engine_preinitialized": false,
+          "reader_snapshots": 0,
+          "registry_cycles": 1024,
+          "threads": 8,
+          "unique_tokens": 3072,
+          "wal": false,
+          "waves": 8
+        },
+        {
+          "busy_retries": 0,
+          "cleanup_callbacks": 64,
+          "committed": 0,
+          "engine_preinitialized": false,
+          "reader_snapshots": 0,
+          "registry_cycles": 1024,
+          "threads": 8,
+          "unique_tokens": 3072,
+          "wal": false,
+          "waves": 8
+        },
+        {
+          "busy_retries": 31,
+          "cleanup_callbacks": 64,
+          "committed": 256,
+          "engine_preinitialized": false,
+          "reader_snapshots": 160,
+          "registry_cycles": 1024,
+          "threads": 8,
+          "unique_tokens": 3072,
+          "wal": true,
+          "waves": 8
+        }
+      ],
+      "url": "https://github.com/carabistouflette/goose-sqlite/actions/runs/41901233631/job/126823888164"
+    },
+    {
+      "architecture_output": [
+        "aarch64",
+        "64",
+        "eadca409f68210893f366e60d0c2f0dc29a339be"
+      ],
+      "completed_at": "2026-11-04T20:02:52Z",
+      "conclusion": "success",
+      "id": 126823888373,
+      "labels": [
+        "ubuntu-24.04-arm"
+      ],
+      "name": "test (ubuntu-24.04-arm)",
+      "result_excerpts": [
+        "-- The C compiler identification is GNU 13.3.0",
+        "-- The CXX compiler identification is GNU 13.3.0",
+        "sqlite public API tests passed",
+        "sqlite statement diagnostics passed",
+        "sqlite storage tests passed",
+        "sqlite metadata/status tests passed",
+        "sqlite public API tests passed",
+        "sqlite metadata/status tests passed",
+        "sqlite storage tests passed",
+        "sqlite statement diagnostics passed",
+        "sqlite file API tests passed",
+        "sqlite file API tests passed",
+        "sqlite transaction recovery example passed",
+        "sqlite transaction recovery example passed",
+        "sqlite standalone import passed (runner and native, isolated consumer/cache)",
+        "-- The C compiler identification is GNU 13.3.0",
+        "sqlite native tests passed",
+        "sqlite allocation-failure tests passed: open=194 prepare=31 bind=1 step=6 conversion=1",
+        "sqlite storage native tests passed",
+        "Recovery passed: 2915 trials, 2804 fault/crash points, 57 unsupported WAL groups",
+        "-- The C compiler identification is Clang 18.1.3",
+        "sqlite native tests passed",
+        "sqlite allocation-failure tests passed: open=194 prepare=31 bind=1 step=6 conversion=1",
+        "sqlite storage native tests passed",
+        "Recovery passed: 2915 trials, 2804 fault/crash points, 57 unsupported WAL groups",
+        "-- The C compiler identification is Clang 18.1.3",
+        "sqlite native tests passed",
+        "sqlite allocation-failure tests passed: open=21 prepare=100 bind=1 step=6 conversion=1",
+        "sqlite storage native tests passed",
+        "Recovery passed: 4410 trials, 4302 fault/crash points, 0 unsupported WAL groups",
+        "Pinned SQLite WAL engine and adapter sanitizer tests passed",
+        "-- The C compiler identification is Clang 18.1.3",
+        "#10000\tDONE   cov: 499 ft: 2020 corp: 165/6188b lim: 83 exec/s: 2500 rss: 386Mb",
+        "-- The C compiler identification is GNU 13.3.0",
+        "-- The CXX compiler identification is GNU 13.3.0"
+      ],
+      "started_at": "2026-11-04T19:53:09Z",
+      "status": "completed",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Record and verify architecture",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run sudo apt-get update && sudo apt-get install -y libsqlite3-dev pkg-config clang time",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run make setup",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run make check test",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run make test-native CC=gcc",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run make test-native CC=clang",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run python3 scripts/test-wal-engine.py",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run make fuzz-native FUZZ_RUNS=10000",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run make bench BENCH_ITERATIONS=10",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run /usr/bin/python3 bench/alternatives/measure.py --goose .toolchain/goose/build/goose --iterations 10 --runs 1 --output .build/alternative-smoke",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run python3 bench/storage/measure.py --goose .toolchain/goose/build/goose --iterations 10 --runs 1 --output .build/storage-smoke",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run git diff --exit-code && git diff --check",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "status": "completed"
+        }
+      ],
+      "thread_counters": [
+        {
+          "busy_retries": 0,
+          "cleanup_callbacks": 64,
+          "committed": 0,
+          "engine_preinitialized": false,
+          "reader_snapshots": 0,
+          "registry_cycles": 1024,
+          "threads": 8,
+          "unique_tokens": 3072,
+          "wal": false,
+          "waves": 8
+        },
+        {
+          "busy_retries": 0,
+          "cleanup_callbacks": 64,
+          "committed": 0,
+          "engine_preinitialized": false,
+          "reader_snapshots": 0,
+          "registry_cycles": 1024,
+          "threads": 8,
+          "unique_tokens": 3072,
+          "wal": false,
+          "waves": 8
+        },
+        {
+          "busy_retries": 26,
+          "cleanup_callbacks": 64,
+          "committed": 256,
+          "engine_preinitialized": false,
+          "reader_snapshots": 160,
+          "registry_cycles": 1024,
+          "threads": 8,
+          "unique_tokens": 3072,
+          "wal": true,
+          "waves": 8
+        }
+      ],
+      "url": "https://github.com/carabistouflette/goose-sqlite/actions/runs/41901233631/job/126823888373"
+    }
+  ],
+  "source_commit": "4a7e36368f25a00bb9a0ab722043aa2d2a642c67",
+  "status": "completed",
+  "url": "https://github.com/carabistouflette/goose-sqlite/actions/runs/41901233631",
+  "workflow_sha256": "2bb53057943b781d390c4b412beebd7f958792f72d6c5a55a1abec2b149134f5"
+}

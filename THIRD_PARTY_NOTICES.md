@@ -25,6 +25,7 @@ Generated comparison executables are ignored build artifacts, not source release
 The optional validation script scripts/test-wal-engine.py downloads SQLite 3.54.1
 into ignored build output, verifying a pinned archive SHA-256 and the upstream
 sqlite3.c SHA3-256 from its release record. That test-only engine is compiled with
-ASan/UBSan and DEFAULT_WAL_SYNCHRONOUS=1 to exercise positive WAL behavior on CI;
+ASan/UBSan or separately TSan, with DEFAULT_WAL_SYNCHRONOUS=1, to exercise
+positive WAL behavior on CI;
 it does not replace or vendor the production system dependency. SQLite is in the
 public domain: https://sqlite.org/copyright.html .

@@ -1,0 +1,28 @@
+{
+  "architecture": "x86_64",
+  "archive_sha256": "0a9c8e34352dad46006aa82836d5383bff9dc6bc9ce5a60553c05aa30e6ad1f9",
+  "compiler": "clang version 23.1.4",
+  "engine_sha256": "80a0db09bacc2c3d6a418780f741530ef01d5d20eeea2d9579c5e84356b78307",
+  "flags": [
+    "-O1",
+    "-g",
+    "-fno-omit-frame-pointer",
+    "-fsanitize=address,undefined",
+    "-std=c11",
+    "-shared",
+    "-fPIC",
+    "SQLITE_THREADSAFE=1",
+    "SQLITE_DEFAULT_WAL_SYNCHRONOUS=1"
+  ],
+  "sanitizer": "address",
+  "source_commit": "4a7e36368f25a00bb9a0ab722043aa2d2a642c67",
+  "source_dirty": false,
+  "source_hashes": {
+    "scripts/test-wal-engine.py": "02c693214a88a135751888397ed47f882431ef00be984f6fe7adb7a22878d301",
+    "tests/tsan-probe.c": "63cb0226aa18bc5d5d78e4e58be376e88566db7f6a02a7c476f34b2cec784c17"
+  },
+  "sqlite3_c_sha3_256": "e2b869d3003b33c942b7dd7063604fbc53553e1b66609570df39b9b7b558ee81",
+  "tests": "native, allocation failures, storage, required positive-WAL thread stress and I/O/crash recovery; engine+adapter ASan/UBSan",
+  "url": "https://sqlite.org/2026/sqlite-amalgamation-3540100.zip",
+  "verified_matching_source_commit": "4a7e36368f25a00bb9a0ab722043aa2d2a642c67"
+}

@@ -233,7 +233,7 @@ incremental BLOB I/O needs new resource tokens and transaction rules; UDFs need
 safe callback/reentrancy/lifetime design; native extensions enlarge the trust
 boundary. Rust/C++ RAII cannot be honestly equated with thread-exit cleanup or
 block syntax; Goose has no destructors ([language README](https://github.com/aardappel/goose)).
-This package's Linux x86-64 validation is not the portability coverage of CPython,
+This package's Linux x86-64/ARM64 validation does not establish the broader portability of CPython,
 rusqlite or SQLiteCpp, and bundled engine deployment is a separate advantage of
 the other Goose packages. None of these gaps is solved by the first expansion.
 Do not advertise “same features or better” without naming the supported subset.

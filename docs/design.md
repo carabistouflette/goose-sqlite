@@ -1,7 +1,7 @@
 # Design and initial contract
 
 Small synchronous SQLite module, using the system SQLite library (3.37+),
-initially validated on Linux x86-64. No ORM, pool, SQL builder, extension loader,
+validated on Linux x86-64 and ARM64. No ORM, pool, SQL builder, extension loader,
 or implicit transactions. Native SQLite is fundamental, so unlike goose-json
 there is no portable Goose fallback.
 
