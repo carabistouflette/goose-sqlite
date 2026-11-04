@@ -6,7 +6,11 @@ permissions:
   contents: read
 jobs:
   test:
-    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-24.04, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -14,7 +18,20 @@ jobs:
       - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: .toolchain
-          key: goose-${{ runner.os }}-${{ hashFiles('GOOSE_REVISION', 'scripts/setup-goose.sh') }}
+          key: goose-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('GOOSE_REVISION', 'scripts/setup-goose.sh') }}
+      - name: Record and verify architecture
+        env:
+          RUNNER_ARCHITECTURE: ${{ runner.arch }}
+          RUNNER_LABEL: ${{ matrix.runner }}
+        run: |
+          uname -m
+          getconf LONG_BIT
+          cat GOOSE_REVISION
+          if [ "$RUNNER_LABEL" = ubuntu-24.04-arm ]; then
+            test "$RUNNER_ARCHITECTURE" = ARM64
+            test "$(uname -m)" = aarch64
+            test "$(getconf LONG_BIT)" = 64
+          fi
       - run: sudo apt-get update && sudo apt-get install -y libsqlite3-dev pkg-config clang time
       - run: make setup
       - run: make check test
@@ -26,3 +43,9 @@ jobs:
       - run: /usr/bin/python3 bench/alternatives/measure.py --goose .toolchain/goose/build/goose --iterations 10 --runs 1 --output .build/alternative-smoke
       - run: python3 bench/storage/measure.py --goose .toolchain/goose/build/goose --iterations 10 --runs 1 --output .build/storage-smoke
       - run: git diff --exit-code && git diff --check
+  thread-sanitizer:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - run: sudo apt-get update && sudo apt-get install -y libsqlite3-dev clang cmake
+      - run: python3 scripts/test-wal-engine.py --sanitizer thread
