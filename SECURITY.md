@@ -1,0 +1,49 @@
+# Security
+
+Report suspected vulnerabilities privately through
+[GitHub security advisories](https://github.com/carabistouflette/goose-sqlite/security/advisories/new).
+Include the affected commit, compiler/SQLite versions, platform and a minimal
+reproducer. Avoid public exploit details before a fix is available.
+
+## Trust and ownership
+
+SQL is application code. Use typed bindings for untrusted data; no SQL escaping
+or string interpolation helper is provided. Filenames and file permissions are
+application policy. This module does not provide no-follow traversal, path
+confinement, encryption, process isolation or protection against hostile native
+code. Do not treat its authorizer as a general untrusted-SQL sandbox.
+
+The system SQLite library is a runtime dependency: install security updates from
+your operating system. The supported minimum version is an interface requirement,
+not a security endorsement of every old SQLite release. Malicious database files
+exercise SQLite's native parser and engine. Defensive mode and limits reduce
+some risks but do not replace an updated engine or isolation where needed.
+
+Goose owns input/output arrays. Bindings are copied before return; results are
+copied before SQLite storage can change. Default, foreign-thread and stale handle
+copies are validated before touching native resources. Tokens prevent accidental
+use-after-free; native code in the same process is trusted. Scalar ABI outputs
+use memcpy because Goose references may be byte-aligned.
+
+## Policies and limits
+
+Defensive mode, foreign keys, untrusted schemas and disabled extension loading
+are checked at connection creation. All SQL PRAGMAs, ATTACH/DETACH and virtual
+table creation/deletion are denied. URI filenames are rejected independently of
+SQLite's process-global URI configuration. Ordinary filenames follow SQLite's
+normal filesystem semantics, including symlinks.
+
+Input/VM/registry bounds are documented in [the interface](docs/api.md). They are
+not a fixed allocator, execution-time or disk-space budget. The progress callback
+covers VM work approximately; native functions and I/O can exceed it in time.
+A caller can iterate indefinitely over bounded individual rows. Thread limits
+are per thread, not per process. System SQLite must remain in a thread-safe mode.
+
+## Validation scope
+
+Public Goose tests run under the in-process runner and a native executable.
+Native production adapter tests run with GCC/Clang ASan/UBSan, and its fuzzer
+exercises malformed SQL, arbitrary text/blob bytes, capacity checks and stale
+handles. The dynamically linked system SQLite itself is not sanitizer-instrumented
+by these checks. Initial validation is Linux x86-64; other platforms are unverified.
+See [the validation record](docs/validation.md) for exact completed checks.
