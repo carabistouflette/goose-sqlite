@@ -8,7 +8,6 @@ import os
 from pathlib import Path
 import platform
 import resource
-import shlex
 import subprocess
 import time
 import tempfile

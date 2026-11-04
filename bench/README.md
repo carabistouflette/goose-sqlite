@@ -7,7 +7,7 @@ make bench BENCH_ITERATIONS=10000
 python3 bench/measure.py --goose /path/to/goose --iterations 10000 --runs 3 --output .build/bench-results
 ```
 
-Requires GCC (override BENCH_CC with a single compiler executable), pkg-config,
+Requires GCC (override BENCH_CC with a single compiler executable),
 Python 3 and SQLite development files. The harness builds both callers at -O2, preserving assertions and the production
 adapter's safety policies. Goose builds the native CMake target in its normal
 Release configuration (-O3/-DNDEBUG on tested GCC). Both callers link that exact
