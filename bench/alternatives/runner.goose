@@ -10,7 +10,7 @@ fn main() {
     let size, valid_size = parse_int(argv[3]);
     assert(valid_n && iterations > 0 && iterations <= 10000000);
     assert(valid_size && size >= 0 && size <= 1048576);
-    let options = sqlite::Options { .. };
+    let options = sqlite::Options { work_budget: 100000000 };
     let db, opened = sqlite::open(":memory:", options);
     assert(opened == sqlite::OK);
     var checksum: i64 = 0;

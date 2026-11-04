@@ -37,7 +37,8 @@ measured process before its clock starts. There are no timing CI thresholds.
 This compares ordinary checked API paths, NOT identical safety policies or
 query engines. Goose retains strict typed reads, copied ownership, TLS token
 validation, defensive/trusted-schema settings, fixed limits, authorizer and
-progress budget. The other wrappers use their ordinary policies with1000ms busy
+progress budget (explicitly 100000000 instructions per call for aggregate
+verification, above its normal1000000 default). The other wrappers use their ordinary policies with1000ms busy
 timeouts. Raw C, SQLiteCpp and Rust select NOMUTEX/private-cache like Goose;
 Python exposes neither connection mutex flags nor a held prepared statement.
 Python prepare disables caching; other fixtures use its SQL cache and cursor
@@ -62,4 +63,8 @@ are explicitly reset. Raw JSON records toolchains/interpreter, wrapper pins, sou
 SQLite identities/library hashes, build flags, CPU/OS/affinity, order and all
 loop/whole-process samples. Shared-host load/frequency are uncontrolled; affinity
 is not exclusive isolation or statistical significance. Interpret all fixtures,
-including regressions; do not select only the fastest result.
+including regressions; do not select only the fastest result. samples.jsonl is
+flushed after each successful sample; subprocess failures create failure.json.
+An initial500000-iteration series hit Goose's default VM limit during untimed
+aggregate verification and produced no complete published result; the maintained
+runner now requests the documented larger budget before comparison.

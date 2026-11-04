@@ -90,6 +90,12 @@ def main():
         raise RuntimeError('SQLite shared-library hashes differ')
     fixtures = [('prepare', 0), ('scalar', 0), ('text', 32), ('text', 4096), ('text', 65536), ('blob', 4096), ('insert', 0)]
     samples = []
+    dest = args.output if args.output.is_absolute() else ROOT / args.output
+    dest.mkdir(parents=True, exist_ok=True)
+    journal = dest / 'samples.jsonl'
+    journal.write_text('')
+    failure = dest / 'failure.json'
+    if failure.exists(): failure.unlink()
     rng = random.Random(219)
     for mode, size in fixtures:
         n = max(1, args.iterations // 10) if size >= 65536 else args.iterations
@@ -102,7 +108,12 @@ def main():
             for position, name in enumerate(order):
                 before = resource.getrusage(resource.RUSAGE_CHILDREN)
                 start = time.perf_counter_ns()
-                text = output([*runners[name], str(n), mode, str(size)])
+                try:
+                    text = output([*runners[name], str(n), mode, str(size)])
+                except subprocess.CalledProcessError as error:
+                    failure.write_text(json.dumps(dict(implementation=name, fixture=mode, bytes=size,
+                                                      iterations=n, run=repeat, returncode=error.returncode)) + '\n')
+                    raise
                 whole = time.perf_counter_ns() - start
                 after = resource.getrusage(resource.RUSAGE_CHILDREN)
                 elapsed, checksum = map(int, text.split())
@@ -110,6 +121,8 @@ def main():
                 samples.append(dict(implementation=name, fixture=mode, bytes=size, iterations=n,
                                     run=repeat, order=position, loop_wall_ns=elapsed, checksum=checksum,
                                     whole_wall_ns=whole, whole_cpu_ns=round((after.ru_utime + after.ru_stime - before.ru_utime - before.ru_stime) * 1e9)))
+                with journal.open('a') as stream:
+                    stream.write(json.dumps(samples[-1]) + '\n')
     paths = [p for p in (ROOT / 'bench/alternatives').rglob('*') if p.is_file() and 'target' not in p.parts and '__pycache__' not in p.parts]
     paths += [ROOT / p for p in ('sqlite.goose', 'sqlite.build', 'CMakeLists.txt', 'native/sqlite.c', 'native/sqlite.h', 'GOOSE_REVISION')]
     metadata = dict(timestamp_utc=time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()), source_commit=output(['git', 'rev-parse', 'HEAD']),
@@ -123,7 +136,7 @@ def main():
                     source_hashes={str(p.relative_to(ROOT)): digest(p) for p in paths},
                     os=platform.platform(), cpu_model=next((v.split(':',1)[1].strip() for v in Path('/proc/cpuinfo').read_text().splitlines() if v.startswith('model name')), ''),
                     affinity=sorted(os.sched_getaffinity(0)), order_seed=219,
-                    scope='In-process checked API paths, not policy-equivalent or universal rankings. Goose retains fixed security/resource policy; other callers use documented defaults. Whole-process times separately reported. Shared host.', samples=samples)
+                    scope='Goose work_budget=100000000 permits untimed aggregate verification; other hardening retained. In-process checked API paths, not policy-equivalent or universal rankings. Goose retains fixed security/resource policy; other callers use documented defaults. Whole-process times separately reported. Shared host.', samples=samples)
     dest = args.output if args.output.is_absolute() else ROOT / args.output
     dest.mkdir(parents=True, exist_ok=True)
     (dest / 'samples.json').write_text(json.dumps(metadata, indent=2) + '\n')
