@@ -66,7 +66,7 @@ def main():
                     engine_sha256=hashlib.sha256(engine.read_bytes()).hexdigest(),
                     compiler=run([args.cc,'--version'],capture=True).stdout.splitlines()[0],
                     flags=flags+['-std=c11','-shared','-fPIC','SQLITE_THREADSAFE=1','SQLITE_DEFAULT_WAL_SYNCHRONOUS=1'],
-                    tests='native, allocation failures, storage incl FULL/EXTRA and backup mismatch; engine+adapter ASan/UBSan')
+                    tests='native, allocation failures, storage incl FULL/EXTRA and backup mismatch, required positive-WAL I/O/crash recovery; engine+adapter ASan/UBSan')
     (build / 'evidence.json').write_text(json.dumps(evidence,indent=2)+'\n')
     print('Pinned SQLite WAL engine and adapter sanitizer tests passed')
 

@@ -63,7 +63,9 @@ def main():
                         record.update(scenario=scenario, wal=bool(wal), mode=mode, sticky=bool(sticky), cut=cut)
                     records.append(record)
                     with journal.open('a') as stream: stream.write(json.dumps(record) + '\n')
-                    if record.get('skipped'): break
+                    if record.get('skipped'):
+                        if args.require_wal: raise RuntimeError('Required positive WAL coverage was skipped')
+                        break
                     if record.get('crashed') or record['fired']:
                         reached += 1
                     else:
