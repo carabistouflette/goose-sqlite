@@ -57,8 +57,8 @@ fn main() {
 ```
 
 Declare the package in your program's root file. A reviewed Git dependency can use
-`import sqlite from "carabistouflette/goose-sqlite@e24de8ce7495c8146c6c9b408cf08686c981c182";`.
-This pins the reviewed metadata/status, storage and statement-diagnostics interface. Imports and namespace are `sqlite`.
+`import sqlite from "carabistouflette/goose-sqlite@cb0566c4c0ddf483ce4546a339d6fac4ab88742c";`.
+This pins the reviewed startup, checkpoint, metadata/status, storage and statement-diagnostics interface. Imports and namespace are `sqlite`.
 Applications must handle errors and clean up resources on their own error paths;
 assertions above keep the example short. Native resource handles belong to their
 OS thread. Copied handles alias one resource; closing/finalizing invalidates all

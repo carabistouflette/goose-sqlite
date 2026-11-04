@@ -323,6 +323,46 @@ benchmark correctness smoke checks. Architecture and 64-bit width are checked on
 ARM64. These smoke checks do not provide ARM performance measurements or rankings.
 The local public/import suites and 10000-input fuzz smoke also passed.
 
+## Explicit startup and manual WAL checkpoints
+
+Implementation/test source cb0566c4c0ddf483ce4546a339d6fac4ab88742c passed the
+[complete native x86-64/ARM64 and scoped TSan matrix](https://github.com/carabistouflette/goose-sqlite/actions/runs/41929243279).
+[Current records](../tests/results/startup-checkpoints-2026-11-05/README.md) retain
+all source/binary/compiler/engine identities, actual flags, raw recovery cutpoints,
+concurrency/checkpoint counters, fresh-seed fuzz evidence and hosted CI conclusions.
+
+`initialize()` directly exposes retryable engine startup without a wrapper lock,
+cached failure or shutdown API. Two injected initialization failure positions
+recover successfully before shutdown, then prove a working connection. Repeated
+initialization preserves live statements/ROW reads. TSan uses this production entry
+before racing registry/key use. The original engine cold-start reports remain
+unresolved; this is explicit sequencing, not a claim of passing cold-start TSan.
+
+`checkpoint` adds four explicit main-schema modes, idle/writable/thread checks,
+unaligned-safe sentinel outputs and valid partial progress on BUSY. Default file
+opens discover existing WAL; exact private memory needs no discovery on recognized
+engines. Tests cover a competing checkpoint's immediate BUSY/unavailable counts,
+reader snapshots, writer contention, idle bindings, rejection of active main
+transactions, readonly/stale/foreign tokens and successful truncation. They run
+under both ordinary sanitizers and the fully instrumented TSan engine.
+
+Four final recovery configurations passed 16968 trials and 16460 fault/crash
+points, including 24 acknowledged crashes. Modern engines each add 268 checkpoint
+trials/250 fault-crash points; every outcome preserves the previously committed
+new generation, with fresh full-byte/integrity checks and successful checkpoint
+retry before any write. The minimum engine reports 76 unsupported WAL groups.
+A fresh tracked-corpus 100000-input fuzz run, public runner/native/isolated imports
+and native/fault/storage suites also pass on the final tested source; minimum
+engine public/native compatibility remains checked. Checkpoint I/O has no hard
+page/time/memory budget, and process death is not power-loss simulation.
+
+The [row-cache experiment](../bench/results/row-cache-2026-11-04/README.md) retained
+all 180 samples from nine pairs across ten fixtures and was rejected after mixed
+results and wide shared-host spreads. Production getters/step remain unchanged;
+automatic-schema-reprepare regressions remain tested. No statistically established
+regression or general performance improvement is claimed. Existing cross-language
+benchmarks retain their original versions/source scope.
+
 ## Reproduce
 
 ```sh

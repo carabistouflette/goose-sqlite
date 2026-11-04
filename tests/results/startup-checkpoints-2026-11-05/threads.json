@@ -1,0 +1,209 @@
+{
+  "configurations": [
+    {
+      "adapter_compile_flags": [
+        "C_FLAGS = -g -fPIC -Wall -Wextra -Werror -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined"
+      ],
+      "architecture": "x86_64",
+      "binary_sha256": "c2f779ed6c33b494b0245400d0c984bdd3371e1cdd4c0429b81c2e2244c287a6",
+      "compile_flags_note": "CMake C_FLAGS when available; empty for other generators",
+      "configuration": "host-gcc",
+      "counters": {
+        "busy_retries": 0,
+        "cleanup_callbacks": 64,
+        "committed": 256,
+        "engine_preinitialized": false,
+        "reader_snapshots": 160,
+        "registry_cycles": 1024,
+        "threads": 8,
+        "unique_tokens": 3072,
+        "wal": true,
+        "waves": 8
+      },
+      "engine_initialization": "concurrent cold start",
+      "scope": "Finite correctness stress; independent thread-affine connections, not shared-handle support or a performance benchmark",
+      "source_commit": "cb0566c4c0ddf483ce4546a339d6fac4ab88742c",
+      "source_dirty": false,
+      "source_hashes": {
+        "CMakeLists.txt": "3e8b498bc10fdc64739fb8b240b94ba76f9e42fbdc12b128fd5efa8651508d38",
+        "native/sqlite.c": "c2aa18465770ddc84eec22d77c6e9bc5644789894026d3d80d38e263603c9253",
+        "native/sqlite.h": "db4167b3393ee05ed5d59ff6726dd20a8dbe2d31825fcf5d474026161360906d",
+        "scripts/test-threads.py": "a5991861aa5e3ab40101efbc95358b41cd235820cb063dbd6606095edc811224",
+        "tests/threads.c": "efb99221954db8e0fcb76ad88ef6a7188f04be72ea12879d6459484880903d66"
+      },
+      "sqlite_identity": {
+        "source_id": "2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6alt1",
+        "version": "3.54.1"
+      },
+      "sqlite_library_sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a",
+      "test_compile_flags": [
+        "C_FLAGS = -g -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -Wall -Wextra -Werror -UNDEBUG"
+      ],
+      "verified_matching_source_commit": "cb0566c4c0ddf483ce4546a339d6fac4ab88742c"
+    },
+    {
+      "adapter_compile_flags": [
+        "C_FLAGS = -g -fPIC -Wall -Wextra -Werror -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined"
+      ],
+      "architecture": "x86_64",
+      "binary_sha256": "900cb2fc617dda80f2a3ccfd158872c3c5e2070f7a6228b3a58c732298dc3425",
+      "compile_flags_note": "CMake C_FLAGS when available; empty for other generators",
+      "configuration": "host-clang",
+      "counters": {
+        "busy_retries": 6,
+        "cleanup_callbacks": 64,
+        "committed": 256,
+        "engine_preinitialized": false,
+        "reader_snapshots": 160,
+        "registry_cycles": 1024,
+        "threads": 8,
+        "unique_tokens": 3072,
+        "wal": true,
+        "waves": 8
+      },
+      "engine_initialization": "concurrent cold start",
+      "scope": "Finite correctness stress; independent thread-affine connections, not shared-handle support or a performance benchmark",
+      "source_commit": "cb0566c4c0ddf483ce4546a339d6fac4ab88742c",
+      "source_dirty": false,
+      "source_hashes": {
+        "CMakeLists.txt": "3e8b498bc10fdc64739fb8b240b94ba76f9e42fbdc12b128fd5efa8651508d38",
+        "native/sqlite.c": "c2aa18465770ddc84eec22d77c6e9bc5644789894026d3d80d38e263603c9253",
+        "native/sqlite.h": "db4167b3393ee05ed5d59ff6726dd20a8dbe2d31825fcf5d474026161360906d",
+        "scripts/test-threads.py": "a5991861aa5e3ab40101efbc95358b41cd235820cb063dbd6606095edc811224",
+        "tests/threads.c": "efb99221954db8e0fcb76ad88ef6a7188f04be72ea12879d6459484880903d66"
+      },
+      "sqlite_identity": {
+        "source_id": "2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6alt1",
+        "version": "3.54.1"
+      },
+      "sqlite_library_sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a",
+      "test_compile_flags": [
+        "C_FLAGS = -g -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -Wall -Wextra -Werror -UNDEBUG"
+      ],
+      "verified_matching_source_commit": "cb0566c4c0ddf483ce4546a339d6fac4ab88742c"
+    },
+    {
+      "adapter_compile_flags": [
+        "C_FLAGS = -g -fPIC -Wall -Wextra -Werror -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined"
+      ],
+      "architecture": "x86_64",
+      "binary_sha256": "b83b9dc54f3ecb4aa3cb8bad770b15eb702bbf8ec78c1876269b3fd9636a767d",
+      "compile_flags_note": "CMake C_FLAGS when available; empty for other generators",
+      "configuration": "pinned-engine-asan",
+      "counters": {
+        "busy_retries": 13,
+        "cleanup_callbacks": 64,
+        "committed": 256,
+        "engine_preinitialized": false,
+        "reader_snapshots": 160,
+        "registry_cycles": 1024,
+        "threads": 8,
+        "unique_tokens": 3072,
+        "wal": true,
+        "waves": 8
+      },
+      "engine_initialization": "concurrent cold start",
+      "scope": "Finite correctness stress; independent thread-affine connections, not shared-handle support or a performance benchmark",
+      "source_commit": "cb0566c4c0ddf483ce4546a339d6fac4ab88742c",
+      "source_dirty": false,
+      "source_hashes": {
+        "CMakeLists.txt": "3e8b498bc10fdc64739fb8b240b94ba76f9e42fbdc12b128fd5efa8651508d38",
+        "native/sqlite.c": "c2aa18465770ddc84eec22d77c6e9bc5644789894026d3d80d38e263603c9253",
+        "native/sqlite.h": "db4167b3393ee05ed5d59ff6726dd20a8dbe2d31825fcf5d474026161360906d",
+        "scripts/test-threads.py": "a5991861aa5e3ab40101efbc95358b41cd235820cb063dbd6606095edc811224",
+        "tests/threads.c": "efb99221954db8e0fcb76ad88ef6a7188f04be72ea12879d6459484880903d66"
+      },
+      "sqlite_identity": {
+        "source_id": "2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6ca76",
+        "version": "3.54.1"
+      },
+      "sqlite_library_sha256": "80a0db09bacc2c3d6a418780f741530ef01d5d20eeea2d9579c5e84356b78307",
+      "test_compile_flags": [
+        "C_FLAGS = -g -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -Wall -Wextra -Werror -UNDEBUG"
+      ],
+      "verified_matching_source_commit": "cb0566c4c0ddf483ce4546a339d6fac4ab88742c"
+    },
+    {
+      "adapter_compile_flags": [
+        "C_FLAGS = -g -fPIC -Wall -Wextra -Werror -O1 -g -fno-omit-frame-pointer -fsanitize=thread"
+      ],
+      "architecture": "x86_64",
+      "binary_sha256": "88ce6e04bf0f72ad94b33916d7908aa7711afb2c012548ba47920e2d4c2610a0",
+      "compile_flags_note": "CMake C_FLAGS when available; empty for other generators",
+      "configuration": "pinned-engine-tsan",
+      "counters": {
+        "busy_retries": 115,
+        "cleanup_callbacks": 64,
+        "committed": 256,
+        "engine_preinitialized": true,
+        "reader_snapshots": 160,
+        "registry_cycles": 1024,
+        "threads": 8,
+        "unique_tokens": 3072,
+        "wal": true,
+        "waves": 8
+      },
+      "engine_initialization": "serial",
+      "scope": "Finite correctness stress; independent thread-affine connections, not shared-handle support or a performance benchmark",
+      "source_commit": "cb0566c4c0ddf483ce4546a339d6fac4ab88742c",
+      "source_dirty": false,
+      "source_hashes": {
+        "CMakeLists.txt": "3e8b498bc10fdc64739fb8b240b94ba76f9e42fbdc12b128fd5efa8651508d38",
+        "native/sqlite.c": "c2aa18465770ddc84eec22d77c6e9bc5644789894026d3d80d38e263603c9253",
+        "native/sqlite.h": "db4167b3393ee05ed5d59ff6726dd20a8dbe2d31825fcf5d474026161360906d",
+        "scripts/test-threads.py": "a5991861aa5e3ab40101efbc95358b41cd235820cb063dbd6606095edc811224",
+        "tests/threads.c": "efb99221954db8e0fcb76ad88ef6a7188f04be72ea12879d6459484880903d66"
+      },
+      "sqlite_identity": {
+        "source_id": "2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6ca76",
+        "version": "3.54.1"
+      },
+      "sqlite_library_sha256": "afd8bd75880e3542698c3b47f5d00f761793d28f36297a01b78fddc36bb75561",
+      "test_compile_flags": [
+        "C_FLAGS = -g -O1 -g -fno-omit-frame-pointer -fsanitize=thread -Wall -Wextra -Werror -UNDEBUG"
+      ],
+      "verified_matching_source_commit": "cb0566c4c0ddf483ce4546a339d6fac4ab88742c"
+    },
+    {
+      "adapter_compile_flags": [
+        "C_FLAGS = -g -fPIC -Wall -Wextra -Werror -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined"
+      ],
+      "architecture": "x86_64",
+      "binary_sha256": "ef7a41e25a81d2441c5c12695e96a267f9d9401642f97b7111cfc2ecbfd57a4b",
+      "compile_flags_note": "CMake C_FLAGS when available; empty for other generators",
+      "configuration": "minimum-engine-clang",
+      "counters": {
+        "busy_retries": 0,
+        "cleanup_callbacks": 64,
+        "committed": 0,
+        "engine_preinitialized": false,
+        "reader_snapshots": 0,
+        "registry_cycles": 1024,
+        "threads": 8,
+        "unique_tokens": 3072,
+        "wal": false,
+        "waves": 8
+      },
+      "engine_initialization": "concurrent cold start",
+      "scope": "Finite correctness stress; independent thread-affine connections, not shared-handle support or a performance benchmark",
+      "source_commit": "cb0566c4c0ddf483ce4546a339d6fac4ab88742c",
+      "source_dirty": false,
+      "source_hashes": {
+        "CMakeLists.txt": "3e8b498bc10fdc64739fb8b240b94ba76f9e42fbdc12b128fd5efa8651508d38",
+        "native/sqlite.c": "c2aa18465770ddc84eec22d77c6e9bc5644789894026d3d80d38e263603c9253",
+        "native/sqlite.h": "db4167b3393ee05ed5d59ff6726dd20a8dbe2d31825fcf5d474026161360906d",
+        "scripts/test-threads.py": "a5991861aa5e3ab40101efbc95358b41cd235820cb063dbd6606095edc811224",
+        "tests/threads.c": "efb99221954db8e0fcb76ad88ef6a7188f04be72ea12879d6459484880903d66"
+      },
+      "sqlite_identity": {
+        "source_id": "2021-11-27 14:13:22 bd41822c7424d393a30e92ff6cb254d25c26769889c1499a18a0b9339f5d6c8a",
+        "version": "3.37.0"
+      },
+      "sqlite_library_sha256": "1378156fc837ae07b178373e14e37b7620795c7262fc0ed18dff22b980397d4b",
+      "test_compile_flags": [
+        "C_FLAGS = -g -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -Wall -Wextra -Werror -UNDEBUG"
+      ],
+      "verified_matching_source_commit": "cb0566c4c0ddf483ce4546a339d6fac4ab88742c"
+    }
+  ]
+}

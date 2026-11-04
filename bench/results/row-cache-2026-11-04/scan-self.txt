@@ -1,0 +1,69 @@
+--------------------------------------------------------------------------------
+Profile data file '.build/scan-profile-v2/scan.callgrind' (creator: callgrind-3.25.1)
+--------------------------------------------------------------------------------
+I1 cache: 
+D1 cache: 
+LL cache: 
+Timerange: Basic block 0 - 32781907
+Trigger: Program termination
+Profiled target:  .build/scan-profile-v2/runner 100 scan 128 (PID 816918, part 1)
+Events recorded:  Ir
+Events shown:     Ir
+Event sort order: Ir
+Thresholds:       98
+Include dirs:     
+User annotated:   
+Auto-annotation:  off
+
+--------------------------------------------------------------------------------
+Ir                   
+--------------------------------------------------------------------------------
+142,473,265 (100.0%)  PROGRAM TOTALS
+
+--------------------------------------------------------------------------------
+Ir                   file:function
+--------------------------------------------------------------------------------
+41,409,611 (29.06%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3VdbeExec.lto_priv.0 [/usr/lib/libsqlite3.so.3.54.1]
+12,288,240 ( 8.62%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:columnMem [/usr/lib/libsqlite3.so.3.54.1]
+10,547,200 ( 7.40%)  ???:gs_memeq_long [$REPO/.build/scan-profile-v2/runner]
+ 8,192,008 ( 5.75%)  ???:gq_fetch [$REPO/.build/scan-profile-v2/runner]
+ 6,158,141 ( 4.32%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3_step [/usr/lib/libsqlite3.so.3.54.1]
+ 5,529,608 ( 3.88%)  ???:gq_integer [$REPO/.build/scan-profile-v2/runner]
+ 5,529,600 ( 3.88%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3_column_type [/usr/lib/libsqlite3.so.3.54.1]
+ 5,094,568 ( 3.58%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:btreeParseCellPtr [/usr/lib/libsqlite3.so.3.54.1]
+ 4,743,965 ( 3.33%)  ???:main [$REPO/.build/scan-profile-v2/runner]
+ 4,729,929 ( 3.32%)  /usr/src/debug/glibc/glibc/string/../sysdeps/x86_64/multiarch/memmove-vec-unaligned-erms.S:__memcpy_avx_unaligned_erms [/usr/lib/libc.so.6]
+ 3,830,540 ( 2.69%)  ???:gq_step [$REPO/.build/scan-profile-v2/runner]
+ 2,764,800 ( 1.94%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3_column_blob [/usr/lib/libsqlite3.so.3.54.1]
+ 2,764,800 ( 1.94%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3_column_bytes [/usr/lib/libsqlite3.so.3.54.1]
+ 2,764,800 ( 1.94%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3_column_int64 [/usr/lib/libsqlite3.so.3.54.1]
+ 2,479,612 ( 1.74%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3_mutex_enter [/usr/lib/libsqlite3.so.3.54.1]
+ 2,479,612 ( 1.74%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3_mutex_leave [/usr/lib/libsqlite3.so.3.54.1]
+ 2,252,890 ( 1.58%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:getCellInfo.lto_priv.0 [/usr/lib/libsqlite3.so.3.54.1]
+ 2,252,822 ( 1.58%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3GetVarint32.lto_priv.0 [/usr/lib/libsqlite3.so.3.54.1]
+ 2,048,000 ( 1.44%)  ???:statement [$REPO/.build/scan-profile-v2/runner]
+ 1,631,244 ( 1.14%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3BtreeNext.isra.0 [/usr/lib/libsqlite3.so.3.54.1]
+ 1,331,200 ( 0.93%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3_value_blob [/usr/lib/libsqlite3.so.3.54.1]
+ 1,228,800 ( 0.86%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3_value_type [/usr/lib/libsqlite3.so.3.54.1]
+ 1,126,400 ( 0.79%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3_value_bytes [/usr/lib/libsqlite3.so.3.54.1]
+ 1,024,030 ( 0.72%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3_column_count [/usr/lib/libsqlite3.so.3.54.1]
+   614,444 ( 0.43%)  ???:gs_memeq.part.0 [$REPO/.build/scan-profile-v2/runner]
+   614,400 ( 0.43%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3_value_int64 [/usr/lib/libsqlite3.so.3.54.1]
+   536,356 ( 0.38%)  /usr/include/bits/string_fortified.h:sqlite3VdbeExec.lto_priv.0
+   397,819 ( 0.28%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3BtreeInsert.lto_priv.0 [/usr/lib/libsqlite3.so.3.54.1]
+   389,453 ( 0.27%)  /usr/src/debug/glibc/glibc/string/../sysdeps/x86_64/multiarch/memset-vec-unaligned-erms.S:__memset_avx2_unaligned_erms [/usr/lib/libc.so.6]
+   354,594 ( 0.25%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3BtreeTableMoveto.lto_priv.0 [/usr/lib/libsqlite3.so.3.54.1]
+   326,009 ( 0.23%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3BtreeIndexMoveto.lto_priv.0 [/usr/lib/libsqlite3.so.3.54.1]
+   316,872 ( 0.22%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3VdbeRecordCompareWithSkip.lto_priv.0 [/usr/lib/libsqlite3.so.3.54.1]
+   298,953 ( 0.21%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:getPageNormal.lto_priv.0 [/usr/lib/libsqlite3.so.3.54.1]
+   255,710 ( 0.18%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:getAndInitPage.lto_priv.0 [/usr/lib/libsqlite3.so.3.54.1]
+   187,659 ( 0.13%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:vdbeRecordCompareInt.lto_priv.0 [/usr/lib/libsqlite3.so.3.54.1]
+   187,462 ( 0.13%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:btreeNext.lto_priv.0 [/usr/lib/libsqlite3.so.3.54.1]
+   165,384 ( 0.12%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:moveToChild.lto_priv.0 [/usr/lib/libsqlite3.so.3.54.1]
+   156,163 ( 0.11%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:releaseMemArray.part.0.lto_priv.0 [/usr/lib/libsqlite3.so.3.54.1]
+   155,084 ( 0.11%)  /usr/src/debug/glibc/glibc/elf/dl-lookup.c:do_lookup_x [/usr/lib/ld-linux-x86-64.so.2]
+   151,621 ( 0.11%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3VdbeMemGrow.lto_priv.0 [/usr/lib/libsqlite3.so.3.54.1]
+   146,965 ( 0.10%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3VdbeHalt.lto_priv.0 [/usr/lib/libsqlite3.so.3.54.1]
+   138,871 ( 0.10%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:allocateCursor [/usr/lib/libsqlite3.so.3.54.1]
+   135,064 ( 0.09%)  /usr/src/debug/sqlite/sqlite-src-3540100/sqlite3.c:sqlite3VdbeFreeCursorNN.lto_priv.0 [/usr/lib/libsqlite3.so.3.54.1]
+

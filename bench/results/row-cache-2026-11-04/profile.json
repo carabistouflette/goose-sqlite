@@ -1,0 +1,54 @@
+{
+  "source_commit": "c9a64c49939b4cde26ba9b32d62d6ab6d1009bf3",
+  "source_hashes": {
+    "sqlite.goose": "e3554142b4060c61bbfbbb8a05e132ed2fa20897c04e14dff3f4b686339d8328",
+    "sqlite.build": "8fce672fe1f9eafa1042442cdfafb216b1dd9f66ee8cf16494d5d814e03ee66f",
+    "CMakeLists.txt": "bd67c28ad1ab236e1f613f9b1130a5f0958ee3947ecc4b71b6b14f9593426d60",
+    "native/sqlite.c": "45ce80fb65ceba45a7af3a7294ee2e5774a5735c8be51592f2ddcbbb3b075afd",
+    "native/sqlite.h": "c8d48e9b3f3d291281af2198c950ec87f1b719e226e27aec724e13b81780b440",
+    "bench/alternatives/runner.goose": "0a11f04cbcd8c831dc41147528c9282f88f9199906eb6b27f31f9bb119e74099",
+    "GOOSE_REVISION": "64e14b181dfe96743211738fb0f1b1f7798ea940da2ca50ff122e6f028c24e15"
+  },
+  "scope": "Callgrind Ir for complete native process, including setup. 100 passes x1024 rows x128 owned+verified BLOB bytes. Not timing attribution or a speedup claim.",
+  "binary_sha256": "0056434c0a7d79df0bb1c23970476fc6163c532d6f7632c3c901ca25b092aca2",
+  "compiler": {
+    "version": "gcc (GCC) 16.2.1 20260810",
+    "sha256": "8aac907d6fbf40394b424b5fa4a2ad1aa291dac7d3a0315c5b415c1f5ace1287"
+  },
+  "goose": {
+    "pin": "eadca409f68210893f366e60d0c2f0dc29a339be",
+    "binary_sha256": "2bdd604d01c3f46b03ddae80871b10de7f75e9e710ce92faa1a644b246472ab7"
+  },
+  "native_build": {
+    "CMAKE_BUILD_TYPE": "Release",
+    "CMAKE_C_FLAGS": "",
+    "CMAKE_C_FLAGS_RELEASE": "-O3 -DNDEBUG",
+    "actual_compile_flags": [
+      [
+        "-O3 -DNDEBUG -fPIC",
+        "-Wall",
+        "-Wextra",
+        "-Werror"
+      ]
+    ]
+  },
+  "native_archive_sha256": "80b82814191fba2d5343b2e9ef2d40d840d6712f2a1316358b799eda63604fe0",
+  "engine": {
+    "file": "libsqlite3.so.3.54.1",
+    "sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a"
+  },
+  "architecture": "x86_64",
+  "command": "taskset -c 6 valgrind --tool=callgrind --callgrind-out-file=.build/scan-profile-v2/scan.callgrind .build/scan-profile-v2/runner 100 scan 128",
+  "valgrind_version": "valgrind-3.25.1",
+  "total_Ir": 142473265,
+  "checksum": 13107200,
+  "original_profile_sha256": "e02addc8d214f9eb33f5458bc2f68c3f551f734fc3646622df6d72f954321e9b",
+  "retained_profile_sha256": "5168114f38dde11c7b825066aa71c508303daa1888da15aba36173f75a74225c",
+  "normalization": "Only repository absolute prefix replaced by $REPO in retained profile and annotation copies.",
+  "hardware": {
+    "cpu_model": "Intel(R) Core(TM) Ultra 7 258V",
+    "kernel": "7.2.11-arch1-1",
+    "affinity_cpu": 6,
+    "isolation": "Shared host, no exclusive-core claim"
+  }
+}

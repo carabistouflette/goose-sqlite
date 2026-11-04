@@ -363,3 +363,24 @@ on indexed batches/lookups and this Python path is slower across the fixtures.
 The whole-process RSS measurements include runtime/setup/verification and cannot
 be interpreted as per-binding memory alone. All raw samples, mixed optimization
 results, profile/tool/source hashes and compiler/engine identities are retained.
+
+
+## Explicit startup and checkpoints
+
+`initialize()` now exposes retryable SQLite startup for sequencing before worker
+threads, without a cached failure or shutdown API. `checkpoint` adds explicit
+PASSIVE/FULL/RESTART/TRUNCATE control over main on a writable, idle connection,
+with checked engine-sized progress outputs and BUSY partial-progress semantics.
+It preserves the permanent authorizer and durability policy; caller SQL PRAGMAs
+remain denied. See [the API](api.md) and SQLite's
+[checkpoint contract](https://sqlite.org/c3ref/wal_checkpoint_v2.html).
+
+[The final campaign](../tests/results/startup-checkpoints-2026-11-05/README.md)
+adds committed-generation preservation through checkpoint I/O faults and process
+crashes, including a verified retry before any write. These are process-crash
+checks, not a power-loss model or proof of complete feature parity.
+
+[The scan-cache experiment](../bench/results/row-cache-2026-11-04/README.md) retains
+all ten fixture results and rejects its candidate after mixed matched measurements.
+The earlier cross-language results retain their original source/version scope;
+these in-memory workloads do not measure checkpoint/startup/file durability speed.

@@ -49,8 +49,10 @@ which the driver checks and records. It does not test concurrent SQLite cold
 initialization under TSan. No engine source or production adapter is changed to
 silence these reports. ASan/UBSan retains concurrent cold initialization.
 
-[Retained results and original diagnostics](results/concurrency-recovery-2026-11-04/README.md)
-record the completed compiler/engine checks and source identities.
+[Current results](results/startup-checkpoints-2026-11-05/README.md) record the
+production startup entry and checkpoint contention checks under TSan.
+[Earlier results and original diagnostics](results/concurrency-recovery-2026-11-04/README.md)
+retain the initial campaign and cold-engine reports.
 
 Timeouts bound whole processes and WAL retry loops. Repeated successful runs do
 not prove absence of races, memory bugs, or filesystem failures. Handles remain

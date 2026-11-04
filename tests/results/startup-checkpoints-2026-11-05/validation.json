@@ -1,0 +1,171 @@
+{
+  "source_commit": "cb0566c4c0ddf483ce4546a339d6fac4ab88742c",
+  "source_hashes": {
+    "CMakeLists.txt": "3e8b498bc10fdc64739fb8b240b94ba76f9e42fbdc12b128fd5efa8651508d38",
+    "native/sqlite.c": "c2aa18465770ddc84eec22d77c6e9bc5644789894026d3d80d38e263603c9253",
+    "native/sqlite.h": "db4167b3393ee05ed5d59ff6726dd20a8dbe2d31825fcf5d474026161360906d",
+    "scripts/test-files.py": "ba7b8d7e69227bbff62aa379a9087404a1b1af4b2d77c59034786b3fe05e6289",
+    "scripts/test-import.py": "deb58c0232ba60f482ace09637e3f2729fd7f9b55c114aafad60c9adca882318",
+    "sqlite.build": "955f85ba6eea4f314d41fcf380950662da759590d779b308ec219d06aea14995",
+    "sqlite.goose": "7ea55ed2afcaa3d5999f7ec52fe23428f8c3942cae30592010d1607322fd5995",
+    "tests/api.goose": "f6ac4e0f73389bce66785aa86164eabf749b700cb24f854d46026d7a3565d79a",
+    "tests/checkpoint.c": "4fc1f7b6b2a97e409b64ca45191a604fbc31cf0572ff6d47dc467b45da08c397",
+    "tests/checkpoint.goose": "947a3c26c6c320522839d9ba9f8d1e67df3078be52f4b4d82481f8ab6f626d00",
+    "tests/faults.c": "6ea3a8142cf68cf84f64336d5e02ea6973c574bdc0c7f51205c7c35d06f7a8e4",
+    "tests/fuzz.c": "1882148846e5e72bf81f9b0aa549ddfa06002a9f2d80ff1a5035b57e167a8ffe",
+    "tests/native.c": "cfb182b1276b24acf0673cd15322263599f3acf90da3bd2529b9d2d0a880dc7e"
+  },
+  "tests": {
+    "host-clang": {
+      "log_sha256": "4f5efc5844fe4114ec778c1f73127eddfc84f002be5dd1e53b942de7116a57b6",
+      "result": "passed",
+      "result_json": [
+        {
+          "busy_checks": 5,
+          "checkpoints": 12,
+          "state_checks": 12,
+          "wal_supported": true
+        },
+        {
+          "busy_retries": 6,
+          "cleanup_callbacks": 64,
+          "committed": 256,
+          "engine_preinitialized": false,
+          "reader_snapshots": 160,
+          "registry_cycles": 1024,
+          "threads": 8,
+          "unique_tokens": 3072,
+          "wal": true,
+          "waves": 8
+        }
+      ],
+      "result_lines": [
+        "sqlite initialization failures recovered: 2",
+        "sqlite allocation-failure tests passed: open=106 prepare=115 bind=1 step=6 conversion=1",
+        "Recovery passed: 4678 trials, 4552 fault/crash points, 0 unsupported WAL groups"
+      ]
+    },
+    "host-gcc": {
+      "log_sha256": "9e90f74b10ca4193d656180233a77df97d9a06bd11b270e2786015228d0aa006",
+      "result": "passed",
+      "result_json": [
+        {
+          "busy_checks": 5,
+          "checkpoints": 12,
+          "state_checks": 12,
+          "wal_supported": true
+        },
+        {
+          "busy_retries": 0,
+          "cleanup_callbacks": 64,
+          "committed": 256,
+          "engine_preinitialized": false,
+          "reader_snapshots": 160,
+          "registry_cycles": 1024,
+          "threads": 8,
+          "unique_tokens": 3072,
+          "wal": true,
+          "waves": 8
+        }
+      ],
+      "result_lines": [
+        "sqlite initialization failures recovered: 2",
+        "sqlite allocation-failure tests passed: open=106 prepare=115 bind=1 step=6 conversion=1",
+        "Recovery passed: 4678 trials, 4552 fault/crash points, 0 unsupported WAL groups"
+      ]
+    },
+    "minimum-engine": {
+      "checkpoint_json": {
+        "busy_checks": 0,
+        "checkpoints": 0,
+        "state_checks": 0,
+        "wal_supported": false
+      },
+      "log_sha256": "f78a4f4f5217553b19ee68d32c4bd82c8c1edec6cd3cfff22aabebc1ae975dc1",
+      "result": "passed",
+      "result_json": [],
+      "result_lines": [
+        "sqlite initialization failures recovered: 2",
+        "sqlite allocation-failure tests passed: open=95 prepare=30 bind=1 step=6 conversion=1"
+      ]
+    },
+    "pinned-engine-asan": {
+      "log_sha256": "23b838ba56feb33418aaba924b4e566dca1e1dc0f5dbd87668d76edd3073fc7a",
+      "result": "passed",
+      "result_json": [
+        {
+          "busy_retries": 13,
+          "cleanup_callbacks": 64,
+          "committed": 256,
+          "engine_preinitialized": false,
+          "reader_snapshots": 160,
+          "registry_cycles": 1024,
+          "threads": 8,
+          "unique_tokens": 3072,
+          "wal": true,
+          "waves": 8
+        },
+        {
+          "busy_checks": 5,
+          "checkpoints": 12,
+          "state_checks": 12,
+          "wal_supported": true
+        }
+      ],
+      "result_lines": [
+        "sqlite initialization failures recovered: 2",
+        "sqlite allocation-failure tests passed: open=21 prepare=100 bind=1 step=6 conversion=1",
+        "Recovery passed: 4678 trials, 4552 fault/crash points, 0 unsupported WAL groups",
+        "Pinned SQLite WAL engine and adapter sanitizer tests passed"
+      ]
+    },
+    "pinned-engine-tsan": {
+      "log_sha256": "1543a60b8e15195501ff082116913cb8c7623411d620a0395c10bc08d0931dc1",
+      "result": "passed",
+      "result_json": [
+        {
+          "busy_retries": 115,
+          "cleanup_callbacks": 64,
+          "committed": 256,
+          "engine_preinitialized": true,
+          "reader_snapshots": 160,
+          "registry_cycles": 1024,
+          "threads": 8,
+          "unique_tokens": 3072,
+          "wal": true,
+          "waves": 8
+        },
+        {
+          "busy_checks": 5,
+          "checkpoints": 12,
+          "state_checks": 12,
+          "wal_supported": true
+        }
+      ],
+      "result_lines": [
+        "Pinned SQLite WAL engine and adapter sanitizer tests passed"
+      ]
+    },
+    "public-minimum": {
+      "log_sha256": "75fc28dedf3e7c9924069813b155ff976eac7d161fe5d26787d62b016ca407cd",
+      "result": "passed",
+      "result_json": [],
+      "result_lines": [
+        "sqlite checkpoint public tests passed (WAL unsupported)",
+        "sqlite checkpoint public tests passed (WAL unsupported)",
+        "sqlite standalone import passed (runner and native, isolated consumer/cache)"
+      ]
+    },
+    "public-system": {
+      "log_sha256": "22808c75fcf8d6304f85535d8be06ff0763ff5053ca23b85ec4606a3a8cc47f8",
+      "result": "passed",
+      "result_json": [],
+      "result_lines": [
+        "sqlite checkpoint public tests passed",
+        "sqlite checkpoint public tests passed",
+        "sqlite standalone import passed (runner and native, isolated consumer/cache)"
+      ]
+    }
+  },
+  "verified_matching_source_commit": "cb0566c4c0ddf483ce4546a339d6fac4ab88742c"
+}

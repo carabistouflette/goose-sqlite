@@ -1,0 +1,5 @@
+# Preserve machine-generated evidence bytes, including native trailing whitespace.
+bench/results/row-cache-2026-11-04/scan.callgrind -whitespace
+bench/results/row-cache-2026-11-04/scan-self.txt -whitespace
+bench/results/row-cache-2026-11-04/scan-inclusive.txt -whitespace
+tests/results/startup-checkpoints-2026-11-05/fuzz.log -whitespace
