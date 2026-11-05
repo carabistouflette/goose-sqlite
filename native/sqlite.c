@@ -336,6 +336,13 @@ int64_t gq_bind(uint64_t token, int64_t index, int64_t kind, int64_t integer, do
     default: return GQ_INPUT;
     }
 }
+int64_t gq_bind_zeroblob(uint64_t token, int64_t index, int64_t size) {
+    Statement *s = statement(token);
+    if (!s) return GQ_HANDLE;
+    if (s->state != READY) return GQ_STATE;
+    if (index < 1 || index > sqlite3_bind_parameter_count(s->ptr) || size < 0 || size > VALUE_MAX) return GQ_INPUT;
+    return sqlite3_bind_zeroblob64(s->ptr, (int)index, (sqlite3_uint64)size);
+}
 int64_t gq_step(uint64_t token) {
     Statement *s = statement(token);
     if (!s) return GQ_HANDLE;

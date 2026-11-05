@@ -12,9 +12,10 @@ static void lifecycle(uint64_t db, const uint8_t *data, size_t size) {
     uint64_t stmt = 0, stale = 0;
     CHECK(gq_prepare(db, sql, &stmt) == SQLITE_OK);
     int state = 0, kind = SQLITE_NULL; /* Ready, Row, Done. */
+    int64_t blob_length = 0;
     for (size_t i = 0; i < size && i < 64; ++i) {
         int64_t rc, expected = state == 0 ? SQLITE_OK : GQ_STATE;
-        switch (data[i] % 16) {
+        switch (data[i] % 19) {
         case 0:
             CHECK(gq_bind(stmt, 1, SQLITE_INTEGER, (int64_t)i, 0, (gq_input){NULL, 0}) == expected);
             if (!state) kind = SQLITE_INTEGER;
@@ -25,7 +26,7 @@ static void lifecycle(uint64_t db, const uint8_t *data, size_t size) {
             break;
         case 2:
             CHECK(gq_bind(stmt, 1, SQLITE_BLOB, 0, 0, (gq_input){data, (int64_t)size}) == expected);
-            if (!state) kind = SQLITE_BLOB;
+            if (!state) { kind = SQLITE_BLOB; blob_length = (int64_t)size; }
             break;
         case 3:
             rc = gq_step(stmt);
@@ -75,9 +76,22 @@ static void lifecycle(uint64_t db, const uint8_t *data, size_t size) {
             rc = gq_size(stmt, 0, SQLITE_BLOB, &length);
             expected = state != 1 ? GQ_STATE : kind != SQLITE_BLOB ? GQ_TYPE : SQLITE_OK;
             CHECK(rc == expected);
-            CHECK(length == (rc == SQLITE_OK ? (int64_t)size : 0));
+            CHECK(length == (rc == SQLITE_OK ? blob_length : 0));
             break;
         }
+        case 16: {
+            int64_t n = (data[i] & 7) * 257;
+            CHECK(gq_bind_zeroblob(stmt, 1, n) == expected);
+            if (!state) { kind = SQLITE_BLOB; blob_length = n; }
+            break;
+        }
+        case 17:
+            CHECK(gq_bind_zeroblob(stmt, 1, (data[i] & 1) ? -1 : 1048577) == (state ? GQ_STATE : GQ_INPUT));
+            break;
+        case 18:
+            CHECK(gq_bind_zeroblob(stmt, INT64_MAX, 0) == (state ? GQ_STATE : GQ_INPUT));
+            CHECK(gq_bind_zeroblob(stale, 1, 0) == GQ_HANDLE);
+            break;
         }
     }
     CHECK(gq_finalize(stmt) == SQLITE_OK);

@@ -38,6 +38,7 @@ extern fn native_finalize(token: u64) -> i64 = "gq_finalize";
 extern fn native_reset(token: u64) -> i64 = "gq_reset";
 extern fn native_clear(token: u64) -> i64 = "gq_clear";
 extern fn native_bind(token: u64, index: i64, kind: i64, integer: i64, real: f64, bytes: const u8[:]) -> i64 = "gq_bind";
+extern fn native_bind_zeroblob(token: u64, index: i64, size: i64) -> i64 = "gq_bind_zeroblob";
 extern fn native_step(token: u64) -> i64 = "gq_step";
 extern fn native_columns(token: u64) -> i64 = "gq_columns";
 extern fn native_type(token: u64, column: i64) -> i64 = "gq_type";
@@ -68,6 +69,7 @@ fn bind_integer(stmt: Statement, index: i64, value: i64) -> i64 { return native_
 fn bind_float(stmt: Statement, index: i64, value: f64) -> i64 { return native_bind(stmt.token, index, FLOAT, 0, value, ""); }
 fn bind_text(stmt: Statement, index: i64, value: const u8[:]) -> i64 { return native_bind(stmt.token, index, TEXT, 0, 0.0, value); }
 fn bind_blob(stmt: Statement, index: i64, value: const u8[:]) -> i64 { return native_bind(stmt.token, index, BLOB, 0, 0.0, value); }
+fn bind_zeroblob(stmt: Statement, index: i64, size: i64) -> i64 { return native_bind_zeroblob(stmt.token, index, size); }
 fn step(stmt: Statement) -> i64 { return native_step(stmt.token); }
 fn column_count(stmt: Statement) -> i64 { return native_columns(stmt.token); }
 fn column_type(stmt: Statement, column: i64) -> i64 { return native_type(stmt.token, column); }

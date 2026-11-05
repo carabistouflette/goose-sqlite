@@ -100,6 +100,21 @@ this module does not independently validate or normalize Unicode. Bind data as
 blob when it is not text. Failed binding leaves subsequent state governed by
 SQLite; rebind or clear explicitly before execution.
 
+`bind_zeroblob(stmt,index,size)` binds a BLOB containing size zero bytes without
+allocating or copying a caller zero-filled input buffer. It requires Ready,
+a valid one-based parameter index and size 0..1048576; negative/oversized values
+are INVALID_INPUT. Validation failures preserve previous bindings. Size zero is
+an empty BLOB, distinct from NULL. Reset retains it; clear_bindings replaces it
+with NULL. This reserves a logical value, not a fixed memory/disk/time budget.
+
+SQLite normally represents the binding compactly until it needs the bytes.
+Reading/materializing/inserting it can allocate or fail. An accepted 1 MiB
+binding may still fail INSERT because encoded row overhead shares the engine's
+1 MiB length limit. Use an explicit transaction when reserving a stored value
+for incremental BLOB writes, close the BLOB and inspect every result before COMMIT.
+The existing SQL zeroblob(size) function also supports zero-buffer-free creation.
+See SQLite's [binding contract](https://sqlite.org/c3ref/bind_blob.html).
+
 Only Row statements permit zero-based column reads:
 
 - `column_type(stmt,column)`: INTEGER=1, FLOAT=2, TEXT=3, BLOB=4, NULL=5, or a

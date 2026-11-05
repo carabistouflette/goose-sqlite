@@ -24,12 +24,13 @@ static uint64_t open_db(void) {
 }
 static int nomem(int64_t rc) { return rc > 0 && (rc & 255) == SQLITE_NOMEM; }
 static void blob_materialization_faults(sqlite3_int64 baseline) {
-    for (int mode = 0; mode < 3; ++mode) {
+    for (int source = 0; source < 2; ++source) for (int mode = 0; mode < 3; ++mode) {
         int failures = 0, successes = 0;
         for (int n = 0; n < 8; ++n) {
             uint64_t db = open_db(), stmt = 0;
             /* Keep materialization out of constant-expression setup in step(). */
-            assert(gq_prepare(db, text("SELECT zeroblob((random() & 0) + 4096)"), &stmt) == SQLITE_OK);
+            assert(gq_prepare(db, text(source ? "SELECT ?1" : "SELECT zeroblob((random() & 0) + 4096)"), &stmt) == SQLITE_OK);
+            if (source) assert(gq_bind_zeroblob(stmt, 1, 4096) == SQLITE_OK);
             assert(gq_step(stmt) == SQLITE_ROW);
             uint8_t output[4096]; memset(output, 17, sizeof output);
             int64_t length = 123;
@@ -53,11 +54,12 @@ static void blob_materialization_faults(sqlite3_int64 baseline) {
             assert(gq_close(db) == SQLITE_OK && sqlite3_memory_used() == baseline);
         }
         assert(failures > 0 && successes > 0);
-        printf("sqlite BLOB materialization mode=%d failures=%d\n", mode, failures);
+        printf("sqlite BLOB materialization source=%d mode=%d failures=%d\n", source, mode, failures);
     }
-    for (int mode = 0; mode < 3; ++mode) {
+    for (int source = 0; source < 2; ++source) for (int mode = 0; mode < 3; ++mode) {
         uint64_t db = open_db(), stmt = 0;
-        assert(gq_prepare(db, text("SELECT zeroblob((random() & 0) + 0)"), &stmt) == SQLITE_OK);
+        assert(gq_prepare(db, text(source ? "SELECT ?1" : "SELECT zeroblob((random() & 0) + 0)"), &stmt) == SQLITE_OK);
+        if (source) assert(gq_bind_zeroblob(stmt, 1, 0) == SQLITE_OK);
         assert(gq_step(stmt) == SQLITE_ROW);
         uint8_t output = 17; int64_t length = 123;
         countdown = 0;

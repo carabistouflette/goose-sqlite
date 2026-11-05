@@ -19,6 +19,7 @@ check:
 	"$(GOOSE)" check tests/metadata.goose
 	"$(GOOSE)" check tests/files.goose
 	"$(GOOSE)" check tests/checkpoint.goose
+	"$(GOOSE)" check tests/zeroblob.goose
 	"$(GOOSE)" check examples/transactions.goose
 	"$(GOOSE)" check examples/items.goose
 	"$(GOOSE)" check bench/storage/runner.goose
@@ -29,6 +30,7 @@ test:
 	"$(GOOSE)" run tests/api.goose
 	"$(GOOSE)" run tests/diagnostics.goose
 	"$(GOOSE)" run tests/storage.goose
+	"$(GOOSE)" run tests/zeroblob.goose
 	"$(GOOSE)" run tests/metadata.goose
 	mkdir -p "$(PUBLIC_TEST_DIR)"
 	"$(GOOSE)" build tests/api.goose -o "$(PUBLIC_TEST_DIR)/api"
@@ -37,6 +39,8 @@ test:
 	"$(PUBLIC_TEST_DIR)/metadata"
 	"$(GOOSE)" build tests/storage.goose -o "$(PUBLIC_TEST_DIR)/storage"
 	"$(PUBLIC_TEST_DIR)/storage"
+	"$(GOOSE)" build tests/zeroblob.goose -o "$(PUBLIC_TEST_DIR)/zeroblob"
+	"$(PUBLIC_TEST_DIR)/zeroblob"
 	"$(GOOSE)" build tests/diagnostics.goose -o "$(PUBLIC_TEST_DIR)/diagnostics"
 	"$(PUBLIC_TEST_DIR)/diagnostics"
 	python3 scripts/test-files.py "$(GOOSE)"
@@ -54,6 +58,7 @@ test-native:
 	UBSAN_OPTIONS=halt_on_error=1 .build/native-$(notdir $(CC))/goose_sqlite_fault_test
 	UBSAN_OPTIONS=halt_on_error=1 .build/native-$(notdir $(CC))/goose_sqlite_storage_test
 	UBSAN_OPTIONS=halt_on_error=1 .build/native-$(notdir $(CC))/goose_sqlite_checkpoint_test
+	UBSAN_OPTIONS=halt_on_error=1 .build/native-$(notdir $(CC))/goose_sqlite_zeroblob_test
 	python3 scripts/test-threads.py --binary .build/native-$(notdir $(CC))/goose_sqlite_thread_test --output .build/threads-$(notdir $(CC)).json
 	python3 scripts/test-recovery.py --binary .build/native-$(notdir $(CC))/goose_sqlite_recovery_test --output .build/recovery-$(notdir $(CC)).json
 fuzz-native:

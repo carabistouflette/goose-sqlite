@@ -17,6 +17,7 @@ int64_t gq_finalize(uint64_t token);
 int64_t gq_reset(uint64_t token);
 int64_t gq_clear(uint64_t token);
 int64_t gq_bind(uint64_t token, int64_t index, int64_t kind, int64_t integer, double real, gq_input bytes);
+int64_t gq_bind_zeroblob(uint64_t token, int64_t index, int64_t size);
 int64_t gq_step(uint64_t token);
 int64_t gq_columns(uint64_t token);
 int64_t gq_type(uint64_t token, int64_t column);

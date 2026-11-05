@@ -77,6 +77,7 @@ def main():
          '--output',build / 'threads.json','--require-wal',
          *(['--initialize-engine'] if thread else [])],env)
     run([native / 'goose_sqlite_checkpoint_test','--require-wal'],env)
+    run([native / 'goose_sqlite_zeroblob_test'],env)
     if not thread:
         for name in ('goose_sqlite_test','goose_sqlite_fault_test','goose_sqlite_storage_test'):
             run([native / name],env)
@@ -89,11 +90,11 @@ def main():
                     source_dirty=bool(subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True).strip()),
                     source_hashes={p:hashlib.sha256((ROOT / p).read_bytes()).hexdigest()
                                    for p in ('scripts/test-wal-engine.py','tests/tsan-probe.c',
-                                             'tests/checkpoint.c','tests/faults.c',
+                                             'tests/checkpoint.c','tests/zeroblob.c','tests/faults.c',
                                              'native/sqlite.c','native/sqlite.h','CMakeLists.txt')},
                     flags=flags+['-std=c11','-shared','-fPIC','SQLITE_THREADSAFE=1','SQLITE_DEFAULT_WAL_SYNCHRONOUS=1'],
-                    tests=('intentional-race preflight then required positive-WAL thread and checkpoint contention tests; engine+adapter TSan'
-                           if thread else 'native, retryable initialization/allocation failures, storage, required positive-WAL threads/checkpoints and I/O/crash recovery; engine+adapter ASan/UBSan'))
+                    tests=('intentional-race preflight then required positive-WAL thread/checkpoint contention and zeroblob tests; engine+adapter TSan'
+                           if thread else 'native, retryable initialization/allocation and BLOB materialization failures, storage/zeroblob, required positive-WAL threads/checkpoints and I/O/crash recovery; engine+adapter ASan/UBSan'))
     (build / 'evidence.json').write_text(json.dumps(evidence,indent=2)+'\n')
     print('Pinned SQLite WAL engine and adapter sanitizer tests passed')
 

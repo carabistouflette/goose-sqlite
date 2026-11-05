@@ -59,7 +59,9 @@ fn main() {
     assert(sqlite::step(stmt) == sqlite::DONE);
     assert(sqlite::finalize(stmt) == sqlite::OK);
     assert(sqlite::execute(db, "CREATE TABLE t(x)") == sqlite::OK);
-    assert(sqlite::execute(db, "INSERT INTO t VALUES(zeroblob(32))") == sqlite::OK);
+    let reserve, reserved = sqlite::prepare(db, "INSERT INTO t VALUES(?1)");
+    assert(reserved == sqlite::OK && sqlite::bind_zeroblob(reserve, 1, 32) == sqlite::OK);
+    assert(sqlite::step(reserve) == sqlite::DONE && sqlite::finalize(reserve) == sqlite::OK);
     assert(sqlite::execute(db, "BEGIN") == sqlite::OK);
     let blob, blob_code = sqlite::blob_open(db, "t", "x", 1, true);
     assert(blob_code == sqlite::OK && sqlite::blob_write(blob, 7, "safe") == sqlite::OK);
