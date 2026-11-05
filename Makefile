@@ -78,8 +78,8 @@ bench-alternatives:
 
 .PHONY: bench-filebacked
 bench-filebacked:
-	/usr/bin/python3 bench/filebacked/measure.py --goose "$(GOOSE)" --output .build/filebacked-results
+	env -u LD_LIBRARY_PATH -u LD_PRELOAD -u LD_AUDIT /usr/bin/python3 bench/filebacked/measure.py --goose "$(GOOSE)" --output .build/filebacked-results
 
 .PHONY: bench-filebacked
 bench-filebacked:
-	/usr/bin/python3 bench/filebacked/measure.py --goose "$(GOOSE)" --output .build/filebacked-results
+	env -u LD_LIBRARY_PATH -u LD_PRELOAD -u LD_AUDIT /usr/bin/python3 bench/filebacked/measure.py --goose "$(GOOSE)" --output .build/filebacked-results

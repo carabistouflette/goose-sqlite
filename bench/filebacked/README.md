@@ -1,11 +1,13 @@
 # File-backed transactions and controlled contention
 
 ```sh
-python3 bench/filebacked/measure.py --goose /path/to/pinned/goose \
+env -u LD_LIBRARY_PATH -u LD_PRELOAD -u LD_AUDIT /usr/bin/python3 \
+  bench/filebacked/measure.py --goose /path/to/pinned/goose \
   --transactions 128 --batch 16 --runs 9 --cpu 6 \
   --output .build/filebacked-principal
 # Development correctness smoke, dirty source explicitly labeled:
-python3 bench/filebacked/measure.py --goose /path/to/pinned/goose \
+env -u LD_LIBRARY_PATH -u LD_PRELOAD -u LD_AUDIT /usr/bin/python3 \
+  bench/filebacked/measure.py --goose /path/to/pinned/goose \
   --transactions 2 --batch 2 --runs 1 --smoke --journals delete \
   --output .build/filebacked-smoke
 ```
