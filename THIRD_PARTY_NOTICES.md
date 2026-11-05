@@ -14,7 +14,7 @@ the host platform and retain their platform licenses.
 
 ## Optional comparison harness
 
-The alternative benchmark downloads SQLiteCpp3.4.0 (MIT) at its recorded full
+The optional comparison benchmarks use SQLiteCpp3.4.0 (MIT) at its recorded full
 commit and builds rusqlite0.41.1 (MIT) with the checked-in Cargo.lock. Their source
 and dependency notices remain in their fetched checkouts/crate sources; none is
 vendored into this library or linked into its production adapter. Python sqlite3

@@ -133,3 +133,9 @@ materialization OOM being mistaken for an empty BLOB and retains regression evid
 from autocommit. Live cursors can retain snapshots even after COMMIT. See the
 [contract](docs/api.md) and [validation](tests/results/transaction-state-2026-11-05/README.md).
 This is observation, not a checkpoint-success or performance guarantee.
+
+[File-backed transaction results](bench/results/filebacked-2026-11-05/README.md)
+compare five callers with matched engine and FULL policy across commit, rollback
+and controlled BUSY rejection. All raw latencies, outcome/data checks and process
+RSS remain visible; this is warm-cache API-path evidence, not a power-loss or
+universal performance ranking.

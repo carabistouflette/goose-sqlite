@@ -1,0 +1,1359 @@
+{
+  "source_commit": "52dca0d4f3d5718b5f7c4c586249d7404c80f783",
+  "sample_count": 270,
+  "latency_count": 34560,
+  "warmup_count": 30,
+  "statistics_scope": "Medians and observed ranges of nine per-process summaries; quantiles are nearest-rank within each128-observation process. No pooled percentiles or confidence intervals.",
+  "rows": [
+    {
+      "journal": "delete",
+      "mode": "commit",
+      "implementation": "goose",
+      "process_count": 9,
+      "observations_per_process": 128,
+      "p50_ns": {
+        "median": 12498624,
+        "minimum": 10916413,
+        "maximum": 13413312
+      },
+      "p95_ns": {
+        "median": 16736167,
+        "minimum": 13324985,
+        "maximum": 29716829
+      },
+      "p99_ns": {
+        "median": 29831683,
+        "minimum": 14958955,
+        "maximum": 65745827
+      },
+      "throughput": {
+        "median": 1174.7894690940418,
+        "minimum": 1097.2896507888383,
+        "maximum": 1482.261843448003
+      },
+      "peak_rss_kib": {
+        "median": 4272,
+        "minimum": 4108,
+        "maximum": 4296
+      },
+      "whole_wall_ns": {
+        "median": 1759791026,
+        "minimum": 1396542238,
+        "maximum": 1879691021
+      },
+      "whole_cpu_ns": {
+        "median": 304781999,
+        "minimum": 272727000,
+        "maximum": 319856999
+      },
+      "throughput_unit": "committed_rows_per_second",
+      "maximum_operation_ns": 106169100,
+      "minimum_operation_ns": 7043592
+    },
+    {
+      "journal": "delete",
+      "mode": "commit",
+      "implementation": "raw-c-api",
+      "process_count": 9,
+      "observations_per_process": 128,
+      "p50_ns": {
+        "median": 12515528,
+        "minimum": 10199293,
+        "maximum": 13615283
+      },
+      "p95_ns": {
+        "median": 17824797,
+        "minimum": 13868873,
+        "maximum": 31307632
+      },
+      "p99_ns": {
+        "median": 27626904,
+        "minimum": 16149634,
+        "maximum": 50728807
+      },
+      "throughput": {
+        "median": 1181.1176558928141,
+        "minimum": 1054.0131970635284,
+        "maximum": 1540.8022487996784
+      },
+      "peak_rss_kib": {
+        "median": 6248,
+        "minimum": 6176,
+        "maximum": 6360
+      },
+      "whole_wall_ns": {
+        "median": 1752260275,
+        "minimum": 1344654892,
+        "maximum": 1955002522
+      },
+      "whole_cpu_ns": {
+        "median": 302635000,
+        "minimum": 244114000,
+        "maximum": 337908999
+      },
+      "throughput_unit": "committed_rows_per_second",
+      "maximum_operation_ns": 248643874,
+      "minimum_operation_ns": 6749712
+    },
+    {
+      "journal": "delete",
+      "mode": "commit",
+      "implementation": "sqlitecpp",
+      "process_count": 9,
+      "observations_per_process": 128,
+      "p50_ns": {
+        "median": 12737606,
+        "minimum": 11408108,
+        "maximum": 13709462
+      },
+      "p95_ns": {
+        "median": 15961582,
+        "minimum": 14723371,
+        "maximum": 21685396
+      },
+      "p99_ns": {
+        "median": 22650868,
+        "minimum": 16944947,
+        "maximum": 27587371
+      },
+      "throughput": {
+        "median": 1229.1804942970261,
+        "minimum": 1137.0282348683409,
+        "maximum": 1374.7393153090568
+      },
+      "peak_rss_kib": {
+        "median": 6336,
+        "minimum": 6204,
+        "maximum": 6396
+      },
+      "whole_wall_ns": {
+        "median": 1679041076,
+        "minimum": 1505016345,
+        "maximum": 1820972977
+      },
+      "whole_cpu_ns": {
+        "median": 302678999,
+        "minimum": 287631999,
+        "maximum": 330459000
+      },
+      "throughput_unit": "committed_rows_per_second",
+      "maximum_operation_ns": 73329358,
+      "minimum_operation_ns": 7153208
+    },
+    {
+      "journal": "delete",
+      "mode": "commit",
+      "implementation": "rusqlite",
+      "process_count": 9,
+      "observations_per_process": 128,
+      "p50_ns": {
+        "median": 12692064,
+        "minimum": 10667023,
+        "maximum": 14275293
+      },
+      "p95_ns": {
+        "median": 18765571,
+        "minimum": 13537777,
+        "maximum": 39397509
+      },
+      "p99_ns": {
+        "median": 40160449,
+        "minimum": 17562335,
+        "maximum": 56468213
+      },
+      "throughput": {
+        "median": 1183.6672463355274,
+        "minimum": 989.6812522427992,
+        "maximum": 1473.2907299809906
+      },
+      "peak_rss_kib": {
+        "median": 4712,
+        "minimum": 4568,
+        "maximum": 4728
+      },
+      "whole_wall_ns": {
+        "median": 1743095745,
+        "minimum": 1405282434,
+        "maximum": 2084438652
+      },
+      "whole_cpu_ns": {
+        "median": 300464000,
+        "minimum": 270510999,
+        "maximum": 331635000
+      },
+      "throughput_unit": "committed_rows_per_second",
+      "maximum_operation_ns": 105017950,
+      "minimum_operation_ns": 7230011
+    },
+    {
+      "journal": "delete",
+      "mode": "commit",
+      "implementation": "python",
+      "process_count": 9,
+      "observations_per_process": 128,
+      "p50_ns": {
+        "median": 12517049,
+        "minimum": 11580708,
+        "maximum": 13615492
+      },
+      "p95_ns": {
+        "median": 16983924,
+        "minimum": 14118833,
+        "maximum": 28575112
+      },
+      "p99_ns": {
+        "median": 24086323,
+        "minimum": 19308934,
+        "maximum": 65427911
+      },
+      "throughput": {
+        "median": 1160.3748367674002,
+        "minimum": 938.8262295726448,
+        "maximum": 1372.0366617521581
+      },
+      "peak_rss_kib": {
+        "median": 13008,
+        "minimum": 12888,
+        "maximum": 13012
+      },
+      "whole_wall_ns": {
+        "median": 1882619023,
+        "minimum": 1619569123,
+        "maximum": 2287519678
+      },
+      "whole_cpu_ns": {
+        "median": 374235999,
+        "minimum": 339855999,
+        "maximum": 391957000
+      },
+      "throughput_unit": "committed_rows_per_second",
+      "maximum_operation_ns": 530330808,
+      "minimum_operation_ns": 7046948
+    },
+    {
+      "journal": "delete",
+      "mode": "rollback",
+      "implementation": "goose",
+      "process_count": 9,
+      "observations_per_process": 128,
+      "p50_ns": {
+        "median": 110509,
+        "minimum": 92476,
+        "maximum": 123217
+      },
+      "p95_ns": {
+        "median": 1447014,
+        "minimum": 838508,
+        "maximum": 3174764
+      },
+      "p99_ns": {
+        "median": 3229988,
+        "minimum": 3139010,
+        "maximum": 6136386
+      },
+      "throughput": {
+        "median": 3739.6884664209574,
+        "minimum": 2281.521379058468,
+        "maximum": 4666.246194138516
+      },
+      "peak_rss_kib": {
+        "median": 4008,
+        "minimum": 3852,
+        "maximum": 4180
+      },
+      "whole_wall_ns": {
+        "median": 49383440,
+        "minimum": 42703949,
+        "maximum": 78218248
+      },
+      "whole_cpu_ns": {
+        "median": 22855000,
+        "minimum": 19429999,
+        "maximum": 24596000
+      },
+      "throughput_unit": "rolled_back_transactions_per_second",
+      "maximum_operation_ns": 6164476,
+      "minimum_operation_ns": 86695
+    },
+    {
+      "journal": "delete",
+      "mode": "rollback",
+      "implementation": "raw-c-api",
+      "process_count": 9,
+      "observations_per_process": 128,
+      "p50_ns": {
+        "median": 105380,
+        "minimum": 93801,
+        "maximum": 115697
+      },
+      "p95_ns": {
+        "median": 1275964,
+        "minimum": 780404,
+        "maximum": 1783678
+      },
+      "p99_ns": {
+        "median": 3204717,
+        "minimum": 2519794,
+        "maximum": 5157596
+      },
+      "throughput": {
+        "median": 3813.3880427404533,
+        "minimum": 3122.3741108155455,
+        "maximum": 4452.771126450908
+      },
+      "peak_rss_kib": {
+        "median": 5976,
+        "minimum": 5880,
+        "maximum": 6104
+      },
+      "whole_wall_ns": {
+        "median": 48783119,
+        "minimum": 41612935,
+        "maximum": 71279807
+      },
+      "whole_cpu_ns": {
+        "median": 23005000,
+        "minimum": 19948999,
+        "maximum": 25049999
+      },
+      "throughput_unit": "rolled_back_transactions_per_second",
+      "maximum_operation_ns": 6902796,
+      "minimum_operation_ns": 84133
+    },
+    {
+      "journal": "delete",
+      "mode": "rollback",
+      "implementation": "sqlitecpp",
+      "process_count": 9,
+      "observations_per_process": 128,
+      "p50_ns": {
+        "median": 107937,
+        "minimum": 96179,
+        "maximum": 124427
+      },
+      "p95_ns": {
+        "median": 1620102,
+        "minimum": 585079,
+        "maximum": 2393026
+      },
+      "p99_ns": {
+        "median": 3107739,
+        "minimum": 2543839,
+        "maximum": 4039470
+      },
+      "throughput": {
+        "median": 3665.983113565283,
+        "minimum": 2785.9481390094966,
+        "maximum": 4453.885134441567
+      },
+      "peak_rss_kib": {
+        "median": 5956,
+        "minimum": 5916,
+        "maximum": 6092
+      },
+      "whole_wall_ns": {
+        "median": 49626302,
+        "minimum": 41549912,
+        "maximum": 70230143
+      },
+      "whole_cpu_ns": {
+        "median": 23122000,
+        "minimum": 20068999,
+        "maximum": 25879000
+      },
+      "throughput_unit": "rolled_back_transactions_per_second",
+      "maximum_operation_ns": 5887544,
+      "minimum_operation_ns": 85979
+    },
+    {
+      "journal": "delete",
+      "mode": "rollback",
+      "implementation": "rusqlite",
+      "process_count": 9,
+      "observations_per_process": 128,
+      "p50_ns": {
+        "median": 105407,
+        "minimum": 98330,
+        "maximum": 113734
+      },
+      "p95_ns": {
+        "median": 1329885,
+        "minimum": 1161978,
+        "maximum": 1766439
+      },
+      "p99_ns": {
+        "median": 3281428,
+        "minimum": 3117523,
+        "maximum": 6145308
+      },
+      "throughput": {
+        "median": 3766.785591150502,
+        "minimum": 2482.938671201444,
+        "maximum": 3992.768596974804
+      },
+      "peak_rss_kib": {
+        "median": 4408,
+        "minimum": 4392,
+        "maximum": 4576
+      },
+      "whole_wall_ns": {
+        "median": 50317294,
+        "minimum": 45831104,
+        "maximum": 68599133
+      },
+      "whole_cpu_ns": {
+        "median": 22615999,
+        "minimum": 20230000,
+        "maximum": 23657999
+      },
+      "throughput_unit": "rolled_back_transactions_per_second",
+      "maximum_operation_ns": 6206356,
+      "minimum_operation_ns": 86802
+    },
+    {
+      "journal": "delete",
+      "mode": "rollback",
+      "implementation": "python",
+      "process_count": 9,
+      "observations_per_process": 128,
+      "p50_ns": {
+        "median": 142347,
+        "minimum": 124283,
+        "maximum": 152123
+      },
+      "p95_ns": {
+        "median": 2261532,
+        "minimum": 1620470,
+        "maximum": 3683104
+      },
+      "p99_ns": {
+        "median": 3240377,
+        "minimum": 2631618,
+        "maximum": 6195019
+      },
+      "throughput": {
+        "median": 2997.650427543405,
+        "minimum": 2060.6744004528205,
+        "maximum": 3313.3687335719683
+      },
+      "peak_rss_kib": {
+        "median": 12708,
+        "minimum": 12636,
+        "maximum": 12752
+      },
+      "whole_wall_ns": {
+        "median": 163411846,
+        "minimum": 140470117,
+        "maximum": 214998763
+      },
+      "whole_cpu_ns": {
+        "median": 77215999,
+        "minimum": 67660000,
+        "maximum": 82587000
+      },
+      "throughput_unit": "rolled_back_transactions_per_second",
+      "maximum_operation_ns": 6210513,
+      "minimum_operation_ns": 111904
+    },
+    {
+      "journal": "delete",
+      "mode": "busy",
+      "implementation": "goose",
+      "process_count": 9,
+      "observations_per_process": 128,
+      "p50_ns": {
+        "median": 4482,
+        "minimum": 4315,
+        "maximum": 5015
+      },
+      "p95_ns": {
+        "median": 5073,
+        "minimum": 4771,
+        "maximum": 5668
+      },
+      "p99_ns": {
+        "median": 16487,
+        "minimum": 5536,
+        "maximum": 42570
+      },
+      "throughput": {
+        "median": 207537.1661772789,
+        "minimum": 35546.21480022194,
+        "maximum": 216876.7377672201
+      },
+      "peak_rss_kib": {
+        "median": 4172,
+        "minimum": 4044,
+        "maximum": 4308
+      },
+      "whole_wall_ns": {
+        "median": 30908183,
+        "minimum": 24913170,
+        "maximum": 80035966
+      },
+      "whole_cpu_ns": {
+        "median": 9945999,
+        "minimum": 6631999,
+        "maximum": 10580000
+      },
+      "throughput_unit": "rejected_attempts_per_second",
+      "maximum_operation_ns": 3015590,
+      "minimum_operation_ns": 3983
+    },
+    {
+      "journal": "delete",
+      "mode": "busy",
+      "implementation": "raw-c-api",
+      "process_count": 9,
+      "observations_per_process": 128,
+      "p50_ns": {
+        "median": 4163,
+        "minimum": 3860,
+        "maximum": 5101
+      },
+      "p95_ns": {
+        "median": 4542,
+        "minimum": 4177,
+        "maximum": 5567
+      },
+      "p99_ns": {
+        "median": 17585,
+        "minimum": 5294,
+        "maximum": 70038
+      },
+      "throughput": {
+        "median": 191041.3544832033,
+        "minimum": 37576.7571317309,
+        "maximum": 248905.69002296543
+      },
+      "peak_rss_kib": {
+        "median": 6156,
+        "minimum": 6104,
+        "maximum": 6232
+      },
+      "whole_wall_ns": {
+        "median": 33047575,
+        "minimum": 27299026,
+        "maximum": 84748465
+      },
+      "whole_cpu_ns": {
+        "median": 11099999,
+        "minimum": 7782999,
+        "maximum": 12547000
+      },
+      "throughput_unit": "rejected_attempts_per_second",
+      "maximum_operation_ns": 2882996,
+      "minimum_operation_ns": 3748
+    },
+    {
+      "journal": "delete",
+      "mode": "busy",
+      "implementation": "sqlitecpp",
+      "process_count": 9,
+      "observations_per_process": 128,
+      "p50_ns": {
+        "median": 4090,
+        "minimum": 3876,
+        "maximum": 4560
+      },
+      "p95_ns": {
+        "median": 4528,
+        "minimum": 4208,
+        "maximum": 5528
+      },
+      "p99_ns": {
+        "median": 15602,
+        "minimum": 5058,
+        "maximum": 55134
+      },
+      "throughput": {
+        "median": 200221.18183681034,
+        "minimum": 22583.58307600399,
+        "maximum": 242336.12019871562
+      },
+      "peak_rss_kib": {
+        "median": 6204,
+        "minimum": 6148,
+        "maximum": 6268
+      },
+      "whole_wall_ns": {
+        "median": 33493910,
+        "minimum": 24921973,
+        "maximum": 45507647
+      },
+      "whole_cpu_ns": {
+        "median": 9526000,
+        "minimum": 7784000,
+        "maximum": 12716999
+      },
+      "throughput_unit": "rejected_attempts_per_second",
+      "maximum_operation_ns": 5080096,
+      "minimum_operation_ns": 3792
+    },
+    {
+      "journal": "delete",
+      "mode": "busy",
+      "implementation": "rusqlite",
+      "process_count": 9,
+      "observations_per_process": 128,
+      "p50_ns": {
+        "median": 4370,
+        "minimum": 4118,
+        "maximum": 4871
+      },
+      "p95_ns": {
+        "median": 4834,
+        "minimum": 4440,
+        "maximum": 5510
+      },
+      "p99_ns": {
+        "median": 6601,
+        "minimum": 5660,
+        "maximum": 25234
+      },
+      "throughput": {
+        "median": 217851.94577528912,
+        "minimum": 32472.45802807954,
+        "maximum": 233051.426074449
+      },
+      "peak_rss_kib": {
+        "median": 4580,
+        "minimum": 4516,
+        "maximum": 4600
+      },
+      "whole_wall_ns": {
+        "median": 30557085,
+        "minimum": 22220270,
+        "maximum": 47874676
+      },
+      "whole_cpu_ns": {
+        "median": 8932000,
+        "minimum": 6891999,
+        "maximum": 11144000
+      },
+      "throughput_unit": "rejected_attempts_per_second",
+      "maximum_operation_ns": 3323498,
+      "minimum_operation_ns": 4043
+    },
+    {
+      "journal": "delete",
+      "mode": "busy",
+      "implementation": "python",
+      "process_count": 9,
+      "observations_per_process": 128,
+      "p50_ns": {
+        "median": 7018,
+        "minimum": 6664,
+        "maximum": 7300
+      },
+      "p95_ns": {
+        "median": 12021,
+        "minimum": 8242,
+        "maximum": 15469
+      },
+      "p99_ns": {
+        "median": 43358,
+        "minimum": 22880,
+        "maximum": 90802
+      },
+      "throughput": {
+        "median": 31984.599415381494,
+        "minimum": 25713.478724306107,
+        "maximum": 130217.7383010044
+      },
+      "peak_rss_kib": {
+        "median": 12880,
+        "minimum": 12764,
+        "maximum": 12884
+      },
+      "whole_wall_ns": {
+        "median": 164093646,
+        "minimum": 145270934,
+        "maximum": 189473994
+      },
+      "whole_cpu_ns": {
+        "median": 57755999,
+        "minimum": 45731999,
+        "maximum": 65083999
+      },
+      "throughput_unit": "rejected_attempts_per_second",
+      "maximum_operation_ns": 3961194,
+      "minimum_operation_ns": 6385
+    },
+    {
+      "journal": "wal",
+      "mode": "commit",
+      "implementation": "goose",
+      "process_count": 9,
+      "observations_per_process": 128,
+      "p50_ns": {
+        "median": 3300745,
+        "minimum": 2868395,
+        "maximum": 3514485
+      },
+      "p95_ns": {
+        "median": 5850176,
+        "minimum": 5109180,
+        "maximum": 6677847
+      },
+      "p99_ns": {
+        "median": 10054647,
+        "minimum": 6664364,
+        "maximum": 22212956
+      },
+      "throughput": {
+        "median": 4271.724076493354,
+        "minimum": 3486.68559732648,
+        "maximum": 4878.954880409156
+      },
+      "peak_rss_kib": {
+        "median": 4316,
+        "minimum": 4196,
+        "maximum": 4356
+      },
+      "whole_wall_ns": {
+        "median": 501524412,
+        "minimum": 447653316,
+        "maximum": 604927393
+      },
+      "whole_cpu_ns": {
+        "median": 88835999,
+        "minimum": 78578000,
+        "maximum": 97155000
+      },
+      "throughput_unit": "committed_rows_per_second",
+      "maximum_operation_ns": 144041194,
+      "minimum_operation_ns": 1822596
+    },
+    {
+      "journal": "wal",
+      "mode": "commit",
+      "implementation": "raw-c-api",
+      "process_count": 9,
+      "observations_per_process": 128,
+      "p50_ns": {
+        "median": 3387421,
+        "minimum": 2693036,
+        "maximum": 3451760
+      },
+      "p95_ns": {
+        "median": 5828494,
+        "minimum": 5345060,
+        "maximum": 6247533
+      },
+      "p99_ns": {
+        "median": 6487115,
+        "minimum": 6014917,
+        "maximum": 14358995
+      },
+      "throughput": {
+        "median": 4499.799477685776,
+        "minimum": 4010.7510767667136,
+        "maximum": 5030.673833631209
+      },
+      "peak_rss_kib": {
+        "median": 6240,
+        "minimum": 6104,
+        "maximum": 6360
+      },
+      "whole_wall_ns": {
+        "median": 475016481,
+        "minimum": 433365474,
+        "maximum": 539966569
+      },
+      "whole_cpu_ns": {
+        "median": 91638999,
+        "minimum": 81445999,
+        "maximum": 95803000
+      },
+      "throughput_unit": "committed_rows_per_second",
+      "maximum_operation_ns": 33866221,
+      "minimum_operation_ns": 1804375
+    },
+    {
+      "journal": "wal",
+      "mode": "commit",
+      "implementation": "sqlitecpp",
+      "process_count": 9,
+      "observations_per_process": 128,
+      "p50_ns": {
+        "median": 3324135,
+        "minimum": 2591376,
+        "maximum": 3543920
+      },
+      "p95_ns": {
+        "median": 5707840,
+        "minimum": 5213207,
+        "maximum": 6388003
+      },
+      "p99_ns": {
+        "median": 6516413,
+        "minimum": 6208779,
+        "maximum": 11293664
+      },
+      "throughput": {
+        "median": 4623.373357908098,
+        "minimum": 4181.321709258981,
+        "maximum": 4980.707528522558
+      },
+      "peak_rss_kib": {
+        "median": 6348,
+        "minimum": 6192,
+        "maximum": 6396
+      },
+      "whole_wall_ns": {
+        "median": 463827909,
+        "minimum": 433580744,
+        "maximum": 512762911
+      },
+      "whole_cpu_ns": {
+        "median": 91773999,
+        "minimum": 82499000,
+        "maximum": 97625000
+      },
+      "throughput_unit": "committed_rows_per_second",
+      "maximum_operation_ns": 13619954,
+      "minimum_operation_ns": 1889961
+    },
+    {
+      "journal": "wal",
+      "mode": "commit",
+      "implementation": "rusqlite",
+      "process_count": 9,
+      "observations_per_process": 128,
+      "p50_ns": {
+        "median": 3403201,
+        "minimum": 2716669,
+        "maximum": 3571085
+      },
+      "p95_ns": {
+        "median": 5743342,
+        "minimum": 5280647,
+        "maximum": 6031483
+      },
+      "p99_ns": {
+        "median": 6906527,
+        "minimum": 6309248,
+        "maximum": 11862298
+      },
+      "throughput": {
+        "median": 4550.885771473867,
+        "minimum": 4260.718481753717,
+        "maximum": 4855.61964357049
+      },
+      "peak_rss_kib": {
+        "median": 4632,
+        "minimum": 4524,
+        "maximum": 4840
+      },
+      "whole_wall_ns": {
+        "median": 473319076,
+        "minimum": 440904674,
+        "maximum": 508442723
+      },
+      "whole_cpu_ns": {
+        "median": 88125000,
+        "minimum": 78990999,
+        "maximum": 102584000
+      },
+      "throughput_unit": "committed_rows_per_second",
+      "maximum_operation_ns": 19034153,
+      "minimum_operation_ns": 1785232
+    },
+    {
+      "journal": "wal",
+      "mode": "commit",
+      "implementation": "python",
+      "process_count": 9,
+      "observations_per_process": 128,
+      "p50_ns": {
+        "median": 3484369,
+        "minimum": 3285132,
+        "maximum": 3587245
+      },
+      "p95_ns": {
+        "median": 5944145,
+        "minimum": 5324183,
+        "maximum": 6375720
+      },
+      "p99_ns": {
+        "median": 7135194,
+        "minimum": 6195049,
+        "maximum": 16637557
+      },
+      "throughput": {
+        "median": 4017.0370544168827,
+        "minimum": 3665.435407299925,
+        "maximum": 4636.494317668322
+      },
+      "peak_rss_kib": {
+        "median": 13000,
+        "minimum": 12924,
+        "maximum": 13040
+      },
+      "whole_wall_ns": {
+        "median": 632144868,
+        "minimum": 555554968,
+        "maximum": 685196291
+      },
+      "whole_cpu_ns": {
+        "median": 149956000,
+        "minimum": 131421000,
+        "maximum": 160311999
+      },
+      "throughput_unit": "committed_rows_per_second",
+      "maximum_operation_ns": 88840718,
+      "minimum_operation_ns": 1962760
+    },
+    {
+      "journal": "wal",
+      "mode": "rollback",
+      "implementation": "goose",
+      "process_count": 9,
+      "observations_per_process": 128,
+      "p50_ns": {
+        "median": 12411,
+        "minimum": 12029,
+        "maximum": 13902
+      },
+      "p95_ns": {
+        "median": 14147,
+        "minimum": 12840,
+        "maximum": 17607
+      },
+      "p99_ns": {
+        "median": 36227,
+        "minimum": 22328,
+        "maximum": 1383738
+      },
+      "throughput": {
+        "median": 27778.555432649915,
+        "minimum": 24973.811641659362,
+        "maximum": 80811.54999078243
+      },
+      "peak_rss_kib": {
+        "median": 4052,
+        "minimum": 3884,
+        "maximum": 4100
+      },
+      "whole_wall_ns": {
+        "median": 18146072,
+        "minimum": 13820777,
+        "maximum": 23074913
+      },
+      "whole_cpu_ns": {
+        "median": 7790999,
+        "minimum": 6091000,
+        "maximum": 9758000
+      },
+      "throughput_unit": "rolled_back_transactions_per_second",
+      "maximum_operation_ns": 3307055,
+      "minimum_operation_ns": 11525
+    },
+    {
+      "journal": "wal",
+      "mode": "rollback",
+      "implementation": "raw-c-api",
+      "process_count": 9,
+      "observations_per_process": 128,
+      "p50_ns": {
+        "median": 11207,
+        "minimum": 10967,
+        "maximum": 12819
+      },
+      "p95_ns": {
+        "median": 13745,
+        "minimum": 11610,
+        "maximum": 17171
+      },
+      "p99_ns": {
+        "median": 41602,
+        "minimum": 17454,
+        "maximum": 2052102
+      },
+      "throughput": {
+        "median": 29653.366050880544,
+        "minimum": 19057.0993873887,
+        "maximum": 85616.78195947382
+      },
+      "peak_rss_kib": {
+        "median": 5976,
+        "minimum": 5796,
+        "maximum": 6056
+      },
+      "whole_wall_ns": {
+        "median": 19934833,
+        "minimum": 15654001,
+        "maximum": 26572226
+      },
+      "whole_cpu_ns": {
+        "median": 8478000,
+        "minimum": 7171999,
+        "maximum": 11415999
+      },
+      "throughput_unit": "rolled_back_transactions_per_second",
+      "maximum_operation_ns": 3293593,
+      "minimum_operation_ns": 10068
+    },
+    {
+      "journal": "wal",
+      "mode": "rollback",
+      "implementation": "sqlitecpp",
+      "process_count": 9,
+      "observations_per_process": 128,
+      "p50_ns": {
+        "median": 11281,
+        "minimum": 11032,
+        "maximum": 13015
+      },
+      "p95_ns": {
+        "median": 12404,
+        "minimum": 11696,
+        "maximum": 14448
+      },
+      "p99_ns": {
+        "median": 48326,
+        "minimum": 19106,
+        "maximum": 739817
+      },
+      "throughput": {
+        "median": 50202.69337449954,
+        "minimum": 27472.362374195898,
+        "maximum": 83548.02346916197
+      },
+      "peak_rss_kib": {
+        "median": 6020,
+        "minimum": 5948,
+        "maximum": 6148
+      },
+      "whole_wall_ns": {
+        "median": 21579406,
+        "minimum": 17753995,
+        "maximum": 24491884
+      },
+      "whole_cpu_ns": {
+        "median": 9582000,
+        "minimum": 7919000,
+        "maximum": 10289000
+      },
+      "throughput_unit": "rolled_back_transactions_per_second",
+      "maximum_operation_ns": 2964226,
+      "minimum_operation_ns": 10584
+    },
+    {
+      "journal": "wal",
+      "mode": "rollback",
+      "implementation": "rusqlite",
+      "process_count": 9,
+      "observations_per_process": 128,
+      "p50_ns": {
+        "median": 11695,
+        "minimum": 11570,
+        "maximum": 13111
+      },
+      "p95_ns": {
+        "median": 12741,
+        "minimum": 12075,
+        "maximum": 15156
+      },
+      "p99_ns": {
+        "median": 38418,
+        "minimum": 21932,
+        "maximum": 2292308
+      },
+      "throughput": {
+        "median": 35650.01820100538,
+        "minimum": 19958.928267923664,
+        "maximum": 83818.1800322831
+      },
+      "peak_rss_kib": {
+        "median": 4476,
+        "minimum": 4260,
+        "maximum": 4596
+      },
+      "whole_wall_ns": {
+        "median": 19651773,
+        "minimum": 15675100,
+        "maximum": 22425640
+      },
+      "whole_cpu_ns": {
+        "median": 8862999,
+        "minimum": 6113000,
+        "maximum": 9612000
+      },
+      "throughput_unit": "rolled_back_transactions_per_second",
+      "maximum_operation_ns": 3293806,
+      "minimum_operation_ns": 11153
+    },
+    {
+      "journal": "wal",
+      "mode": "rollback",
+      "implementation": "python",
+      "process_count": 9,
+      "observations_per_process": 128,
+      "p50_ns": {
+        "median": 35467,
+        "minimum": 33430,
+        "maximum": 40088
+      },
+      "p95_ns": {
+        "median": 59044,
+        "minimum": 43124,
+        "maximum": 73501
+      },
+      "p99_ns": {
+        "median": 1514598,
+        "minimum": 1136034,
+        "maximum": 2393952
+      },
+      "throughput": {
+        "median": 13823.973513266748,
+        "minimum": 11250.50209760338,
+        "maximum": 15451.595823916512
+      },
+      "peak_rss_kib": {
+        "median": 12720,
+        "minimum": 12716,
+        "maximum": 12788
+      },
+      "whole_wall_ns": {
+        "median": 130499536,
+        "minimum": 114472272,
+        "maximum": 147640314
+      },
+      "whole_cpu_ns": {
+        "median": 62975000,
+        "minimum": 55628999,
+        "maximum": 70755999
+      },
+      "throughput_unit": "rolled_back_transactions_per_second",
+      "maximum_operation_ns": 3017548,
+      "minimum_operation_ns": 32105
+    },
+    {
+      "journal": "wal",
+      "mode": "busy",
+      "implementation": "goose",
+      "process_count": 9,
+      "observations_per_process": 128,
+      "p50_ns": {
+        "median": 1347,
+        "minimum": 1254,
+        "maximum": 1506
+      },
+      "p95_ns": {
+        "median": 1558,
+        "minimum": 1394,
+        "maximum": 1885
+      },
+      "p99_ns": {
+        "median": 6062,
+        "minimum": 1851,
+        "maximum": 21427
+      },
+      "throughput": {
+        "median": 643714.231113525,
+        "minimum": 53282.492954639114,
+        "maximum": 737450.380535919
+      },
+      "peak_rss_kib": {
+        "median": 4136,
+        "minimum": 4012,
+        "maximum": 4228
+      },
+      "whole_wall_ns": {
+        "median": 32682954,
+        "minimum": 24437462,
+        "maximum": 38065047
+      },
+      "whole_cpu_ns": {
+        "median": 10624999,
+        "minimum": 7293999,
+        "maximum": 11833000
+      },
+      "throughput_unit": "rejected_attempts_per_second",
+      "maximum_operation_ns": 2187375,
+      "minimum_operation_ns": 1223
+    },
+    {
+      "journal": "wal",
+      "mode": "busy",
+      "implementation": "raw-c-api",
+      "process_count": 9,
+      "observations_per_process": 128,
+      "p50_ns": {
+        "median": 1043,
+        "minimum": 984,
+        "maximum": 1186
+      },
+      "p95_ns": {
+        "median": 1340,
+        "minimum": 1058,
+        "maximum": 1569
+      },
+      "p99_ns": {
+        "median": 2238,
+        "minimum": 1745,
+        "maximum": 15624
+      },
+      "throughput": {
+        "median": 849290.7095558475,
+        "minimum": 55568.77243372121,
+        "maximum": 907453.8829100912
+      },
+      "peak_rss_kib": {
+        "median": 6040,
+        "minimum": 5924,
+        "maximum": 6184
+      },
+      "whole_wall_ns": {
+        "median": 34669873,
+        "minimum": 32310408,
+        "maximum": 52439455
+      },
+      "whole_cpu_ns": {
+        "median": 12345000,
+        "minimum": 9858000,
+        "maximum": 13312999
+      },
+      "throughput_unit": "rejected_attempts_per_second",
+      "maximum_operation_ns": 2134332,
+      "minimum_operation_ns": 952
+    },
+    {
+      "journal": "wal",
+      "mode": "busy",
+      "implementation": "sqlitecpp",
+      "process_count": 9,
+      "observations_per_process": 128,
+      "p50_ns": {
+        "median": 1056,
+        "minimum": 1033,
+        "maximum": 1146
+      },
+      "p95_ns": {
+        "median": 1317,
+        "minimum": 1068,
+        "maximum": 1466
+      },
+      "p99_ns": {
+        "median": 1897,
+        "minimum": 1689,
+        "maximum": 40625
+      },
+      "throughput": {
+        "median": 811533.9259221688,
+        "minimum": 63431.43235607631,
+        "maximum": 889395.3501299351
+      },
+      "peak_rss_kib": {
+        "median": 6164,
+        "minimum": 5960,
+        "maximum": 6308
+      },
+      "whole_wall_ns": {
+        "median": 36324876,
+        "minimum": 33737729,
+        "maximum": 39564691
+      },
+      "whole_cpu_ns": {
+        "median": 11969999,
+        "minimum": 10412000,
+        "maximum": 13361999
+      },
+      "throughput_unit": "rejected_attempts_per_second",
+      "maximum_operation_ns": 1828223,
+      "minimum_operation_ns": 992
+    },
+    {
+      "journal": "wal",
+      "mode": "busy",
+      "implementation": "rusqlite",
+      "process_count": 9,
+      "observations_per_process": 128,
+      "p50_ns": {
+        "median": 1316,
+        "minimum": 1227,
+        "maximum": 1445
+      },
+      "p95_ns": {
+        "median": 1586,
+        "minimum": 1538,
+        "maximum": 2047
+      },
+      "p99_ns": {
+        "median": 3207,
+        "minimum": 2440,
+        "maximum": 40150
+      },
+      "throughput": {
+        "median": 605183.77729237,
+        "minimum": 36896.5717031544,
+        "maximum": 726822.5928260338
+      },
+      "peak_rss_kib": {
+        "median": 4572,
+        "minimum": 4436,
+        "maximum": 4656
+      },
+      "whole_wall_ns": {
+        "median": 32302346,
+        "minimum": 30819014,
+        "maximum": 35992541
+      },
+      "whole_cpu_ns": {
+        "median": 11003000,
+        "minimum": 9668999,
+        "maximum": 11864999
+      },
+      "throughput_unit": "rejected_attempts_per_second",
+      "maximum_operation_ns": 3239564,
+      "minimum_operation_ns": 1182
+    },
+    {
+      "journal": "wal",
+      "mode": "busy",
+      "implementation": "python",
+      "process_count": 9,
+      "observations_per_process": 128,
+      "p50_ns": {
+        "median": 3303,
+        "minimum": 3247,
+        "maximum": 3513
+      },
+      "p95_ns": {
+        "median": 5196,
+        "minimum": 4326,
+        "maximum": 9649
+      },
+      "p99_ns": {
+        "median": 16065,
+        "minimum": 11166,
+        "maximum": 38246
+      },
+      "throughput": {
+        "median": 213680.92096476935,
+        "minimum": 70790.07810689634,
+        "maximum": 247111.40283985058
+      },
+      "peak_rss_kib": {
+        "median": 12904,
+        "minimum": 12792,
+        "maximum": 12912
+      },
+      "whole_wall_ns": {
+        "median": 159624924,
+        "minimum": 141522037,
+        "maximum": 181189836
+      },
+      "whole_cpu_ns": {
+        "median": 66641999,
+        "minimum": 55923999,
+        "maximum": 69833999
+      },
+      "throughput_unit": "rejected_attempts_per_second",
+      "maximum_operation_ns": 1028052,
+      "minimum_operation_ns": 3072
+    }
+  ]
+}

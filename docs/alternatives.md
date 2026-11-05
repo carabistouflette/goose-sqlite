@@ -408,3 +408,14 @@ checkpoint/backup restrictions. It covers main only, neither acquires nor
 releases transactions, and cannot predict external contention or checkpoint
 success. See [the API contract](api.md) and [validation](../tests/results/transaction-state-2026-11-05/README.md).
 This convenience adds no query-engine speedup or complete parity claim.
+
+## File-backed transaction comparison
+
+[Retained file-backed measurements](../bench/results/filebacked-2026-11-05/README.md)
+cover five callers, six cases and matched common-engine/FULL configuration.
+Commit, explicit rollback and held-writer BUSY rejection retain distinct units
+and complete latency vectors. BUSY recovery is checked on the same connection,
+then every final ID/payload and integrity result is independently verified.
+Caller caching/security policies differ; journal blocks run in fixed order. This
+is observational API-path evidence, not a causal journal, disk-durability or
+universal wrapper ranking. Existing in-memory results retain their original scope.

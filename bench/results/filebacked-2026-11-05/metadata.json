@@ -1,0 +1,2923 @@
+{
+  "source_commit": "52dca0d4f3d5718b5f7c4c586249d7404c80f783",
+  "source_dirty": false,
+  "source_hashes": {
+    ".github/workflows/ci.yml": "d14c98e75ae2cd416a549c28010362d4562a2f3e534fa676fa099d877fe64890",
+    "CMakeLists.txt": "47d47b97f61c3461667f1158eb2d475b93b69af24073dac9b581bbea1ccf5193",
+    "GOOSE_REVISION": "64e14b181dfe96743211738fb0f1b1f7798ea940da2ca50ff122e6f028c24e15",
+    "Makefile": "cb9b72f0f73bbb6cb1dff005848d0da3884079e3654eaee550f1d8fea2ab0e8d",
+    "bench/alternatives/measure.py": "54b54c9fdc4e1ad02dd43573358b962b4852a01b0b40b325d6b9a46cccd98449",
+    "bench/alternatives/paired.py": "88b6d1010cf7d2c8bdeb1d2bb6637d2280eb954448de3beac432ddf38c089118",
+    "bench/filebacked/CONTRACT.md": "ddad8f9fb03046342f15676bc9b6e1adf77be48753ec82e57bd45c4dfa7a4c2d",
+    "bench/filebacked/README.md": "4cc3204e0773fca317eaded3eaa4339bb1e3b6174b654f6ba8c8d6655d1625f7",
+    "bench/filebacked/measure.py": "02b816119218412573f372b0984ab2bd51fdf505ec53ba6292422a58a917ece4",
+    "bench/filebacked/native.cpp": "c0139a6d331199f4416f8013f68f4dd7d3c403d46f46e708f445ff42c90dbf71",
+    "bench/filebacked/policy.c": "ac85f0659ce324dde30cad48e58ac8e04885fff8a74da11fc1c2b28b6e34e2e9",
+    "bench/filebacked/python.py": "a1909c4926a1fc0a77b4c79efb9abe6657f8d1ccbc986540d7d250965d50439b",
+    "bench/filebacked/runner.goose": "2a17d325bc9d0685bed943e874524c0c1b5e63170010bc4329721f4bec8076f8",
+    "bench/filebacked/rust/Cargo.lock": "6216224e10845ce23eee4a174a5ffed4e9d09b0a96566ab99ace5487cab6808c",
+    "bench/filebacked/rust/Cargo.toml": "09e716ade42065ea2f32ed5a96ac67bb0fcdae0386bd19f1481d9bbce2573406",
+    "bench/filebacked/rust/src/main.rs": "b781affe6f4a64d8a32a894d4c91349f9216c772a91d2085c5ed0f0f56289e3e",
+    "native/sqlite.c": "5b56fc40331eae3800bc0f5fd67394732bb1b61921b89148e8be60c5a4bb4c6d",
+    "native/sqlite.h": "03909542e92caa91debde45bc4d1945a76fff34f342a77ceb2b1b689c8270874",
+    "scripts/native-manifest.py": "776376630b521033583d741e365ab4bb298f6b75f48383c813c177916aa403a7",
+    "sqlite.build": "53a29f4aa6038def97b10f669e82bf7d21c25f2dfc43cb43820090a3f2f2de3a",
+    "sqlite.goose": "cd25bf213c49b896e5878fd86a7102097b27b84a1e1fec880e33519b4a264ca7"
+  },
+  "parent_started_utc_ns": 1793866180674484412,
+  "complete": true,
+  "development_smoke": false,
+  "transactions": 128,
+  "batch": 16,
+  "runs": 9,
+  "journals": [
+    "delete",
+    "wal"
+  ],
+  "expected_sample_count": 270,
+  "order_seed": 219,
+  "affinity": [
+    6
+  ],
+  "governor": {
+    "6": "powersave"
+  },
+  "os": "Linux-7.2.11-arch1-1-x86_64-with-glibc2.44",
+  "cpu_model": "Intel(R) Core(TM) Ultra 7 258V",
+  "load_before": [
+    8.37353515625,
+    7.1171875,
+    5.740234375
+  ],
+  "cleared_environment": [],
+  "scope": "Selected journal modes crossed with three file-backed workloads per caller, warm OS cache, matched FULL policy. BUSY is controlled rejection and same-connection recovery, not concurrent throughput. No power-loss, exclusive-core or universal ranking claim.",
+  "rss_scope": "GNU time whole-child-lifetime peak KiB, including startup/setup/verification/cleanup and small launcher footprint; not incremental binding heap.",
+  "database_retention": "Successful fixture databases/sidecars removed after full independent verification and recorded hashes. Failed fixtures and diagnostics retained.",
+  "warmups": [
+    {
+      "implementation": "goose",
+      "journal": "delete",
+      "mode": "commit",
+      "transactions": 1,
+      "batch": 2,
+      "phase": "warmup",
+      "run": -1,
+      "order": -1,
+      "fixture_directory": "$BUILD/fixtures/00001-warmup-delete-commit-goose",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "0b8987b044d1c312c1249e24a7347a41187ed855998ca81c9461d0dbf322cf92"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "raw_stdout": "policy inferred\n12242480 6 1 0 0\n12241773 0\n",
+      "raw_stderr": "",
+      "whole_start_utc_ns": 1793866253109480359,
+      "whole_end_utc_ns": 1793866253135385941,
+      "whole_wall_ns": 25357775,
+      "whole_cpu_ns": 8046999,
+      "peak_rss_kib": 3908,
+      "child_exit_status": 0,
+      "loop_wall_ns": 12242480,
+      "checksum": 6,
+      "commits": 1,
+      "busy": 0,
+      "rollbacks": 0,
+      "automatic_retries": 0,
+      "latency_ns": [
+        12241773
+      ],
+      "result_codes": [
+        0
+      ],
+      "nearest_rank_latency_ns": {
+        "p50": 12241773,
+        "p95": 12241773,
+        "p99": 12241773
+      },
+      "quantile_sample_count": 1,
+      "throughput_unit": "committed_rows_per_second",
+      "throughput": 163.36559259235057,
+      "policy_line": "policy inferred",
+      "verified": {
+        "rows": 3,
+        "checksum": 6,
+        "logical_data_sha256": "8c514e64cea6193dd79ed2edbb8477b0f0a6085e9957e26b779f2ef9ce078ecc",
+        "integrity": "ok"
+      },
+      "files_after_child": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "acfabfec890901b1ea37ad96a3739d5372e47bbf674d5aa72dc26ea2126b4150"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "files_after_verification": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "acfabfec890901b1ea37ad96a3739d5372e47bbf674d5aa72dc26ea2126b4150"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      }
+    },
+    {
+      "implementation": "raw-c-api",
+      "journal": "delete",
+      "mode": "commit",
+      "transactions": 1,
+      "batch": 2,
+      "phase": "warmup",
+      "run": -1,
+      "order": -1,
+      "fixture_directory": "$BUILD/fixtures/00002-warmup-delete-commit-raw-c-api",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "0b8987b044d1c312c1249e24a7347a41187ed855998ca81c9461d0dbf322cf92"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "raw_stdout": "policy delete 2 4096 -2000 1000 1 0 normal 0\n13030360 6 1 0 0\n13030127 0\n",
+      "raw_stderr": "",
+      "whole_start_utc_ns": 1793866253293252235,
+      "whole_end_utc_ns": 1793866253319721790,
+      "whole_wall_ns": 25870297,
+      "whole_cpu_ns": 8470000,
+      "peak_rss_kib": 5984,
+      "child_exit_status": 0,
+      "loop_wall_ns": 13030360,
+      "checksum": 6,
+      "commits": 1,
+      "busy": 0,
+      "rollbacks": 0,
+      "automatic_retries": 0,
+      "latency_ns": [
+        13030127
+      ],
+      "result_codes": [
+        0
+      ],
+      "nearest_rank_latency_ns": {
+        "p50": 13030127,
+        "p95": 13030127,
+        "p99": 13030127
+      },
+      "quantile_sample_count": 1,
+      "throughput_unit": "committed_rows_per_second",
+      "throughput": 153.48770103051643,
+      "policy_line": "policy delete 2 4096 -2000 1000 1 0 normal 0",
+      "verified": {
+        "rows": 3,
+        "checksum": 6,
+        "logical_data_sha256": "8c514e64cea6193dd79ed2edbb8477b0f0a6085e9957e26b779f2ef9ce078ecc",
+        "integrity": "ok"
+      },
+      "files_after_child": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "acfabfec890901b1ea37ad96a3739d5372e47bbf674d5aa72dc26ea2126b4150"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "files_after_verification": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "acfabfec890901b1ea37ad96a3739d5372e47bbf674d5aa72dc26ea2126b4150"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      }
+    },
+    {
+      "implementation": "sqlitecpp",
+      "journal": "delete",
+      "mode": "commit",
+      "transactions": 1,
+      "batch": 2,
+      "phase": "warmup",
+      "run": -1,
+      "order": -1,
+      "fixture_directory": "$BUILD/fixtures/00003-warmup-delete-commit-sqlitecpp",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "0b8987b044d1c312c1249e24a7347a41187ed855998ca81c9461d0dbf322cf92"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "raw_stdout": "policy delete 2 4096 -2000 1000 1 0 normal 0\n11326921 6 1 0 0\n11326705 0\n",
+      "raw_stderr": "",
+      "whole_start_utc_ns": 1793866253353283961,
+      "whole_end_utc_ns": 1793866253382227622,
+      "whole_wall_ns": 28332604,
+      "whole_cpu_ns": 9060999,
+      "peak_rss_kib": 6020,
+      "child_exit_status": 0,
+      "loop_wall_ns": 11326921,
+      "checksum": 6,
+      "commits": 1,
+      "busy": 0,
+      "rollbacks": 0,
+      "automatic_retries": 0,
+      "latency_ns": [
+        11326705
+      ],
+      "result_codes": [
+        0
+      ],
+      "nearest_rank_latency_ns": {
+        "p50": 11326705,
+        "p95": 11326705,
+        "p99": 11326705
+      },
+      "quantile_sample_count": 1,
+      "throughput_unit": "committed_rows_per_second",
+      "throughput": 176.57049078032767,
+      "policy_line": "policy delete 2 4096 -2000 1000 1 0 normal 0",
+      "verified": {
+        "rows": 3,
+        "checksum": 6,
+        "logical_data_sha256": "8c514e64cea6193dd79ed2edbb8477b0f0a6085e9957e26b779f2ef9ce078ecc",
+        "integrity": "ok"
+      },
+      "files_after_child": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "acfabfec890901b1ea37ad96a3739d5372e47bbf674d5aa72dc26ea2126b4150"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "files_after_verification": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "acfabfec890901b1ea37ad96a3739d5372e47bbf674d5aa72dc26ea2126b4150"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      }
+    },
+    {
+      "implementation": "rusqlite",
+      "journal": "delete",
+      "mode": "commit",
+      "transactions": 1,
+      "batch": 2,
+      "phase": "warmup",
+      "run": -1,
+      "order": -1,
+      "fixture_directory": "$BUILD/fixtures/00004-warmup-delete-commit-rusqlite",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "0b8987b044d1c312c1249e24a7347a41187ed855998ca81c9461d0dbf322cf92"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "raw_stdout": "policy delete 2 4096 -2000 1000 1 0 normal 0\n12982796 6 1 0 0\n12982065 0\n",
+      "raw_stderr": "",
+      "whole_start_utc_ns": 1793866253415699148,
+      "whole_end_utc_ns": 1793866253442504593,
+      "whole_wall_ns": 26268821,
+      "whole_cpu_ns": 7628999,
+      "peak_rss_kib": 4464,
+      "child_exit_status": 0,
+      "loop_wall_ns": 12982796,
+      "checksum": 6,
+      "commits": 1,
+      "busy": 0,
+      "rollbacks": 0,
+      "automatic_retries": 0,
+      "latency_ns": [
+        12982065
+      ],
+      "result_codes": [
+        0
+      ],
+      "nearest_rank_latency_ns": {
+        "p50": 12982065,
+        "p95": 12982065,
+        "p99": 12982065
+      },
+      "quantile_sample_count": 1,
+      "throughput_unit": "committed_rows_per_second",
+      "throughput": 154.05002127430794,
+      "policy_line": "policy delete 2 4096 -2000 1000 1 0 normal 0",
+      "verified": {
+        "rows": 3,
+        "checksum": 6,
+        "logical_data_sha256": "8c514e64cea6193dd79ed2edbb8477b0f0a6085e9957e26b779f2ef9ce078ecc",
+        "integrity": "ok"
+      },
+      "files_after_child": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "acfabfec890901b1ea37ad96a3739d5372e47bbf674d5aa72dc26ea2126b4150"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "files_after_verification": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "acfabfec890901b1ea37ad96a3739d5372e47bbf674d5aa72dc26ea2126b4150"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      }
+    },
+    {
+      "implementation": "python",
+      "journal": "delete",
+      "mode": "commit",
+      "transactions": 1,
+      "batch": 2,
+      "phase": "warmup",
+      "run": -1,
+      "order": -1,
+      "fixture_directory": "$BUILD/fixtures/00005-warmup-delete-commit-python",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "0b8987b044d1c312c1249e24a7347a41187ed855998ca81c9461d0dbf322cf92"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "raw_stdout": "policy delete 2 4096 -2000 1000 1 0 normal 0\n13147561 6 1 0 0\n13132443 0\n",
+      "raw_stderr": "",
+      "whole_start_utc_ns": 1793866253474693326,
+      "whole_end_utc_ns": 1793866253592946192,
+      "whole_wall_ns": 117619669,
+      "whole_cpu_ns": 52099000,
+      "peak_rss_kib": 12684,
+      "child_exit_status": 0,
+      "loop_wall_ns": 13147561,
+      "checksum": 6,
+      "commits": 1,
+      "busy": 0,
+      "rollbacks": 0,
+      "automatic_retries": 0,
+      "latency_ns": [
+        13132443
+      ],
+      "result_codes": [
+        0
+      ],
+      "nearest_rank_latency_ns": {
+        "p50": 13132443,
+        "p95": 13132443,
+        "p99": 13132443
+      },
+      "quantile_sample_count": 1,
+      "throughput_unit": "committed_rows_per_second",
+      "throughput": 152.11946915477327,
+      "policy_line": "policy delete 2 4096 -2000 1000 1 0 normal 0",
+      "verified": {
+        "rows": 3,
+        "checksum": 6,
+        "logical_data_sha256": "8c514e64cea6193dd79ed2edbb8477b0f0a6085e9957e26b779f2ef9ce078ecc",
+        "integrity": "ok"
+      },
+      "files_after_child": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "acfabfec890901b1ea37ad96a3739d5372e47bbf674d5aa72dc26ea2126b4150"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "files_after_verification": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "acfabfec890901b1ea37ad96a3739d5372e47bbf674d5aa72dc26ea2126b4150"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      }
+    },
+    {
+      "implementation": "goose",
+      "journal": "delete",
+      "mode": "rollback",
+      "transactions": 1,
+      "batch": 2,
+      "phase": "warmup",
+      "run": -1,
+      "order": -1,
+      "fixture_directory": "$BUILD/fixtures/00051-warmup-delete-rollback-goose",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "0b8987b044d1c312c1249e24a7347a41187ed855998ca81c9461d0dbf322cf92"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "raw_stdout": "policy inferred\n142296 1 0 0 1\n142026 0\n",
+      "raw_stderr": "",
+      "whole_start_utc_ns": 1793866335920822565,
+      "whole_end_utc_ns": 1793866335937176233,
+      "whole_wall_ns": 15818561,
+      "whole_cpu_ns": 5940999,
+      "peak_rss_kib": 4140,
+      "child_exit_status": 0,
+      "loop_wall_ns": 142296,
+      "checksum": 1,
+      "commits": 0,
+      "busy": 0,
+      "rollbacks": 1,
+      "automatic_retries": 0,
+      "latency_ns": [
+        142026
+      ],
+      "result_codes": [
+        0
+      ],
+      "nearest_rank_latency_ns": {
+        "p50": 142026,
+        "p95": 142026,
+        "p99": 142026
+      },
+      "quantile_sample_count": 1,
+      "throughput_unit": "rolled_back_transactions_per_second",
+      "throughput": 7027.604430201833,
+      "policy_line": "policy inferred",
+      "verified": {
+        "rows": 1,
+        "checksum": 1,
+        "logical_data_sha256": "30815224be83a4e3b0d20d18fb4107b17cf2d63e971b98e97a4ab0606e514147",
+        "integrity": "ok"
+      },
+      "files_after_child": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "0b8987b044d1c312c1249e24a7347a41187ed855998ca81c9461d0dbf322cf92"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "files_after_verification": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "0b8987b044d1c312c1249e24a7347a41187ed855998ca81c9461d0dbf322cf92"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      }
+    },
+    {
+      "implementation": "raw-c-api",
+      "journal": "delete",
+      "mode": "rollback",
+      "transactions": 1,
+      "batch": 2,
+      "phase": "warmup",
+      "run": -1,
+      "order": -1,
+      "fixture_directory": "$BUILD/fixtures/00052-warmup-delete-rollback-raw-c-api",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "0b8987b044d1c312c1249e24a7347a41187ed855998ca81c9461d0dbf322cf92"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "raw_stdout": "policy delete 2 4096 -2000 1000 1 0 normal 0\n3619193 1 0 0 1\n3618902 0\n",
+      "raw_stderr": "",
+      "whole_start_utc_ns": 1793866335997685594,
+      "whole_end_utc_ns": 1793866336017057978,
+      "whole_wall_ns": 18652356,
+      "whole_cpu_ns": 7403000,
+      "peak_rss_kib": 6044,
+      "child_exit_status": 0,
+      "loop_wall_ns": 3619193,
+      "checksum": 1,
+      "commits": 0,
+      "busy": 0,
+      "rollbacks": 1,
+      "automatic_retries": 0,
+      "latency_ns": [
+        3618902
+      ],
+      "result_codes": [
+        0
+      ],
+      "nearest_rank_latency_ns": {
+        "p50": 3618902,
+        "p95": 3618902,
+        "p99": 3618902
+      },
+      "quantile_sample_count": 1,
+      "throughput_unit": "rolled_back_transactions_per_second",
+      "throughput": 276.3046900234389,
+      "policy_line": "policy delete 2 4096 -2000 1000 1 0 normal 0",
+      "verified": {
+        "rows": 1,
+        "checksum": 1,
+        "logical_data_sha256": "30815224be83a4e3b0d20d18fb4107b17cf2d63e971b98e97a4ab0606e514147",
+        "integrity": "ok"
+      },
+      "files_after_child": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "0b8987b044d1c312c1249e24a7347a41187ed855998ca81c9461d0dbf322cf92"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "files_after_verification": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "0b8987b044d1c312c1249e24a7347a41187ed855998ca81c9461d0dbf322cf92"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      }
+    },
+    {
+      "implementation": "sqlitecpp",
+      "journal": "delete",
+      "mode": "rollback",
+      "transactions": 1,
+      "batch": 2,
+      "phase": "warmup",
+      "run": -1,
+      "order": -1,
+      "fixture_directory": "$BUILD/fixtures/00053-warmup-delete-rollback-sqlitecpp",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "0b8987b044d1c312c1249e24a7347a41187ed855998ca81c9461d0dbf322cf92"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "raw_stdout": "policy delete 2 4096 -2000 1000 1 0 normal 0\n120937 1 0 0 1\n120823 0\n",
+      "raw_stderr": "",
+      "whole_start_utc_ns": 1793866336069697624,
+      "whole_end_utc_ns": 1793866336086358193,
+      "whole_wall_ns": 16134239,
+      "whole_cpu_ns": 6711000,
+      "peak_rss_kib": 6036,
+      "child_exit_status": 0,
+      "loop_wall_ns": 120937,
+      "checksum": 1,
+      "commits": 0,
+      "busy": 0,
+      "rollbacks": 1,
+      "automatic_retries": 0,
+      "latency_ns": [
+        120823
+      ],
+      "result_codes": [
+        0
+      ],
+      "nearest_rank_latency_ns": {
+        "p50": 120823,
+        "p95": 120823,
+        "p99": 120823
+      },
+      "quantile_sample_count": 1,
+      "throughput_unit": "rolled_back_transactions_per_second",
+      "throughput": 8268.76803625028,
+      "policy_line": "policy delete 2 4096 -2000 1000 1 0 normal 0",
+      "verified": {
+        "rows": 1,
+        "checksum": 1,
+        "logical_data_sha256": "30815224be83a4e3b0d20d18fb4107b17cf2d63e971b98e97a4ab0606e514147",
+        "integrity": "ok"
+      },
+      "files_after_child": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "0b8987b044d1c312c1249e24a7347a41187ed855998ca81c9461d0dbf322cf92"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "files_after_verification": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "0b8987b044d1c312c1249e24a7347a41187ed855998ca81c9461d0dbf322cf92"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      }
+    },
+    {
+      "implementation": "rusqlite",
+      "journal": "delete",
+      "mode": "rollback",
+      "transactions": 1,
+      "batch": 2,
+      "phase": "warmup",
+      "run": -1,
+      "order": -1,
+      "fixture_directory": "$BUILD/fixtures/00054-warmup-delete-rollback-rusqlite",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "0b8987b044d1c312c1249e24a7347a41187ed855998ca81c9461d0dbf322cf92"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "raw_stdout": "policy delete 2 4096 -2000 1000 1 0 normal 0\n133008 1 0 0 1\n132296 0\n",
+      "raw_stderr": "",
+      "whole_start_utc_ns": 1793866336159817168,
+      "whole_end_utc_ns": 1793866336173660835,
+      "whole_wall_ns": 13340027,
+      "whole_cpu_ns": 6043999,
+      "peak_rss_kib": 4404,
+      "child_exit_status": 0,
+      "loop_wall_ns": 133008,
+      "checksum": 1,
+      "commits": 0,
+      "busy": 0,
+      "rollbacks": 1,
+      "automatic_retries": 0,
+      "latency_ns": [
+        132296
+      ],
+      "result_codes": [
+        0
+      ],
+      "nearest_rank_latency_ns": {
+        "p50": 132296,
+        "p95": 132296,
+        "p99": 132296
+      },
+      "quantile_sample_count": 1,
+      "throughput_unit": "rolled_back_transactions_per_second",
+      "throughput": 7518.34476121737,
+      "policy_line": "policy delete 2 4096 -2000 1000 1 0 normal 0",
+      "verified": {
+        "rows": 1,
+        "checksum": 1,
+        "logical_data_sha256": "30815224be83a4e3b0d20d18fb4107b17cf2d63e971b98e97a4ab0606e514147",
+        "integrity": "ok"
+      },
+      "files_after_child": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "0b8987b044d1c312c1249e24a7347a41187ed855998ca81c9461d0dbf322cf92"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "files_after_verification": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "0b8987b044d1c312c1249e24a7347a41187ed855998ca81c9461d0dbf322cf92"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      }
+    },
+    {
+      "implementation": "python",
+      "journal": "delete",
+      "mode": "rollback",
+      "transactions": 1,
+      "batch": 2,
+      "phase": "warmup",
+      "run": -1,
+      "order": -1,
+      "fixture_directory": "$BUILD/fixtures/00055-warmup-delete-rollback-python",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "0b8987b044d1c312c1249e24a7347a41187ed855998ca81c9461d0dbf322cf92"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "raw_stdout": "policy delete 2 4096 -2000 1000 1 0 normal 0\n194613 1 0 0 1\n181686 0\n",
+      "raw_stderr": "",
+      "whole_start_utc_ns": 1793866336208687551,
+      "whole_end_utc_ns": 1793866336332625815,
+      "whole_wall_ns": 123246335,
+      "whole_cpu_ns": 59243999,
+      "peak_rss_kib": 12696,
+      "child_exit_status": 0,
+      "loop_wall_ns": 194613,
+      "checksum": 1,
+      "commits": 0,
+      "busy": 0,
+      "rollbacks": 1,
+      "automatic_retries": 0,
+      "latency_ns": [
+        181686
+      ],
+      "result_codes": [
+        0
+      ],
+      "nearest_rank_latency_ns": {
+        "p50": 181686,
+        "p95": 181686,
+        "p99": 181686
+      },
+      "quantile_sample_count": 1,
+      "throughput_unit": "rolled_back_transactions_per_second",
+      "throughput": 5138.402881616336,
+      "policy_line": "policy delete 2 4096 -2000 1000 1 0 normal 0",
+      "verified": {
+        "rows": 1,
+        "checksum": 1,
+        "logical_data_sha256": "30815224be83a4e3b0d20d18fb4107b17cf2d63e971b98e97a4ab0606e514147",
+        "integrity": "ok"
+      },
+      "files_after_child": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "0b8987b044d1c312c1249e24a7347a41187ed855998ca81c9461d0dbf322cf92"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "files_after_verification": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "0b8987b044d1c312c1249e24a7347a41187ed855998ca81c9461d0dbf322cf92"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      }
+    },
+    {
+      "implementation": "goose",
+      "journal": "delete",
+      "mode": "busy",
+      "transactions": 1,
+      "batch": 2,
+      "phase": "warmup",
+      "run": -1,
+      "order": -1,
+      "fixture_directory": "$BUILD/fixtures/00101-warmup-delete-busy-goose",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "0b8987b044d1c312c1249e24a7347a41187ed855998ca81c9461d0dbf322cf92"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "raw_stdout": "policy inferred\n14289 3 0 1 0\n13707 5\n",
+      "raw_stderr": "",
+      "whole_start_utc_ns": 1793866342603774175,
+      "whole_end_utc_ns": 1793866342642059280,
+      "whole_wall_ns": 37831811,
+      "whole_cpu_ns": 8452000,
+      "peak_rss_kib": 4156,
+      "child_exit_status": 0,
+      "loop_wall_ns": 14289,
+      "checksum": 3,
+      "commits": 0,
+      "busy": 1,
+      "rollbacks": 0,
+      "automatic_retries": 0,
+      "latency_ns": [
+        13707
+      ],
+      "result_codes": [
+        5
+      ],
+      "nearest_rank_latency_ns": {
+        "p50": 13707,
+        "p95": 13707,
+        "p99": 13707
+      },
+      "quantile_sample_count": 1,
+      "throughput_unit": "rejected_attempts_per_second",
+      "throughput": 69983.90370214851,
+      "policy_line": "policy inferred",
+      "verified": {
+        "rows": 2,
+        "checksum": 3,
+        "logical_data_sha256": "3276f0f31e4b057eab16c0008576bfbbf10d3ad8d72c8f22f91ba5cd7384efcf",
+        "integrity": "ok"
+      },
+      "files_after_child": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "740beca642fe1bdb82775f1cf420485d3e6df2f8458051c9b5a114f2bcc73bac"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "files_after_verification": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "740beca642fe1bdb82775f1cf420485d3e6df2f8458051c9b5a114f2bcc73bac"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      }
+    },
+    {
+      "implementation": "raw-c-api",
+      "journal": "delete",
+      "mode": "busy",
+      "transactions": 1,
+      "batch": 2,
+      "phase": "warmup",
+      "run": -1,
+      "order": -1,
+      "fixture_directory": "$BUILD/fixtures/00102-warmup-delete-busy-raw-c-api",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "0b8987b044d1c312c1249e24a7347a41187ed855998ca81c9461d0dbf322cf92"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "raw_stdout": "policy delete 2 4096 -2000 1000 1 0 normal 0\n16237 3 0 1 0\n16043 5\n",
+      "raw_stderr": "",
+      "whole_start_utc_ns": 1793866342678331195,
+      "whole_end_utc_ns": 1793866342731066931,
+      "whole_wall_ns": 51982807,
+      "whole_cpu_ns": 12048000,
+      "peak_rss_kib": 6112,
+      "child_exit_status": 0,
+      "loop_wall_ns": 16237,
+      "checksum": 3,
+      "commits": 0,
+      "busy": 1,
+      "rollbacks": 0,
+      "automatic_retries": 0,
+      "latency_ns": [
+        16043
+      ],
+      "result_codes": [
+        5
+      ],
+      "nearest_rank_latency_ns": {
+        "p50": 16043,
+        "p95": 16043,
+        "p99": 16043
+      },
+      "quantile_sample_count": 1,
+      "throughput_unit": "rejected_attempts_per_second",
+      "throughput": 61587.73172384061,
+      "policy_line": "policy delete 2 4096 -2000 1000 1 0 normal 0",
+      "verified": {
+        "rows": 2,
+        "checksum": 3,
+        "logical_data_sha256": "3276f0f31e4b057eab16c0008576bfbbf10d3ad8d72c8f22f91ba5cd7384efcf",
+        "integrity": "ok"
+      },
+      "files_after_child": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "740beca642fe1bdb82775f1cf420485d3e6df2f8458051c9b5a114f2bcc73bac"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "files_after_verification": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "740beca642fe1bdb82775f1cf420485d3e6df2f8458051c9b5a114f2bcc73bac"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      }
+    },
+    {
+      "implementation": "sqlitecpp",
+      "journal": "delete",
+      "mode": "busy",
+      "transactions": 1,
+      "batch": 2,
+      "phase": "warmup",
+      "run": -1,
+      "order": -1,
+      "fixture_directory": "$BUILD/fixtures/00103-warmup-delete-busy-sqlitecpp",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "0b8987b044d1c312c1249e24a7347a41187ed855998ca81c9461d0dbf322cf92"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "raw_stdout": "policy delete 2 4096 -2000 1000 1 0 normal 0\n13153 3 0 1 0\n13002 5\n",
+      "raw_stderr": "",
+      "whole_start_utc_ns": 1793866342781410553,
+      "whole_end_utc_ns": 1793866342847890619,
+      "whole_wall_ns": 65968639,
+      "whole_cpu_ns": 11015000,
+      "peak_rss_kib": 6076,
+      "child_exit_status": 0,
+      "loop_wall_ns": 13153,
+      "checksum": 3,
+      "commits": 0,
+      "busy": 1,
+      "rollbacks": 0,
+      "automatic_retries": 0,
+      "latency_ns": [
+        13002
+      ],
+      "result_codes": [
+        5
+      ],
+      "nearest_rank_latency_ns": {
+        "p50": 13002,
+        "p95": 13002,
+        "p99": 13002
+      },
+      "quantile_sample_count": 1,
+      "throughput_unit": "rejected_attempts_per_second",
+      "throughput": 76028.28252109785,
+      "policy_line": "policy delete 2 4096 -2000 1000 1 0 normal 0",
+      "verified": {
+        "rows": 2,
+        "checksum": 3,
+        "logical_data_sha256": "3276f0f31e4b057eab16c0008576bfbbf10d3ad8d72c8f22f91ba5cd7384efcf",
+        "integrity": "ok"
+      },
+      "files_after_child": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "740beca642fe1bdb82775f1cf420485d3e6df2f8458051c9b5a114f2bcc73bac"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "files_after_verification": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "740beca642fe1bdb82775f1cf420485d3e6df2f8458051c9b5a114f2bcc73bac"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      }
+    },
+    {
+      "implementation": "rusqlite",
+      "journal": "delete",
+      "mode": "busy",
+      "transactions": 1,
+      "batch": 2,
+      "phase": "warmup",
+      "run": -1,
+      "order": -1,
+      "fixture_directory": "$BUILD/fixtures/00104-warmup-delete-busy-rusqlite",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "0b8987b044d1c312c1249e24a7347a41187ed855998ca81c9461d0dbf322cf92"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "raw_stdout": "policy delete 2 4096 -2000 1000 1 0 normal 0\n22382 3 0 1 0\n21631 5\n",
+      "raw_stderr": "",
+      "whole_start_utc_ns": 1793866342897785751,
+      "whole_end_utc_ns": 1793866342937234180,
+      "whole_wall_ns": 38854239,
+      "whole_cpu_ns": 8905000,
+      "peak_rss_kib": 4404,
+      "child_exit_status": 0,
+      "loop_wall_ns": 22382,
+      "checksum": 3,
+      "commits": 0,
+      "busy": 1,
+      "rollbacks": 0,
+      "automatic_retries": 0,
+      "latency_ns": [
+        21631
+      ],
+      "result_codes": [
+        5
+      ],
+      "nearest_rank_latency_ns": {
+        "p50": 21631,
+        "p95": 21631,
+        "p99": 21631
+      },
+      "quantile_sample_count": 1,
+      "throughput_unit": "rejected_attempts_per_second",
+      "throughput": 44678.75971763024,
+      "policy_line": "policy delete 2 4096 -2000 1000 1 0 normal 0",
+      "verified": {
+        "rows": 2,
+        "checksum": 3,
+        "logical_data_sha256": "3276f0f31e4b057eab16c0008576bfbbf10d3ad8d72c8f22f91ba5cd7384efcf",
+        "integrity": "ok"
+      },
+      "files_after_child": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "740beca642fe1bdb82775f1cf420485d3e6df2f8458051c9b5a114f2bcc73bac"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "files_after_verification": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "740beca642fe1bdb82775f1cf420485d3e6df2f8458051c9b5a114f2bcc73bac"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      }
+    },
+    {
+      "implementation": "python",
+      "journal": "delete",
+      "mode": "busy",
+      "transactions": 1,
+      "batch": 2,
+      "phase": "warmup",
+      "run": -1,
+      "order": -1,
+      "fixture_directory": "$BUILD/fixtures/00105-warmup-delete-busy-python",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "0b8987b044d1c312c1249e24a7347a41187ed855998ca81c9461d0dbf322cf92"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "raw_stdout": "policy delete 2 4096 -2000 1000 1 0 normal 0\n70644 3 0 1 0\n58396 5\n",
+      "raw_stderr": "",
+      "whole_start_utc_ns": 1793866342984782473,
+      "whole_end_utc_ns": 1793866343190982322,
+      "whole_wall_ns": 205709238,
+      "whole_cpu_ns": 62807999,
+      "peak_rss_kib": 12880,
+      "child_exit_status": 0,
+      "loop_wall_ns": 70644,
+      "checksum": 3,
+      "commits": 0,
+      "busy": 1,
+      "rollbacks": 0,
+      "automatic_retries": 0,
+      "latency_ns": [
+        58396
+      ],
+      "result_codes": [
+        5
+      ],
+      "nearest_rank_latency_ns": {
+        "p50": 58396,
+        "p95": 58396,
+        "p99": 58396
+      },
+      "quantile_sample_count": 1,
+      "throughput_unit": "rejected_attempts_per_second",
+      "throughput": 14155.48383443746,
+      "policy_line": "policy delete 2 4096 -2000 1000 1 0 normal 0",
+      "verified": {
+        "rows": 2,
+        "checksum": 3,
+        "logical_data_sha256": "3276f0f31e4b057eab16c0008576bfbbf10d3ad8d72c8f22f91ba5cd7384efcf",
+        "integrity": "ok"
+      },
+      "files_after_child": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "740beca642fe1bdb82775f1cf420485d3e6df2f8458051c9b5a114f2bcc73bac"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "files_after_verification": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "740beca642fe1bdb82775f1cf420485d3e6df2f8458051c9b5a114f2bcc73bac"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      }
+    },
+    {
+      "implementation": "goose",
+      "journal": "wal",
+      "mode": "commit",
+      "transactions": 1,
+      "batch": 2,
+      "phase": "warmup",
+      "run": -1,
+      "order": -1,
+      "fixture_directory": "$BUILD/fixtures/00151-warmup-wal-commit-goose",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "c27f622af0899bc1fc5541f8b1783d3baf6a12340b4b619b413ff6f1fedb8559"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "raw_stdout": "policy inferred\n9032348 6 1 0 0\n9031564 0\n",
+      "raw_stderr": "",
+      "whole_start_utc_ns": 1793866348266219811,
+      "whole_end_utc_ns": 1793866348291215470,
+      "whole_wall_ns": 24540801,
+      "whole_cpu_ns": 7895000,
+      "peak_rss_kib": 4100,
+      "child_exit_status": 0,
+      "loop_wall_ns": 9032348,
+      "checksum": 6,
+      "commits": 1,
+      "busy": 0,
+      "rollbacks": 0,
+      "automatic_retries": 0,
+      "latency_ns": [
+        9031564
+      ],
+      "result_codes": [
+        0
+      ],
+      "nearest_rank_latency_ns": {
+        "p50": 9031564,
+        "p95": 9031564,
+        "p99": 9031564
+      },
+      "quantile_sample_count": 1,
+      "throughput_unit": "committed_rows_per_second",
+      "throughput": 221.4263666546063,
+      "policy_line": "policy inferred",
+      "verified": {
+        "rows": 3,
+        "checksum": 6,
+        "logical_data_sha256": "8c514e64cea6193dd79ed2edbb8477b0f0a6085e9957e26b779f2ef9ce078ecc",
+        "integrity": "ok"
+      },
+      "files_after_child": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "2b5e65e7db284cd27107e270554fba4807bed2e92452fd67839636c3b9f62c9b"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "files_after_verification": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "2b5e65e7db284cd27107e270554fba4807bed2e92452fd67839636c3b9f62c9b"
+        },
+        "wal": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shm": {
+          "bytes": 32768,
+          "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb"
+        },
+        "journal": null
+      }
+    },
+    {
+      "implementation": "raw-c-api",
+      "journal": "wal",
+      "mode": "commit",
+      "transactions": 1,
+      "batch": 2,
+      "phase": "warmup",
+      "run": -1,
+      "order": -1,
+      "fixture_directory": "$BUILD/fixtures/00152-warmup-wal-commit-raw-c-api",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "c27f622af0899bc1fc5541f8b1783d3baf6a12340b4b619b413ff6f1fedb8559"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "raw_stdout": "policy wal 2 4096 -2000 1000 1 0 normal 0\n8264026 6 1 0 0\n8263436 0\n",
+      "raw_stderr": "",
+      "whole_start_utc_ns": 1793866348333730450,
+      "whole_end_utc_ns": 1793866348363190825,
+      "whole_wall_ns": 28823557,
+      "whole_cpu_ns": 10151000,
+      "peak_rss_kib": 5912,
+      "child_exit_status": 0,
+      "loop_wall_ns": 8264026,
+      "checksum": 6,
+      "commits": 1,
+      "busy": 0,
+      "rollbacks": 0,
+      "automatic_retries": 0,
+      "latency_ns": [
+        8263436
+      ],
+      "result_codes": [
+        0
+      ],
+      "nearest_rank_latency_ns": {
+        "p50": 8263436,
+        "p95": 8263436,
+        "p99": 8263436
+      },
+      "quantile_sample_count": 1,
+      "throughput_unit": "committed_rows_per_second",
+      "throughput": 242.0127913440737,
+      "policy_line": "policy wal 2 4096 -2000 1000 1 0 normal 0",
+      "verified": {
+        "rows": 3,
+        "checksum": 6,
+        "logical_data_sha256": "8c514e64cea6193dd79ed2edbb8477b0f0a6085e9957e26b779f2ef9ce078ecc",
+        "integrity": "ok"
+      },
+      "files_after_child": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "2b5e65e7db284cd27107e270554fba4807bed2e92452fd67839636c3b9f62c9b"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "files_after_verification": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "2b5e65e7db284cd27107e270554fba4807bed2e92452fd67839636c3b9f62c9b"
+        },
+        "wal": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shm": {
+          "bytes": 32768,
+          "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb"
+        },
+        "journal": null
+      }
+    },
+    {
+      "implementation": "sqlitecpp",
+      "journal": "wal",
+      "mode": "commit",
+      "transactions": 1,
+      "batch": 2,
+      "phase": "warmup",
+      "run": -1,
+      "order": -1,
+      "fixture_directory": "$BUILD/fixtures/00153-warmup-wal-commit-sqlitecpp",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "c27f622af0899bc1fc5541f8b1783d3baf6a12340b4b619b413ff6f1fedb8559"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "raw_stdout": "policy wal 2 4096 -2000 1000 1 0 normal 0\n12049259 6 1 0 0\n12049085 0\n",
+      "raw_stderr": "",
+      "whole_start_utc_ns": 1793866348404673632,
+      "whole_end_utc_ns": 1793866348433745656,
+      "whole_wall_ns": 28256324,
+      "whole_cpu_ns": 8877999,
+      "peak_rss_kib": 5952,
+      "child_exit_status": 0,
+      "loop_wall_ns": 12049259,
+      "checksum": 6,
+      "commits": 1,
+      "busy": 0,
+      "rollbacks": 0,
+      "automatic_retries": 0,
+      "latency_ns": [
+        12049085
+      ],
+      "result_codes": [
+        0
+      ],
+      "nearest_rank_latency_ns": {
+        "p50": 12049085,
+        "p95": 12049085,
+        "p99": 12049085
+      },
+      "quantile_sample_count": 1,
+      "throughput_unit": "committed_rows_per_second",
+      "throughput": 165.98531079795032,
+      "policy_line": "policy wal 2 4096 -2000 1000 1 0 normal 0",
+      "verified": {
+        "rows": 3,
+        "checksum": 6,
+        "logical_data_sha256": "8c514e64cea6193dd79ed2edbb8477b0f0a6085e9957e26b779f2ef9ce078ecc",
+        "integrity": "ok"
+      },
+      "files_after_child": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "2b5e65e7db284cd27107e270554fba4807bed2e92452fd67839636c3b9f62c9b"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "files_after_verification": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "2b5e65e7db284cd27107e270554fba4807bed2e92452fd67839636c3b9f62c9b"
+        },
+        "wal": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shm": {
+          "bytes": 32768,
+          "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb"
+        },
+        "journal": null
+      }
+    },
+    {
+      "implementation": "rusqlite",
+      "journal": "wal",
+      "mode": "commit",
+      "transactions": 1,
+      "batch": 2,
+      "phase": "warmup",
+      "run": -1,
+      "order": -1,
+      "fixture_directory": "$BUILD/fixtures/00154-warmup-wal-commit-rusqlite",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "c27f622af0899bc1fc5541f8b1783d3baf6a12340b4b619b413ff6f1fedb8559"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "raw_stdout": "policy wal 2 4096 -2000 1000 1 0 normal 0\n11256292 6 1 0 0\n11255572 0\n",
+      "raw_stderr": "",
+      "whole_start_utc_ns": 1793866348477478588,
+      "whole_end_utc_ns": 1793866348504877635,
+      "whole_wall_ns": 26860298,
+      "whole_cpu_ns": 9102000,
+      "peak_rss_kib": 4420,
+      "child_exit_status": 0,
+      "loop_wall_ns": 11256292,
+      "checksum": 6,
+      "commits": 1,
+      "busy": 0,
+      "rollbacks": 0,
+      "automatic_retries": 0,
+      "latency_ns": [
+        11255572
+      ],
+      "result_codes": [
+        0
+      ],
+      "nearest_rank_latency_ns": {
+        "p50": 11255572,
+        "p95": 11255572,
+        "p99": 11255572
+      },
+      "quantile_sample_count": 1,
+      "throughput_unit": "committed_rows_per_second",
+      "throughput": 177.67840422050173,
+      "policy_line": "policy wal 2 4096 -2000 1000 1 0 normal 0",
+      "verified": {
+        "rows": 3,
+        "checksum": 6,
+        "logical_data_sha256": "8c514e64cea6193dd79ed2edbb8477b0f0a6085e9957e26b779f2ef9ce078ecc",
+        "integrity": "ok"
+      },
+      "files_after_child": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "2b5e65e7db284cd27107e270554fba4807bed2e92452fd67839636c3b9f62c9b"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "files_after_verification": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "2b5e65e7db284cd27107e270554fba4807bed2e92452fd67839636c3b9f62c9b"
+        },
+        "wal": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shm": {
+          "bytes": 32768,
+          "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb"
+        },
+        "journal": null
+      }
+    },
+    {
+      "implementation": "python",
+      "journal": "wal",
+      "mode": "commit",
+      "transactions": 1,
+      "batch": 2,
+      "phase": "warmup",
+      "run": -1,
+      "order": -1,
+      "fixture_directory": "$BUILD/fixtures/00155-warmup-wal-commit-python",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "c27f622af0899bc1fc5541f8b1783d3baf6a12340b4b619b413ff6f1fedb8559"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "raw_stdout": "policy wal 2 4096 -2000 1000 1 0 normal 0\n47045984 6 1 0 0\n47030248 0\n",
+      "raw_stderr": "",
+      "whole_start_utc_ns": 1793866348546371539,
+      "whole_end_utc_ns": 1793866348715000149,
+      "whole_wall_ns": 168019465,
+      "whole_cpu_ns": 58059000,
+      "peak_rss_kib": 12744,
+      "child_exit_status": 0,
+      "loop_wall_ns": 47045984,
+      "checksum": 6,
+      "commits": 1,
+      "busy": 0,
+      "rollbacks": 0,
+      "automatic_retries": 0,
+      "latency_ns": [
+        47030248
+      ],
+      "result_codes": [
+        0
+      ],
+      "nearest_rank_latency_ns": {
+        "p50": 47030248,
+        "p95": 47030248,
+        "p99": 47030248
+      },
+      "quantile_sample_count": 1,
+      "throughput_unit": "committed_rows_per_second",
+      "throughput": 42.51159886463423,
+      "policy_line": "policy wal 2 4096 -2000 1000 1 0 normal 0",
+      "verified": {
+        "rows": 3,
+        "checksum": 6,
+        "logical_data_sha256": "8c514e64cea6193dd79ed2edbb8477b0f0a6085e9957e26b779f2ef9ce078ecc",
+        "integrity": "ok"
+      },
+      "files_after_child": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "2b5e65e7db284cd27107e270554fba4807bed2e92452fd67839636c3b9f62c9b"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "files_after_verification": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "2b5e65e7db284cd27107e270554fba4807bed2e92452fd67839636c3b9f62c9b"
+        },
+        "wal": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shm": {
+          "bytes": 32768,
+          "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb"
+        },
+        "journal": null
+      }
+    },
+    {
+      "implementation": "goose",
+      "journal": "wal",
+      "mode": "rollback",
+      "transactions": 1,
+      "batch": 2,
+      "phase": "warmup",
+      "run": -1,
+      "order": -1,
+      "fixture_directory": "$BUILD/fixtures/00201-warmup-wal-rollback-goose",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "c27f622af0899bc1fc5541f8b1783d3baf6a12340b4b619b413ff6f1fedb8559"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "raw_stdout": "policy inferred\n13651 1 0 0 1\n13400 0\n",
+      "raw_stderr": "",
+      "whole_start_utc_ns": 1793866376062494819,
+      "whole_end_utc_ns": 1793866376079311713,
+      "whole_wall_ns": 16185471,
+      "whole_cpu_ns": 6846999,
+      "peak_rss_kib": 3940,
+      "child_exit_status": 0,
+      "loop_wall_ns": 13651,
+      "checksum": 1,
+      "commits": 0,
+      "busy": 0,
+      "rollbacks": 1,
+      "automatic_retries": 0,
+      "latency_ns": [
+        13400
+      ],
+      "result_codes": [
+        0
+      ],
+      "nearest_rank_latency_ns": {
+        "p50": 13400,
+        "p95": 13400,
+        "p99": 13400
+      },
+      "quantile_sample_count": 1,
+      "throughput_unit": "rolled_back_transactions_per_second",
+      "throughput": 73254.7066149,
+      "policy_line": "policy inferred",
+      "verified": {
+        "rows": 1,
+        "checksum": 1,
+        "logical_data_sha256": "30815224be83a4e3b0d20d18fb4107b17cf2d63e971b98e97a4ab0606e514147",
+        "integrity": "ok"
+      },
+      "files_after_child": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "c27f622af0899bc1fc5541f8b1783d3baf6a12340b4b619b413ff6f1fedb8559"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "files_after_verification": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "c27f622af0899bc1fc5541f8b1783d3baf6a12340b4b619b413ff6f1fedb8559"
+        },
+        "wal": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shm": {
+          "bytes": 32768,
+          "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb"
+        },
+        "journal": null
+      }
+    },
+    {
+      "implementation": "raw-c-api",
+      "journal": "wal",
+      "mode": "rollback",
+      "transactions": 1,
+      "batch": 2,
+      "phase": "warmup",
+      "run": -1,
+      "order": -1,
+      "fixture_directory": "$BUILD/fixtures/00202-warmup-wal-rollback-raw-c-api",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "c27f622af0899bc1fc5541f8b1783d3baf6a12340b4b619b413ff6f1fedb8559"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "raw_stdout": "policy wal 2 4096 -2000 1000 1 0 normal 0\n11470 1 0 0 1\n11186 0\n",
+      "raw_stderr": "",
+      "whole_start_utc_ns": 1793866376168922962,
+      "whole_end_utc_ns": 1793866376186799414,
+      "whole_wall_ns": 17383551,
+      "whole_cpu_ns": 6230999,
+      "peak_rss_kib": 5844,
+      "child_exit_status": 0,
+      "loop_wall_ns": 11470,
+      "checksum": 1,
+      "commits": 0,
+      "busy": 0,
+      "rollbacks": 1,
+      "automatic_retries": 0,
+      "latency_ns": [
+        11186
+      ],
+      "result_codes": [
+        0
+      ],
+      "nearest_rank_latency_ns": {
+        "p50": 11186,
+        "p95": 11186,
+        "p99": 11186
+      },
+      "quantile_sample_count": 1,
+      "throughput_unit": "rolled_back_transactions_per_second",
+      "throughput": 87183.95815170009,
+      "policy_line": "policy wal 2 4096 -2000 1000 1 0 normal 0",
+      "verified": {
+        "rows": 1,
+        "checksum": 1,
+        "logical_data_sha256": "30815224be83a4e3b0d20d18fb4107b17cf2d63e971b98e97a4ab0606e514147",
+        "integrity": "ok"
+      },
+      "files_after_child": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "c27f622af0899bc1fc5541f8b1783d3baf6a12340b4b619b413ff6f1fedb8559"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "files_after_verification": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "c27f622af0899bc1fc5541f8b1783d3baf6a12340b4b619b413ff6f1fedb8559"
+        },
+        "wal": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shm": {
+          "bytes": 32768,
+          "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb"
+        },
+        "journal": null
+      }
+    },
+    {
+      "implementation": "sqlitecpp",
+      "journal": "wal",
+      "mode": "rollback",
+      "transactions": 1,
+      "batch": 2,
+      "phase": "warmup",
+      "run": -1,
+      "order": -1,
+      "fixture_directory": "$BUILD/fixtures/00203-warmup-wal-rollback-sqlitecpp",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "c27f622af0899bc1fc5541f8b1783d3baf6a12340b4b619b413ff6f1fedb8559"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "raw_stdout": "policy wal 2 4096 -2000 1000 1 0 normal 0\n10534 1 0 0 1\n10362 0\n",
+      "raw_stderr": "",
+      "whole_start_utc_ns": 1793866376283372660,
+      "whole_end_utc_ns": 1793866376299787470,
+      "whole_wall_ns": 15767723,
+      "whole_cpu_ns": 5988000,
+      "peak_rss_kib": 6100,
+      "child_exit_status": 0,
+      "loop_wall_ns": 10534,
+      "checksum": 1,
+      "commits": 0,
+      "busy": 0,
+      "rollbacks": 1,
+      "automatic_retries": 0,
+      "latency_ns": [
+        10362
+      ],
+      "result_codes": [
+        0
+      ],
+      "nearest_rank_latency_ns": {
+        "p50": 10362,
+        "p95": 10362,
+        "p99": 10362
+      },
+      "quantile_sample_count": 1,
+      "throughput_unit": "rolled_back_transactions_per_second",
+      "throughput": 94930.70058857034,
+      "policy_line": "policy wal 2 4096 -2000 1000 1 0 normal 0",
+      "verified": {
+        "rows": 1,
+        "checksum": 1,
+        "logical_data_sha256": "30815224be83a4e3b0d20d18fb4107b17cf2d63e971b98e97a4ab0606e514147",
+        "integrity": "ok"
+      },
+      "files_after_child": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "c27f622af0899bc1fc5541f8b1783d3baf6a12340b4b619b413ff6f1fedb8559"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "files_after_verification": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "c27f622af0899bc1fc5541f8b1783d3baf6a12340b4b619b413ff6f1fedb8559"
+        },
+        "wal": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shm": {
+          "bytes": 32768,
+          "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb"
+        },
+        "journal": null
+      }
+    },
+    {
+      "implementation": "rusqlite",
+      "journal": "wal",
+      "mode": "rollback",
+      "transactions": 1,
+      "batch": 2,
+      "phase": "warmup",
+      "run": -1,
+      "order": -1,
+      "fixture_directory": "$BUILD/fixtures/00204-warmup-wal-rollback-rusqlite",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "c27f622af0899bc1fc5541f8b1783d3baf6a12340b4b619b413ff6f1fedb8559"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "raw_stdout": "policy wal 2 4096 -2000 1000 1 0 normal 0\n12474 1 0 0 1\n11976 0\n",
+      "raw_stderr": "",
+      "whole_start_utc_ns": 1793866376342222543,
+      "whole_end_utc_ns": 1793866376355052672,
+      "whole_wall_ns": 12330538,
+      "whole_cpu_ns": 4913999,
+      "peak_rss_kib": 4444,
+      "child_exit_status": 0,
+      "loop_wall_ns": 12474,
+      "checksum": 1,
+      "commits": 0,
+      "busy": 0,
+      "rollbacks": 1,
+      "automatic_retries": 0,
+      "latency_ns": [
+        11976
+      ],
+      "result_codes": [
+        0
+      ],
+      "nearest_rank_latency_ns": {
+        "p50": 11976,
+        "p95": 11976,
+        "p99": 11976
+      },
+      "quantile_sample_count": 1,
+      "throughput_unit": "rolled_back_transactions_per_second",
+      "throughput": 80166.7468334135,
+      "policy_line": "policy wal 2 4096 -2000 1000 1 0 normal 0",
+      "verified": {
+        "rows": 1,
+        "checksum": 1,
+        "logical_data_sha256": "30815224be83a4e3b0d20d18fb4107b17cf2d63e971b98e97a4ab0606e514147",
+        "integrity": "ok"
+      },
+      "files_after_child": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "c27f622af0899bc1fc5541f8b1783d3baf6a12340b4b619b413ff6f1fedb8559"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "files_after_verification": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "c27f622af0899bc1fc5541f8b1783d3baf6a12340b4b619b413ff6f1fedb8559"
+        },
+        "wal": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shm": {
+          "bytes": 32768,
+          "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb"
+        },
+        "journal": null
+      }
+    },
+    {
+      "implementation": "python",
+      "journal": "wal",
+      "mode": "rollback",
+      "transactions": 1,
+      "batch": 2,
+      "phase": "warmup",
+      "run": -1,
+      "order": -1,
+      "fixture_directory": "$BUILD/fixtures/00205-warmup-wal-rollback-python",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "c27f622af0899bc1fc5541f8b1783d3baf6a12340b4b619b413ff6f1fedb8559"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "raw_stdout": "policy wal 2 4096 -2000 1000 1 0 normal 0\n43487 1 0 0 1\n32022 0\n",
+      "raw_stderr": "",
+      "whole_start_utc_ns": 1793866376391824733,
+      "whole_end_utc_ns": 1793866376504768011,
+      "whole_wall_ns": 112443939,
+      "whole_cpu_ns": 54568999,
+      "peak_rss_kib": 12720,
+      "child_exit_status": 0,
+      "loop_wall_ns": 43487,
+      "checksum": 1,
+      "commits": 0,
+      "busy": 0,
+      "rollbacks": 1,
+      "automatic_retries": 0,
+      "latency_ns": [
+        32022
+      ],
+      "result_codes": [
+        0
+      ],
+      "nearest_rank_latency_ns": {
+        "p50": 32022,
+        "p95": 32022,
+        "p99": 32022
+      },
+      "quantile_sample_count": 1,
+      "throughput_unit": "rolled_back_transactions_per_second",
+      "throughput": 22995.377929036265,
+      "policy_line": "policy wal 2 4096 -2000 1000 1 0 normal 0",
+      "verified": {
+        "rows": 1,
+        "checksum": 1,
+        "logical_data_sha256": "30815224be83a4e3b0d20d18fb4107b17cf2d63e971b98e97a4ab0606e514147",
+        "integrity": "ok"
+      },
+      "files_after_child": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "c27f622af0899bc1fc5541f8b1783d3baf6a12340b4b619b413ff6f1fedb8559"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "files_after_verification": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "c27f622af0899bc1fc5541f8b1783d3baf6a12340b4b619b413ff6f1fedb8559"
+        },
+        "wal": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shm": {
+          "bytes": 32768,
+          "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb"
+        },
+        "journal": null
+      }
+    },
+    {
+      "implementation": "goose",
+      "journal": "wal",
+      "mode": "busy",
+      "transactions": 1,
+      "batch": 2,
+      "phase": "warmup",
+      "run": -1,
+      "order": -1,
+      "fixture_directory": "$BUILD/fixtures/00251-warmup-wal-busy-goose",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "c27f622af0899bc1fc5541f8b1783d3baf6a12340b4b619b413ff6f1fedb8559"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "raw_stdout": "policy inferred\n8489 3 0 1 0\n8327 5\n",
+      "raw_stderr": "",
+      "whole_start_utc_ns": 1793866382412772699,
+      "whole_end_utc_ns": 1793866382445118235,
+      "whole_wall_ns": 31741614,
+      "whole_cpu_ns": 10704000,
+      "peak_rss_kib": 4176,
+      "child_exit_status": 0,
+      "loop_wall_ns": 8489,
+      "checksum": 3,
+      "commits": 0,
+      "busy": 1,
+      "rollbacks": 0,
+      "automatic_retries": 0,
+      "latency_ns": [
+        8327
+      ],
+      "result_codes": [
+        5
+      ],
+      "nearest_rank_latency_ns": {
+        "p50": 8327,
+        "p95": 8327,
+        "p99": 8327
+      },
+      "quantile_sample_count": 1,
+      "throughput_unit": "rejected_attempts_per_second",
+      "throughput": 117799.50524207798,
+      "policy_line": "policy inferred",
+      "verified": {
+        "rows": 2,
+        "checksum": 3,
+        "logical_data_sha256": "3276f0f31e4b057eab16c0008576bfbbf10d3ad8d72c8f22f91ba5cd7384efcf",
+        "integrity": "ok"
+      },
+      "files_after_child": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "8d8cab27fd0401456228434fa0308f5a55b31b5b1578d3de01dbbc43c58d159d"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "files_after_verification": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "8d8cab27fd0401456228434fa0308f5a55b31b5b1578d3de01dbbc43c58d159d"
+        },
+        "wal": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shm": {
+          "bytes": 32768,
+          "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb"
+        },
+        "journal": null
+      }
+    },
+    {
+      "implementation": "raw-c-api",
+      "journal": "wal",
+      "mode": "busy",
+      "transactions": 1,
+      "batch": 2,
+      "phase": "warmup",
+      "run": -1,
+      "order": -1,
+      "fixture_directory": "$BUILD/fixtures/00252-warmup-wal-busy-raw-c-api",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "c27f622af0899bc1fc5541f8b1783d3baf6a12340b4b619b413ff6f1fedb8559"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "raw_stdout": "policy wal 2 4096 -2000 1000 1 0 normal 0\n6033 3 0 1 0\n5712 5\n",
+      "raw_stderr": "",
+      "whole_start_utc_ns": 1793866382493133421,
+      "whole_end_utc_ns": 1793866382522985366,
+      "whole_wall_ns": 29209691,
+      "whole_cpu_ns": 10267999,
+      "peak_rss_kib": 6104,
+      "child_exit_status": 0,
+      "loop_wall_ns": 6033,
+      "checksum": 3,
+      "commits": 0,
+      "busy": 1,
+      "rollbacks": 0,
+      "automatic_retries": 0,
+      "latency_ns": [
+        5712
+      ],
+      "result_codes": [
+        5
+      ],
+      "nearest_rank_latency_ns": {
+        "p50": 5712,
+        "p95": 5712,
+        "p99": 5712
+      },
+      "quantile_sample_count": 1,
+      "throughput_unit": "rejected_attempts_per_second",
+      "throughput": 165755.0140891762,
+      "policy_line": "policy wal 2 4096 -2000 1000 1 0 normal 0",
+      "verified": {
+        "rows": 2,
+        "checksum": 3,
+        "logical_data_sha256": "3276f0f31e4b057eab16c0008576bfbbf10d3ad8d72c8f22f91ba5cd7384efcf",
+        "integrity": "ok"
+      },
+      "files_after_child": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "8d8cab27fd0401456228434fa0308f5a55b31b5b1578d3de01dbbc43c58d159d"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "files_after_verification": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "8d8cab27fd0401456228434fa0308f5a55b31b5b1578d3de01dbbc43c58d159d"
+        },
+        "wal": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shm": {
+          "bytes": 32768,
+          "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb"
+        },
+        "journal": null
+      }
+    },
+    {
+      "implementation": "sqlitecpp",
+      "journal": "wal",
+      "mode": "busy",
+      "transactions": 1,
+      "batch": 2,
+      "phase": "warmup",
+      "run": -1,
+      "order": -1,
+      "fixture_directory": "$BUILD/fixtures/00253-warmup-wal-busy-sqlitecpp",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "c27f622af0899bc1fc5541f8b1783d3baf6a12340b4b619b413ff6f1fedb8559"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "raw_stdout": "policy wal 2 4096 -2000 1000 1 0 normal 0\n7160 3 0 1 0\n6751 5\n",
+      "raw_stderr": "",
+      "whole_start_utc_ns": 1793866382569150298,
+      "whole_end_utc_ns": 1793866382602729817,
+      "whole_wall_ns": 32958858,
+      "whole_cpu_ns": 11973000,
+      "peak_rss_kib": 6276,
+      "child_exit_status": 0,
+      "loop_wall_ns": 7160,
+      "checksum": 3,
+      "commits": 0,
+      "busy": 1,
+      "rollbacks": 0,
+      "automatic_retries": 0,
+      "latency_ns": [
+        6751
+      ],
+      "result_codes": [
+        5
+      ],
+      "nearest_rank_latency_ns": {
+        "p50": 6751,
+        "p95": 6751,
+        "p99": 6751
+      },
+      "quantile_sample_count": 1,
+      "throughput_unit": "rejected_attempts_per_second",
+      "throughput": 139664.80446927375,
+      "policy_line": "policy wal 2 4096 -2000 1000 1 0 normal 0",
+      "verified": {
+        "rows": 2,
+        "checksum": 3,
+        "logical_data_sha256": "3276f0f31e4b057eab16c0008576bfbbf10d3ad8d72c8f22f91ba5cd7384efcf",
+        "integrity": "ok"
+      },
+      "files_after_child": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "8d8cab27fd0401456228434fa0308f5a55b31b5b1578d3de01dbbc43c58d159d"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "files_after_verification": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "8d8cab27fd0401456228434fa0308f5a55b31b5b1578d3de01dbbc43c58d159d"
+        },
+        "wal": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shm": {
+          "bytes": 32768,
+          "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb"
+        },
+        "journal": null
+      }
+    },
+    {
+      "implementation": "rusqlite",
+      "journal": "wal",
+      "mode": "busy",
+      "transactions": 1,
+      "batch": 2,
+      "phase": "warmup",
+      "run": -1,
+      "order": -1,
+      "fixture_directory": "$BUILD/fixtures/00254-warmup-wal-busy-rusqlite",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "c27f622af0899bc1fc5541f8b1783d3baf6a12340b4b619b413ff6f1fedb8559"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "raw_stdout": "policy wal 2 4096 -2000 1000 1 0 normal 0\n10527 3 0 1 0\n9577 5\n",
+      "raw_stderr": "",
+      "whole_start_utc_ns": 1793866382653536489,
+      "whole_end_utc_ns": 1793866382685522942,
+      "whole_wall_ns": 31276452,
+      "whole_cpu_ns": 10119000,
+      "peak_rss_kib": 4568,
+      "child_exit_status": 0,
+      "loop_wall_ns": 10527,
+      "checksum": 3,
+      "commits": 0,
+      "busy": 1,
+      "rollbacks": 0,
+      "automatic_retries": 0,
+      "latency_ns": [
+        9577
+      ],
+      "result_codes": [
+        5
+      ],
+      "nearest_rank_latency_ns": {
+        "p50": 9577,
+        "p95": 9577,
+        "p99": 9577
+      },
+      "quantile_sample_count": 1,
+      "throughput_unit": "rejected_attempts_per_second",
+      "throughput": 94993.8254013489,
+      "policy_line": "policy wal 2 4096 -2000 1000 1 0 normal 0",
+      "verified": {
+        "rows": 2,
+        "checksum": 3,
+        "logical_data_sha256": "3276f0f31e4b057eab16c0008576bfbbf10d3ad8d72c8f22f91ba5cd7384efcf",
+        "integrity": "ok"
+      },
+      "files_after_child": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "8d8cab27fd0401456228434fa0308f5a55b31b5b1578d3de01dbbc43c58d159d"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "files_after_verification": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "8d8cab27fd0401456228434fa0308f5a55b31b5b1578d3de01dbbc43c58d159d"
+        },
+        "wal": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shm": {
+          "bytes": 32768,
+          "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb"
+        },
+        "journal": null
+      }
+    },
+    {
+      "implementation": "python",
+      "journal": "wal",
+      "mode": "busy",
+      "transactions": 1,
+      "batch": 2,
+      "phase": "warmup",
+      "run": -1,
+      "order": -1,
+      "fixture_directory": "$BUILD/fixtures/00255-warmup-wal-busy-python",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "c27f622af0899bc1fc5541f8b1783d3baf6a12340b4b619b413ff6f1fedb8559"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "raw_stdout": "policy wal 2 4096 -2000 1000 1 0 normal 0\n55760 3 0 1 0\n43188 5\n",
+      "raw_stderr": "",
+      "whole_start_utc_ns": 1793866382737087156,
+      "whole_end_utc_ns": 1793866382901370343,
+      "whole_wall_ns": 163654170,
+      "whole_cpu_ns": 67788000,
+      "peak_rss_kib": 12912,
+      "child_exit_status": 0,
+      "loop_wall_ns": 55760,
+      "checksum": 3,
+      "commits": 0,
+      "busy": 1,
+      "rollbacks": 0,
+      "automatic_retries": 0,
+      "latency_ns": [
+        43188
+      ],
+      "result_codes": [
+        5
+      ],
+      "nearest_rank_latency_ns": {
+        "p50": 43188,
+        "p95": 43188,
+        "p99": 43188
+      },
+      "quantile_sample_count": 1,
+      "throughput_unit": "rejected_attempts_per_second",
+      "throughput": 17934.00286944046,
+      "policy_line": "policy wal 2 4096 -2000 1000 1 0 normal 0",
+      "verified": {
+        "rows": 2,
+        "checksum": 3,
+        "logical_data_sha256": "3276f0f31e4b057eab16c0008576bfbbf10d3ad8d72c8f22f91ba5cd7384efcf",
+        "integrity": "ok"
+      },
+      "files_after_child": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "8d8cab27fd0401456228434fa0308f5a55b31b5b1578d3de01dbbc43c58d159d"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "files_after_verification": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "8d8cab27fd0401456228434fa0308f5a55b31b5b1578d3de01dbbc43c58d159d"
+        },
+        "wal": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "shm": {
+          "bytes": 32768,
+          "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb"
+        },
+        "journal": null
+      }
+    }
+  ],
+  "sample_count": 270,
+  "filesystem": {
+    "filesystems": [
+      {
+        "target": "/home",
+        "source": "/dev/mapper/ArchinstallVg-root[/@home]",
+        "fstype": "btrfs",
+        "options": "rw,nosuid,nodev,relatime,compress=zstd:3,ssd,discard=async,space_cache=v2,subvolid=257,subvol=/@home"
+      }
+    ]
+  },
+  "storage_scope": "Observed mount/filesystem is recorded; device hardware, controller caches and physical durability are unverified. Overlay/network mounts, if present, cannot establish physical-disk behavior.",
+  "build_commands": [
+    [
+      "$GOOSE",
+      "--version"
+    ],
+    [
+      "python3",
+      "scripts/native-manifest.py",
+      "--check"
+    ],
+    [
+      "$GOOSE",
+      "build",
+      "bench/filebacked/runner.goose",
+      "--cc",
+      "gcc",
+      "-O2",
+      "-o",
+      "$BUILD/goose"
+    ],
+    [
+      "gcc",
+      "-std=c11",
+      "-O2",
+      "-UNDEBUG",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "$SOURCE/bench/filebacked/policy.c",
+      "$BUILD/goose-cache/build/pkg/local/b1c4dfd3/gcc-20260810-9d5f2359/cmake/pkg/libgoose_sqlite_native.a",
+      "-lsqlite3",
+      "-pthread",
+      "-lm",
+      "-o",
+      "$BUILD/policy"
+    ],
+    [
+      "cmake",
+      "-S",
+      "$REPO/.build/alternatives/SQLiteCpp",
+      "-B",
+      "$BUILD/cpp-build",
+      "-DSQLITECPP_INTERNAL_SQLITE=OFF",
+      "-DSQLITECPP_BUILD_TESTS=OFF",
+      "-DSQLITECPP_BUILD_EXAMPLES=OFF",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DCMAKE_CXX_FLAGS_RELEASE=-O2 -DNDEBUG",
+      "-DCMAKE_CXX_FLAGS=",
+      "-DCMAKE_CXX_COMPILER=g++",
+      "-DCMAKE_C_COMPILER=gcc",
+      "-DCMAKE_CXX_COMPILER_LAUNCHER=",
+      "-DCMAKE_C_COMPILER_LAUNCHER="
+    ],
+    [
+      "cmake",
+      "--build",
+      "$BUILD/cpp-build",
+      "--parallel",
+      "2"
+    ],
+    [
+      "g++",
+      "-std=c++17",
+      "-O2",
+      "-UNDEBUG",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "$SOURCE/bench/filebacked/native.cpp",
+      "-lsqlite3",
+      "-o",
+      "$BUILD/raw-c-api"
+    ],
+    [
+      "g++",
+      "-std=c++17",
+      "-O2",
+      "-UNDEBUG",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-DUSE_SQLITECPP",
+      "-I$REPO/.build/alternatives/SQLiteCpp/include",
+      "$SOURCE/bench/filebacked/native.cpp",
+      "$BUILD/cpp-build/libSQLiteCpp.a",
+      "-lsqlite3",
+      "-o",
+      "$BUILD/sqlitecpp"
+    ],
+    [
+      "rustc",
+      "--print",
+      "sysroot"
+    ],
+    [
+      "$HOME/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rustc",
+      "-vV"
+    ],
+    [
+      "cargo",
+      "build",
+      "--locked",
+      "--release",
+      "--target",
+      "x86_64-unknown-linux-gnu",
+      "--target-dir",
+      "$BUILD/rust-target",
+      "--manifest-path",
+      "$SOURCE/bench/filebacked/rust/Cargo.toml",
+      "--config",
+      "profile.release.opt-level=2",
+      "--config",
+      "profile.release.lto=\"thin\"",
+      "--config",
+      "profile.release.codegen-units=16",
+      "--config",
+      "profile.release.incremental=true"
+    ],
+    [
+      "/usr/bin/gcc",
+      "--version"
+    ],
+    [
+      "/usr/bin/g++",
+      "--version"
+    ],
+    [
+      "/usr/bin/cmake",
+      "--version"
+    ],
+    [
+      "/usr/bin/rustup",
+      "--version"
+    ],
+    [
+      "/usr/bin/git",
+      "--version"
+    ],
+    [
+      "/usr/bin/python3.14",
+      "--version"
+    ],
+    [
+      "/usr/bin/time",
+      "--version"
+    ],
+    [
+      "ldd",
+      "$BUILD/goose"
+    ],
+    [
+      "/usr/bin/python3",
+      "-I",
+      "-c",
+      "import sys; print(sys.flags.optimize)"
+    ]
+  ],
+  "goose": {
+    "revision": "eadca409f68210893f366e60d0c2f0dc29a339be",
+    "version": "goose eadca40 (runtime 3025e5810379)",
+    "sha256": "2bdd604d01c3f46b03ddae80871b10de7f75e9e710ce92faa1a644b246472ab7"
+  },
+  "native_build": {
+    "compiler": {
+      "file": "gcc",
+      "version": "gcc (GCC) 16.2.1 20260810",
+      "sha256": "8aac907d6fbf40394b424b5fa4a2ad1aa291dac7d3a0315c5b415c1f5ace1287"
+    },
+    "flags": [
+      [
+        "-O3 -DNDEBUG -fPIC",
+        "-Wall",
+        "-Wextra",
+        "-Werror"
+      ]
+    ],
+    "build_type": "Release",
+    "archive_sha256": "ee5e550a4b1a1424405f3d26b64941ab8376e6313d626a0444298d64b64ab23f",
+    "generated_caller_sha256": "01a5366aefc360deb8789cc9c4e3abcd17c830d5baa5c5db4cb85d4007934e62",
+    "sqlite_header_sha256": "59114192eef65d9428279ec4a4a433631f50d3ca20c202acdd49d2a6bb94fb39"
+  },
+  "sqlitecpp_sources": {
+    ".claude/skills/agent-response-style/SKILL.md": "fe52820f5b0d8b538914a4ca7b66acaf36c2d34cf508037be32dd80f755b2588",
+    ".claude/skills/humanizer/SKILL.md": "2dd885dd96a63e4c3cff281fba639788bff956b4bb759157ef0b0681a114eaa3",
+    ".claude/skills/skill-maintenance/SKILL.md": "31b30378379a749a242ebb3ab659c1a0dfbbf9d0b323f1b5acc55e6bc305062c",
+    ".claude/skills/sqlitecpp-build-cmake/SKILL.md": "e412c2ae0e7e615c38eb2afc83365a97ad0eebfe0d0d76e2e44e311254326b55",
+    ".claude/skills/sqlitecpp-build-meson/SKILL.md": "80e12b634e873a6dcfd48f270ecbab562e6853f8752cff5d8d1202bd36ae93f1",
+    ".claude/skills/sqlitecpp-ci-workflows/SKILL.md": "0f0b9ebe273a8b0270452e7d6d97ef00c2f314dd9e096957ffe52352fe68e9f9",
+    ".claude/skills/sqlitecpp-coding-standards/SKILL.md": "be47c0be2034232aeb29ce1af66534266fffad618a74c90a15818f0a9a7bc862",
+    ".claude/skills/sqlitecpp-doxygen-guide/SKILL.md": "1ac5d21f9e5a8bd5c0f20b61b6a9db36370c9b573fedc0f6a9d96a4d0a385f92",
+    ".claude/skills/sqlitecpp-git-branching/SKILL.md": "d537082ea1c2dd006269e56c598d2deafd1c682d26727d4306fb2ccf52d8e33c",
+    ".claude/skills/sqlitecpp-release/SKILL.md": "a36f6b41d6191f192f041b814dd5d806b4d295ee88c50a0537dd087893e8a439",
+    ".claude/skills/sqlitecpp-sqlite-flags/SKILL.md": "920389e7835470a7c3cdfd1d658ddaa2e50fe81ffecf789bc865b405d26277c2",
+    ".claude/skills/sqlitecpp-testing-practices/SKILL.md": "ecf54099d33f79ffa9f3fc10b28a7a8f7293563bcfb766151c836384f3af47d2",
+    ".claude/skills/sqlitecpp-troubleshooting/SKILL.md": "92ed8f66735c291f775c07aeb9818835c588727d50dd18adeec0f49e6fadff6f",
+    ".claude/skills/sqlitecpp-update-sqlite/SKILL.md": "4fe2c6e88e5669855a6157be5aaf8a77163ea9cbd16f9350f02811167ee19712",
+    ".claude/skills/sqlitecpp-workflow/SKILL.md": "40f246d3924390a0723c853d2c9772b3e4705eea2a99c1d7416554579fc8f404",
+    ".claude/skills/windows-shell-commands/SKILL.md": "7c5051c9da7a6bf86ab0144a9eb1eb3a0c4400e0171a989c4b59b00f13da2802",
+    ".cproject": "661e3115c159fe0fece2381478a9bbdafce5640a2e495d9c3f34c8bcf502d1d7",
+    ".editorconfig": "f2da81afff43661187aaf506278a4007266eb7862f270d08938c8437206768bd",
+    ".gitattributes": "15214365c74269bf8d63a13cc2364ff2956cea1df3f146a90d8f9ff2b751d2ed",
+    ".gitbugtraq": "081b820cf724b438ee490da2937c4563a03d18a54555a35689a5c8bafb52e363",
+    ".github/copilot-instructions.md": "eb024b9949552b34403b2aa063406a02f60132e91fcb03c4ac5dd925a4cacedb",
+    ".github/dependabot.yml": "1d15d6b93d2b6bf31d5dad1aa0e99c49258045d5dd3170e1abbb0696243987fe",
+    ".github/workflows/cmake.yml": "c4dd4f5868b2643706cb76390e82fada433e870c598b5a62594b804c797abb32",
+    ".github/workflows/cmake_builtin_lib.yml": "b851006fcf145e3e9374f98e3c4f5493c938ba43026ec5e63fc42936a7a4d16a",
+    ".github/workflows/cmake_consumer_standards.yml": "22044ec3d29163dd5001b2732e6960440cb7fdc59a0b10cf06e1fc4af40a85f7",
+    ".github/workflows/cmake_subdir_example.yml": "16e3ce06eb6bd5692592785b430d012cc2f26e38977258d1d118363601ab70a5",
+    ".github/workflows/codeql.yml": "f472df6c2bce422769fe882c13e691d283ee5650a2fad5b0742d3f54bdb219c6",
+    ".github/workflows/coverage.yml": "7c6011138a7f3a086b3c8428a8359f8af2df87897a00245a1c994a6793982da6",
+    ".github/workflows/coverity.yml": "60e3435447974d381a2974ee6e3e0bb9bfaa2b71c4a3d25db679d87df9400546",
+    ".github/workflows/meson.yml": "7bf63bc0de8548668b8cfbea63b7e455986fc38b6b16991ef5d6a84764bc837b",
+    ".github/workflows/quality.yml": "a04d39cf33cba9522726a415fa66308dd4e629c6657145a53d9d1e5dd2551321",
+    ".gitignore": "19897c8762752c6b9ad0435ae489062ce5c21516ba2ae1d1ac6e36ea2e4fa681",
+    ".gitmodules": "607955c89b438ef78e2466867d69dc2159bf0344c083e32e117c847bcb03e307",
+    ".project": "1e9f812ab571228a892ebeede743357d329bce4cfb7271e1a7c47c3c5410e039",
+    "AGENTS.md": "ff8e37bfa5530480cc069dbba766313504db6a182f2884865db134d0b3e7ba47",
+    "CHANGELOG.md": "90f5d516c77fa766289a04dbfdc6cdb509d62917bdfce3c6e07774506ccc6fcc",
+    "CMakeLists.txt": "ec6202a74980ab26457892040c6787cef9783d688000ce7717b2c0db0e0bb8e4",
+    "Doxyfile": "d3d4cbbaefa0882de88e1a909900284574b876be4ddb780fc0ee09d71798596f",
+    "LICENSE.txt": "00f43691f376cc7abdab1f9d72ba9d1a92846b481d2df5ffa1c345108b28048c",
+    "README.md": "e02bf2c761d5cc0f098fcbbac9320bcb4d9a1544aea6e9bd33eaa59bdd4c041a",
+    "TODO.txt": "4fc9b5d19ead4a82916460feb553f326f870d4280df7bbac88ab92e07e22cba2",
+    "_config.yml": "89500f4d9d2bb727f973ace596b9ea2e58553acd80c41d95c3c2658f45095560",
+    "build.bat": "cfc099294887e89aaae373271ed0c4fed982fbda7f129dbb0f91ad4a83240eee",
+    "build.sh": "6ec49706abaeee5b5909c86f5f7ead86bf52a9706c239e7aaded132fe4706e7b",
+    "cmake/FindSQLite3.cmake": "ebb164161d60e2c2f97609a62488931d924e8b7cb84b688ddc3a75d414e4d4fa",
+    "cmake/SQLiteCppConfig.cmake.in": "966ca3e9c3665bc538d76197eec907a6f00712cc1deccf56e9223d6322f544af",
+    "cpplint.py": "b95499f9112c4f76a81cccce1dc04c666844f9cceae21461d85bbeda7e248d6a",
+    "docs/README.md": "94d8404222c0bdc5547d011fa58f8c3fb8d2504049fbc96b8770d8cf200b9da5",
+    "examples/example1/README.md": "6f706a0b41a443e8e385970f9581d473e0a4df8b9b6001ade6fdf4c0b16c548d",
+    "examples/example1/example.db3": "f1b6ea265a8636925a9329fc106fdad9017e8978ca7a54f0a05f679d6cefcf75",
+    "examples/example1/logo.png": "01f5a3cc1e3019987839c6ea5a2afb9f9955dfcf617a952a08f631948f0344c7",
+    "examples/example1/main.cpp": "e842ff0ef903c594550d4f5c118303d2103053650f092bbc79370c8cb10864a0",
+    "examples/example1/meson.build": "9ff486c45e453d0dcb5373d4f4ed1ba731154b2e6028c926721ce93749b24344",
+    "examples/example2/CMakeLists.txt": "f8e619caf124e42e41ea91fc24975ed57fc63a69673312a29abeb12a9fa3c487",
+    "examples/example2/README.md": "0e840d3db82a8e78f688404e2fc35249b710f1d91c68162198a82dcef1d3e34c",
+    "examples/example2/build.bat": "2377efb9dada98a2819b06b56b08cf4ce389a54cb0592468d1a6421ab4b0d32c",
+    "examples/example2/build.sh": "9f3cca4826e0d6163a884d7bd7e76df4bd1fdbe22571bc4e1206abf4b44e2750",
+    "examples/example2/meson.build": "5f57215734b40d518b530e5e27866f402ead501fdd1d7b0bf90321956e451769",
+    "examples/example2/src/main.cpp": "0ffaca2c8e1188953fd1747e7630a3503635ff253d2baad343fc7e0fe297d74b",
+    "examples/meson.build": "ef1bc54a51e89443b522d0610901ca579d703720364a232a7ef2b26374cb18fc",
+    "include/SQLiteCpp/Assertion.h": "06a3f600267a0591f5802091e18899cddaaed70d4020435246e5bf16721741b5",
+    "include/SQLiteCpp/Backup.h": "798f073a9c3396db1a0ca03bc3b4a1c2251fa083a0dd259e2b74af1fb25654b6",
+    "include/SQLiteCpp/Column.h": "1a86bdc2b3a68e923fae837956c54b48430521d87fcbb0601f9162e3ec43b175",
+    "include/SQLiteCpp/Database.h": "4c5fb3c9bae143734d63049cf6a47b3e7fd363d114661ae83a33837b02ed4e9a",
+    "include/SQLiteCpp/Exception.h": "e584a3628c98144b8ca54bc96873e84cf3ba5070a9b9d54e30c154025af63017",
+    "include/SQLiteCpp/ExecuteMany.h": "44769c0e4cf6bc5cb3404359d2e04cde6675fb2a8871e81f498fd63899a191a2",
+    "include/SQLiteCpp/SQLiteCpp.h": "cc4da5f4be64221826a8fdae37ab34367a2b615db72885a3b0a3b5843ebd4f8e",
+    "include/SQLiteCpp/SQLiteCppExport.h": "a2f453afbb7a4186026e0257d382fd3ed033d669d90dc61ffbf0c7aa11c126bd",
+    "include/SQLiteCpp/Savepoint.h": "40a41d5ff7d067bca7837d628c938ffacbebf0f15f84434c361a519e8b836220",
+    "include/SQLiteCpp/Statement.h": "117a8ebbc955584cb1c513b2a0ede15d59909d2a5d2875b9a699c57090cec5f2",
+    "include/SQLiteCpp/Transaction.h": "753de02a9a4178266d3b3b1b34289ff342a682bd5f11433c893bb83f45f229e5",
+    "include/SQLiteCpp/Utils.h": "9e7b82a87299e8040348172585e131da920deb204f872185849c7f75a0d0e1ef",
+    "include/SQLiteCpp/VariadicBind.h": "ab40575029c9197b52c18d7b5f4a45b02660875834aeb997f6fbc47496195e41",
+    "meson.build": "78ca7a4f2b3bbf439f8fd294f38a715e2462b37dd9a92fb3d1e5dca852da9e0f",
+    "meson_options.txt": "c3f2ca3b8794e1813452765ea6ec0d6c3fa590326ae712c9279feb9b81eae9b5",
+    "package.xml": "c591d5be20fcd330ad7327aef8894645718533ade592734091458329d5bd7d8e",
+    "sqlite3/CMakeLists.txt": "3298df5247f5b349714d3756458775691894579ad57f9e8c1f3887c2d3342b0b",
+    "sqlite3/README.md": "3c43cfd04d471934f2ad4e459853e15684bfd71bcd4280d41d47487948b3c6ee",
+    "sqlite3/sqlite3.c": "b1dd5d74ec7f29055a6684fa06fb3c2f6821c87dd38f9a458dfd2e8a1db28189",
+    "sqlite3/sqlite3.h": "919e7f2e8ed1d8f56ac17b412b8971c76aa5d1a879752cc6058f75e7d5910e1d",
+    "src/Backup.cpp": "26301ddb7df2fc92a0b1e3e5642afb6fcfc1c2df855a4186970a0640ed56ec1a",
+    "src/Column.cpp": "ea2f6fd933d04e57d27a0cf6ca61610c3fb09e8f15096b987d38798675005fe4",
+    "src/Database.cpp": "6e0b60b80cb46b9b10b5c353d7085c600796d021138c096263f75358667e2256",
+    "src/Exception.cpp": "d6d553432d78c6788a3962554246dbe33b310ee090841beefc91badb7ea2eccc",
+    "src/Savepoint.cpp": "365aa0430d9bdffc1e7e57484051413a8b12e7d41e50dc4cc5c31c281c9c18f5",
+    "src/Statement.cpp": "4de703808121b7166beb3755816cb51cc2bf37fdbe0ac01858cc95e807581d6f",
+    "src/Transaction.cpp": "84175da16ebb124f99a4d3d3983b660697cfdc28e92980754214b610ef291f86",
+    "subprojects/.gitignore": "b4047ae65d9b8a825276e40420c98a7ed984feeee9e52579c276814b03eeefec",
+    "subprojects/gtest.wrap": "ace53904cf5489c9f06f0038cc047be33bb56dc0c95ae9b2979d0640705d57fe",
+    "subprojects/sqlite3.wrap": "bdfcf682644e120acbde022a30c42c33c541734767fa6b0b56f83336d99b5215",
+    "tests/Backup_test.cpp": "ec8a34852c258dd5a0013c4cc950ab28b288ceba558a1b1b938f83023b329922",
+    "tests/Column_test.cpp": "493ece1c02be2f952b68d54b25f952c546a523aebbea7dc53355da45dabeeaed",
+    "tests/Database_test.cpp": "d3614bb83ab4f2e965f5c5fbe74e21f317f24d3f1b25f0c73b21e5e283335055",
+    "tests/Exception_test.cpp": "ab094ef04fd2574e0614431121708e10491fe4a17b8706d8dab567765d0cace2",
+    "tests/ExecuteMany_test.cpp": "250fa03dc431745ba2b0b1cbfc2180ae9f7f5e87fb91daad7b065f737235a04c",
+    "tests/Savepoint_test.cpp": "dec43147cb987dd3030de47e577a98b59a7185d50e8cfd6a552885a070ad75e1",
+    "tests/Statement_test.cpp": "75ed34f979ba78bf0a66cf317b826b12add0b34b4f5104064a32ed54d7786ec8",
+    "tests/Transaction_test.cpp": "cf5b8347165146a62cb03e4fec2f937af95dbb32eec80052eb2f2102edac3c3d",
+    "tests/VariadicBind_test.cpp": "f41200e68da2d51a0dbdc577e7f91856339fec145ae070d4c715baeef5be14a0",
+    "tests/consumer/CMakeLists.txt": "d128e650131122ddd7ccb74964cafb147d45edb38de147c661f37de018f57492",
+    "tests/consumer/main.cpp": "29a9709723c645905e35d531cc878e400f16a7e46695e5a9ede3df8015add7a9"
+  },
+  "sqlitecpp_build": {
+    "revision": "df0a28ca9733f687ab7ce77f070c0df84368a45e",
+    "compiler": {
+      "file": "g++",
+      "version": "g++ (GCC) 16.2.1 20260810",
+      "sha256": "f04191f6a7b2cd7d9a62e1745872b8a6088791e5af6955488c69c9b2c4668bc9"
+    },
+    "flags": "-O2 -DNDEBUG",
+    "archive_sha256": "4953897d59804245047c424a26901b7511560c938d9af55e83f9b1a02391bd62"
+  },
+  "rustc": {
+    "version": "rustc 1.101.0-nightly (822182db4 2026-10-13)\nbinary: rustc\ncommit-hash: 822182db4c4a1827256881d8c7aa685f0bcf2b11\ncommit-date: 2026-10-13\nhost: x86_64-unknown-linux-gnu\nrelease: 1.101.0-nightly\nLLVM version: 23.1.3",
+    "sha256": "ee1c504a3a86322e473259c90eeaf464952acad669d90f7134e87ed43e062934"
+  },
+  "rust_dependencies": [
+    {
+      "name": "bitflags",
+      "version": "2.13.2",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "checksum": "3ded4057c258ba199e2d26386d3af3780957ecaee6c4ef4041c6b4b8b97c0b06"
+    },
+    {
+      "name": "fallible-iterator",
+      "version": "0.3.0",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "checksum": "2acce4a10f12dc2fb14a218589d4f1f62ef011b2d0cc4b3cb1bba8e94da14649"
+    },
+    {
+      "name": "fallible-streaming-iterator",
+      "version": "0.1.9",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "checksum": "7360491ce676a36bf9bb3c56c1aa791658183a54d2744120f27285738d90465a"
+    },
+    {
+      "name": "libsqlite3-sys",
+      "version": "0.39.1",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "checksum": "14a5f01b87b92705d07b433c06f96cbc764637d81a0bffb5734ce17cf0f9a2b3",
+      "dependencies": [
+        "pkg-config",
+        "vcpkg"
+      ]
+    },
+    {
+      "name": "pkg-config",
+      "version": "0.3.34",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "checksum": "f6b464fbc74e149a392436b17d523f769e057cb6877f6a5c4618bc6f11800548"
+    },
+    {
+      "name": "rusqlite",
+      "version": "0.41.1",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "checksum": "da9bba6f3506135e120a6586df05be18b48d18896600646a4bec8f993d91a594",
+      "dependencies": [
+        "bitflags",
+        "fallible-iterator",
+        "fallible-streaming-iterator",
+        "libsqlite3-sys",
+        "smallvec"
+      ]
+    },
+    {
+      "name": "smallvec",
+      "version": "1.16.4",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "checksum": "d0d5d4b1981b8bbbb7aed204cae5726d683d5d6ac7e74ec54122ea28f315e7c8"
+    },
+    {
+      "name": "sqlite-filebacked-bench",
+      "version": "0.1.0",
+      "dependencies": [
+        "rusqlite"
+      ]
+    },
+    {
+      "name": "vcpkg",
+      "version": "0.2.15",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "checksum": "accd4ea62f7bb7a82fe23066fb0957d48ef677f6eeb8215f372f52e48bb32426"
+    }
+  ],
+  "rust_profile": {
+    "opt_level": 2,
+    "lto": "thin",
+    "codegen_units": 16,
+    "incremental": true,
+    "bundled_sqlite": false,
+    "cargo_lock_sha256": "6216224e10845ce23eee4a174a5ffed4e9d09b0a96566ab99ace5487cab6808c"
+  },
+  "tools": {
+    "gcc": {
+      "file": "gcc",
+      "version": "gcc (GCC) 16.2.1 20260810",
+      "sha256": "8aac907d6fbf40394b424b5fa4a2ad1aa291dac7d3a0315c5b415c1f5ace1287"
+    },
+    "g++": {
+      "file": "g++",
+      "version": "g++ (GCC) 16.2.1 20260810",
+      "sha256": "f04191f6a7b2cd7d9a62e1745872b8a6088791e5af6955488c69c9b2c4668bc9"
+    },
+    "cmake": {
+      "file": "cmake",
+      "version": "cmake version 4.4.5",
+      "sha256": "9cb6fe1977c7f184c054af4ee478728440bc90430572110ef82f5635e42741a0"
+    },
+    "cargo": {
+      "file": "rustup",
+      "version": "rustup 1.29.2 (2026-10-22)",
+      "sha256": "c221f16e049e70babcc5b22ca7612579de5646ca39f74871d014053faa913fe0"
+    },
+    "git": {
+      "file": "git",
+      "version": "git version 2.56.0",
+      "sha256": "2912a2a32f408c9b8122e476251b32f4b35f4c3f0c15961686ae87ca456d384c"
+    },
+    "python3": {
+      "file": "python3.14",
+      "version": "Python 3.14.9",
+      "sha256": "122ce07db306cd111fd10e27125460362610452983a64903c470afd66b6403bd"
+    },
+    "/usr/bin/time": {
+      "file": "time",
+      "version": "time (GNU Time) 1.10",
+      "sha256": "ccc576561484fe2c3f83bbceabfeba78408e59ac9c9a8161ad2a017b1037663d"
+    }
+  },
+  "sqlite_libraries": {
+    "goose": {
+      "file": "libsqlite3.so.3.54.1",
+      "sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a"
+    },
+    "raw-c-api": {
+      "file": "libsqlite3.so.3.54.1",
+      "sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a"
+    },
+    "sqlitecpp": {
+      "file": "libsqlite3.so.3.54.1",
+      "sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a"
+    },
+    "rusqlite": {
+      "file": "libsqlite3.so.3.54.1",
+      "sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a"
+    },
+    "python": {
+      "file": "libsqlite3.so.3.54.1",
+      "sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a"
+    },
+    "policy": {
+      "file": "libsqlite3.so.3.54.1",
+      "sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a"
+    }
+  },
+  "parent_engine": {
+    "file": "libsqlite3.so.3.54.1",
+    "sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a",
+    "mapped_object_verified": true
+  },
+  "sqlite_identity": {
+    "version": "3.54.1",
+    "source_id": "2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6alt1",
+    "compile_options": [
+      "ATOMIC_INTRINSICS=1",
+      "COMPILER=gcc-16.2.1 20260810",
+      "DEFAULT_AUTOVACUUM",
+      "DEFAULT_CACHE_SIZE=-2000",
+      "DEFAULT_FILE_FORMAT=4",
+      "DEFAULT_JOURNAL_SIZE_LIMIT=-1",
+      "DEFAULT_MMAP_SIZE=0",
+      "DEFAULT_PAGE_SIZE=4096",
+      "DEFAULT_PCACHE_INITSZ=20",
+      "DEFAULT_RECURSIVE_TRIGGERS",
+      "DEFAULT_SECTOR_SIZE=4096",
+      "DEFAULT_SYNCHRONOUS=2",
+      "DEFAULT_WAL_AUTOCHECKPOINT=1000",
+      "DEFAULT_WAL_SYNCHRONOUS=2",
+      "DEFAULT_WORKER_THREADS=0",
+      "DIRECT_OVERFLOW_READ",
+      "ENABLE_COLUMN_METADATA",
+      "ENABLE_DBSTAT_VTAB",
+      "ENABLE_FTS3",
+      "ENABLE_FTS3_PARENTHESIS",
+      "ENABLE_FTS4",
+      "ENABLE_FTS5",
+      "ENABLE_MATH_FUNCTIONS",
+      "ENABLE_PERCENTILE",
+      "ENABLE_PREUPDATE_HOOK",
+      "ENABLE_RTREE",
+      "ENABLE_SESSION",
+      "ENABLE_STAT4",
+      "ENABLE_STMTVTAB",
+      "ENABLE_UNLOCK_NOTIFY",
+      "HAVE_ISNAN",
+      "MALLOC_SOFT_LIMIT=1024",
+      "MAX_ATTACHED=10",
+      "MAX_COLUMN=2000",
+      "MAX_COMPOUND_SELECT=500",
+      "MAX_DEFAULT_PAGE_SIZE=8192",
+      "MAX_EXPR_DEPTH=10000",
+      "MAX_FUNCTION_ARG=1000",
+      "MAX_LENGTH=1000000000",
+      "MAX_LIKE_PATTERN_LENGTH=50000",
+      "MAX_MMAP_SIZE=0x7fff0000",
+      "MAX_PAGE_COUNT=0xfffffffe",
+      "MAX_PAGE_SIZE=65536",
+      "MAX_SCHEMA=10000000",
+      "MAX_SQL_LENGTH=1000000000",
+      "MAX_TRIGGER_DEPTH=1000",
+      "MAX_VARIABLE_NUMBER=250000",
+      "MAX_VDBE_OP=250000000",
+      "MAX_WORKER_THREADS=8",
+      "MUTEX_PTHREADS",
+      "SECURE_DELETE",
+      "SYSTEM_MALLOC",
+      "TEMP_STORE=1",
+      "THREADSAFE=1"
+    ]
+  },
+  "engine_identity_scope": "Runtime identity/options explicitly queried from the common loaded object; inferred for each runner/probe from its exact matching object hash.",
+  "binary_sha256": {
+    "goose": "224a79c7ed9db75b51424f7c90f1a9e0c0901c7c6ed705bb1967a0531a8fc64b",
+    "raw-c-api": "43a01092c985b814c27a22033250bbbd4b1e05e16106e0223e3fa1705193b6a1",
+    "sqlitecpp": "65b6c1b459614e6c79a4327535af2bc657043d2ac3a4684cef68f5516565a0c9",
+    "rusqlite": "246b2c695c8791637765bcdafb819fd534b1d8666d54f9e467ed717540d4a7fd",
+    "python": "122ce07db306cd111fd10e27125460362610452983a64903c470afd66b6403bd",
+    "policy": "7697a8805a432ee43a52591898a4076e997b16ea0cbfca6513247db2dae25277"
+  },
+  "python": {
+    "version": "3.14.9 (main, Oct 25 2026, 14:52:47) [GCC 16.2.1 20260810]",
+    "executable_sha256": "122ce07db306cd111fd10e27125460362610452983a64903c470afd66b6403bd",
+    "extension_file": "_sqlite3.cpython-314-x86_64-linux-gnu.so",
+    "extension_sha256": "69c296f94a1b845b1e1af0074bc5531c025901f41a56b5164ff1cc6eb3025a0f",
+    "isolated": true,
+    "optimize": "0"
+  },
+  "policy_preflights": {
+    "delete": {
+      "raw_stdout": "policy delete 2 4096 -2000 1000 1 0 normal 0\n",
+      "raw_stderr": "",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "0b8987b044d1c312c1249e24a7347a41187ed855998ca81c9461d0dbf322cf92"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "final_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "0b8987b044d1c312c1249e24a7347a41187ed855998ca81c9461d0dbf322cf92"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "scope": "Separate process: authorizer denial checked before test-only removal for fixed policy reads; actual Goose settings inferred from same adapter archive/options/engine."
+    },
+    "wal": {
+      "raw_stdout": "policy wal 2 4096 -2000 1000 1 0 normal 0\n",
+      "raw_stderr": "",
+      "initial_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "c27f622af0899bc1fc5541f8b1783d3baf6a12340b4b619b413ff6f1fedb8559"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "final_files": {
+        "database": {
+          "bytes": 8192,
+          "sha256": "c27f622af0899bc1fc5541f8b1783d3baf6a12340b4b619b413ff6f1fedb8559"
+        },
+        "wal": null,
+        "shm": null,
+        "journal": null
+      },
+      "scope": "Separate process: authorizer denial checked before test-only removal for fixed policy reads; actual Goose settings inferred from same adapter archive/options/engine."
+    }
+  },
+  "parent_completed_utc_ns": 1793866389327117298,
+  "load_after": [
+    7.4228515625,
+    7.71728515625,
+    6.29736328125
+  ]
+}

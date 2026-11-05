@@ -13,7 +13,7 @@ env -u LD_LIBRARY_PATH -u LD_PRELOAD -u LD_AUDIT /usr/bin/python3 \
 ```
 
 Select an allowed/coordinated core or omit affinity; no exclusive isolation.
-Requires Linux, GNU time/findmnt, GCC/G++, CMake, Cargo/Rust, Python sqlite3,
+Requires Linux, GNU time/findmnt, GCC/G++, CMake, Cargo/Rust, Python 3.11+ with sqlite3,
 normal Goose requirements and clean pinned SQLiteCpp cache
 `.build/alternatives/SQLiteCpp` (provisioned by the alternative benchmark).
 Output must be new, outside the checkout or under ignored `.build`.
@@ -120,3 +120,8 @@ removal. It closes both before reporting. It is never linked into the package.
 Engine references: [transaction locking](https://sqlite.org/lang_transaction.html),
 [synchronous policy](https://sqlite.org/pragma.html#pragma_synchronous), and
 [WAL checkpointing](https://sqlite.org/wal.html#checkpointing).
+
+Only caller order is shuffled within each fixed journal/workload block; block
+order is fixed. Cross-journal differences are observational, not causal evidence.
+FULL matches a configured policy, not identical power-loss behavior across modes.
+The automatic_retries field counts application-level retries only.

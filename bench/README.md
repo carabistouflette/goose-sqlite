@@ -70,3 +70,11 @@ The [six-path harness](zeroblob/README.md) compares copied binding, zero binding
 and existing SQL zero creation through Goose and raw C. [Retained results](results/zeroblob-2026-11-05/README.md)
 include every sample and separate binding-phase allocator probes. Timings are
 mixed; compact representation benefits both zero APIs.
+
+## File-backed transactions
+
+The [file-backed recorder](filebacked/README.md) adds five callers across DELETE/WAL
+commit, rollback and controlled BUSY rejection. [Retained results](results/filebacked-2026-11-05/README.md)
+include every latency/error code, reopened data/integrity verification, policy and
+filesystem provenance, throughput and whole-child peak RSS. Within-case caller
+orders are shuffled; fixed journal blocks are not a causal WAL comparison.

@@ -401,3 +401,20 @@ diagnostics remain as documented.
 [The performance record](../bench/results/zeroblob-2026-11-05/README.md) retains
 270 samples and 30 allocator probes. It includes existing SQL zero creation;
 timing is mixed and binding-phase allocation is not total memory usage.
+
+## File-backed benchmark correctness
+
+Measured source 52dca0d4f3d5718b5f7c4c586249d7404c80f783 passed complete five-caller
+DELETE/WAL smokes with independent full-data and integrity checks before the
+principal run. The principal series completed all 270 process samples, 34560
+operation latencies and 30 separate warmups. Bad policy/count/negative-code and
+corrupt-payload fixtures were separately rejected. [Results and provenance](../bench/results/filebacked-2026-11-05/README.md)
+retain outcome counts, same-connection BUSY recovery, shared engine and policy
+proof, Git/source/compiler identities, filesystem observations and raw samples.
+
+The test-only native policy probe checks denied PRAGMAs before inspecting two
+connections in its isolated process; it is not linked into the production library.
+Hosted benchmark smoke explicitly selects DELETE on older packaged engines;
+full positive WAL remains covered by the existing pinned-engine native tests.
+No production implementation, native manifest or compiler pin changed. Original
+cold-engine TSan diagnostics and serialized engine-init scope remain unchanged.
