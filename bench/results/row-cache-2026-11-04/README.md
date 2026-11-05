@@ -1,5 +1,7 @@
 # Row scan profile and rejected cache experiment
 
+> Historical diagnostic for a rejected candidate. It does not describe current production performance. See the [currentness audit](../../CURRENTNESS.md).
+
 The lazy per-row column-count cache was **rejected**. Nine matched pairs across
 all ten fixtures give mixed medians and wide shared-host spreads. The evidence
 does not justify extra cache state or establish statistically significant gains

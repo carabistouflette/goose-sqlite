@@ -1,147 +1,82 @@
 # goose-sqlite
 
-Small, synchronous SQLite connections and prepared statements for the
-[Goose programming language](https://github.com/aardappel/goose). Apache-2.0.
-Experimental interface; no tagged release yet. Tested on Linux x86-64 and ARM64.
+A synchronous SQLite binding for the [Goose language](https://github.com/aardappel/goose).
+It uses the system SQLite library. The source is Apache-2.0.
 
-Typed parameter binding, strict typed reads, explicit transactions, copied text
-and blobs, incremental BLOB ranges, backup with a page budget, opt-in WAL,
-explicit checkpoints, zero-filled BLOB placeholders, input and VM limits,
-and checked resource handles. No ORM or pool.
-SQLite is a required native dependency, not vendored in this repository.
+**Status:** experimental; no release tag is published. The runtime source reviewed
+for this documentation is public commit
+[`70ebfc2`](https://github.com/carabistouflette/goose-sqlite/commit/70ebfc263a1d1d8714899d5ec43510076668f5b5).
+That snapshot passed [its three CI jobs](https://github.com/carabistouflette/goose-sqlite/actions/runs/42084238303).
+The docs update does not change the runtime.
 
-## Quickstart
+Tested platforms are Linux x86-64 and ARM64. Other platforms are unverified.
+SQLite 3.37 or newer is required for the base API. Optional WAL requires a
+recognized SQLite version with the WAL-reset fix; see [platform requirements](docs/platforms.md).
 
-Install Git, CMake 3.27+, Make, Python 3, a C compiler, a C++20 compiler, pthreads,
-SQLite 3.37+ development headers/library, and pkg-config. On Ubuntu 24.04:
+## Quick start
+
+On Ubuntu 24.04, install the compiler and SQLite development files, then run the
+included example:
 
 ```sh
 sudo apt-get install build-essential cmake git python3 libsqlite3-dev pkg-config
-# Clang is additionally required for sanitizer/fuzz checks.
 git clone https://github.com/carabistouflette/goose-sqlite.git
 cd goose-sqlite
 make setup
-make check test
 .toolchain/goose/build/goose run examples/items.goose
 ```
 
-The example prints `1: Goose`. `make setup` builds the exact compiler in
-[GOOSE_REVISION](GOOSE_REVISION), with optional graphics/audio disabled. An
-existing compiler at that revision can be selected with `make GOOSE=/path/to/goose`.
-Linux's in-process runner also needs libc development headers.
+The example prints `1: Goose`. `make setup` builds the exact compiler commit in
+[GOOSE_REVISION](GOOSE_REVISION). Goose requires C++20; this package's native
+adapter requires a C compiler. Linux runner builds also need libc development
+headers. To run the correctness suite, use `make check test`.
 
-## Usage
-
-From a program next to a checkout named `goose-sqlite`:
+In an application, import a full source commit rather than a moving branch. For
+example, this imports the reviewed runtime snapshot above:
 
 ```goose
-import sqlite from "../goose-sqlite";
-import std;
-
-fn main() {
-    assert(sqlite::initialize() == sqlite::OK);
-    let options = sqlite::Options { .. };
-    let db, opened = sqlite::open(":memory:", options);
-    assert(opened == sqlite::OK);
-    let query, prepared = sqlite::prepare(db, "SELECT ?1");
-    assert(prepared == sqlite::OK);
-    assert(sqlite::bind_text(query, 1, "Hello, Goose!") == sqlite::OK);
-    assert(sqlite::step(query) == sqlite::ROW);
-    var text: u8[>..] = [];
-    assert(sqlite::column_text(query, 0, text) == sqlite::OK);
-    print(text);
-    assert(sqlite::step(query) == sqlite::DONE);
-    assert(sqlite::finalize(query) == sqlite::OK);
-    assert(sqlite::close(db) == sqlite::OK);
-}
+import sqlite from "carabistouflette/goose-sqlite@70ebfc263a1d1d8714899d5ec43510076668f5b5";
 ```
 
-Declare the package in your program's root file. A reviewed Git dependency can use
-`import sqlite from "carabistouflette/goose-sqlite@746f07c12ab540b5d66fb0528fda0cb1ea4915e3";`.
-This pins the reviewed zero-filled BLOB, startup, checkpoint, metadata/status,
-storage and statement-diagnostics interface. Imports and namespace are `sqlite`.
-Applications must handle errors and clean up resources on their own error paths;
-assertions above keep the example short. Native resource handles belong to their
-OS thread. Copied handles alias one resource; closing/finalizing invalidates all
-copies. Foreign-thread/stale/default handles return `INVALID_HANDLE`.
+The namespace is `sqlite`. The runnable programs in [`examples/`](examples/)
+show prepared statements and transaction recovery.
 
-## Contract and scope
+## What the API provides
 
-- Text/blob input buffers are copied; returned bytes belong to the caller and
-  survive cleanup. Zero-filled bindings need only a length.
-- Parameter indices start at 1; column indices at 0. Reads require exact SQLite
-  storage classes, including separate NULL, empty text and empty blob.
-- `step` returns `ROW`, `DONE`, or an error. After DONE/error, call `reset` before
-  reuse. Reset preserves bindings; `clear_bindings` is explicit.
-- `execute` accepts one statement with no result columns. Queries and RETURNING
-  are rejected before stepping; use `prepare`/`step` for them.
-- Nonnegative results are SQLite codes, including extended error codes. Negative
-  results are wrapper errors. Read [the full interface](docs/api.md) before use.
-- Default busy timeout is 1000 ms; default approximate VM work budget is one
-  million instructions per prepare/step. These are not total time/memory bounds.
-- Defensive connection policies deny PRAGMA, ATTACH/DETACH, extension loading,
-  and virtual table creation/deletion. Virtual tables and VACUUM are unsupported.
-  Filenames cannot be `file:` URIs. Ordinary file access is not sandboxed.
+- Prepared statements, typed bindings and exact-type reads. Input and output
+  text/blob bytes are copied; empty text, empty BLOB and NULL remain distinct.
+- Explicit transactions and savepoints, connection status, statement metadata
+  and diagnostics, incremental BLOB access, page-bounded online backup, and
+  opt-in WAL/checkpoints.
+- Thread-affine opaque handles, stale-handle checks and thread-exit cleanup.
+  A handle copy aliases the same resource; closing or finalizing invalidates all
+  copies. Check every returned result and clean up on error paths.
 
-[Platforms and requirements](docs/platforms.md) · [Security](SECURITY.md) ·
-[Contributing](CONTRIBUTING.md) ·
-[Benchmarks](bench/README.md) · [Validation](docs/validation.md) ·
-[Third-party notices](THIRD_PARTY_NOTICES.md)
+Read [the API contract](docs/api.md) before relying on lifecycle, error or storage
+details. In particular, `step` returns `ROW`, `DONE` or an error; reset before
+reusing after `DONE` or an error. `execute` accepts one statement with no result
+columns. It does not start a transaction for you.
 
-Named parameters and metadata are available through `parameter_count`,
-`parameter_index` and copied `column_name`. `changes`, `last_insert_rowid` and
-`autocommit` expose checked connection status. See [alternative features](docs/alternatives.md)
-and the [matched-engine benchmark methodology](bench/alternatives/README.md) for
-scope, remaining gaps and performance comparison rules.
+## Limits and security
 
-`Options.wal` provides verified WAL initialization on recognized engines with
-SQLite's WAL-reset fix, preserving at least FULL synchronization. `blob_open`,
-`blob_size`, `blob_read`, `blob_write`, `blob_close` and `backup` add checked storage
-operations. Writable BLOBs require explicit transactions and bypass SQL CHECKs
-and UPDATE triggers; read [the contract and limits](docs/api.md) before using them.
-WAL requires a suitable local filesystem and patched engines for all participants.
-`checkpoint` adds explicit PASSIVE/FULL/RESTART/TRUNCATE control with checked frame
-counts, including partial progress on BUSY. Checkpoints are synchronous I/O and
-have no hard time or frame budget; see the API limits above.
+The default busy timeout is 1 second and the default approximate VM budget is
+1,000,000 instructions per prepare and step. Neither bounds total elapsed time,
+memory, disk use, I/O, or the number of rows a caller reads. SQL/value limits and
+per-thread handle limits are documented in the [API](docs/api.md).
 
-The [incremental-read results](bench/results/storage-2026-11-04/README.md) retain
-two complete nine-round series, including the disclosed CPU overlap. Partial reads
-benefit from copying only the needed range; full-value reads favor column_blob.
-Both raw SQLite C and Goose can use this API. No universal ranking is claimed.
+The connection denies PRAGMA, ATTACH/DETACH, extension loading and virtual-table
+creation/deletion. Virtual tables and VACUUM are unsupported. This is not a SQL
+sandbox: SQL is application code, database parsing relies on system SQLite, and
+ordinary filenames use normal operating-system path rules. Writable incremental BLOB operations bypass
+SQL CHECK constraints and UPDATE triggers. See [security limits](SECURITY.md).
 
-Storage recovery checks inject read/write/full/sync/truncate/delete/SHM errors and process crashes, including
-death after acknowledged commits. See [methodology and retained results](tests/RECOVERY.md)
-for the completed compiler/engine matrix and the process-crash/power-loss distinction.
-[Concurrent connection checks](tests/CONCURRENCY.md) cover token lifetimes, thread-exit
-rollback and WAL snapshots. Separate TSan checks instrument both engine and adapter;
-their documented scope serializes SQLite engine initialization.
+## Performance and validation
 
-`statement_status` exposes checked scan/sort/VM/run and approximate statement-memory
-metrics. The [transaction/savepoint example](examples/transactions.goose) preserves
-original and recovery errors explicitly. [Realistic workload results](bench/results/workloads-2026-11-04/README.md)
-retain ten fixtures across five callers, whole-process peak RSS and matched registry
-measurements, including mixed/slower cases and the native-executable timing scope.
+There is no general performance ranking. Each benchmark is tied to its recorded
+source, tools, engine and workload. [Benchmark currentness](bench/CURRENTNESS.md)
+marks which results still match the runtime and which are historical snapshots.
+Raw samples and protocols are linked from the [benchmark guide](bench/README.md).
 
-`bind_zeroblob` binds a bounded zero-filled value without a caller input buffer.
-The [six-path comparison](bench/results/zeroblob-2026-11-05/README.md) includes the
-existing SQL function and reports mixed timings: both zero APIs avoid payload
-allocation at binding time. Materialization can still allocate or fail.
-The [correctness follow-up](tests/results/zeroblob-2026-11-05/README.md) fixes
-materialization OOM being mistaken for an empty BLOB and retains regression evidence.
-
-`transaction_state` reports the main database's NONE/READ/WRITE state, separately
-from autocommit. Live cursors can retain snapshots even after COMMIT. See the
-[contract](docs/api.md) and [validation](tests/results/transaction-state-2026-11-05/README.md).
-This is observation, not a checkpoint-success or performance guarantee.
-
-[File-backed transaction results](bench/results/filebacked-2026-11-05/README.md)
-compare five callers with matched engine and FULL policy across commit, rollback
-and controlled BUSY rejection. All raw latencies, outcome/data checks and process
-RSS remain visible; this is warm-cache API-path evidence, not a power-loss or
-universal performance ranking.
-
-[Coordinated WAL reader/writer results](bench/results/mixedwal-2026-11-05/README.md)
-add 50 finite pairs across five callers and balanced CPU orientations. All 6,400
-commits and 69,359 checked snapshots passed. Latencies, variable reader counts,
-separate role RSS and raw journals are retained. This is a coupled workload with
-logging/reader waits, not identical offered load or an isolated binding speedup.
+[Validation summary](docs/validation.md) · [Platform support](docs/platforms.md) ·
+[Design](docs/design.md) · [Alternatives](docs/alternatives.md) ·
+[Contributing](CONTRIBUTING.md) · [Third-party notices](THIRD_PARTY_NOTICES.md)

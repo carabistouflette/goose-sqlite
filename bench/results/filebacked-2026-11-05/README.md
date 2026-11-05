@@ -1,5 +1,7 @@
 # File-backed transaction and BUSY comparison
 
+> Historical source and harness snapshot. The table applies to these recorded builds only. See the [currentness audit](../../CURRENTNESS.md).
+
 Measured clean source: `52dca0d4f3d5718b5f7c4c586249d7404c80f783`.
 All 270 process samples, 34560 operation latencies and 30 separate warmups passed.
 Each sample contains 128 transactions/attempts; commit/rollback transactions have

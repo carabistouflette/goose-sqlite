@@ -1,36 +1,24 @@
-# Third-party dependencies
+# Third-party notices
 
-This repository's code is Apache-2.0 (LICENSE). No SQLite implementation is
-vendored. Builds link the installed SQLite development/runtime library (3.37+).
-SQLite's core is [public domain](https://sqlite.org/copyright.html); downstream
-packages and optional extensions may have additional notices. Inspect your
-operating-system package for its exact version, configuration and notices.
+This repository's code is licensed under Apache-2.0; see [LICENSE](LICENSE).
+SQLite is a required system dependency and is not included in this repository.
+SQLite is public domain. Check your operating-system package for its version,
+build options and notices.
 
-The pinned Goose compiler is fetched from https://github.com/aardappel/goose
-by scripts/setup-goose.sh. Its code and bundled dependencies retain their own
-licenses and notices in that checkout; generated toolchain files are not
-redistributed as part of this source repository. pthreads and libc come from
-the host platform and retain their platform licenses.
+The setup script fetches the Goose compiler from
+[aardappel/goose](https://github.com/aardappel/goose) at the full commit in
+[GOOSE_REVISION](GOOSE_REVISION). The compiler and its bundled dependencies keep
+their own licenses. They are build tools and are not redistributed here. The host
+also supplies libc and pthreads.
 
-## Optional comparison harness
+## Optional comparison benchmarks
 
-The optional comparison benchmarks use SQLiteCpp3.4.0 (MIT) at its recorded full
-commit and builds rusqlite0.41.1 (MIT) with the checked-in Cargo.lock. Their source
-and dependency notices remain in their fetched checkouts/crate sources; none is
-vendored into this library or linked into its production adapter. Python sqlite3
-uses the installed Python runtime (PSF license and historical notices). See
-[the cited comparison](docs/alternatives.md) for first-party license/source links.
-Generated comparison executables are ignored build artifacts, not source releases.
+The optional comparison harness fetches SQLiteCpp 3.4.0 and rusqlite 0.41.1 at
+the recorded revisions and uses the installed Python runtime. None of these
+projects is vendored into or linked by the production adapter. Their licenses and
+source references are listed in [the comparison notes](docs/alternatives.md).
 
-The optional validation script scripts/test-wal-engine.py downloads SQLite 3.54.1
-into ignored build output, verifying a pinned archive SHA-256 and the upstream
-sqlite3.c SHA3-256 from its release record. That test-only engine is compiled with
-ASan/UBSan or separately TSan, with DEFAULT_WAL_SYNCHRONOUS=1, to exercise
-positive WAL behavior on CI;
-it does not replace or vendor the production system dependency. SQLite is in the
-public domain: https://sqlite.org/copyright.html .
-
-The optional mixed-WAL CI smoke reuses that verified upstream source to build a
-separate normal engine with recorded flags in ignored output. All five smoke
-callers explicitly load its matching object; it neither replaces the production
-system dependency nor weakens the production WAL version gate.
+The optional WAL test downloads a checksum-verified SQLite 3.54.1 source archive
+to ignored build output. It is a test engine, not a replacement for the system
+dependency. A separate mixed-WAL smoke also builds a normal engine from that
+verified source; neither engine is part of the published source package.

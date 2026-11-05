@@ -1,90 +1,63 @@
-# Benchmark methodology
+# Benchmarks
+
+The benchmark records are measurements of named source snapshots. They do not
+show that Goose is faster than another library in general. Read
+[currentness and source limits](CURRENTNESS.md) before using any table.
+
+## Run the basic caller comparison
+
+The basic runner compares the checked Goose adapter with a checked C caller on
+the same SQLite library. Both callers use the same SQL and connection settings.
+The C caller is not unrestricted raw SQLite. The comparison includes caller,
+builder, and foreign-call costs; it does not compare different database engines.
+
+After setting up a Goose compiler, run:
 
 ```sh
 make setup
 make bench BENCH_ITERATIONS=10000
-# Or choose an existing pinned compiler:
-python3 bench/measure.py --goose /path/to/goose --iterations 10000 --runs 3 --output .build/bench-results
 ```
 
-Requires GCC (override BENCH_CC with a single compiler executable),
-Python 3 and SQLite development files. The harness builds both callers at -O2, preserving assertions and the production
-adapter's safety policies. Goose builds the native CMake target in its normal
-Release configuration (-O3/-DNDEBUG on tested GCC). Both callers link that exact
-static archive and the exact SQLite library found by CMake. The native source has
-no assertions. A fresh temporary Goose cache excludes stale package options and
-ambient CFLAGS/CXXFLAGS/CPPFLAGS/LDFLAGS are removed for these builds. No LTO or CPU-specific flags are added.
+Or use an existing Goose compiler:
 
-Nine fixtures: prepare/step/read/finalize SELECT 1; reused text binding/copy of
-0, 32, 4096 and 65536 bytes; BLOB binding/copy of 0, 4096 and 1048576 bytes; and reused inserts inside one explicit transaction.
-The largest text fixture uses one tenth the iteration count; the 1 MiB BLOB uses
-one hundredth. Insert validation checks both row count and inserted-value sum. Every sample checks
-its checksum; text workloads also check every copied byte against the input.
-All fixtures include connection open and close. C output is initialized once to match the first Goose builder resize.
-Successful reads reuse existing storage without clearing/reinitializing it; all
-returned bytes are still copied and compared. Only a newly grown suffix needs
-initialization in the Goose builder. Each executable gets a separate warmup;
-recorded samples alternate execution order over three passes by default.
+```sh
+python3 bench/measure.py \
+  --goose /path/to/goose \
+  --iterations 10000 \
+  --runs 3 \
+  --output .build/bench-results
+```
 
-The C baseline calls the same checked production adapter. It is not unrestricted
-raw SQLite and does not measure adapter overhead relative to raw SQLite. The
-comparison helps identify Goose caller/builder/foreign-call overhead with matched
-SQL and connection policies; allocation/runtime startup differs between languages.
-It is not a ranking against other libraries or database engines.
+The runner builds both callers at `-O2`, while the production native adapter is
+built by CMake in Release mode. It removes ambient compiler flags and gives Goose
+a fresh temporary cache. Each fixture has a separate warmup; samples alternate
+caller order. The JSON output records every sample, checksum, source and binary
+hash, compiler and SQLite identity, machine, OS, affinity, and build flags.
 
-samples.json records every whole-process wall and child user+system CPU sample,
-source hashes, executable/compiler hashes, Goose revision, runtime SQLite version/source ID/compile options,
-C compiler/flags, native CMake build type/flags/archive hash, build/runtime SQLite library hashes (required to match between callers),
-hardware, OS, CPU affinity and source revision/dirty status.
-Timing includes process startup, setup and cleanup; small runs are smoke tests,
-not useful performance estimates. The host is shared, CPU frequency is not fixed,
-and affinity does not imply exclusive cores. No timing thresholds in CI. Profile
-an actual workload before changing the checked byte-copy path. Repeated outputs
-that fit their current length use one bounded fetch; initial/growing outputs
-report a required size and retry. Legacy native size/copy entry points remain
-for compatibility.
+Fixtures cover prepare/step/read, reused text and BLOB values, and inserts in one
+transaction. Large values use fewer iterations. Timings include process startup,
+setup, and cleanup. The runner verifies output bytes and insert results. Shared
+host load, CPU frequency, and caches are not controlled; CPU affinity is not
+exclusive isolation. CI has no timing threshold.
 
-Initial [raw measurement evidence](results/validated-2026-11-04/README.md) is retained
-with all fixtures and provenance; see its limitations before interpreting timings.
+## Existing records
 
-The subsequent [buffer-reuse audit](results/reuse-2026-11-04/README.md) retains
-matched before/after samples, instruction-profile summaries and a separate
-current caller record. Successful getters now reuse their existing buffer;
-only newly grown bytes are initialized before being overwritten. All failures
-still clear logical output, and the native size/copy checks remain in place.
+These reports retain their original raw samples and explain each workload,
+units, warmups, repeats, results, spreads, and limitations. Their tables describe
+the source and tools recorded with each run, not automatically the latest code.
 
-[Alternative wrappers](alternatives/README.md) now have a separate matched-engine,
-in-process benchmark; it measures API paths with explicitly different safety policies.
+- [Initial checked caller run](results/validated-2026-11-04/README.md)
+- [Buffer reuse experiment](results/reuse-2026-11-04/README.md)
+- [Other wrappers on one SQLite engine](results/alternatives-2026-11-04/README.md)
+- [Scan, lookup, and batch workloads](results/workloads-2026-11-04/README.md)
+- [Incremental BLOB reads](results/storage-2026-11-04/README.md)
+- [Zero-filled BLOB binding](results/zeroblob-2026-11-05/README.md)
+- [File-backed transactions](results/filebacked-2026-11-05/README.md)
+- [Coordinated WAL reader/writer workload](results/mixedwal-2026-11-05/README.md)
+- [Rejected row-cache experiment](results/row-cache-2026-11-04/README.md)
+- [Rejected scan/copy experiment](results/scan-copy-2026-11-05/README.md)
 
-## Incremental storage access
-
-The [storage harness](storage/README.md) compares owned whole-column copies with
-incremental ranges through Goose and raw SQLite C. The [retained results](results/storage-2026-11-04/README.md)
-include both complete nine-round windows, known overlap, compiler/engine/source
-provenance, checksums and every sample. It measures less data copied for partial
-reads; full-value results and remaining wrapper overhead are reported too.
-
-## Zero-filled BLOB binding
-
-The [six-path harness](zeroblob/README.md) compares copied binding, zero binding
-and existing SQL zero creation through Goose and raw C. [Retained results](results/zeroblob-2026-11-05/README.md)
-include every sample and separate binding-phase allocator probes. Timings are
-mixed; compact representation benefits both zero APIs.
-
-## File-backed transactions
-
-The [file-backed recorder](filebacked/README.md) adds five callers across DELETE/WAL
-commit, rollback and controlled BUSY rejection. [Retained results](results/filebacked-2026-11-05/README.md)
-include every latency/error code, reopened data/integrity verification, policy and
-filesystem provenance, throughput and whole-child peak RSS. Within-case caller
-orders are shuffled; fixed journal blocks are not a causal WAL comparison.
-
-## Coordinated WAL reader/writer pairs
-
-The [mixed-WAL recorder](mixedwal/README.md) adds one reader and one writer process
-per caller, deterministic held-snapshot/rollback qualification, finite progress
-gates, balanced CPU orientations and independent final-data verification.
-[Results](results/mixedwal-2026-11-05/README.md) retain 50 pairs, 6,400 commits and
-69,359 checked snapshots, plus all raw journals. Operation latencies, recorded
-writer rates, COORDINATED reader rates and separate role RSS have distinct scopes;
-reader cadence varies, so this is not identical offered load or isolated overhead.
+Other runners have their own methods and reproduction commands:
+[other wrappers](alternatives/README.md), [incremental storage](storage/README.md),
+[zero-filled BLOB binding](zeroblob/README.md), [file-backed transactions](filebacked/README.md),
+and [coordinated WAL readers and writers](mixedwal/README.md).

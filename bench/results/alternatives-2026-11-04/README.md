@@ -1,5 +1,7 @@
 # SQLite alternatives: measured API paths
 
+> Historical source and compiler snapshot. The comparisons below describe these measured builds only, not the current Goose revision. See the [currentness audit](../../CURRENTNESS.md).
+
 Seven shuffled rounds, seven fixtures, five implementations: 245 checked samples.
 All five use the same SQLite 3.54.1 shared-library hash; source-ID/compile-options
 checks are explicit for four callers and inferred from that exact shared object

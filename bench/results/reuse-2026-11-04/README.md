@@ -1,5 +1,7 @@
 # Independent SQLite performance audit
 
+> Historical source and compiler snapshot; the separate caller record below is also not a current-source ranking. See the [currentness audit](../../CURRENTNESS.md).
+
 Baseline commit `7cf6e4adbb1dc17bd6c29ac62e0142242f0234f0`. Pinned Goose compiler and captured source/binary provenance are in `provenance.json`. This directory retains all raw timing samples; bulky Callgrind dumps and generated binaries are not committed.
 
 ## Recommended minimal change

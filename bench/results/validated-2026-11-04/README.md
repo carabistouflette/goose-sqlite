@@ -1,5 +1,7 @@
 # Initial benchmark evidence
 
+> Historical source snapshot; these numbers are not current-source performance claims. See the [currentness audit](../../CURRENTNESS.md).
+
 Recorded for clean source commit `9ec43742e4c2cb0841b36110433a41c1c22c79f3`.
 [samples.json](samples.json) contains all 54 samples: nine fixtures, two callers,
 three alternating-order passes. Ordinary fixtures use 100000 iterations, 64 KiB

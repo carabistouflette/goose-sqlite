@@ -1,26 +1,21 @@
 # Contributing
 
-Keep the interface small, synchronous, explicit, and easy to audit. Preserve
-validation, typed reads, copied ownership, thread affinity, and stale-token
-safety. No ORM, generic backend abstraction, hidden global connection, implicit
-transaction, or automatic statement reexecution. SQLite is a required native
-dependency; a pure Goose fallback is out of scope.
+Keep the API small, synchronous, explicit and easy to audit. Preserve typed
+reads, copied byte ownership, thread-affine handles, stale-handle checks and
+explicit error handling. Do not add a pool, implicit transaction, hidden global
+connection or automatic statement retry.
 
-Use focused branches (`feat/...`, `fix/...`, `docs/...`) and Conventional Commits:
-`feat: add ...`, `fix: reject ...`, `test: cover ...`, `perf: reduce ...`,
-`docs: clarify ...`, `chore: update ...`. Use imperative subjects and one coherent
-change per commit. Keep private workspace notes, credentials, generated compiler
-output and local paths out of public commits.
+Use a focused branch and one Conventional Commit per coherent change. Keep
+generated files, private notes, credentials and local paths out of public commits.
+Behavior changes need regression tests. Run make format, make check test, native
+GCC/Clang sanitizer checks, and git diff --check when they apply. Update the native
+manifest with make format.
 
-Behavior changes need public interface regression cases. Run `make format`,
-`make check test`, native GCC/Clang sanitizer tests, and `git diff --check`.
-Refresh the native fingerprint with `make format`. Request independent reviews
-at design, implementation and final validation milestones; fix actionable
-findings before publication. Compiler updates require a reviewed full commit
-in GOOSE_REVISION and full validation. Keep CI passing. APIs are experimental;
-no stability guarantee before 1.0.
+For compiler changes, review the full Goose commit in GOOSE_REVISION and run the
+complete validation suite. Request independent reviews for design and behavior
+changes and resolve actionable findings before publication.
 
-Profile before optimizing. Preserve safety checks and retain raw measurements
-with source, compiler, SQLite, hardware and flags. Report all fixtures and
-regressions; shared-machine microbenchmarks do not establish universal rankings.
+Profile real workloads before optimizing. Keep raw benchmark samples with source,
+compiler, SQLite, platform, flags and workload details. Report all cases and
+regressions. Shared-host results are not universal rankings or CI thresholds.
 Report vulnerabilities privately as described in SECURITY.md.

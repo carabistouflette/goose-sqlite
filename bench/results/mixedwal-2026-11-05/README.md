@@ -1,5 +1,7 @@
 # Coordinated finite WAL reader/writer comparison
 
+> Historical coupled-workload snapshot. The recorder has since changed, so this is not a current ranking or isolated API-overhead result. See the [currentness audit](../../CURRENTNESS.md).
+
 Measured clean source: `8133274b6df6b63c27a3ef541a0539f1f7984d10`.
 All **50 pairs, 6,400 successful writer commits and 69,359 checked reader snapshots**
 passed, with five separate deterministic qualifications. Every pair observed all

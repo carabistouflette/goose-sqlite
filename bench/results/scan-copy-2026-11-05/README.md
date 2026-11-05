@@ -1,5 +1,7 @@
 # Scan/copy profile and rejected resize experiment
 
+> Historical Callgrind diagnostic for a rejected candidate. Instruction counts are not current throughput results. See the [currentness audit](../../CURRENTNESS.md).
+
 Decision: retain the production implementation from
 `8a1d0d74f731d07d16cfd693cf6ce16105d20253`. Skipping the final equal-length
 builder resize did not provide a consistent instruction reduction. The candidate

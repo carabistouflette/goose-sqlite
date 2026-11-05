@@ -1,5 +1,7 @@
 # Zero-filled BLOB results
 
+> Historical timing snapshot with a source-level bridge for the measured binding/read path. The compiler executable differs from the available build; these numbers are not a current ranking. See the [currentness audit](../../CURRENTNESS.md).
+
 Implementation and benchmark source: `ead19309bef4394ffc041f079d50e2a8d78b7388` (clean).
 All 270 timed samples, 30 allocator probes and 45 shuffled six-path rounds completed.
 The shared-host CPU6 window lasted 43.734 seconds; affinity did not provide exclusive isolation.

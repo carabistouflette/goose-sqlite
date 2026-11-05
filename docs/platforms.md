@@ -1,66 +1,39 @@
-# Platforms and build requirements
+# Platforms and requirements
 
-Tested platforms are Linux x86-64 and Linux ARM64 with GCC or Clang,
-pthreads, libc development headers and a thread-safe system SQLite library.
-Native Ubuntu 24.04 CI runs the pinned Goose compiler, public runner/native/import
-tests, both native sanitizer suites, verified pinned-engine positive WAL checks,
-fuzz checks and benchmark correctness smoke checks on both architectures.
-Architecture-specific toolchain cache keys prevent cross-architecture reuse.
-Other architectures, libc implementations, macOS and Windows are unverified.
-The native adapter uses POSIX thread-local resource cleanup; Windows would need
-a reviewed platform implementation and tests.
+Tested platforms are Linux x86-64 and Linux ARM64. Hosted CI uses Ubuntu 24.04.
+macOS, Windows, other libc implementations and other architectures are
+unverified. The adapter uses POSIX threads and a thread-safe system SQLite
+library.
 
-## Toolchain
+## Build requirements
 
-- Git, Make, Python 3 and CMake 3.27+ for the pinned Goose compiler bootstrap.
-- A C++20 compiler for Goose; a C11 compiler for this adapter.
-- SQLite 3.37+ development headers and library, with extension configuration and
-  thread-safety support. The application must not globally select SQLite's
-  single-thread mode. SQLite is dynamically linked, not vendored.
-- Clang with ASan/UBSan/libFuzzer for fuzz checks, and GCC/Clang sanitizer runtimes
-  for their respective native test targets. Separate x86-64 TSan CI instruments
-  both the verified engine and adapter; see its [initialization scope](../tests/CONCURRENCY.md).
-- GCC by default for the optional benchmark harness; BENCH_CC may select another
-  single compiler executable. Measurement tooling uses Linux ldd and process
-  resource accounting.
+- Git, Make, Python 3 and CMake 3.27 or newer to build the pinned Goose compiler.
+- A C++20 compiler for Goose and a C11 compiler for the native adapter.
+- SQLite 3.37 or newer development headers and library, pkg-config, pthreads,
+  and libc development headers.
+- Clang plus sanitizer and libFuzzer support only for optional sanitizer and
+  fuzz checks.
 
-`make setup` builds the exact full upstream commit in GOOSE_REVISION with optional
-graphics/audio disabled. Existing compilers can be selected through GOOSE. The
-in-process runner needs libc development headers; native builds need a working C
-linker/toolchain. Source and native package caches are not shipped with the library.
+Run make setup to build the exact compiler commit in
+[GOOSE_REVISION](../GOOSE_REVISION). To use an existing compiler at that commit,
+pass GOOSE=/path/to/goose to Make. Compiler and SQLite caches are local build
+outputs; they are not included in the source package.
 
-## Engine and policy compatibility
+## SQLite requirements
 
-The SQLite minimum is an interface requirement, not a recommendation to install
-an old engine. Use your operating system's security-supported SQLite package.
-Compile-time SQLite options can remove functionality or impose tighter limits;
-the supported interface limits are in api.md. Connection security configuration
-failures abort open rather than silently weakening policy.
+SQLite 3.37 is the minimum for the base API. Use a security-supported package
+from your operating system. Compile-time options may remove features or impose
+tighter limits. The engine must be thread-safe; the application must not set
+SQLite's global mode to single-thread.
 
-The initial host uses SQLite 3.54.1, GCC 16.2.1 and Clang 23. Hosted CI uses
-Ubuntu 24.04 and its packaged SQLite. Exact upstream 3.37.0 and Ubuntu noble-security 3.45.1-1ubuntu2.8 packages also
-passed cross-engine checks on the initial Linux host. Exact completed checks,
-configurations and CI evidence are recorded in [validation.md](validation.md).
+Optional WAL support is limited to recognized SQLite versions with the WAL-reset
+fix: 3.51.3 or newer, 3.50.7 through 3.50.x, and 3.44.6 through 3.44.x. Other
+versions fail closed when WAL is requested or already active, including unknown
+backports. Every process using that database must use a fixed engine. WAL also
+requires a suitable local filesystem and correct sidecar-file permissions.
+Rollback-journal mode remains available on SQLite 3.37 and newer.
 
-Before starting workers, call sqlite::initialize on one startup thread after any
-native SQLite configuration and check its result. This supports deterministic
-startup and SQLITE_OMIT_AUTOINIT engines without changing ordinary open behavior.
-Initialization failures remain retryable; no public shutdown API is provided.
-
-Independent connections can execute on separate OS threads. Handles cannot move
-between threads; each thread opens its own connection. No cross-process locking
-or transaction guarantees beyond SQLite's own engine/filesystem behavior are added.
-
-Optional WAL requires recognized SQLite versions containing the WAL-reset fix:
-3.51.3+, 3.50.7..3.50.x, or 3.44.6..3.44.x. Other versions, including unrecognized
-distributor backports, reject requested/detected WAL at open. Rollback-journal
-operations remain available on 3.37+. All processes participating in WAL access
-must use patched engines; open-time inspection cannot control external changes.
-WAL needs one host and a suitable local filesystem, sidecars and permissions.
-See [the complete storage contract](api.md) for limits and engine restrictions.
-
-Public test executables can use separate output directories with
-`make test PUBLIC_TEST_DIR=.build/public-host` (and a distinct GOOSE_HOME/native
-prefix for each engine). This prevents concurrent compatibility runs from sharing
-executable paths. The validated follow-up uses isolated directories and verifies
-the actual loaded engine; overlapping exploratory runs are not counted.
+Call sqlite::initialize() on one startup thread after any native sqlite3_config
+setup and before starting worker threads. Check its result. This controls startup
+order; it does not establish a clean concurrent cold-start TSan result. See the
+[TSan scope](../tests/CONCURRENCY.md) and [validation summary](validation.md).

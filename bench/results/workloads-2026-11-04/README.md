@@ -1,5 +1,7 @@
 # SQLite realistic workload comparisons
 
+> Historical source and compiler snapshot. The tables describe these measured builds only, not the current Goose revision. See the [currentness audit](../../CURRENTNESS.md).
+
 Ten fixtures, five callers, seven shuffled rounds: 350 checked samples in the final
 [samples.json](samples.json), plus all 350 [before-registry.json](before-registry.json)
 samples and 140 [matched registry samples](registry-matched.json). No fixture or

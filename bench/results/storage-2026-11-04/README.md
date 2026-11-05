@@ -1,5 +1,7 @@
 # Incremental BLOB ranges: measured results
 
+> Historical source snapshot. The whole-column getter changed after these runs; see the [currentness audit](../../CURRENTNESS.md) before interpreting the table.
+
 Two complete datasets, each 144 checked samples: nine shuffled rounds, four range
 sizes and four API paths, 20000 iterations per sample. Stored value 512 KiB,
 private in-memory databases, held read transaction, deterministic changing offsets,
