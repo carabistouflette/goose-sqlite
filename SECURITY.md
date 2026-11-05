@@ -54,9 +54,12 @@ builds both SQLite and the adapter with ASan/UBSan and exercises positive WAL
 behavior with DEFAULT_WAL_SYNCHRONOUS=1. Native CI covers Linux x86-64 and
 ARM64. Separate x86-64 TSan validation instruments both engine and adapter after
 explicit serial engine initialization; first registry/key use remains concurrent. Cold
-engine initialization under TSan produced unresolved upstream diagnostics, retained
-with the results. Ordinary ASan/UBSan runs retain concurrent cold initialization.
+engine initialization under TSan produced unresolved reports in the verified,
+unmodified SQLite amalgamation, retained with the results. Ordinary ASan/UBSan
+runs retain concurrent cold initialization.
 See [concurrency methodology](tests/CONCURRENCY.md) for these exact limits.
+See the [engine-only cold-start TSan diagnosis](tests/results/cold-start-2026-11-05/README.md)
+and retained diagnostics for the reproduction and its narrow conclusion.
 See [the validation record](docs/validation.md) for exact completed checks.
 
 ## Storage features

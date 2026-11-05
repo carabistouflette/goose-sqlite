@@ -35,10 +35,20 @@ are explicit; pinned-engine runs require positive WAL coverage.
 The first fully instrumented cold-start attempts reported races inside pristine
 SQLite 3.54.1: local Clang 23 reported the `sqlite3_initialize` isInit fast path,
 and hosted Clang 18 reported `sqlite3MutexInit` method initialization. Original
-diagnostics are retained with the validation results. These are unresolved
-upstream diagnostics; they are not a passing concurrent cold-start TSan result.
+diagnostics are retained with the validation results. They arise in the verified,
+unmodified SQLite amalgamation and remain unresolved; they are not a passing
+concurrent cold-start TSan result.
 SQLite documents initialize as thread-safe and also recommends explicit
 [initialization](https://sqlite.org/c3ref/initialize.html) for portability.
+
+A [fresh engine-only reproduction](results/cold-start-2026-11-05/README.md)
+now isolates this report from the adapter: five cold `sqlite3_initialize()`
+and five cold `sqlite3_open_v2()` runs reproduced under both static and shared
+linkage from one verified instrumented SQLite object. Twenty matched cases
+passed after one explicit engine initialization before worker creation. The
+report does not determine whether the initialization access is a C-level race
+or a sanitizer modeling issue; no false-positive conclusion or production
+workaround follows.
 
 The maintained TSan invocation calls the production gq_initialize entry (exposed
 as sqlite::initialize) on the main thread before creating workers. It directly

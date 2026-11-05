@@ -1,0 +1,203 @@
+{
+  "format": "Deterministic gzip/ustar, diagnostic member bytes preserved; private checkout/build prefixes normalized in text logs and raw source-prefix hashes retained per run.",
+  "archive_sha256": "34d0e3d5dfc6df5f92f3c13962be97f1270feec167397fb73ea9242873132eaf",
+  "archive_bytes": 2860,
+  "members": {
+    "build-engine.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "build-probe.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "build-shared.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "build-static.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "compiler.log": {
+      "bytes": 92,
+      "sha256": "7b6f0e7fb622d3036a01251f091ec89e0240721d9538d61495472134a9084c63"
+    },
+    "ldd-shared.log": {
+      "bytes": 422,
+      "sha256": "e55ac2c73eb0740e79d4d0b4304af383883598b77da4eb05d53c2f52ff230d7b"
+    },
+    "ldd-static.log": {
+      "bytes": 357,
+      "sha256": "70de3d8b1c00049a3030cfd1a2af34b139fca13b04de164d695f062334a9f589"
+    },
+    "link-shared.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "positive-control.log": {
+      "bytes": 1106,
+      "sha256": "5e3e4a326b2ccef0c5c5b945c6a1ab2c9877aacc03566f1b62f5c4cbcbec4f8d"
+    },
+    "shared-initialize-cold-0.log": {
+      "bytes": 1810,
+      "sha256": "33e16547420d0c5e0c420c584d3ca346f3ef56ecde505996b0d478597cb86f1b"
+    },
+    "shared-initialize-cold-1.log": {
+      "bytes": 1811,
+      "sha256": "27d0cae7ed8eecb9a5f37e26a60ae313d90f1fc1e06227b858dc798e1dd8a508"
+    },
+    "shared-initialize-cold-2.log": {
+      "bytes": 1810,
+      "sha256": "6c11565317fa87a091a86c292780c96cf5ed2fd54cdbaf95a789552404a14c26"
+    },
+    "shared-initialize-cold-3.log": {
+      "bytes": 1810,
+      "sha256": "2d9706c4a65494afb3bc2fa85f771b81fc9fbd71c326ba1c65756aefd515be92"
+    },
+    "shared-initialize-cold-4.log": {
+      "bytes": 1811,
+      "sha256": "2fedd09e6b28c57e7460deb75b581ed9a6c114fa825b949d0125ccdb843d983e"
+    },
+    "shared-initialize-serial-0.log": {
+      "bytes": 173,
+      "sha256": "3ad8176411d8929b9d0fd021eaf512515fbfd445aaacf745c5667fcb3d8759e8"
+    },
+    "shared-initialize-serial-1.log": {
+      "bytes": 173,
+      "sha256": "3ad8176411d8929b9d0fd021eaf512515fbfd445aaacf745c5667fcb3d8759e8"
+    },
+    "shared-initialize-serial-2.log": {
+      "bytes": 173,
+      "sha256": "3ad8176411d8929b9d0fd021eaf512515fbfd445aaacf745c5667fcb3d8759e8"
+    },
+    "shared-initialize-serial-3.log": {
+      "bytes": 173,
+      "sha256": "3ad8176411d8929b9d0fd021eaf512515fbfd445aaacf745c5667fcb3d8759e8"
+    },
+    "shared-initialize-serial-4.log": {
+      "bytes": 173,
+      "sha256": "3ad8176411d8929b9d0fd021eaf512515fbfd445aaacf745c5667fcb3d8759e8"
+    },
+    "shared-open-cold-0.log": {
+      "bytes": 2216,
+      "sha256": "cc3adf4f78c7a177322e5f9cc9a2235194d72677faf45dd1e2aacc6d444e3deb"
+    },
+    "shared-open-cold-1.log": {
+      "bytes": 2217,
+      "sha256": "06ac4077d3d0ab2294961f8d43491fbf9e767e909bd481b8110997c0d9eb7490"
+    },
+    "shared-open-cold-2.log": {
+      "bytes": 2216,
+      "sha256": "aecfb0fc7973c2d095a19b11cf157fadb9eda4d033f5343ddfc75b28215c5242"
+    },
+    "shared-open-cold-3.log": {
+      "bytes": 2217,
+      "sha256": "addc7b3ff35bd3e4748721ca1101fd4ca8480dd6c8bd85523f05f00431a7781a"
+    },
+    "shared-open-cold-4.log": {
+      "bytes": 2217,
+      "sha256": "ec32d9f92b9996f472beb372b1b8e3f8d9f95c123bda079d063313f96b23ebb8"
+    },
+    "shared-open-serial-0.log": {
+      "bytes": 167,
+      "sha256": "87e12f129e9ac057f81acdb41cc36802bc8046e65e3e857f9b49d74497bf119b"
+    },
+    "shared-open-serial-1.log": {
+      "bytes": 167,
+      "sha256": "87e12f129e9ac057f81acdb41cc36802bc8046e65e3e857f9b49d74497bf119b"
+    },
+    "shared-open-serial-2.log": {
+      "bytes": 167,
+      "sha256": "87e12f129e9ac057f81acdb41cc36802bc8046e65e3e857f9b49d74497bf119b"
+    },
+    "shared-open-serial-3.log": {
+      "bytes": 167,
+      "sha256": "87e12f129e9ac057f81acdb41cc36802bc8046e65e3e857f9b49d74497bf119b"
+    },
+    "shared-open-serial-4.log": {
+      "bytes": 167,
+      "sha256": "87e12f129e9ac057f81acdb41cc36802bc8046e65e3e857f9b49d74497bf119b"
+    },
+    "static-initialize-cold-0.log": {
+      "bytes": 1753,
+      "sha256": "d7e9967f6a35e6c32483dbf0801cd2d195e2f1f50aa52ceee1766cba3e98e40d"
+    },
+    "static-initialize-cold-1.log": {
+      "bytes": 1753,
+      "sha256": "9b9755fcdff26d4f571f2170b2bf46afd3c217d38c8f17b40badfa780673c1e6"
+    },
+    "static-initialize-cold-2.log": {
+      "bytes": 1753,
+      "sha256": "0cd574fcae3b9b5ef29d2be240adf0f810c8ed108fab8ee72e2773cc6c415744"
+    },
+    "static-initialize-cold-3.log": {
+      "bytes": 1751,
+      "sha256": "17eb4fc91ef7ee2b9567b1618872114862892b32046fa7ec3bde2a4b768fb977"
+    },
+    "static-initialize-cold-4.log": {
+      "bytes": 1753,
+      "sha256": "f8944b0b9bb447c4b14ba53d0ce952916f66a02ae33d7b8bc20cf0a7b5a521b9"
+    },
+    "static-initialize-serial-0.log": {
+      "bytes": 173,
+      "sha256": "3ad8176411d8929b9d0fd021eaf512515fbfd445aaacf745c5667fcb3d8759e8"
+    },
+    "static-initialize-serial-1.log": {
+      "bytes": 173,
+      "sha256": "3ad8176411d8929b9d0fd021eaf512515fbfd445aaacf745c5667fcb3d8759e8"
+    },
+    "static-initialize-serial-2.log": {
+      "bytes": 173,
+      "sha256": "3ad8176411d8929b9d0fd021eaf512515fbfd445aaacf745c5667fcb3d8759e8"
+    },
+    "static-initialize-serial-3.log": {
+      "bytes": 173,
+      "sha256": "3ad8176411d8929b9d0fd021eaf512515fbfd445aaacf745c5667fcb3d8759e8"
+    },
+    "static-initialize-serial-4.log": {
+      "bytes": 173,
+      "sha256": "3ad8176411d8929b9d0fd021eaf512515fbfd445aaacf745c5667fcb3d8759e8"
+    },
+    "static-open-cold-0.log": {
+      "bytes": 2127,
+      "sha256": "4e386d60677ef7796cacb80c3e429787e67922298b53a2e326f36fae42683d40"
+    },
+    "static-open-cold-1.log": {
+      "bytes": 2127,
+      "sha256": "affd463c01d99d8c52d72a88559061b4c62978aee9280068af82cfa328ea1fd9"
+    },
+    "static-open-cold-2.log": {
+      "bytes": 2127,
+      "sha256": "e5c3bf3fe20962742099462ee44c0bf8c55ff78f7aad10555ec62a780d2d8f50"
+    },
+    "static-open-cold-3.log": {
+      "bytes": 2127,
+      "sha256": "62d2d5c465e9cf692e4bf302de340fcae78e431627d5e8a2607b2e89df189548"
+    },
+    "static-open-cold-4.log": {
+      "bytes": 2127,
+      "sha256": "0445537939a32cbc2aa2bd47041519a8f7568fbda1b8e41e9507ce09f195dbe5"
+    },
+    "static-open-serial-0.log": {
+      "bytes": 167,
+      "sha256": "87e12f129e9ac057f81acdb41cc36802bc8046e65e3e857f9b49d74497bf119b"
+    },
+    "static-open-serial-1.log": {
+      "bytes": 167,
+      "sha256": "87e12f129e9ac057f81acdb41cc36802bc8046e65e3e857f9b49d74497bf119b"
+    },
+    "static-open-serial-2.log": {
+      "bytes": 167,
+      "sha256": "87e12f129e9ac057f81acdb41cc36802bc8046e65e3e857f9b49d74497bf119b"
+    },
+    "static-open-serial-3.log": {
+      "bytes": 167,
+      "sha256": "87e12f129e9ac057f81acdb41cc36802bc8046e65e3e857f9b49d74497bf119b"
+    },
+    "static-open-serial-4.log": {
+      "bytes": 167,
+      "sha256": "87e12f129e9ac057f81acdb41cc36802bc8046e65e3e857f9b49d74497bf119b"
+    }
+  }
+}
