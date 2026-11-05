@@ -29,3 +29,8 @@ ASan/UBSan or separately TSan, with DEFAULT_WAL_SYNCHRONOUS=1, to exercise
 positive WAL behavior on CI;
 it does not replace or vendor the production system dependency. SQLite is in the
 public domain: https://sqlite.org/copyright.html .
+
+The optional mixed-WAL CI smoke reuses that verified upstream source to build a
+separate normal engine with recorded flags in ignored output. All five smoke
+callers explicitly load its matching object; it neither replaces the production
+system dependency nor weakens the production WAL version gate.
