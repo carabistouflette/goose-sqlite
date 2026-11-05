@@ -222,4 +222,3 @@ static int64_t nanoseconds(Clock::time_point start) {
                                                               start)
       .count();
 }
-
