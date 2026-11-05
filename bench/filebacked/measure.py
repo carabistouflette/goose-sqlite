@@ -80,7 +80,11 @@ def cache_values(path):
     return values
 
 
-def build_all(source, output, goose, env, metadata, save):
+def build_all(source, output, goose, env, metadata, save, *,
+              goose_runner='bench/filebacked/runner.goose',
+              cpp_runner='bench/filebacked/native.cpp',
+              rust_binary_name='sqlite-filebacked-bench',
+              python_runner='bench/filebacked/python.py'):
     def command(cmd, cwd=source, timeout=600):
         metadata.setdefault('build_commands', []).append([str(v) for v in cmd])
         save()
@@ -99,7 +103,7 @@ def build_all(source, output, goose, env, metadata, save):
     cache = output / 'goose-cache'
     env['GOOSE_HOME'] = str(cache)
     command(['python3', 'scripts/native-manifest.py', '--check'])
-    command([goose, 'build', 'bench/filebacked/runner.goose', '--cc', 'gcc',
+    command([goose, 'build', goose_runner, '--cc', 'gcc',
              '-O2', '-o', output / 'goose'])
     caches = list(cache.rglob('CMakeCache.txt'))
     targets = list(cache.rglob('target-goose_sqlite_native-*.json'))
@@ -150,7 +154,7 @@ def build_all(source, output, goose, env, metadata, save):
         archive_sha256=digest(cpp_build / 'libSQLiteCpp.a'))
     for name, flags in (('raw-c-api', []), ('sqlitecpp', ['-DUSE_SQLITECPP', '-I' + str(cpp / 'include')])):
         cmd = ['g++', '-std=c++17', '-O2', '-UNDEBUG', '-Wall', '-Wextra', '-Werror',
-               *flags, source / 'bench/filebacked/native.cpp']
+               *flags, source / cpp_runner]
         if name == 'sqlitecpp':
             cmd.append(cpp_build / 'libSQLiteCpp.a')
         command([*cmd, '-lsqlite3', '-o', output / name])
@@ -160,12 +164,12 @@ def build_all(source, output, goose, env, metadata, save):
     verbose = command([rustc, '-vV'])
     host = next(line.split(': ', 1)[1] for line in verbose.splitlines() if line.startswith('host: '))
     metadata['rustc'] = dict(version=verbose, sha256=digest(rustc))
-    command(['cargo', 'build', '--locked', '--release', '--target', host,
+    command(['cargo', 'build', '--locked', '--release', '--bin', rust_binary_name, '--target', host,
              '--target-dir', output / 'rust-target', '--manifest-path',
              source / 'bench/filebacked/rust/Cargo.toml', '--config', 'profile.release.opt-level=2',
              '--config', 'profile.release.lto="thin"', '--config', 'profile.release.codegen-units=16',
              '--config', 'profile.release.incremental=true'])
-    rust_binary = output / 'rust-target' / host / 'release/sqlite-filebacked-bench'
+    rust_binary = output / 'rust-target' / host / 'release' / rust_binary_name
     metadata['rust_dependencies'] = tomllib.loads((source / 'bench/filebacked/rust/Cargo.lock').read_text())['package']
     metadata['rust_profile'] = dict(opt_level=2, lto='thin', codegen_units=16,
                                     incremental=True, bundled_sqlite=False,
@@ -177,7 +181,7 @@ def build_all(source, output, goose, env, metadata, save):
         metadata['tools'][name] = dict(file=actual.name, version=stdout.splitlines()[0], sha256=digest(actual))
     runners = {'goose': [output / 'goose'], 'raw-c-api': [output / 'raw-c-api'],
                'sqlitecpp': [output / 'sqlitecpp'], 'rusqlite': [rust_binary],
-               'python': [Path(sys.executable).resolve(), '-I', source / 'bench/filebacked/python.py']}
+               'python': [Path(sys.executable).resolve(), '-I', source / python_runner]}
     import _sqlite3
     objects = {name: engine(cmd[0]) for name, cmd in runners.items() if name != 'python'}
     objects['python'] = engine(Path(_sqlite3.__file__))
