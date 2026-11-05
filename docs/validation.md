@@ -418,3 +418,29 @@ Hosted benchmark smoke explicitly selects DELETE on older packaged engines;
 full positive WAL remains covered by the existing pinned-engine native tests.
 No production implementation, native manifest or compiler pin changed. Original
 cold-engine TSan diagnostics and serialized engine-init scope remain unchanged.
+
+## Coordinated WAL reader/writer validation
+
+Clean 8133274 passed independent actor/controller reviews and exact-source
+[CI 42029462705](https://github.com/carabistouflette/goose-sqlite/actions/runs/42029462705):
+x86-64, native ARM64 and existing scoped TSan jobs. The new positive-WAL mixed
+smoke uses a checksum-verified normal test-only engine on both architectures; it
+is correctness evidence, not ARM performance evidence. Test-only policy inference
+checks denial before fixed inspection and adds no public authorizer escape.
+
+The [principal record](../bench/results/mixedwal-2026-11-05/README.md) passed 50 pairs
+and five deterministic qualifications: held snapshots survive commit, fresh reads
+see published epochs, uncommitted updates stay invisible, rollback and independent
+full final-data/integrity checks pass. All 6,400 commits and 69,359 snapshots were
+checked; every pair passed all four intermediate progress bands and clean exits.
+An independent data audit recomputed all 20 orientation/role summary rows and
+checked raw stdout/events, counts, quantiles, gates, artifact/source/build/engine
+hashes, rates and separate lifetime RSS. No principal failure or automatic rerun
+occurred. An earlier source-changed development smoke remains explicitly incomplete
+and archived outside principal results.
+
+Broken-pipe stream cleanup, owned-group timeout handling, malformed protocol and
+all-BUSY commit-floor behavior were separately checked. Shared-host/incidental
+build and coupled same-filesystem logging costs remain disclosed. Runtime/native/
+manifest/CMake/compiler-pin bytes remain unchanged from 8a1d0d7. The unresolved
+cold-engine TSan and serialized-engine-initialization scope remain unchanged.

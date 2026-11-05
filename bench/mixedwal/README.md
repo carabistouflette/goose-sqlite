@@ -133,3 +133,11 @@ selected CPU; unavailable hybrid-core identity remains unknown. Cleanup closes
 all streams even after broken-pipe errors, preserving the original failure. The
 CI bootstrap uses owned-group build timeouts and replaces itself with the bounded
 orchestrator rather than timing out a wrapper while leaving actors behind.
+
+## Retained comparison
+
+[The 2026-11-05 record](../results/mixedwal-2026-11-05/README.md) includes the 50-pair
+principal matrix, full-parameter qualification, positive-WAL CI-engine smoke, and
+an explicitly incomplete development smoke. Containers preserve original member
+bytes with SHA256 manifests. `summarize.py` derives per-orientation summaries and
+archives into a new directory; `report.py RESULTS` generates its standalone chart.

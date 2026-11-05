@@ -78,3 +78,13 @@ commit, rollback and controlled BUSY rejection. [Retained results](results/fileb
 include every latency/error code, reopened data/integrity verification, policy and
 filesystem provenance, throughput and whole-child peak RSS. Within-case caller
 orders are shuffled; fixed journal blocks are not a causal WAL comparison.
+
+## Coordinated WAL reader/writer pairs
+
+The [mixed-WAL recorder](mixedwal/README.md) adds one reader and one writer process
+per caller, deterministic held-snapshot/rollback qualification, finite progress
+gates, balanced CPU orientations and independent final-data verification.
+[Results](results/mixedwal-2026-11-05/README.md) retain 50 pairs, 6,400 commits and
+69,359 checked snapshots, plus all raw journals. Operation latencies, recorded
+writer rates, COORDINATED reader rates and separate role RSS have distinct scopes;
+reader cadence varies, so this is not identical offered load or isolated overhead.

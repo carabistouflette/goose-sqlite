@@ -1,0 +1,1284 @@
+{
+  "source_commit": "8133274b6df6b63c27a3ef541a0539f1f7984d10",
+  "source_dirty": false,
+  "source_hashes": {
+    ".github/workflows/ci.yml": "b92d22f75a18251f0237008bdf23689df098e6f007027939e8e8490afe54c041",
+    "CMakeLists.txt": "47d47b97f61c3461667f1158eb2d475b93b69af24073dac9b581bbea1ccf5193",
+    "GOOSE_REVISION": "64e14b181dfe96743211738fb0f1b1f7798ea940da2ca50ff122e6f028c24e15",
+    "Makefile": "1e2964c96c0f6af9186a28ef3b8e66a411a055173c7a7cec474c28d98cde7255",
+    "bench/alternatives/measure.py": "54b54c9fdc4e1ad02dd43573358b962b4852a01b0b40b325d6b9a46cccd98449",
+    "bench/alternatives/paired.py": "88b6d1010cf7d2c8bdeb1d2bb6637d2280eb954448de3beac432ddf38c089118",
+    "bench/filebacked/CONTRACT.md": "ddad8f9fb03046342f15676bc9b6e1adf77be48753ec82e57bd45c4dfa7a4c2d",
+    "bench/filebacked/README.md": "dd2204a342455a0c0b92355fcbb6dd6411682fe0ce18516756234b4543c494a6",
+    "bench/filebacked/measure.py": "b130ddacfa3e7d6df8c9b9d66f4730a103a22aa8926fa0f5b713ea6806e85570",
+    "bench/filebacked/native.cpp": "f7fe6a4b257843a0dbf2dbad71104d4d005b28db4224d3f3c439dbba63b4f80e",
+    "bench/filebacked/paths.hpp": "15f0c14c98876169b78286d3c79c07e8ae91c757be86f4f7daea6656c83000da",
+    "bench/filebacked/policy.c": "ac85f0659ce324dde30cad48e58ac8e04885fff8a74da11fc1c2b28b6e34e2e9",
+    "bench/filebacked/python.py": "a1909c4926a1fc0a77b4c79efb9abe6657f8d1ccbc986540d7d250965d50439b",
+    "bench/filebacked/runner.goose": "2a17d325bc9d0685bed943e874524c0c1b5e63170010bc4329721f4bec8076f8",
+    "bench/filebacked/rust/Cargo.lock": "6216224e10845ce23eee4a174a5ffed4e9d09b0a96566ab99ace5487cab6808c",
+    "bench/filebacked/rust/Cargo.toml": "8d89fd6ed319ed88e9a8950480e99e214c4757ae48a645f7d6007646f8732ead",
+    "bench/filebacked/rust/src/bin/mixedwal.rs": "a3ea3435de16a9c19f8291612238ad3b4a9343b3e13ed00692c1f5786c968d91",
+    "bench/filebacked/rust/src/main.rs": "4fff2a48e72139c20f184a09c5c5c8a3525716269ada76983fcad2e3ded821fd",
+    "bench/filebacked/rust/src/paths.rs": "2bc04a2cf7cfefa95bbc1aa1071ba3236d148fae95d8cf75aa0ba11ed261f143",
+    "bench/mixedwal/CONTRACT.md": "b1bb908593e56209a14376060b974cbe671b1a7a4b763bd7662a9b1c17e03f91",
+    "bench/mixedwal/README.md": "5be385acfc4823e5eb92f7473eed49b1e074e44565c29ef0cc922977914cd0fc",
+    "bench/mixedwal/ci.py": "6fb527671955844eb0ec756bcd6a2dd1356755944f1832f0b3c1a5e74bb2c0e4",
+    "bench/mixedwal/measure.py": "58fd975bb5cdfc90167c9a2c0e2b21868b4913ffd1700879fb773caa2900baa2",
+    "bench/mixedwal/native.cpp": "2eff29a949292bc57f42c7ada23c0a752f3deec925d0e8aa329348fd088100ec",
+    "bench/mixedwal/python.py": "65767402c462acfd82ebde04ab71c8fdadf27c312e9c3c94e18ab0b21967eadf",
+    "bench/mixedwal/runner.goose": "9e0ccfd9614ce7d1692598d047807b144330ade1e9bc5a80d115e8797024c7f0",
+    "native/sqlite.c": "5b56fc40331eae3800bc0f5fd67394732bb1b61921b89148e8be60c5a4bb4c6d",
+    "native/sqlite.h": "03909542e92caa91debde45bc4d1945a76fff34f342a77ceb2b1b689c8270874",
+    "scripts/native-manifest.py": "776376630b521033583d741e365ab4bb298f6b75f48383c813c177916aa403a7",
+    "sqlite.build": "53a29f4aa6038def97b10f669e82bf7d21c25f2dfc43cb43820090a3f2f2de3a",
+    "sqlite.goose": "cd25bf213c49b896e5878fd86a7102097b27b84a1e1fec880e33519b4a264ca7"
+  },
+  "complete": true,
+  "development_smoke": false,
+  "attempts": 128,
+  "rows": 32,
+  "read_cap": 20000,
+  "rounds": 10,
+  "order_seed": 219,
+  "expected_pair_count": 50,
+  "topology": {
+    "original_allowed": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "writer_cpu": 6,
+    "reader_cpu": 7,
+    "coordinator_cpu": 5,
+    "orientation": "Swap writer/reader CPUs on odd rounds",
+    "hardware": {
+      "5": {
+        "physical_package_id": "0",
+        "core_id": "33",
+        "thread_siblings_list": "5",
+        "core_siblings_list": "0-7",
+        "core_type": null,
+        "cpu_capacity": "676"
+      },
+      "6": {
+        "physical_package_id": "0",
+        "core_id": "34",
+        "thread_siblings_list": "6",
+        "core_siblings_list": "0-7",
+        "core_type": null,
+        "cpu_capacity": "676"
+      },
+      "7": {
+        "physical_package_id": "0",
+        "core_id": "35",
+        "thread_siblings_list": "7",
+        "core_siblings_list": "0-7",
+        "core_type": null,
+        "cpu_capacity": "676"
+      }
+    }
+  },
+  "governor": {
+    "5": "powersave",
+    "6": "powersave",
+    "7": "powersave"
+  },
+  "os": "Linux-7.2.11-arch1-1-x86_64-with-glibc2.44",
+  "cpu_model": "Intel(R) Core(TM) Ultra 7 258V",
+  "load_before": [
+    5.65771484375,
+    3.66650390625,
+    3.57861328125
+  ],
+  "cleared_environment": [],
+  "engine_override_directory": null,
+  "parent_started_utc_ns": 1793883427665053306,
+  "pair_count": 50,
+  "qualifications": [
+    {
+      "implementation": "goose",
+      "result": {
+        "qualification": "held0/committed1/held0/fresh1/dirty2/fresh1/rollback2/fresh1",
+        "final_epoch": 1,
+        "child_exit_status": {
+          "reader": 0,
+          "writer": 0
+        },
+        "role_peak_rss_kib": {
+          "reader": 4656,
+          "writer": 4528
+        },
+        "role_rss_scope": "Separate whole-lifetime GNU time peaks, not simultaneous total memory; do not sum.",
+        "pair_wall_ns": 77905057,
+        "pair_started_utc_ns": 1793883551594458960,
+        "pair_completed_utc_ns": 1793883551672367573,
+        "initial_files": {
+          "database": {
+            "bytes": 16384,
+            "sha256": "cf798217a9211f1928116a3b6f13edf5492facb08410b347abb0c91f58977a58"
+          },
+          "wal": null,
+          "shm": null,
+          "journal": null
+        },
+        "files_after_roles_before_verification": {
+          "database": {
+            "bytes": 16384,
+            "sha256": "cf798217a9211f1928116a3b6f13edf5492facb08410b347abb0c91f58977a58"
+          },
+          "wal": {
+            "bytes": 8272,
+            "sha256": "cfe2add86d019d70193c31be230e7310a76b7f728ba0bbc52d45797f8005c3eb"
+          },
+          "shm": {
+            "bytes": 32768,
+            "sha256": "115c19e531d5bb2f99463652305bb71a6b6ef84097409b98185f4dbe94e7ef80"
+          },
+          "journal": null
+        },
+        "verified": {
+          "rows": 32,
+          "epoch": 1,
+          "logical_sha256": "66829ac672790c4a72af0ca9fe75fc6ea0ad895e61039fddd768cb8fc6d80150",
+          "integrity": "ok"
+        },
+        "files_before_anchor_close": {
+          "database": {
+            "bytes": 16384,
+            "sha256": "cf798217a9211f1928116a3b6f13edf5492facb08410b347abb0c91f58977a58"
+          },
+          "wal": {
+            "bytes": 8272,
+            "sha256": "cfe2add86d019d70193c31be230e7310a76b7f728ba0bbc52d45797f8005c3eb"
+          },
+          "shm": {
+            "bytes": 32768,
+            "sha256": "115c19e531d5bb2f99463652305bb71a6b6ef84097409b98185f4dbe94e7ef80"
+          },
+          "journal": null
+        },
+        "anchor_cleanup_ns": 16849144,
+        "files_after_anchor_close": {
+          "database": {
+            "bytes": 16384,
+            "sha256": "302efc9bf4fa4a229b1f85aa9b5a12cf3154d76e33f92a5434a78f752af5ad61"
+          },
+          "wal": null,
+          "shm": null,
+          "journal": null
+        },
+        "commands": {
+          "reader": [
+            "/usr/bin/time",
+            "-o",
+            "$BUILD/pairs/qualify-goose/reader-rss.txt",
+            "-f",
+            "%M",
+            "--",
+            "taskset",
+            "-c",
+            "7",
+            "$BUILD/goose",
+            "$BUILD/pairs/qualify-goose/database.db",
+            "reader",
+            "qualify",
+            "128",
+            "32",
+            "20000"
+          ],
+          "writer": [
+            "/usr/bin/time",
+            "-o",
+            "$BUILD/pairs/qualify-goose/writer-rss.txt",
+            "-f",
+            "%M",
+            "--",
+            "taskset",
+            "-c",
+            "6",
+            "$BUILD/goose",
+            "$BUILD/pairs/qualify-goose/database.db",
+            "writer",
+            "qualify",
+            "128",
+            "32",
+            "20000"
+          ]
+        },
+        "artifacts": {
+          "database.db": "302efc9bf4fa4a229b1f85aa9b5a12cf3154d76e33f92a5434a78f752af5ad61",
+          "events.jsonl": "431182dd270f1a33b661c9d77fca25cb9fe3b7599201cfbd803037e6ddccd8ac",
+          "reader-rss.txt": "af66e236b1615ac97e3bb06f0c6e4353420c19228989f30f681d8c7453c282f0",
+          "reader-stdout.txt": "2e619ae11f657496b25fee83c5f7f64de9a459976cca72f7bd6bf0009cf63360",
+          "reader-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "writer-rss.txt": "f8fb4bbcd6bb5e338131515d689ac68fdb42507bdb590a6c9b156c67e0fa069a",
+          "writer-stdout.txt": "d1582c1a1e136e60a153c26855cf1a0db03af9dd5e8096ee426855b0dc579183",
+          "writer-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "implementation": "raw-c-api",
+      "result": {
+        "qualification": "held0/committed1/held0/fresh1/dirty2/fresh1/rollback2/fresh1",
+        "final_epoch": 1,
+        "child_exit_status": {
+          "reader": 0,
+          "writer": 0
+        },
+        "role_peak_rss_kib": {
+          "reader": 6352,
+          "writer": 6316
+        },
+        "role_rss_scope": "Separate whole-lifetime GNU time peaks, not simultaneous total memory; do not sum.",
+        "pair_wall_ns": 80052888,
+        "pair_started_utc_ns": 1793883551938234867,
+        "pair_completed_utc_ns": 1793883552018291566,
+        "initial_files": {
+          "database": {
+            "bytes": 16384,
+            "sha256": "cf798217a9211f1928116a3b6f13edf5492facb08410b347abb0c91f58977a58"
+          },
+          "wal": null,
+          "shm": null,
+          "journal": null
+        },
+        "files_after_roles_before_verification": {
+          "database": {
+            "bytes": 16384,
+            "sha256": "cf798217a9211f1928116a3b6f13edf5492facb08410b347abb0c91f58977a58"
+          },
+          "wal": {
+            "bytes": 8272,
+            "sha256": "4c8c5812f73d059bc8fe0eb384df7ee4a15b2193ea371f0111ba5088cd86479c"
+          },
+          "shm": {
+            "bytes": 32768,
+            "sha256": "5c1abf7ef96d6f8d251b414207eb37501eb2b2e1d6c9f40640db4fccbf5cd7e7"
+          },
+          "journal": null
+        },
+        "verified": {
+          "rows": 32,
+          "epoch": 1,
+          "logical_sha256": "66829ac672790c4a72af0ca9fe75fc6ea0ad895e61039fddd768cb8fc6d80150",
+          "integrity": "ok"
+        },
+        "files_before_anchor_close": {
+          "database": {
+            "bytes": 16384,
+            "sha256": "cf798217a9211f1928116a3b6f13edf5492facb08410b347abb0c91f58977a58"
+          },
+          "wal": {
+            "bytes": 8272,
+            "sha256": "4c8c5812f73d059bc8fe0eb384df7ee4a15b2193ea371f0111ba5088cd86479c"
+          },
+          "shm": {
+            "bytes": 32768,
+            "sha256": "5c1abf7ef96d6f8d251b414207eb37501eb2b2e1d6c9f40640db4fccbf5cd7e7"
+          },
+          "journal": null
+        },
+        "anchor_cleanup_ns": 10074834,
+        "files_after_anchor_close": {
+          "database": {
+            "bytes": 16384,
+            "sha256": "302efc9bf4fa4a229b1f85aa9b5a12cf3154d76e33f92a5434a78f752af5ad61"
+          },
+          "wal": null,
+          "shm": null,
+          "journal": null
+        },
+        "commands": {
+          "reader": [
+            "/usr/bin/time",
+            "-o",
+            "$BUILD/pairs/qualify-raw-c-api/reader-rss.txt",
+            "-f",
+            "%M",
+            "--",
+            "taskset",
+            "-c",
+            "7",
+            "$BUILD/raw-c-api",
+            "$BUILD/pairs/qualify-raw-c-api/database.db",
+            "reader",
+            "qualify",
+            "128",
+            "32",
+            "20000"
+          ],
+          "writer": [
+            "/usr/bin/time",
+            "-o",
+            "$BUILD/pairs/qualify-raw-c-api/writer-rss.txt",
+            "-f",
+            "%M",
+            "--",
+            "taskset",
+            "-c",
+            "6",
+            "$BUILD/raw-c-api",
+            "$BUILD/pairs/qualify-raw-c-api/database.db",
+            "writer",
+            "qualify",
+            "128",
+            "32",
+            "20000"
+          ]
+        },
+        "artifacts": {
+          "database.db": "302efc9bf4fa4a229b1f85aa9b5a12cf3154d76e33f92a5434a78f752af5ad61",
+          "events.jsonl": "e288c89c8166c0bf6c62a417d485fcc479f62ee2acb8fdff3f2ecb7b936e0332",
+          "reader-stdout.txt": "dd0f24612fbed7123fa1aed17537863e4617025c89ac1137898ccf2dfb2c9200",
+          "reader-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "reader-rss.txt": "69e6dc4a93a841b5baf8b2ee53504572314cf8a4b6b9a1f98523811386661c59",
+          "writer-stdout.txt": "95ec5270a5583c27661cea9e9ba980e6aaba28e44fc5203f40b58d90208b2339",
+          "writer-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "writer-rss.txt": "9533ba2148a77e8734d14a8a56cccf47e70682911eba3ae908987573a90461cd"
+        }
+      }
+    },
+    {
+      "implementation": "sqlitecpp",
+      "result": {
+        "qualification": "held0/committed1/held0/fresh1/dirty2/fresh1/rollback2/fresh1",
+        "final_epoch": 1,
+        "child_exit_status": {
+          "reader": 0,
+          "writer": 0
+        },
+        "role_peak_rss_kib": {
+          "reader": 6508,
+          "writer": 6316
+        },
+        "role_rss_scope": "Separate whole-lifetime GNU time peaks, not simultaneous total memory; do not sum.",
+        "pair_wall_ns": 82877488,
+        "pair_started_utc_ns": 1793883552102294327,
+        "pair_completed_utc_ns": 1793883552185174272,
+        "initial_files": {
+          "database": {
+            "bytes": 16384,
+            "sha256": "cf798217a9211f1928116a3b6f13edf5492facb08410b347abb0c91f58977a58"
+          },
+          "wal": null,
+          "shm": null,
+          "journal": null
+        },
+        "files_after_roles_before_verification": {
+          "database": {
+            "bytes": 16384,
+            "sha256": "cf798217a9211f1928116a3b6f13edf5492facb08410b347abb0c91f58977a58"
+          },
+          "wal": {
+            "bytes": 8272,
+            "sha256": "b2dc9becdada8cb657776fa269b34ceb1dab9158eb73fac9f4a720c3a4608ca5"
+          },
+          "shm": {
+            "bytes": 32768,
+            "sha256": "b59bbda9744ba3eec44ba1d4edf1a8fe8c2426451ab473811202314754c3c4d6"
+          },
+          "journal": null
+        },
+        "verified": {
+          "rows": 32,
+          "epoch": 1,
+          "logical_sha256": "66829ac672790c4a72af0ca9fe75fc6ea0ad895e61039fddd768cb8fc6d80150",
+          "integrity": "ok"
+        },
+        "files_before_anchor_close": {
+          "database": {
+            "bytes": 16384,
+            "sha256": "cf798217a9211f1928116a3b6f13edf5492facb08410b347abb0c91f58977a58"
+          },
+          "wal": {
+            "bytes": 8272,
+            "sha256": "b2dc9becdada8cb657776fa269b34ceb1dab9158eb73fac9f4a720c3a4608ca5"
+          },
+          "shm": {
+            "bytes": 32768,
+            "sha256": "b59bbda9744ba3eec44ba1d4edf1a8fe8c2426451ab473811202314754c3c4d6"
+          },
+          "journal": null
+        },
+        "anchor_cleanup_ns": 8440393,
+        "files_after_anchor_close": {
+          "database": {
+            "bytes": 16384,
+            "sha256": "302efc9bf4fa4a229b1f85aa9b5a12cf3154d76e33f92a5434a78f752af5ad61"
+          },
+          "wal": null,
+          "shm": null,
+          "journal": null
+        },
+        "commands": {
+          "reader": [
+            "/usr/bin/time",
+            "-o",
+            "$BUILD/pairs/qualify-sqlitecpp/reader-rss.txt",
+            "-f",
+            "%M",
+            "--",
+            "taskset",
+            "-c",
+            "7",
+            "$BUILD/sqlitecpp",
+            "$BUILD/pairs/qualify-sqlitecpp/database.db",
+            "reader",
+            "qualify",
+            "128",
+            "32",
+            "20000"
+          ],
+          "writer": [
+            "/usr/bin/time",
+            "-o",
+            "$BUILD/pairs/qualify-sqlitecpp/writer-rss.txt",
+            "-f",
+            "%M",
+            "--",
+            "taskset",
+            "-c",
+            "6",
+            "$BUILD/sqlitecpp",
+            "$BUILD/pairs/qualify-sqlitecpp/database.db",
+            "writer",
+            "qualify",
+            "128",
+            "32",
+            "20000"
+          ]
+        },
+        "artifacts": {
+          "database.db": "302efc9bf4fa4a229b1f85aa9b5a12cf3154d76e33f92a5434a78f752af5ad61",
+          "events.jsonl": "aead72638abba878e81755eca0dde372b5adc780642028bd31c50e03a2eb642b",
+          "reader-stdout.txt": "dd0f24612fbed7123fa1aed17537863e4617025c89ac1137898ccf2dfb2c9200",
+          "reader-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "reader-rss.txt": "aba88756fb875a7c0ca75bfe30bbbe9f3428376135ac3a88de2d62ba5961ce8d",
+          "writer-stdout.txt": "95ec5270a5583c27661cea9e9ba980e6aaba28e44fc5203f40b58d90208b2339",
+          "writer-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "writer-rss.txt": "9533ba2148a77e8734d14a8a56cccf47e70682911eba3ae908987573a90461cd"
+        }
+      }
+    },
+    {
+      "implementation": "rusqlite",
+      "result": {
+        "qualification": "held0/committed1/held0/fresh1/dirty2/fresh1/rollback2/fresh1",
+        "final_epoch": 1,
+        "child_exit_status": {
+          "reader": 0,
+          "writer": 0
+        },
+        "role_peak_rss_kib": {
+          "reader": 4936,
+          "writer": 5004
+        },
+        "role_rss_scope": "Separate whole-lifetime GNU time peaks, not simultaneous total memory; do not sum.",
+        "pair_wall_ns": 63352032,
+        "pair_started_utc_ns": 1793883552257445203,
+        "pair_completed_utc_ns": 1793883552320799509,
+        "initial_files": {
+          "database": {
+            "bytes": 16384,
+            "sha256": "cf798217a9211f1928116a3b6f13edf5492facb08410b347abb0c91f58977a58"
+          },
+          "wal": null,
+          "shm": null,
+          "journal": null
+        },
+        "files_after_roles_before_verification": {
+          "database": {
+            "bytes": 16384,
+            "sha256": "cf798217a9211f1928116a3b6f13edf5492facb08410b347abb0c91f58977a58"
+          },
+          "wal": {
+            "bytes": 8272,
+            "sha256": "ecf0e01a00fdee8964ab7680918174873fafb5897e0cc74a21db759598ff4fd4"
+          },
+          "shm": {
+            "bytes": 32768,
+            "sha256": "adc6b28b49ef1c4fed32f401d63b3067a0b60573a03c4ea6f936bb0537f7afb5"
+          },
+          "journal": null
+        },
+        "verified": {
+          "rows": 32,
+          "epoch": 1,
+          "logical_sha256": "66829ac672790c4a72af0ca9fe75fc6ea0ad895e61039fddd768cb8fc6d80150",
+          "integrity": "ok"
+        },
+        "files_before_anchor_close": {
+          "database": {
+            "bytes": 16384,
+            "sha256": "cf798217a9211f1928116a3b6f13edf5492facb08410b347abb0c91f58977a58"
+          },
+          "wal": {
+            "bytes": 8272,
+            "sha256": "ecf0e01a00fdee8964ab7680918174873fafb5897e0cc74a21db759598ff4fd4"
+          },
+          "shm": {
+            "bytes": 32768,
+            "sha256": "adc6b28b49ef1c4fed32f401d63b3067a0b60573a03c4ea6f936bb0537f7afb5"
+          },
+          "journal": null
+        },
+        "anchor_cleanup_ns": 10054467,
+        "files_after_anchor_close": {
+          "database": {
+            "bytes": 16384,
+            "sha256": "302efc9bf4fa4a229b1f85aa9b5a12cf3154d76e33f92a5434a78f752af5ad61"
+          },
+          "wal": null,
+          "shm": null,
+          "journal": null
+        },
+        "commands": {
+          "reader": [
+            "/usr/bin/time",
+            "-o",
+            "$BUILD/pairs/qualify-rusqlite/reader-rss.txt",
+            "-f",
+            "%M",
+            "--",
+            "taskset",
+            "-c",
+            "7",
+            "$BUILD/rust-target/x86_64-unknown-linux-gnu/release/sqlite-mixedwal-bench",
+            "$BUILD/pairs/qualify-rusqlite/database.db",
+            "reader",
+            "qualify",
+            "128",
+            "32",
+            "20000"
+          ],
+          "writer": [
+            "/usr/bin/time",
+            "-o",
+            "$BUILD/pairs/qualify-rusqlite/writer-rss.txt",
+            "-f",
+            "%M",
+            "--",
+            "taskset",
+            "-c",
+            "6",
+            "$BUILD/rust-target/x86_64-unknown-linux-gnu/release/sqlite-mixedwal-bench",
+            "$BUILD/pairs/qualify-rusqlite/database.db",
+            "writer",
+            "qualify",
+            "128",
+            "32",
+            "20000"
+          ]
+        },
+        "artifacts": {
+          "database.db": "302efc9bf4fa4a229b1f85aa9b5a12cf3154d76e33f92a5434a78f752af5ad61",
+          "events.jsonl": "c299ffd44b173fa62dcbfdb96b4163067b40c896fe841eb6ce65f3504b2d55b7",
+          "reader-rss.txt": "00cee10eb2c26f7a1906d6724eb88e83e31d2d813f26b06e61460f120734b6da",
+          "reader-stdout.txt": "dd0f24612fbed7123fa1aed17537863e4617025c89ac1137898ccf2dfb2c9200",
+          "reader-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "writer-rss.txt": "4a2557b5f2e097ee5b14306dc0ba6f3f77ba0168f59c9b92654e586362b8a4be",
+          "writer-stdout.txt": "95ec5270a5583c27661cea9e9ba980e6aaba28e44fc5203f40b58d90208b2339",
+          "writer-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "implementation": "python",
+      "result": {
+        "qualification": "held0/committed1/held0/fresh1/dirty2/fresh1/rollback2/fresh1",
+        "final_epoch": 1,
+        "child_exit_status": {
+          "reader": 0,
+          "writer": 0
+        },
+        "role_peak_rss_kib": {
+          "reader": 15428,
+          "writer": 15372
+        },
+        "role_rss_scope": "Separate whole-lifetime GNU time peaks, not simultaneous total memory; do not sum.",
+        "pair_wall_ns": 404005350,
+        "pair_started_utc_ns": 1793883552400110258,
+        "pair_completed_utc_ns": 1793883552804116777,
+        "initial_files": {
+          "database": {
+            "bytes": 16384,
+            "sha256": "cf798217a9211f1928116a3b6f13edf5492facb08410b347abb0c91f58977a58"
+          },
+          "wal": null,
+          "shm": null,
+          "journal": null
+        },
+        "files_after_roles_before_verification": {
+          "database": {
+            "bytes": 16384,
+            "sha256": "cf798217a9211f1928116a3b6f13edf5492facb08410b347abb0c91f58977a58"
+          },
+          "wal": {
+            "bytes": 8272,
+            "sha256": "9ead2ecd087cba236cc9d8e332509d6e6eed48f48d612c87e17ef3e036403c9a"
+          },
+          "shm": {
+            "bytes": 32768,
+            "sha256": "0fd9c15fed70af74a4890463f2fbaf8316b02cf44be374f547122e490fe37190"
+          },
+          "journal": null
+        },
+        "verified": {
+          "rows": 32,
+          "epoch": 1,
+          "logical_sha256": "66829ac672790c4a72af0ca9fe75fc6ea0ad895e61039fddd768cb8fc6d80150",
+          "integrity": "ok"
+        },
+        "files_before_anchor_close": {
+          "database": {
+            "bytes": 16384,
+            "sha256": "cf798217a9211f1928116a3b6f13edf5492facb08410b347abb0c91f58977a58"
+          },
+          "wal": {
+            "bytes": 8272,
+            "sha256": "9ead2ecd087cba236cc9d8e332509d6e6eed48f48d612c87e17ef3e036403c9a"
+          },
+          "shm": {
+            "bytes": 32768,
+            "sha256": "0fd9c15fed70af74a4890463f2fbaf8316b02cf44be374f547122e490fe37190"
+          },
+          "journal": null
+        },
+        "anchor_cleanup_ns": 26476659,
+        "files_after_anchor_close": {
+          "database": {
+            "bytes": 16384,
+            "sha256": "302efc9bf4fa4a229b1f85aa9b5a12cf3154d76e33f92a5434a78f752af5ad61"
+          },
+          "wal": null,
+          "shm": null,
+          "journal": null
+        },
+        "commands": {
+          "reader": [
+            "/usr/bin/time",
+            "-o",
+            "$BUILD/pairs/qualify-python/reader-rss.txt",
+            "-f",
+            "%M",
+            "--",
+            "taskset",
+            "-c",
+            "7",
+            "/usr/bin/python3.14",
+            "-I",
+            "$SOURCE/bench/mixedwal/python.py",
+            "$BUILD/pairs/qualify-python/database.db",
+            "reader",
+            "qualify",
+            "128",
+            "32",
+            "20000"
+          ],
+          "writer": [
+            "/usr/bin/time",
+            "-o",
+            "$BUILD/pairs/qualify-python/writer-rss.txt",
+            "-f",
+            "%M",
+            "--",
+            "taskset",
+            "-c",
+            "6",
+            "/usr/bin/python3.14",
+            "-I",
+            "$SOURCE/bench/mixedwal/python.py",
+            "$BUILD/pairs/qualify-python/database.db",
+            "writer",
+            "qualify",
+            "128",
+            "32",
+            "20000"
+          ]
+        },
+        "artifacts": {
+          "database.db": "302efc9bf4fa4a229b1f85aa9b5a12cf3154d76e33f92a5434a78f752af5ad61",
+          "events.jsonl": "442f07325b602ce333d5ce35b0d2081bd0ba6f5aeb68dd07dc0445b7fbdceab2",
+          "reader-stdout.txt": "dd0f24612fbed7123fa1aed17537863e4617025c89ac1137898ccf2dfb2c9200",
+          "reader-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "writer-stdout.txt": "95ec5270a5583c27661cea9e9ba980e6aaba28e44fc5203f40b58d90208b2339",
+          "writer-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "writer-rss.txt": "c26d8196b6763d7ebee37b007361203eb1e62d46dee80d9747c32597a05d840c",
+          "reader-rss.txt": "5cae3c2f1954de447894a7deb70c1248405170e0fafb9c00c903aa634be8923a"
+        }
+      }
+    }
+  ],
+  "scope": "Bounded coordinated same-implementation reader/writer pairs; event logging and reader IPC waits affect role windows. Not identical offered load, isolated writer overhead, free-running saturation, exact continuous overlap, power-loss or exclusive-core evidence.",
+  "retention": "Successful databases/sidecars removed only after independent full oracle and hashes; all raw role streams/event journals retained. Failed fixtures retained, no automatic reruns.",
+  "gates": {
+    "minimum_commits": 96,
+    "required_intermediate_progress_bands": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "deadline_seconds": 120,
+    "coverage_required": true
+  },
+  "filesystem": {
+    "filesystems": [
+      {
+        "target": "/home",
+        "source": "/dev/mapper/ArchinstallVg-root[/@home]",
+        "fstype": "btrfs",
+        "options": "rw,nosuid,nodev,relatime,compress=zstd:3,ssd,discard=async,space_cache=v2,subvolid=257,subvol=/@home"
+      }
+    ]
+  },
+  "storage_scope": "Warm OS cache; recorded mount is not proof of physical device/controller durability. Last-close anchor cleanup is outside role clocks.",
+  "build_commands": [
+    [
+      "$GOOSE",
+      "--version"
+    ],
+    [
+      "python3",
+      "scripts/native-manifest.py",
+      "--check"
+    ],
+    [
+      "$GOOSE",
+      "build",
+      "bench/mixedwal/runner.goose",
+      "--cc",
+      "gcc",
+      "-O2",
+      "-o",
+      "$BUILD/goose"
+    ],
+    [
+      "gcc",
+      "-std=c11",
+      "-O2",
+      "-UNDEBUG",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "$SOURCE/bench/filebacked/policy.c",
+      "$BUILD/goose-cache/build/pkg/local/34bd5773/gcc-20260810-9d5f2359/cmake/pkg/libgoose_sqlite_native.a",
+      "-lsqlite3",
+      "-pthread",
+      "-lm",
+      "-o",
+      "$BUILD/policy"
+    ],
+    [
+      "cmake",
+      "-S",
+      "$REPO/.build/alternatives/SQLiteCpp",
+      "-B",
+      "$BUILD/cpp-build",
+      "-DSQLITECPP_INTERNAL_SQLITE=OFF",
+      "-DSQLITECPP_BUILD_TESTS=OFF",
+      "-DSQLITECPP_BUILD_EXAMPLES=OFF",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DCMAKE_CXX_FLAGS_RELEASE=-O2 -DNDEBUG",
+      "-DCMAKE_CXX_FLAGS=",
+      "-DCMAKE_CXX_COMPILER=g++",
+      "-DCMAKE_C_COMPILER=gcc",
+      "-DCMAKE_CXX_COMPILER_LAUNCHER=",
+      "-DCMAKE_C_COMPILER_LAUNCHER="
+    ],
+    [
+      "cmake",
+      "--build",
+      "$BUILD/cpp-build",
+      "--parallel",
+      "2"
+    ],
+    [
+      "g++",
+      "-std=c++17",
+      "-O2",
+      "-UNDEBUG",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "$SOURCE/bench/mixedwal/native.cpp",
+      "-lsqlite3",
+      "-o",
+      "$BUILD/raw-c-api"
+    ],
+    [
+      "g++",
+      "-std=c++17",
+      "-O2",
+      "-UNDEBUG",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-DUSE_SQLITECPP",
+      "-I$REPO/.build/alternatives/SQLiteCpp/include",
+      "$SOURCE/bench/mixedwal/native.cpp",
+      "$BUILD/cpp-build/libSQLiteCpp.a",
+      "-lsqlite3",
+      "-o",
+      "$BUILD/sqlitecpp"
+    ],
+    [
+      "rustc",
+      "--print",
+      "sysroot"
+    ],
+    [
+      "$HOME/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rustc",
+      "-vV"
+    ],
+    [
+      "cargo",
+      "build",
+      "--locked",
+      "--release",
+      "--bin",
+      "sqlite-mixedwal-bench",
+      "--target",
+      "x86_64-unknown-linux-gnu",
+      "--target-dir",
+      "$BUILD/rust-target",
+      "--manifest-path",
+      "$SOURCE/bench/filebacked/rust/Cargo.toml",
+      "--config",
+      "profile.release.opt-level=2",
+      "--config",
+      "profile.release.lto=\"thin\"",
+      "--config",
+      "profile.release.codegen-units=16",
+      "--config",
+      "profile.release.incremental=true"
+    ],
+    [
+      "/usr/bin/gcc",
+      "--version"
+    ],
+    [
+      "/usr/bin/g++",
+      "--version"
+    ],
+    [
+      "/usr/bin/cmake",
+      "--version"
+    ],
+    [
+      "/usr/bin/rustup",
+      "--version"
+    ],
+    [
+      "/usr/bin/git",
+      "--version"
+    ],
+    [
+      "/usr/bin/python3.14",
+      "--version"
+    ],
+    [
+      "/usr/bin/time",
+      "--version"
+    ],
+    [
+      "ldd",
+      "$BUILD/goose"
+    ],
+    [
+      "/usr/bin/python3",
+      "-I",
+      "-c",
+      "import sys; print(sys.flags.optimize)"
+    ]
+  ],
+  "goose": {
+    "revision": "eadca409f68210893f366e60d0c2f0dc29a339be",
+    "version": "goose eadca40 (runtime 3025e5810379)",
+    "sha256": "2bdd604d01c3f46b03ddae80871b10de7f75e9e710ce92faa1a644b246472ab7"
+  },
+  "native_build": {
+    "compiler": {
+      "file": "gcc",
+      "version": "gcc (GCC) 16.2.1 20260810",
+      "sha256": "8aac907d6fbf40394b424b5fa4a2ad1aa291dac7d3a0315c5b415c1f5ace1287"
+    },
+    "flags": [
+      [
+        "-O3 -DNDEBUG -fPIC",
+        "-Wall",
+        "-Wextra",
+        "-Werror"
+      ]
+    ],
+    "build_type": "Release",
+    "archive_sha256": "ee5e550a4b1a1424405f3d26b64941ab8376e6313d626a0444298d64b64ab23f",
+    "generated_caller_sha256": "ecc260b657fd1a2e2d4ab5348ffdc09707eb7ae25020ec2faefac9584621eeaf",
+    "sqlite_header_sha256": "59114192eef65d9428279ec4a4a433631f50d3ca20c202acdd49d2a6bb94fb39"
+  },
+  "sqlitecpp_sources": {
+    ".claude/skills/agent-response-style/SKILL.md": "fe52820f5b0d8b538914a4ca7b66acaf36c2d34cf508037be32dd80f755b2588",
+    ".claude/skills/humanizer/SKILL.md": "2dd885dd96a63e4c3cff281fba639788bff956b4bb759157ef0b0681a114eaa3",
+    ".claude/skills/skill-maintenance/SKILL.md": "31b30378379a749a242ebb3ab659c1a0dfbbf9d0b323f1b5acc55e6bc305062c",
+    ".claude/skills/sqlitecpp-build-cmake/SKILL.md": "e412c2ae0e7e615c38eb2afc83365a97ad0eebfe0d0d76e2e44e311254326b55",
+    ".claude/skills/sqlitecpp-build-meson/SKILL.md": "80e12b634e873a6dcfd48f270ecbab562e6853f8752cff5d8d1202bd36ae93f1",
+    ".claude/skills/sqlitecpp-ci-workflows/SKILL.md": "0f0b9ebe273a8b0270452e7d6d97ef00c2f314dd9e096957ffe52352fe68e9f9",
+    ".claude/skills/sqlitecpp-coding-standards/SKILL.md": "be47c0be2034232aeb29ce1af66534266fffad618a74c90a15818f0a9a7bc862",
+    ".claude/skills/sqlitecpp-doxygen-guide/SKILL.md": "1ac5d21f9e5a8bd5c0f20b61b6a9db36370c9b573fedc0f6a9d96a4d0a385f92",
+    ".claude/skills/sqlitecpp-git-branching/SKILL.md": "d537082ea1c2dd006269e56c598d2deafd1c682d26727d4306fb2ccf52d8e33c",
+    ".claude/skills/sqlitecpp-release/SKILL.md": "a36f6b41d6191f192f041b814dd5d806b4d295ee88c50a0537dd087893e8a439",
+    ".claude/skills/sqlitecpp-sqlite-flags/SKILL.md": "920389e7835470a7c3cdfd1d658ddaa2e50fe81ffecf789bc865b405d26277c2",
+    ".claude/skills/sqlitecpp-testing-practices/SKILL.md": "ecf54099d33f79ffa9f3fc10b28a7a8f7293563bcfb766151c836384f3af47d2",
+    ".claude/skills/sqlitecpp-troubleshooting/SKILL.md": "92ed8f66735c291f775c07aeb9818835c588727d50dd18adeec0f49e6fadff6f",
+    ".claude/skills/sqlitecpp-update-sqlite/SKILL.md": "4fe2c6e88e5669855a6157be5aaf8a77163ea9cbd16f9350f02811167ee19712",
+    ".claude/skills/sqlitecpp-workflow/SKILL.md": "40f246d3924390a0723c853d2c9772b3e4705eea2a99c1d7416554579fc8f404",
+    ".claude/skills/windows-shell-commands/SKILL.md": "7c5051c9da7a6bf86ab0144a9eb1eb3a0c4400e0171a989c4b59b00f13da2802",
+    ".cproject": "661e3115c159fe0fece2381478a9bbdafce5640a2e495d9c3f34c8bcf502d1d7",
+    ".editorconfig": "f2da81afff43661187aaf506278a4007266eb7862f270d08938c8437206768bd",
+    ".gitattributes": "15214365c74269bf8d63a13cc2364ff2956cea1df3f146a90d8f9ff2b751d2ed",
+    ".gitbugtraq": "081b820cf724b438ee490da2937c4563a03d18a54555a35689a5c8bafb52e363",
+    ".github/copilot-instructions.md": "eb024b9949552b34403b2aa063406a02f60132e91fcb03c4ac5dd925a4cacedb",
+    ".github/dependabot.yml": "1d15d6b93d2b6bf31d5dad1aa0e99c49258045d5dd3170e1abbb0696243987fe",
+    ".github/workflows/cmake.yml": "c4dd4f5868b2643706cb76390e82fada433e870c598b5a62594b804c797abb32",
+    ".github/workflows/cmake_builtin_lib.yml": "b851006fcf145e3e9374f98e3c4f5493c938ba43026ec5e63fc42936a7a4d16a",
+    ".github/workflows/cmake_consumer_standards.yml": "22044ec3d29163dd5001b2732e6960440cb7fdc59a0b10cf06e1fc4af40a85f7",
+    ".github/workflows/cmake_subdir_example.yml": "16e3ce06eb6bd5692592785b430d012cc2f26e38977258d1d118363601ab70a5",
+    ".github/workflows/codeql.yml": "f472df6c2bce422769fe882c13e691d283ee5650a2fad5b0742d3f54bdb219c6",
+    ".github/workflows/coverage.yml": "7c6011138a7f3a086b3c8428a8359f8af2df87897a00245a1c994a6793982da6",
+    ".github/workflows/coverity.yml": "60e3435447974d381a2974ee6e3e0bb9bfaa2b71c4a3d25db679d87df9400546",
+    ".github/workflows/meson.yml": "7bf63bc0de8548668b8cfbea63b7e455986fc38b6b16991ef5d6a84764bc837b",
+    ".github/workflows/quality.yml": "a04d39cf33cba9522726a415fa66308dd4e629c6657145a53d9d1e5dd2551321",
+    ".gitignore": "19897c8762752c6b9ad0435ae489062ce5c21516ba2ae1d1ac6e36ea2e4fa681",
+    ".gitmodules": "607955c89b438ef78e2466867d69dc2159bf0344c083e32e117c847bcb03e307",
+    ".project": "1e9f812ab571228a892ebeede743357d329bce4cfb7271e1a7c47c3c5410e039",
+    "AGENTS.md": "ff8e37bfa5530480cc069dbba766313504db6a182f2884865db134d0b3e7ba47",
+    "CHANGELOG.md": "90f5d516c77fa766289a04dbfdc6cdb509d62917bdfce3c6e07774506ccc6fcc",
+    "CMakeLists.txt": "ec6202a74980ab26457892040c6787cef9783d688000ce7717b2c0db0e0bb8e4",
+    "Doxyfile": "d3d4cbbaefa0882de88e1a909900284574b876be4ddb780fc0ee09d71798596f",
+    "LICENSE.txt": "00f43691f376cc7abdab1f9d72ba9d1a92846b481d2df5ffa1c345108b28048c",
+    "README.md": "e02bf2c761d5cc0f098fcbbac9320bcb4d9a1544aea6e9bd33eaa59bdd4c041a",
+    "TODO.txt": "4fc9b5d19ead4a82916460feb553f326f870d4280df7bbac88ab92e07e22cba2",
+    "_config.yml": "89500f4d9d2bb727f973ace596b9ea2e58553acd80c41d95c3c2658f45095560",
+    "build.bat": "cfc099294887e89aaae373271ed0c4fed982fbda7f129dbb0f91ad4a83240eee",
+    "build.sh": "6ec49706abaeee5b5909c86f5f7ead86bf52a9706c239e7aaded132fe4706e7b",
+    "cmake/FindSQLite3.cmake": "ebb164161d60e2c2f97609a62488931d924e8b7cb84b688ddc3a75d414e4d4fa",
+    "cmake/SQLiteCppConfig.cmake.in": "966ca3e9c3665bc538d76197eec907a6f00712cc1deccf56e9223d6322f544af",
+    "cpplint.py": "b95499f9112c4f76a81cccce1dc04c666844f9cceae21461d85bbeda7e248d6a",
+    "docs/README.md": "94d8404222c0bdc5547d011fa58f8c3fb8d2504049fbc96b8770d8cf200b9da5",
+    "examples/example1/README.md": "6f706a0b41a443e8e385970f9581d473e0a4df8b9b6001ade6fdf4c0b16c548d",
+    "examples/example1/example.db3": "f1b6ea265a8636925a9329fc106fdad9017e8978ca7a54f0a05f679d6cefcf75",
+    "examples/example1/logo.png": "01f5a3cc1e3019987839c6ea5a2afb9f9955dfcf617a952a08f631948f0344c7",
+    "examples/example1/main.cpp": "e842ff0ef903c594550d4f5c118303d2103053650f092bbc79370c8cb10864a0",
+    "examples/example1/meson.build": "9ff486c45e453d0dcb5373d4f4ed1ba731154b2e6028c926721ce93749b24344",
+    "examples/example2/CMakeLists.txt": "f8e619caf124e42e41ea91fc24975ed57fc63a69673312a29abeb12a9fa3c487",
+    "examples/example2/README.md": "0e840d3db82a8e78f688404e2fc35249b710f1d91c68162198a82dcef1d3e34c",
+    "examples/example2/build.bat": "2377efb9dada98a2819b06b56b08cf4ce389a54cb0592468d1a6421ab4b0d32c",
+    "examples/example2/build.sh": "9f3cca4826e0d6163a884d7bd7e76df4bd1fdbe22571bc4e1206abf4b44e2750",
+    "examples/example2/meson.build": "5f57215734b40d518b530e5e27866f402ead501fdd1d7b0bf90321956e451769",
+    "examples/example2/src/main.cpp": "0ffaca2c8e1188953fd1747e7630a3503635ff253d2baad343fc7e0fe297d74b",
+    "examples/meson.build": "ef1bc54a51e89443b522d0610901ca579d703720364a232a7ef2b26374cb18fc",
+    "include/SQLiteCpp/Assertion.h": "06a3f600267a0591f5802091e18899cddaaed70d4020435246e5bf16721741b5",
+    "include/SQLiteCpp/Backup.h": "798f073a9c3396db1a0ca03bc3b4a1c2251fa083a0dd259e2b74af1fb25654b6",
+    "include/SQLiteCpp/Column.h": "1a86bdc2b3a68e923fae837956c54b48430521d87fcbb0601f9162e3ec43b175",
+    "include/SQLiteCpp/Database.h": "4c5fb3c9bae143734d63049cf6a47b3e7fd363d114661ae83a33837b02ed4e9a",
+    "include/SQLiteCpp/Exception.h": "e584a3628c98144b8ca54bc96873e84cf3ba5070a9b9d54e30c154025af63017",
+    "include/SQLiteCpp/ExecuteMany.h": "44769c0e4cf6bc5cb3404359d2e04cde6675fb2a8871e81f498fd63899a191a2",
+    "include/SQLiteCpp/SQLiteCpp.h": "cc4da5f4be64221826a8fdae37ab34367a2b615db72885a3b0a3b5843ebd4f8e",
+    "include/SQLiteCpp/SQLiteCppExport.h": "a2f453afbb7a4186026e0257d382fd3ed033d669d90dc61ffbf0c7aa11c126bd",
+    "include/SQLiteCpp/Savepoint.h": "40a41d5ff7d067bca7837d628c938ffacbebf0f15f84434c361a519e8b836220",
+    "include/SQLiteCpp/Statement.h": "117a8ebbc955584cb1c513b2a0ede15d59909d2a5d2875b9a699c57090cec5f2",
+    "include/SQLiteCpp/Transaction.h": "753de02a9a4178266d3b3b1b34289ff342a682bd5f11433c893bb83f45f229e5",
+    "include/SQLiteCpp/Utils.h": "9e7b82a87299e8040348172585e131da920deb204f872185849c7f75a0d0e1ef",
+    "include/SQLiteCpp/VariadicBind.h": "ab40575029c9197b52c18d7b5f4a45b02660875834aeb997f6fbc47496195e41",
+    "meson.build": "78ca7a4f2b3bbf439f8fd294f38a715e2462b37dd9a92fb3d1e5dca852da9e0f",
+    "meson_options.txt": "c3f2ca3b8794e1813452765ea6ec0d6c3fa590326ae712c9279feb9b81eae9b5",
+    "package.xml": "c591d5be20fcd330ad7327aef8894645718533ade592734091458329d5bd7d8e",
+    "sqlite3/CMakeLists.txt": "3298df5247f5b349714d3756458775691894579ad57f9e8c1f3887c2d3342b0b",
+    "sqlite3/README.md": "3c43cfd04d471934f2ad4e459853e15684bfd71bcd4280d41d47487948b3c6ee",
+    "sqlite3/sqlite3.c": "b1dd5d74ec7f29055a6684fa06fb3c2f6821c87dd38f9a458dfd2e8a1db28189",
+    "sqlite3/sqlite3.h": "919e7f2e8ed1d8f56ac17b412b8971c76aa5d1a879752cc6058f75e7d5910e1d",
+    "src/Backup.cpp": "26301ddb7df2fc92a0b1e3e5642afb6fcfc1c2df855a4186970a0640ed56ec1a",
+    "src/Column.cpp": "ea2f6fd933d04e57d27a0cf6ca61610c3fb09e8f15096b987d38798675005fe4",
+    "src/Database.cpp": "6e0b60b80cb46b9b10b5c353d7085c600796d021138c096263f75358667e2256",
+    "src/Exception.cpp": "d6d553432d78c6788a3962554246dbe33b310ee090841beefc91badb7ea2eccc",
+    "src/Savepoint.cpp": "365aa0430d9bdffc1e7e57484051413a8b12e7d41e50dc4cc5c31c281c9c18f5",
+    "src/Statement.cpp": "4de703808121b7166beb3755816cb51cc2bf37fdbe0ac01858cc95e807581d6f",
+    "src/Transaction.cpp": "84175da16ebb124f99a4d3d3983b660697cfdc28e92980754214b610ef291f86",
+    "subprojects/.gitignore": "b4047ae65d9b8a825276e40420c98a7ed984feeee9e52579c276814b03eeefec",
+    "subprojects/gtest.wrap": "ace53904cf5489c9f06f0038cc047be33bb56dc0c95ae9b2979d0640705d57fe",
+    "subprojects/sqlite3.wrap": "bdfcf682644e120acbde022a30c42c33c541734767fa6b0b56f83336d99b5215",
+    "tests/Backup_test.cpp": "ec8a34852c258dd5a0013c4cc950ab28b288ceba558a1b1b938f83023b329922",
+    "tests/Column_test.cpp": "493ece1c02be2f952b68d54b25f952c546a523aebbea7dc53355da45dabeeaed",
+    "tests/Database_test.cpp": "d3614bb83ab4f2e965f5c5fbe74e21f317f24d3f1b25f0c73b21e5e283335055",
+    "tests/Exception_test.cpp": "ab094ef04fd2574e0614431121708e10491fe4a17b8706d8dab567765d0cace2",
+    "tests/ExecuteMany_test.cpp": "250fa03dc431745ba2b0b1cbfc2180ae9f7f5e87fb91daad7b065f737235a04c",
+    "tests/Savepoint_test.cpp": "dec43147cb987dd3030de47e577a98b59a7185d50e8cfd6a552885a070ad75e1",
+    "tests/Statement_test.cpp": "75ed34f979ba78bf0a66cf317b826b12add0b34b4f5104064a32ed54d7786ec8",
+    "tests/Transaction_test.cpp": "cf5b8347165146a62cb03e4fec2f937af95dbb32eec80052eb2f2102edac3c3d",
+    "tests/VariadicBind_test.cpp": "f41200e68da2d51a0dbdc577e7f91856339fec145ae070d4c715baeef5be14a0",
+    "tests/consumer/CMakeLists.txt": "d128e650131122ddd7ccb74964cafb147d45edb38de147c661f37de018f57492",
+    "tests/consumer/main.cpp": "29a9709723c645905e35d531cc878e400f16a7e46695e5a9ede3df8015add7a9"
+  },
+  "sqlitecpp_build": {
+    "revision": "df0a28ca9733f687ab7ce77f070c0df84368a45e",
+    "compiler": {
+      "file": "g++",
+      "version": "g++ (GCC) 16.2.1 20260810",
+      "sha256": "f04191f6a7b2cd7d9a62e1745872b8a6088791e5af6955488c69c9b2c4668bc9"
+    },
+    "flags": "-O2 -DNDEBUG",
+    "archive_sha256": "4953897d59804245047c424a26901b7511560c938d9af55e83f9b1a02391bd62"
+  },
+  "rustc": {
+    "version": "rustc 1.101.0-nightly (822182db4 2026-10-13)\nbinary: rustc\ncommit-hash: 822182db4c4a1827256881d8c7aa685f0bcf2b11\ncommit-date: 2026-10-13\nhost: x86_64-unknown-linux-gnu\nrelease: 1.101.0-nightly\nLLVM version: 23.1.3",
+    "sha256": "ee1c504a3a86322e473259c90eeaf464952acad669d90f7134e87ed43e062934"
+  },
+  "rust_dependencies": [
+    {
+      "name": "bitflags",
+      "version": "2.13.2",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "checksum": "3ded4057c258ba199e2d26386d3af3780957ecaee6c4ef4041c6b4b8b97c0b06"
+    },
+    {
+      "name": "fallible-iterator",
+      "version": "0.3.0",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "checksum": "2acce4a10f12dc2fb14a218589d4f1f62ef011b2d0cc4b3cb1bba8e94da14649"
+    },
+    {
+      "name": "fallible-streaming-iterator",
+      "version": "0.1.9",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "checksum": "7360491ce676a36bf9bb3c56c1aa791658183a54d2744120f27285738d90465a"
+    },
+    {
+      "name": "libsqlite3-sys",
+      "version": "0.39.1",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "checksum": "14a5f01b87b92705d07b433c06f96cbc764637d81a0bffb5734ce17cf0f9a2b3",
+      "dependencies": [
+        "pkg-config",
+        "vcpkg"
+      ]
+    },
+    {
+      "name": "pkg-config",
+      "version": "0.3.34",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "checksum": "f6b464fbc74e149a392436b17d523f769e057cb6877f6a5c4618bc6f11800548"
+    },
+    {
+      "name": "rusqlite",
+      "version": "0.41.1",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "checksum": "da9bba6f3506135e120a6586df05be18b48d18896600646a4bec8f993d91a594",
+      "dependencies": [
+        "bitflags",
+        "fallible-iterator",
+        "fallible-streaming-iterator",
+        "libsqlite3-sys",
+        "smallvec"
+      ]
+    },
+    {
+      "name": "smallvec",
+      "version": "1.16.4",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "checksum": "d0d5d4b1981b8bbbb7aed204cae5726d683d5d6ac7e74ec54122ea28f315e7c8"
+    },
+    {
+      "name": "sqlite-filebacked-bench",
+      "version": "0.1.0",
+      "dependencies": [
+        "rusqlite"
+      ]
+    },
+    {
+      "name": "vcpkg",
+      "version": "0.2.15",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "checksum": "accd4ea62f7bb7a82fe23066fb0957d48ef677f6eeb8215f372f52e48bb32426"
+    }
+  ],
+  "rust_profile": {
+    "opt_level": 2,
+    "lto": "thin",
+    "codegen_units": 16,
+    "incremental": true,
+    "bundled_sqlite": false,
+    "cargo_lock_sha256": "6216224e10845ce23eee4a174a5ffed4e9d09b0a96566ab99ace5487cab6808c"
+  },
+  "tools": {
+    "gcc": {
+      "file": "gcc",
+      "version": "gcc (GCC) 16.2.1 20260810",
+      "sha256": "8aac907d6fbf40394b424b5fa4a2ad1aa291dac7d3a0315c5b415c1f5ace1287"
+    },
+    "g++": {
+      "file": "g++",
+      "version": "g++ (GCC) 16.2.1 20260810",
+      "sha256": "f04191f6a7b2cd7d9a62e1745872b8a6088791e5af6955488c69c9b2c4668bc9"
+    },
+    "cmake": {
+      "file": "cmake",
+      "version": "cmake version 4.4.5",
+      "sha256": "9cb6fe1977c7f184c054af4ee478728440bc90430572110ef82f5635e42741a0"
+    },
+    "cargo": {
+      "file": "rustup",
+      "version": "rustup 1.29.2 (2026-10-22)",
+      "sha256": "c221f16e049e70babcc5b22ca7612579de5646ca39f74871d014053faa913fe0"
+    },
+    "git": {
+      "file": "git",
+      "version": "git version 2.56.0",
+      "sha256": "2912a2a32f408c9b8122e476251b32f4b35f4c3f0c15961686ae87ca456d384c"
+    },
+    "python3": {
+      "file": "python3.14",
+      "version": "Python 3.14.9",
+      "sha256": "122ce07db306cd111fd10e27125460362610452983a64903c470afd66b6403bd"
+    },
+    "/usr/bin/time": {
+      "file": "time",
+      "version": "time (GNU Time) 1.10",
+      "sha256": "ccc576561484fe2c3f83bbceabfeba78408e59ac9c9a8161ad2a017b1037663d"
+    }
+  },
+  "sqlite_libraries": {
+    "goose": {
+      "file": "libsqlite3.so.3.54.1",
+      "sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a"
+    },
+    "raw-c-api": {
+      "file": "libsqlite3.so.3.54.1",
+      "sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a"
+    },
+    "sqlitecpp": {
+      "file": "libsqlite3.so.3.54.1",
+      "sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a"
+    },
+    "rusqlite": {
+      "file": "libsqlite3.so.3.54.1",
+      "sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a"
+    },
+    "python": {
+      "file": "libsqlite3.so.3.54.1",
+      "sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a"
+    },
+    "policy": {
+      "file": "libsqlite3.so.3.54.1",
+      "sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a"
+    }
+  },
+  "parent_engine": {
+    "file": "libsqlite3.so.3.54.1",
+    "sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a",
+    "mapped_object_verified": true
+  },
+  "sqlite_identity": {
+    "version": "3.54.1",
+    "source_id": "2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6alt1",
+    "compile_options": [
+      "ATOMIC_INTRINSICS=1",
+      "COMPILER=gcc-16.2.1 20260810",
+      "DEFAULT_AUTOVACUUM",
+      "DEFAULT_CACHE_SIZE=-2000",
+      "DEFAULT_FILE_FORMAT=4",
+      "DEFAULT_JOURNAL_SIZE_LIMIT=-1",
+      "DEFAULT_MMAP_SIZE=0",
+      "DEFAULT_PAGE_SIZE=4096",
+      "DEFAULT_PCACHE_INITSZ=20",
+      "DEFAULT_RECURSIVE_TRIGGERS",
+      "DEFAULT_SECTOR_SIZE=4096",
+      "DEFAULT_SYNCHRONOUS=2",
+      "DEFAULT_WAL_AUTOCHECKPOINT=1000",
+      "DEFAULT_WAL_SYNCHRONOUS=2",
+      "DEFAULT_WORKER_THREADS=0",
+      "DIRECT_OVERFLOW_READ",
+      "ENABLE_COLUMN_METADATA",
+      "ENABLE_DBSTAT_VTAB",
+      "ENABLE_FTS3",
+      "ENABLE_FTS3_PARENTHESIS",
+      "ENABLE_FTS4",
+      "ENABLE_FTS5",
+      "ENABLE_MATH_FUNCTIONS",
+      "ENABLE_PERCENTILE",
+      "ENABLE_PREUPDATE_HOOK",
+      "ENABLE_RTREE",
+      "ENABLE_SESSION",
+      "ENABLE_STAT4",
+      "ENABLE_STMTVTAB",
+      "ENABLE_UNLOCK_NOTIFY",
+      "HAVE_ISNAN",
+      "MALLOC_SOFT_LIMIT=1024",
+      "MAX_ATTACHED=10",
+      "MAX_COLUMN=2000",
+      "MAX_COMPOUND_SELECT=500",
+      "MAX_DEFAULT_PAGE_SIZE=8192",
+      "MAX_EXPR_DEPTH=10000",
+      "MAX_FUNCTION_ARG=1000",
+      "MAX_LENGTH=1000000000",
+      "MAX_LIKE_PATTERN_LENGTH=50000",
+      "MAX_MMAP_SIZE=0x7fff0000",
+      "MAX_PAGE_COUNT=0xfffffffe",
+      "MAX_PAGE_SIZE=65536",
+      "MAX_SCHEMA=10000000",
+      "MAX_SQL_LENGTH=1000000000",
+      "MAX_TRIGGER_DEPTH=1000",
+      "MAX_VARIABLE_NUMBER=250000",
+      "MAX_VDBE_OP=250000000",
+      "MAX_WORKER_THREADS=8",
+      "MUTEX_PTHREADS",
+      "SECURE_DELETE",
+      "SYSTEM_MALLOC",
+      "TEMP_STORE=1",
+      "THREADSAFE=1"
+    ]
+  },
+  "engine_identity_scope": "Runtime identity/options explicitly queried from the common loaded object; inferred for each runner/probe from its exact matching object hash.",
+  "binary_sha256": {
+    "goose": "da5311e00f475397b0a2db7c4c9e04e00693c4ebcbf6da7461c6a2016ac073a6",
+    "raw-c-api": "ca707e2bbdaef3b920c51ccdaf4624484ffdb97e5444b877a13e9a7edd2694f0",
+    "sqlitecpp": "b66646a678fdd6f9c372c0f1b17d1a40d628e4b9b985f225032001a353db42cf",
+    "rusqlite": "e613e1990d883b323e930963bd704c53a7618cec830ae706477467d68636a225",
+    "python": "122ce07db306cd111fd10e27125460362610452983a64903c470afd66b6403bd",
+    "policy": "7697a8805a432ee43a52591898a4076e997b16ea0cbfca6513247db2dae25277"
+  },
+  "python": {
+    "version": "3.14.9 (main, Oct 25 2026, 14:52:47) [GCC 16.2.1 20260810]",
+    "executable_sha256": "122ce07db306cd111fd10e27125460362610452983a64903c470afd66b6403bd",
+    "extension_file": "_sqlite3.cpython-314-x86_64-linux-gnu.so",
+    "extension_sha256": "69c296f94a1b845b1e1af0074bc5531c025901f41a56b5164ff1cc6eb3025a0f",
+    "isolated": true,
+    "optimize": "0"
+  },
+  "policy_fixture_initial": {
+    "database": {
+      "bytes": 16384,
+      "sha256": "cf798217a9211f1928116a3b6f13edf5492facb08410b347abb0c91f58977a58"
+    },
+    "wal": null,
+    "shm": null,
+    "journal": null
+  },
+  "policy_probe": {
+    "raw_stdout": "policy wal 2 4096 -2000 1000 1 0 normal 0\n",
+    "raw_stderr": "",
+    "scope": "Two simultaneous native connections with the same archive/options/engine; denial checked before test-only inspection. Actual Goose role policy is inferred, not queried through its permanent authorizer."
+  },
+  "parent_completed_utc_ns": 1793883594157808592,
+  "load_after": [
+    7.201171875,
+    5.10009765625,
+    4.1416015625
+  ]
+}

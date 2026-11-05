@@ -139,3 +139,9 @@ compare five callers with matched engine and FULL policy across commit, rollback
 and controlled BUSY rejection. All raw latencies, outcome/data checks and process
 RSS remain visible; this is warm-cache API-path evidence, not a power-loss or
 universal performance ranking.
+
+[Coordinated WAL reader/writer results](bench/results/mixedwal-2026-11-05/README.md)
+add 50 finite pairs across five callers and balanced CPU orientations. All 6,400
+commits and 69,359 checked snapshots passed. Latencies, variable reader counts,
+separate role RSS and raw journals are retained. This is a coupled workload with
+logging/reader waits, not identical offered load or an isolated binding speedup.

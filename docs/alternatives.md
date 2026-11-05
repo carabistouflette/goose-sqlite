@@ -419,3 +419,15 @@ then every final ID/payload and integrity result is independently verified.
 Caller caching/security policies differ; journal blocks run in fixed order. This
 is observational API-path evidence, not a causal journal, disk-durability or
 universal wrapper ranking. Existing in-memory results retain their original scope.
+
+## Coordinated mixed WAL follow-up
+
+[The retained mixed-WAL comparison](../bench/results/mixedwal-2026-11-05/README.md)
+adds 50 finite same-implementation reader/writer process pairs across the same five
+callers/engine, balanced across two CPU orientations. All 6,400 commits,69,359
+checked snapshots and five deterministic snapshot/rollback qualifications passed.
+Goose reader p50 medians 17.02/17.17µs compare with raw C API 15.41/14.41µs and
+rusqlite 14.49/14.57µs; writer tails/rates vary. All unfavorable results and ranges
+remain. Reader work counts/logging/parent waits form a coupled workload, not
+identical offered reader load, isolated binding overhead, free-running saturation
+or evidence of a general speedup. Public runtime/API/safety policy is unchanged.
