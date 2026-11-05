@@ -72,8 +72,6 @@ def main():
             expected = count * size * (1024 if mode == 'scan' else 1)
             if len(fields) != 2 or int(fields[1]) != expected:
                 raise RuntimeError('Profile checksum mismatch')
-            (output / (name + '.stdout')).write_text(stdout)
-            (output / (name + '.stderr')).write_text(stderr)
             for label, inclusive in (('self', 'no'), ('inclusive', 'yes')):
                 annotation = run(['callgrind_annotate', '--inclusive=' + inclusive,
                                   '--threshold=98', profile])[0]

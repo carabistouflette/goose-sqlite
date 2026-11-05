@@ -126,3 +126,8 @@ Goose's actual native compiler/flags/archive are retained too. Shared engine
 hashes are checked before and after the series. Principal data uses a clean
 measured commit. An exploratory smoke run exposed a cache-reset O0 build; it
 was corrected before principal timings and supplies no performance conclusions.
+
+The [frozen instruction profiler](profile.py) uses the same checked native Goose
+runner for scan, lookup and text-copy attribution. [Retained profiles](../results/scan-copy-2026-11-05/README.md)
+include a rejected equal-length-resize experiment. Callgrind output is not native
+timing; production scan/copy behavior remains unchanged.

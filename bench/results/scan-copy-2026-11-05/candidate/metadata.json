@@ -1,0 +1,270 @@
+{
+  "source_commit": "4b221166b99ad980a539d7153afb1ebd66f79652",
+  "profiler_sources": {
+    "profile.py": "ad9cadbd6f31e0121bf1fbc6f6febc965e440b017e652c49fbe778a9640787d5",
+    "paired.py": "88b6d1010cf7d2c8bdeb1d2bb6637d2280eb954448de3beac432ddf38c089118",
+    "measure.py": "54b54c9fdc4e1ad02dd43573358b962b4852a01b0b40b325d6b9a46cccd98449"
+  },
+  "os": "Linux-7.2.11-arch1-1-x86_64-with-glibc2.44",
+  "cpu_model": "Intel(R) Core(TM) Ultra 7 258V",
+  "complete": true,
+  "scope": "Whole-process Callgrind Ir including setup and every-byte verification. Instrumented clock output is not native timing. Shared host; no isolation or speedup claim.",
+  "affinity": [
+    6
+  ],
+  "profiles": [
+    {
+      "name": "scan128B",
+      "iterations": 100,
+      "mode": "scan",
+      "bytes": 128,
+      "checksum": 13107200,
+      "raw_stdout": "2283851617 13107200",
+      "total_Ir": 142678900,
+      "profile_sha256": "ab62639b37fdd632e4edfb190e4a8753aa4d1a01b1caced1d6fb20347ed0d876"
+    },
+    {
+      "name": "lookup128B",
+      "iterations": 10000,
+      "mode": "lookup",
+      "bytes": 128,
+      "checksum": 1280000,
+      "raw_stdout": "704967385 1280000",
+      "total_Ir": 46016798,
+      "profile_sha256": "293dde347770c428b1f9ecc948a21448458e3d5c4bc0985ee913f6321d1639d1"
+    },
+    {
+      "name": "text4096B",
+      "iterations": 10000,
+      "mode": "text",
+      "bytes": 4096,
+      "checksum": 40960000,
+      "raw_stdout": "791660310 40960000",
+      "total_Ir": 46811002,
+      "profile_sha256": "58e12f755b625c3d269095f615df9486b70d13c0f0afdceb104b9ab39cf2d25d"
+    }
+  ],
+  "source": {
+    "commit": "4b221166b99ad980a539d7153afb1ebd66f79652",
+    "archive_sha256": "a936b3e7a5b87b685f3435c1108db42fda3fd6862569c3753f8c18f170669369",
+    "source_hashes": {
+      "CMakeLists.txt": "47d47b97f61c3461667f1158eb2d475b93b69af24073dac9b581bbea1ccf5193",
+      "GOOSE_REVISION": "64e14b181dfe96743211738fb0f1b1f7798ea940da2ca50ff122e6f028c24e15",
+      "bench/alternatives/runner.goose": "0a11f04cbcd8c831dc41147528c9282f88f9199906eb6b27f31f9bb119e74099",
+      "native/sqlite.c": "5b56fc40331eae3800bc0f5fd67394732bb1b61921b89148e8be60c5a4bb4c6d",
+      "native/sqlite.h": "03909542e92caa91debde45bc4d1945a76fff34f342a77ceb2b1b689c8270874",
+      "scripts/native-manifest.py": "776376630b521033583d741e365ab4bb298f6b75f48383c813c177916aa403a7",
+      "sqlite.build": "53a29f4aa6038def97b10f669e82bf7d21c25f2dfc43cb43820090a3f2f2de3a",
+      "sqlite.goose": "1146046f697729679e5d9afb4a2b82c0fa736275819141a74048803e1052a2ab"
+    },
+    "git_blobs": {
+      "CMakeLists.txt": "0aecb4096792054da88a2b428c7c34fa619becb8",
+      "GOOSE_REVISION": "86a83a7da7bd50a064c3e9fd23655224550fb987",
+      "bench/alternatives/runner.goose": "90e7e2149c1eb15c44d6fb934bab2d047fdd1339",
+      "native/sqlite.c": "6041f341edda16ab1f8cd550a4bebc7d4ce9538f",
+      "native/sqlite.h": "4b1c7abd48a179b771c845fecab314ab26bbd14d",
+      "scripts/native-manifest.py": "d6831040a5c3d5708e84f4fff6751eb774e68ae9",
+      "sqlite.build": "5a52dac06680221682cc3eee2b88f61b47ff032a",
+      "sqlite.goose": "41830be9c14f3b6a4fe60502bc2898497887e7ab"
+    }
+  },
+  "native_build": {
+    "build_type": "Release",
+    "compiler": {
+      "file": "gcc",
+      "version": "gcc (GCC) 16.2.1 20260810",
+      "sha256": "8aac907d6fbf40394b424b5fa4a2ad1aa291dac7d3a0315c5b415c1f5ace1287"
+    },
+    "compile_groups": [
+      {
+        "language": "C",
+        "flags": [
+          "-O3 -DNDEBUG -fPIC",
+          "-Wall",
+          "-Wextra",
+          "-Werror"
+        ],
+        "defines": [],
+        "includes": [
+          {
+            "path": "$CACHE_INCLUDE",
+            "headers": {
+              "goose.h": "51234daf2f8fb52d4a18158175ed517ab5bfeeb5473c5448babf19f94ffbeccf"
+            }
+          }
+        ]
+      }
+    ],
+    "native_archive_sha256": "ee5e550a4b1a1424405f3d26b64941ab8376e6313d626a0444298d64b64ab23f",
+    "generated_runner_sha256": "0d2b91ff9f3a55d3a3c70bd1d685454f77b0ede1621c73ede32eabf5613848f3",
+    "binary_sha256": "adb7e8a8d1c846f24bd1fcf1c0fa5563e3f9d32b49bd64fa352ad3db52030b09"
+  },
+  "engine": {
+    "file": "libsqlite3.so.3.54.1",
+    "sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a"
+  },
+  "sqlite_identity": {
+    "version": "3.54.1",
+    "source_id": "2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6alt1",
+    "compile_options": [
+      "ATOMIC_INTRINSICS=1",
+      "COMPILER=gcc-16.2.1 20260810",
+      "DEFAULT_AUTOVACUUM",
+      "DEFAULT_CACHE_SIZE=-2000",
+      "DEFAULT_FILE_FORMAT=4",
+      "DEFAULT_JOURNAL_SIZE_LIMIT=-1",
+      "DEFAULT_MMAP_SIZE=0",
+      "DEFAULT_PAGE_SIZE=4096",
+      "DEFAULT_PCACHE_INITSZ=20",
+      "DEFAULT_RECURSIVE_TRIGGERS",
+      "DEFAULT_SECTOR_SIZE=4096",
+      "DEFAULT_SYNCHRONOUS=2",
+      "DEFAULT_WAL_AUTOCHECKPOINT=1000",
+      "DEFAULT_WAL_SYNCHRONOUS=2",
+      "DEFAULT_WORKER_THREADS=0",
+      "DIRECT_OVERFLOW_READ",
+      "ENABLE_COLUMN_METADATA",
+      "ENABLE_DBSTAT_VTAB",
+      "ENABLE_FTS3",
+      "ENABLE_FTS3_PARENTHESIS",
+      "ENABLE_FTS4",
+      "ENABLE_FTS5",
+      "ENABLE_MATH_FUNCTIONS",
+      "ENABLE_PERCENTILE",
+      "ENABLE_PREUPDATE_HOOK",
+      "ENABLE_RTREE",
+      "ENABLE_SESSION",
+      "ENABLE_STAT4",
+      "ENABLE_STMTVTAB",
+      "ENABLE_UNLOCK_NOTIFY",
+      "HAVE_ISNAN",
+      "MALLOC_SOFT_LIMIT=1024",
+      "MAX_ATTACHED=10",
+      "MAX_COLUMN=2000",
+      "MAX_COMPOUND_SELECT=500",
+      "MAX_DEFAULT_PAGE_SIZE=8192",
+      "MAX_EXPR_DEPTH=10000",
+      "MAX_FUNCTION_ARG=1000",
+      "MAX_LENGTH=1000000000",
+      "MAX_LIKE_PATTERN_LENGTH=50000",
+      "MAX_MMAP_SIZE=0x7fff0000",
+      "MAX_PAGE_COUNT=0xfffffffe",
+      "MAX_PAGE_SIZE=65536",
+      "MAX_SCHEMA=10000000",
+      "MAX_SQL_LENGTH=1000000000",
+      "MAX_TRIGGER_DEPTH=1000",
+      "MAX_VARIABLE_NUMBER=250000",
+      "MAX_VDBE_OP=250000000",
+      "MAX_WORKER_THREADS=8",
+      "MUTEX_PTHREADS",
+      "SECURE_DELETE",
+      "SYSTEM_MALLOC",
+      "TEMP_STORE=1",
+      "THREADSAFE=1"
+    ]
+  },
+  "tools": {
+    "valgrind": {
+      "file": "valgrind",
+      "sha256": "57a56c68413e9cdc29107c7b0f76323ef75d77938f450b3e96ddd109c0eabe50"
+    },
+    "callgrind_annotate": {
+      "file": "callgrind_annotate",
+      "sha256": "b213a6bb0e917d1e8b4e25870c7697fe58f22151d9142e34c6c0534501d790e6"
+    },
+    "objdump": {
+      "file": "objdump",
+      "sha256": "9273687d5b7323cb103300f4facb847276657995ea6d5e5e6e25c97f4fc4594e"
+    }
+  },
+  "goose": {
+    "revision": "eadca409f68210893f366e60d0c2f0dc29a339be",
+    "sha256": "2bdd604d01c3f46b03ddae80871b10de7f75e9e710ce92faa1a644b246472ab7",
+    "version": "goose eadca40 (runtime 3025e5810379)"
+  },
+  "valgrind_version": "valgrind-3.25.1",
+  "retained_files": {
+    "fetch-disassembly.txt": {
+      "original_sha256": "7b27ba8118379a0532b833e9137e0829f3678a151214783c7576197c5ada25a0",
+      "retained_uncompressed_sha256": "5cb4b6297b0a4d973e7d869396bd7ea52c1c1c7f3249cdd01d8d8f51dfb6b089",
+      "file": "fetch-disassembly.txt.gz"
+    },
+    "lookup128B-inclusive.txt": {
+      "original_sha256": "4ecbbca3540fc1422c9c8c6794cc95ec92ae1a1d2caa25af3e06ed550480a574",
+      "retained_uncompressed_sha256": "33cf9f3d75a27fad741a4864908f0bf9e97cab0971ef293d93a3a2cc451f675c",
+      "file": "lookup128B-inclusive.txt.gz"
+    },
+    "lookup128B-self.txt": {
+      "original_sha256": "531222e7fee05740ffbb3bdba38d38a919e96e2a62db900bc0811c68e9febb4d",
+      "retained_uncompressed_sha256": "e895f6182c36a0a4485681ed1e3a0092b62db17d4ac0e408d6e21609af720276",
+      "file": "lookup128B-self.txt.gz"
+    },
+    "lookup128B.callgrind": {
+      "original_sha256": "293dde347770c428b1f9ecc948a21448458e3d5c4bc0985ee913f6321d1639d1",
+      "retained_uncompressed_sha256": "677603a94a632528d5496ec0e441b2c9cb7507d3ce7440e5e4393d2bb2a3d4de",
+      "file": "lookup128B.callgrind.gz"
+    },
+    "lookup128B.stderr": {
+      "original_sha256": "4fc92f26987211f7818a32e5552eafef37e3f70437feea4570a7af00953c9d40",
+      "retained_uncompressed_sha256": "e73d708cfa04c496c6783f02248f9e24c2e6c9b9e3f750f237fb5af3c2cb2be4",
+      "file": "lookup128B.stderr.gz"
+    },
+    "lookup128B.stdout": {
+      "original_sha256": "88cb3d0a982f8276a2ea99399c81b93edb107bf3e40226613cb3b87bd67368cb",
+      "retained_uncompressed_sha256": "88cb3d0a982f8276a2ea99399c81b93edb107bf3e40226613cb3b87bd67368cb",
+      "file": "lookup128B.stdout.gz"
+    },
+    "scan128B-inclusive.txt": {
+      "original_sha256": "e5691eb27f4018d0ffe82a59607b7e2ba023fe7757ab558b16ac83664e694cab",
+      "retained_uncompressed_sha256": "9cc862fdcd6b5911a0ad3746ef2f3d7343691a369f717f1ce5ab72a48f983b29",
+      "file": "scan128B-inclusive.txt.gz"
+    },
+    "scan128B-self.txt": {
+      "original_sha256": "aeeea39b1f636d3efcbdff2caf31f783014c825d3739e5f5767ef10b2c1bfab0",
+      "retained_uncompressed_sha256": "a19598fcca1d9a0b9126c9d3281606668382018b3fde6062496037a706b3cfe2",
+      "file": "scan128B-self.txt.gz"
+    },
+    "scan128B.callgrind": {
+      "original_sha256": "ab62639b37fdd632e4edfb190e4a8753aa4d1a01b1caced1d6fb20347ed0d876",
+      "retained_uncompressed_sha256": "41ca7b4bef406265b4d5030fda7bb9b0e80992dcc8a3623c9012df581b4d0540",
+      "file": "scan128B.callgrind.gz"
+    },
+    "scan128B.stderr": {
+      "original_sha256": "eb89bfeceaa11041a54d7cf007c34bfb2764db5d3e3a3a0ad7f84088cad5292f",
+      "retained_uncompressed_sha256": "fa42a389ced0513483449fb5d8bb07010186c60ba76f7d7e15fa0d65e502dc27",
+      "file": "scan128B.stderr.gz"
+    },
+    "scan128B.stdout": {
+      "original_sha256": "4326b7455df0b66af9c231ef31d2d59d6152d2cedc65c61c6a9dd2cbc247a572",
+      "retained_uncompressed_sha256": "4326b7455df0b66af9c231ef31d2d59d6152d2cedc65c61c6a9dd2cbc247a572",
+      "file": "scan128B.stdout.gz"
+    },
+    "text4096B-inclusive.txt": {
+      "original_sha256": "2deb3a790e5d1c40fcb33603769ab24749f0681555f76f7faea1153ff367c047",
+      "retained_uncompressed_sha256": "7b744c83e28b7d263e706413cd357e2fb195d26466622b214294064af039dca6",
+      "file": "text4096B-inclusive.txt.gz"
+    },
+    "text4096B-self.txt": {
+      "original_sha256": "1e01e0f6c8a995494ccd491af1bf7b304119419c7dbc77fef13b89719b8b0e33",
+      "retained_uncompressed_sha256": "6cf410fca87f4e26baa2b8343958ff09a754f232dadd952f0e249448ae9ef693",
+      "file": "text4096B-self.txt.gz"
+    },
+    "text4096B.callgrind": {
+      "original_sha256": "58e12f755b625c3d269095f615df9486b70d13c0f0afdceb104b9ab39cf2d25d",
+      "retained_uncompressed_sha256": "e0e243cf11b77039d57c50780a9447b419ca997ad8c4e32f7466681d527366b2",
+      "file": "text4096B.callgrind.gz"
+    },
+    "text4096B.stderr": {
+      "original_sha256": "db202836f3a14215fd6ca895fa7fc62d79636873353d47f6e15e4cb057b675eb",
+      "retained_uncompressed_sha256": "2af01e16d9b10c42b7dd67664dc16b27c04841b5eff9a21524383b17f9619375",
+      "file": "text4096B.stderr.gz"
+    },
+    "text4096B.stdout": {
+      "original_sha256": "9b276d38115c137f62b1070d99acd4364801c192ad6a1941bb1d45a6aa49dac4",
+      "retained_uncompressed_sha256": "9b276d38115c137f62b1070d99acd4364801c192ad6a1941bb1d45a6aa49dac4",
+      "file": "text4096B.stdout.gz"
+    }
+  },
+  "normalization": "Only checkout and compiler-checkout prefixes replaced with $REPO/$GOOSE_CHECKOUT; all other bytes retained. Compressed with deterministic gzip.",
+  "record_scope": "Principal frozen profile, text10000 iterations; instrumented clocks are not native timings."
+}

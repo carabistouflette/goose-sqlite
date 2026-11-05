@@ -1,0 +1,25 @@
+{
+  "decision": "Rejected candidate, no native timing campaign warranted by mixed instruction results.",
+  "candidate_commit": "4b221166b99ad980a539d7153afb1ebd66f79652",
+  "baseline_commit": "a90d2819a4084019de2dda2b384cd1d62c177361",
+  "rows": [
+    {
+      "fixture": "scan128B",
+      "baseline_Ir": 142781247,
+      "candidate_Ir": 142678900,
+      "delta_Ir": -102347
+    },
+    {
+      "fixture": "lookup128B",
+      "baseline_Ir": 46006745,
+      "candidate_Ir": 46016798,
+      "delta_Ir": 10053
+    },
+    {
+      "fixture": "text4096B",
+      "baseline_Ir": 46800931,
+      "candidate_Ir": 46811002,
+      "delta_Ir": 10071
+    }
+  ]
+}
