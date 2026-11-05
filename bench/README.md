@@ -63,3 +63,10 @@ incremental ranges through Goose and raw SQLite C. The [retained results](result
 include both complete nine-round windows, known overlap, compiler/engine/source
 provenance, checksums and every sample. It measures less data copied for partial
 reads; full-value results and remaining wrapper overhead are reported too.
+
+## Zero-filled BLOB binding
+
+The [six-path harness](zeroblob/README.md) compares copied binding, zero binding
+and existing SQL zero creation through Goose and raw C. [Retained results](results/zeroblob-2026-11-05/README.md)
+include every sample and separate binding-phase allocator probes. Timings are
+mixed; compact representation benefits both zero APIs.

@@ -384,3 +384,18 @@ checks, not a power-loss model or proof of complete feature parity.
 all ten fixture results and rejects its candidate after mixed matched measurements.
 The earlier cross-language results retain their original source/version scope;
 these in-memory workloads do not measure checkpoint/startup/file durability speed.
+
+## Zero-filled BLOB placeholders
+
+`bind_zeroblob` exposes SQLite's compact zero-filled binding with checked size,
+state, index and thread ownership. Together with explicit incremental BLOB writes
+it avoids creating a caller zero buffer. Existing SQL `zeroblob(size)` already
+provides that representation; this is API convenience, not an exclusive engine
+optimization or complete feature parity. [The API limits](api.md) include a 1 MiB
+size cap and possible encoded-row overhead failures.
+
+[Six-path measurements](../bench/results/zeroblob-2026-11-05/README.md) retain
+Goose/raw-C copied, zero-binding and SQL controls on one loaded engine. Timings
+are mixed. Both zero APIs avoid payload allocation at binding time, while later
+materialization can allocate the contents. Earlier Python/Rust/C++ comparisons
+retain their original source/version scope.

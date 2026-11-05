@@ -1,0 +1,33 @@
+{
+  "architecture": "x86_64",
+  "archive_sha256": "0a9c8e34352dad46006aa82836d5383bff9dc6bc9ce5a60553c05aa30e6ad1f9",
+  "compiler": "clang version 23.1.4",
+  "engine_sha256": "80a0db09bacc2c3d6a418780f741530ef01d5d20eeea2d9579c5e84356b78307",
+  "flags": [
+    "-O1",
+    "-g",
+    "-fno-omit-frame-pointer",
+    "-fsanitize=address,undefined",
+    "-std=c11",
+    "-shared",
+    "-fPIC",
+    "SQLITE_THREADSAFE=1",
+    "SQLITE_DEFAULT_WAL_SYNCHRONOUS=1"
+  ],
+  "sanitizer": "address",
+  "source_commit": "ead19309bef4394ffc041f079d50e2a8d78b7388",
+  "source_dirty": false,
+  "source_hashes": {
+    "CMakeLists.txt": "47d47b97f61c3461667f1158eb2d475b93b69af24073dac9b581bbea1ccf5193",
+    "native/sqlite.c": "9274ad8cc4bd0214c4c507f1cc898c4272af06231617e479049a7db3534e6d85",
+    "native/sqlite.h": "03909542e92caa91debde45bc4d1945a76fff34f342a77ceb2b1b689c8270874",
+    "scripts/test-wal-engine.py": "36a0c712e57eb284db1ebdc9a8cf541c3f43244bea29b72b025bdb142a045379",
+    "tests/checkpoint.c": "4fc1f7b6b2a97e409b64ca45191a604fbc31cf0572ff6d47dc467b45da08c397",
+    "tests/faults.c": "df6ed684c5ac78e5e2e7c5529ca8e020dccb266acb42910d37c3f906d2e8eb9d",
+    "tests/tsan-probe.c": "63cb0226aa18bc5d5d78e4e58be376e88566db7f6a02a7c476f34b2cec784c17",
+    "tests/zeroblob.c": "487a8183c9c19b8be29981954ae0cf054198d9e8c9bdbb1317903030f95d364c"
+  },
+  "sqlite3_c_sha3_256": "e2b869d3003b33c942b7dd7063604fbc53553e1b66609570df39b9b7b558ee81",
+  "tests": "native, retryable initialization/allocation and BLOB materialization failures, storage/zeroblob, required positive-WAL threads/checkpoints and I/O/crash recovery; engine+adapter ASan/UBSan",
+  "url": "https://sqlite.org/2026/sqlite-amalgamation-3540100.zip"
+}

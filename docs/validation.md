@@ -358,7 +358,8 @@ page/time/memory budget, and process death is not power-loss simulation.
 
 The [row-cache experiment](../bench/results/row-cache-2026-11-04/README.md) retained
 all 180 samples from nine pairs across ten fixtures and was rejected after mixed
-results and wide shared-host spreads. Production getters/step remain unchanged;
+results and wide shared-host spreads. In that startup/checkpoint slice, production
+getters/step remained unchanged;
 automatic-schema-reprepare regressions remain tested. No statistically established
 regression or general performance improvement is claimed. Existing cross-language
 benchmarks retain their original versions/source scope.
@@ -379,3 +380,24 @@ git diff --check
 Build requirements and initial support scope are in README.md. GCC 16.2.1,
 Clang 23, and system SQLite 3.54.1 were used on the initial host. CI targets Ubuntu
 24.04 with its packaged SQLite; hosted CI success is separate from local results.
+
+## Zero-filled binding and BLOB allocation errors
+
+Implementation/test source ead19309bef4394ffc041f079d50e2a8d78b7388 passed
+[all three native x86-64/ARM64 and scoped TSan jobs](https://github.com/carabistouflette/goose-sqlite/actions/runs/41939789987).
+[Retained correctness evidence](../tests/results/zeroblob-2026-11-05/README.md)
+covers host GCC/Clang, fully instrumented pinned engine, minimum SQLite 3.37,
+public runner/native/import suites and a fresh 100000-input fuzz campaign.
+
+The getter regression forces deferred positive-length BLOB allocation to fail;
+the old implementation returned successful empty output. The fix reads typed
+BLOB length before materialization and avoids pointer expansion for empty BLOBs.
+Tests distinguish OOM from legitimate empties even after another statement fails.
+TEXT conversion order remains unchanged. New zero bindings cover signed bounds,
+lifecycle, stale/foreign handles, reset/clear, sparse indices and transactional
+incremental writes. Security/resource limits and the unresolved cold-engine TSan
+diagnostics remain as documented.
+
+[The performance record](../bench/results/zeroblob-2026-11-05/README.md) retains
+270 samples and 30 allocator probes. It includes existing SQL zero creation;
+timing is mixed and binding-phase allocation is not total memory usage.

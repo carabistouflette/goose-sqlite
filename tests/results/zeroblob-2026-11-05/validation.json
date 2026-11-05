@@ -1,0 +1,438 @@
+{
+  "log_exit_status_note": "Logs preserve completion markers; original process exit statuses are not independently stored in this bundle. Hosted CI records explicit successful conclusions.",
+  "logs": {
+    "anonymous-import": {
+      "file": "anonymous-import.log.gz",
+      "normalization": "none; original bytes retained",
+      "original_sha256": "c940578edc62ba4f04056124dfde03fcd8c47178493d5bfff75a77dfb1fef007",
+      "retained_uncompressed_sha256": "c940578edc62ba4f04056124dfde03fcd8c47178493d5bfff75a77dfb1fef007"
+    },
+    "blob-oom-red": {
+      "file": "blob-oom-red.log.gz",
+      "normalization": "checkout, compiler, minimum-engine and isolated-consumer temporary prefixes replaced with placeholders; all other bytes retained",
+      "original_sha256": "72b3076ce82cf7a83421b85d3b4eb786d33487fd502f3303a2a2069a64526d29",
+      "retained_uncompressed_sha256": "084f7671ed2748da13150658c9fb6274e5fb3cd5b8d26a01381e1ac47eaf879c"
+    },
+    "blob-oom-red-repeat": {
+      "file": "blob-oom-red-repeat.log.gz",
+      "normalization": "checkout, compiler, minimum-engine and isolated-consumer temporary prefixes replaced with placeholders; all other bytes retained",
+      "original_sha256": "72b3076ce82cf7a83421b85d3b4eb786d33487fd502f3303a2a2069a64526d29",
+      "retained_uncompressed_sha256": "084f7671ed2748da13150658c9fb6274e5fb3cd5b8d26a01381e1ac47eaf879c"
+    },
+    "empty-blob-red": {
+      "file": "empty-blob-red.log.gz",
+      "normalization": "checkout, compiler, minimum-engine and isolated-consumer temporary prefixes replaced with placeholders; all other bytes retained",
+      "original_sha256": "bbe131c07c969e129e7117637a34a2c9491e1f9a292ac5b533d9a0cda066adb0",
+      "retained_uncompressed_sha256": "457879ebfde7e5e70fc8874c08fc689eb50517abafed9389d9739fd62f336739"
+    },
+    "fuzz": {
+      "file": "fuzz.log.gz",
+      "normalization": "none; original bytes retained",
+      "original_sha256": "871164594772584ff95ce454ee80d9864f030554f9d2f91d90f38fcf17d97ef0",
+      "retained_uncompressed_sha256": "871164594772584ff95ce454ee80d9864f030554f9d2f91d90f38fcf17d97ef0"
+    },
+    "host-clang": {
+      "file": "host-clang.log.gz",
+      "normalization": "checkout, compiler, minimum-engine and isolated-consumer temporary prefixes replaced with placeholders; all other bytes retained",
+      "original_sha256": "90c5878a9f429dea12f7b26b482dbd75462b84a7507030a753ef8d81e7528e02",
+      "retained_uncompressed_sha256": "8b3845cba537489cbdea7956b06dd58885c293caa9fdaf33fc4635c708289c62"
+    },
+    "host-gcc": {
+      "file": "host-gcc.log.gz",
+      "normalization": "checkout, compiler, minimum-engine and isolated-consumer temporary prefixes replaced with placeholders; all other bytes retained",
+      "original_sha256": "299e0eab005f92952c1fa79086e86ec0895b1b25e07dd0f7edeabb04f799ef72",
+      "retained_uncompressed_sha256": "41e7c11caad7c11f8ee3567535e56c88bb2ced8517c0ea4799986c82a569e6e4"
+    },
+    "minimum-checkpoint": {
+      "file": "minimum-checkpoint.log.gz",
+      "normalization": "checkout, compiler, minimum-engine and isolated-consumer temporary prefixes replaced with placeholders; all other bytes retained",
+      "original_sha256": "7eea68b25c718b0ce5992ae03f1038492398157c1f4556ec7feb03a43c45a58f",
+      "retained_uncompressed_sha256": "7eea68b25c718b0ce5992ae03f1038492398157c1f4556ec7feb03a43c45a58f"
+    },
+    "minimum-fault": {
+      "file": "minimum-fault.log.gz",
+      "normalization": "checkout, compiler, minimum-engine and isolated-consumer temporary prefixes replaced with placeholders; all other bytes retained",
+      "original_sha256": "396c23b065c803f718b025b0784d35aa171d3f50179ac779b283c422366bc673",
+      "retained_uncompressed_sha256": "396c23b065c803f718b025b0784d35aa171d3f50179ac779b283c422366bc673"
+    },
+    "minimum-general": {
+      "file": "minimum-general.log.gz",
+      "normalization": "checkout, compiler, minimum-engine and isolated-consumer temporary prefixes replaced with placeholders; all other bytes retained",
+      "original_sha256": "54c2c809675d294a417db5e667b2f257165dc335461fb7c6c5910f7d52ffea4d",
+      "retained_uncompressed_sha256": "54c2c809675d294a417db5e667b2f257165dc335461fb7c6c5910f7d52ffea4d"
+    },
+    "minimum-recovery": {
+      "file": "minimum-recovery.log.gz",
+      "normalization": "checkout, compiler, minimum-engine and isolated-consumer temporary prefixes replaced with placeholders; all other bytes retained",
+      "original_sha256": "99eb588c86e460b7d252751e4c8bdfdf75bef0784b82a6c45ed6c1f94b5798d5",
+      "retained_uncompressed_sha256": "99eb588c86e460b7d252751e4c8bdfdf75bef0784b82a6c45ed6c1f94b5798d5"
+    },
+    "minimum-storage": {
+      "file": "minimum-storage.log.gz",
+      "normalization": "checkout, compiler, minimum-engine and isolated-consumer temporary prefixes replaced with placeholders; all other bytes retained",
+      "original_sha256": "7334fc6492674c56bd90d86338f1470a0ea883b0f159507edbe777848103fd35",
+      "retained_uncompressed_sha256": "7334fc6492674c56bd90d86338f1470a0ea883b0f159507edbe777848103fd35"
+    },
+    "minimum-threads": {
+      "file": "minimum-threads.log.gz",
+      "normalization": "checkout, compiler, minimum-engine and isolated-consumer temporary prefixes replaced with placeholders; all other bytes retained",
+      "original_sha256": "b8595dd5c7ba2c5a0f94ac7dc48fcbb3c8133c67bf26dce75e58d19a68e978a2",
+      "retained_uncompressed_sha256": "b8595dd5c7ba2c5a0f94ac7dc48fcbb3c8133c67bf26dce75e58d19a68e978a2"
+    },
+    "minimum-zeroblob": {
+      "file": "minimum-zeroblob.log.gz",
+      "normalization": "checkout, compiler, minimum-engine and isolated-consumer temporary prefixes replaced with placeholders; all other bytes retained",
+      "original_sha256": "7ada8236facd59ea60b90b59753f16630fbca7a469e3c3bea43556c39b9ac599",
+      "retained_uncompressed_sha256": "7ada8236facd59ea60b90b59753f16630fbca7a469e3c3bea43556c39b9ac599"
+    },
+    "pinned-engine-asan": {
+      "file": "pinned-engine-asan.log.gz",
+      "normalization": "checkout, compiler, minimum-engine and isolated-consumer temporary prefixes replaced with placeholders; all other bytes retained",
+      "original_sha256": "ade5be57740d6e7896f54c46015194cf2da10affb74aac5100ca6f52e62d0c7f",
+      "retained_uncompressed_sha256": "305b15c63e8bdb9aaa2982071eaf106703f06ee1f42d91720a01cb76eb389b8d"
+    },
+    "pinned-engine-tsan": {
+      "file": "pinned-engine-tsan.log.gz",
+      "normalization": "checkout, compiler, minimum-engine and isolated-consumer temporary prefixes replaced with placeholders; all other bytes retained",
+      "original_sha256": "a283f812c83587143f9636c27ae687055fe0f233c90ed12e4e4aec98d88af050",
+      "retained_uncompressed_sha256": "2a39527d8003d2ea1bf9aecaa22f8fba1b78585113fa788a3043328dca6be9a9"
+    },
+    "public-host": {
+      "file": "public-host.log.gz",
+      "normalization": "checkout, compiler, minimum-engine and isolated-consumer temporary prefixes replaced with placeholders; all other bytes retained",
+      "original_sha256": "5f7eac1da0b95efb2a839590d20cd97db91f3260506181a9f173dc344be0dc8b",
+      "retained_uncompressed_sha256": "827e7fe99c03f24847b334e57d8b2bc3a8b945d84a3fc58704e622ddb269f69c"
+    },
+    "public-minimum": {
+      "file": "public-minimum.log.gz",
+      "normalization": "checkout, compiler, minimum-engine and isolated-consumer temporary prefixes replaced with placeholders; all other bytes retained",
+      "original_sha256": "7f1ab7a7789abcb54675b8d7f415fb1ccc98366d93a73877a4bdf8091d55507f",
+      "retained_uncompressed_sha256": "56a6854c9551585127a4c6b0eaeaa0bbaa102afa41b9aef1d207fd32cef863e4"
+    },
+    "tsan-positive-control": {
+      "file": "tsan-positive-control.log.gz",
+      "normalization": "checkout, compiler, minimum-engine and isolated-consumer temporary prefixes replaced with placeholders; all other bytes retained",
+      "original_sha256": "4ca4e1f2724315672f4a650609d306db33ba102755d9690b8050639db4e2a372",
+      "retained_uncompressed_sha256": "c0b30cf229bf0934d0b7ccf4b37919961a70a60e28ff200390c2129ebacab661"
+    }
+  },
+  "regression_notes": {
+    "blob_oom_red": "Two development fault probes against prior published implementation 6b0b939f5f36cb1f99718c565acd3dfbf94b9f1f showed OK/length0 on positive lazy-BLOB allocation failure. Dynamic SELECT zeroblob((random() & 0) + 4096) forces allocation during getter. Probe harness was under development, so these logs do not identify a standalone immutable reproducer revision.",
+    "empty_blob_red": "A subsequent development probe found zero-length materialization could mutate BLOB type on allocation failure. The final fix skips pointer materialization for zero length. This log is a development regression diagnostic, not a final-source test failure.",
+    "fixed": "Final committed tests cover SQL-generated and bound zeroblobs, size/fetch/copy getters, zero-length type preservation and empty BLOB/TEXT after another statement reports NOMEM. Every source/mode reaches an actual positive-length NOMEM on tested engines."
+  },
+  "source_commit": "ead19309bef4394ffc041f079d50e2a8d78b7388",
+  "source_hash_verification": "All recorded source hashes verified against git show at this full commit and current bytes while retaining evidence.",
+  "source_hashes": {
+    "CMakeLists.txt": "47d47b97f61c3461667f1158eb2d475b93b69af24073dac9b581bbea1ccf5193",
+    "Makefile": "0542991eb560aac3ae358f8d659cb734d7b3db2c73e5df2c59cca96b6fef0301",
+    "native/sqlite.c": "9274ad8cc4bd0214c4c507f1cc898c4272af06231617e479049a7db3534e6d85",
+    "native/sqlite.h": "03909542e92caa91debde45bc4d1945a76fff34f342a77ceb2b1b689c8270874",
+    "scripts/test-import.py": "e79e72715dc2d10bb6453a150981516cae3d0ae033d271393272edc6956ff118",
+    "sqlite.build": "f40edf5884085360888b2c17be05a19a8f997523ba76fb3fef5abffe42ea6020",
+    "sqlite.goose": "e437ee7ad2e1805ecaee35eb8c270c62e305c343b2cafb96b4378866a6f974e9",
+    "tests/faults.c": "df6ed684c5ac78e5e2e7c5529ca8e020dccb266acb42910d37c3f906d2e8eb9d",
+    "tests/fuzz.c": "0ea72b652686d79a589af3b38e22afb662124230fd180f0db1b803081207f1c1",
+    "tests/native.c": "cfb182b1276b24acf0673cd15322263599f3acf90da3bd2529b9d2d0a880dc7e",
+    "tests/zeroblob.c": "487a8183c9c19b8be29981954ae0cf054198d9e8c9bdbb1317903030f95d364c",
+    "tests/zeroblob.goose": "4bb54762d5551caaac6d80340cc21d84926688660cd1e0b7804b97055ad01248"
+  },
+  "tests": {
+    "anonymous-import": {
+      "environment": {
+        "GIT_ASKPASS": "/bin/false",
+        "GIT_CONFIG_GLOBAL": "/dev/null",
+        "GIT_CONFIG_NOSYSTEM": "1",
+        "GIT_TERMINAL_PROMPT": "0",
+        "SSH_ASKPASS": "/bin/false"
+      },
+      "exit_status": 0,
+      "exit_status_provenance": "Parent agent observed process completion and reported exit 0; retained log independently records success.",
+      "modes": [
+        "runner",
+        "native"
+      ],
+      "result": "passed",
+      "scope": "Anonymous HTTPS dependency fetch; isolated consumer and package cache; compiler process pinned to CPU5.",
+      "source": "carabistouflette/goose-sqlite@ead19309bef4394ffc041f079d50e2a8d78b7388"
+    },
+    "host-clang": {
+      "result": "passed; completion markers and assertions checked in retained log",
+      "result_json": [
+        {
+          "busy_checks": 5,
+          "checkpoints": 12,
+          "state_checks": 12,
+          "wal_supported": true
+        },
+        {
+          "foreign_thread_checks": 2,
+          "reservation_bytes": 4096,
+          "zeroblob_values_checked": 17
+        },
+        {
+          "busy_retries": 0,
+          "cleanup_callbacks": 64,
+          "committed": 256,
+          "engine_preinitialized": false,
+          "reader_snapshots": 160,
+          "registry_cycles": 1024,
+          "threads": 8,
+          "unique_tokens": 3072,
+          "wal": true,
+          "waves": 8
+        }
+      ],
+      "result_lines": [
+        "sqlite native tests passed",
+        "sqlite initialization failures recovered: 2",
+        "sqlite BLOB materialization source=0 mode=0 failures=1",
+        "sqlite BLOB materialization source=0 mode=1 failures=1",
+        "sqlite BLOB materialization source=0 mode=2 failures=1",
+        "sqlite BLOB materialization source=1 mode=0 failures=1",
+        "sqlite BLOB materialization source=1 mode=1 failures=1",
+        "sqlite BLOB materialization source=1 mode=2 failures=1",
+        "sqlite allocation-failure tests passed: open=106 prepare=115 bind=1 step=6 conversion=1",
+        "sqlite storage native tests passed",
+        "Recovery passed: 4678 trials, 4552 fault/crash points, 0 unsupported WAL groups"
+      ]
+    },
+    "host-gcc": {
+      "result": "passed; completion markers and assertions checked in retained log",
+      "result_json": [
+        {
+          "busy_checks": 5,
+          "checkpoints": 12,
+          "state_checks": 12,
+          "wal_supported": true
+        },
+        {
+          "foreign_thread_checks": 2,
+          "reservation_bytes": 4096,
+          "zeroblob_values_checked": 17
+        },
+        {
+          "busy_retries": 0,
+          "cleanup_callbacks": 64,
+          "committed": 256,
+          "engine_preinitialized": false,
+          "reader_snapshots": 160,
+          "registry_cycles": 1024,
+          "threads": 8,
+          "unique_tokens": 3072,
+          "wal": true,
+          "waves": 8
+        }
+      ],
+      "result_lines": [
+        "sqlite native tests passed",
+        "sqlite initialization failures recovered: 2",
+        "sqlite BLOB materialization source=0 mode=0 failures=1",
+        "sqlite BLOB materialization source=0 mode=1 failures=1",
+        "sqlite BLOB materialization source=0 mode=2 failures=1",
+        "sqlite BLOB materialization source=1 mode=0 failures=1",
+        "sqlite BLOB materialization source=1 mode=1 failures=1",
+        "sqlite BLOB materialization source=1 mode=2 failures=1",
+        "sqlite allocation-failure tests passed: open=106 prepare=115 bind=1 step=6 conversion=1",
+        "sqlite storage native tests passed",
+        "Recovery passed: 4678 trials, 4552 fault/crash points, 0 unsupported WAL groups"
+      ]
+    },
+    "minimum-checkpoint": {
+      "result": "passed; completion markers and assertions checked in retained log",
+      "result_json": [
+        {
+          "busy_checks": 0,
+          "checkpoints": 0,
+          "state_checks": 0,
+          "wal_supported": false
+        }
+      ],
+      "result_lines": []
+    },
+    "minimum-fault": {
+      "result": "passed; completion markers and assertions checked in retained log",
+      "result_json": [],
+      "result_lines": [
+        "sqlite initialization failures recovered: 2",
+        "sqlite BLOB materialization source=0 mode=0 failures=1",
+        "sqlite BLOB materialization source=0 mode=1 failures=1",
+        "sqlite BLOB materialization source=0 mode=2 failures=1",
+        "sqlite BLOB materialization source=1 mode=0 failures=1",
+        "sqlite BLOB materialization source=1 mode=1 failures=1",
+        "sqlite BLOB materialization source=1 mode=2 failures=1",
+        "sqlite allocation-failure tests passed: open=95 prepare=30 bind=1 step=6 conversion=1"
+      ]
+    },
+    "minimum-general": {
+      "result": "passed; completion markers and assertions checked in retained log",
+      "result_json": [],
+      "result_lines": [
+        "sqlite native tests passed"
+      ]
+    },
+    "minimum-recovery": {
+      "result": "passed; completion markers and assertions checked in retained log",
+      "result_json": [],
+      "result_lines": [
+        "Recovery passed: 2934 trials, 2804 fault/crash points, 76 unsupported WAL groups"
+      ]
+    },
+    "minimum-storage": {
+      "result": "passed; completion markers and assertions checked in retained log",
+      "result_json": [],
+      "result_lines": [
+        "sqlite storage native tests passed"
+      ]
+    },
+    "minimum-threads": {
+      "result": "passed; completion markers and assertions checked in retained log",
+      "result_json": [
+        {
+          "busy_retries": 0,
+          "cleanup_callbacks": 64,
+          "committed": 0,
+          "engine_preinitialized": false,
+          "reader_snapshots": 0,
+          "registry_cycles": 1024,
+          "threads": 8,
+          "unique_tokens": 3072,
+          "wal": false,
+          "waves": 8
+        }
+      ],
+      "result_lines": []
+    },
+    "minimum-zeroblob": {
+      "result": "passed; completion markers and assertions checked in retained log",
+      "result_json": [
+        {
+          "foreign_thread_checks": 2,
+          "reservation_bytes": 4096,
+          "zeroblob_values_checked": 17
+        }
+      ],
+      "result_lines": []
+    },
+    "pinned-engine-asan": {
+      "result": "passed; completion markers and assertions checked in retained log",
+      "result_json": [
+        {
+          "busy_retries": 0,
+          "cleanup_callbacks": 64,
+          "committed": 256,
+          "engine_preinitialized": false,
+          "reader_snapshots": 160,
+          "registry_cycles": 1024,
+          "threads": 8,
+          "unique_tokens": 3072,
+          "wal": true,
+          "waves": 8
+        },
+        {
+          "busy_checks": 5,
+          "checkpoints": 12,
+          "state_checks": 12,
+          "wal_supported": true
+        },
+        {
+          "foreign_thread_checks": 2,
+          "reservation_bytes": 4096,
+          "zeroblob_values_checked": 17
+        }
+      ],
+      "result_lines": [
+        "sqlite native tests passed",
+        "sqlite initialization failures recovered: 2",
+        "sqlite BLOB materialization source=0 mode=0 failures=1",
+        "sqlite BLOB materialization source=0 mode=1 failures=1",
+        "sqlite BLOB materialization source=0 mode=2 failures=1",
+        "sqlite BLOB materialization source=1 mode=0 failures=1",
+        "sqlite BLOB materialization source=1 mode=1 failures=1",
+        "sqlite BLOB materialization source=1 mode=2 failures=1",
+        "sqlite allocation-failure tests passed: open=21 prepare=100 bind=1 step=6 conversion=1",
+        "sqlite storage native tests passed",
+        "Recovery passed: 4678 trials, 4552 fault/crash points, 0 unsupported WAL groups",
+        "Pinned SQLite WAL engine and adapter sanitizer tests passed"
+      ]
+    },
+    "pinned-engine-tsan": {
+      "result": "passed; completion markers and assertions checked in retained log",
+      "result_json": [
+        {
+          "busy_retries": 162,
+          "cleanup_callbacks": 64,
+          "committed": 256,
+          "engine_preinitialized": true,
+          "reader_snapshots": 160,
+          "registry_cycles": 1024,
+          "threads": 8,
+          "unique_tokens": 3072,
+          "wal": true,
+          "waves": 8
+        },
+        {
+          "busy_checks": 5,
+          "checkpoints": 12,
+          "state_checks": 12,
+          "wal_supported": true
+        },
+        {
+          "foreign_thread_checks": 2,
+          "reservation_bytes": 4096,
+          "zeroblob_values_checked": 17
+        }
+      ],
+      "result_lines": [
+        "Pinned SQLite WAL engine and adapter sanitizer tests passed"
+      ]
+    },
+    "public-host": {
+      "result": "passed; completion markers and assertions checked in retained log",
+      "result_json": [],
+      "result_lines": [
+        "sqlite public API tests passed",
+        "sqlite statement diagnostics passed",
+        "sqlite storage tests passed",
+        "sqlite zeroblob public tests passed",
+        "sqlite metadata/status tests passed",
+        "sqlite public API tests passed",
+        "sqlite metadata/status tests passed",
+        "sqlite storage tests passed",
+        "sqlite zeroblob public tests passed",
+        "sqlite statement diagnostics passed",
+        "sqlite file API tests passed",
+        "sqlite file API tests passed",
+        "sqlite checkpoint public tests passed",
+        "sqlite checkpoint public tests passed",
+        "sqlite transaction recovery example passed",
+        "sqlite transaction recovery example passed",
+        "sqlite standalone import passed (runner and native, isolated consumer/cache)"
+      ]
+    },
+    "public-minimum": {
+      "result": "passed; completion markers and assertions checked in retained log",
+      "result_json": [],
+      "result_lines": [
+        "sqlite public API tests passed",
+        "sqlite statement diagnostics passed",
+        "sqlite storage tests passed",
+        "sqlite zeroblob public tests passed",
+        "sqlite metadata/status tests passed",
+        "sqlite public API tests passed",
+        "sqlite metadata/status tests passed",
+        "sqlite storage tests passed",
+        "sqlite zeroblob public tests passed",
+        "sqlite statement diagnostics passed",
+        "sqlite file API tests passed",
+        "sqlite file API tests passed",
+        "sqlite checkpoint public tests passed (WAL unsupported)",
+        "sqlite checkpoint public tests passed (WAL unsupported)",
+        "sqlite transaction recovery example passed",
+        "sqlite transaction recovery example passed",
+        "sqlite standalone import passed (runner and native, isolated consumer/cache)"
+      ]
+    }
+  },
+  "tsan_scope": "Intentional-race probe must report a race. Successful engine+adapter tests initialize SQLite through production initialize before racing first registry use. Original cold-engine diagnostics remain unresolved in earlier retained results; no suppression or engine patch. Ordinary ASan/UBSan threads retain concurrent cold startup."
+}

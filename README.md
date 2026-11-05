@@ -6,7 +6,7 @@ Experimental interface; no tagged release yet. Tested on Linux x86-64 and ARM64.
 
 Typed parameter binding, strict typed reads, explicit transactions, copied text
 and blobs, incremental BLOB ranges, backup with a page budget, opt-in WAL,
-explicit checkpoints, input and VM limits,
+explicit checkpoints, zero-filled BLOB placeholders, input and VM limits,
 and checked resource handles. No ORM or pool.
 SQLite is a required native dependency, not vendored in this repository.
 
@@ -57,8 +57,9 @@ fn main() {
 ```
 
 Declare the package in your program's root file. A reviewed Git dependency can use
-`import sqlite from "carabistouflette/goose-sqlite@cb0566c4c0ddf483ce4546a339d6fac4ab88742c";`.
-This pins the reviewed startup, checkpoint, metadata/status, storage and statement-diagnostics interface. Imports and namespace are `sqlite`.
+`import sqlite from "carabistouflette/goose-sqlite@ead19309bef4394ffc041f079d50e2a8d78b7388";`.
+This pins the reviewed zero-filled BLOB, startup, checkpoint, metadata/status,
+storage and statement-diagnostics interface. Imports and namespace are `sqlite`.
 Applications must handle errors and clean up resources on their own error paths;
 assertions above keep the example short. Native resource handles belong to their
 OS thread. Copied handles alias one resource; closing/finalizing invalidates all
@@ -66,7 +67,8 @@ copies. Foreign-thread/stale/default handles return `INVALID_HANDLE`.
 
 ## Contract and scope
 
-- Bindings copy values; returned bytes belong to the caller and survive cleanup.
+- Text/blob input buffers are copied; returned bytes belong to the caller and
+  survive cleanup. Zero-filled bindings need only a length.
 - Parameter indices start at 1; column indices at 0. Reads require exact SQLite
   storage classes, including separate NULL, empty text and empty blob.
 - `step` returns `ROW`, `DONE`, or an error. After DONE/error, call `reset` before
@@ -119,3 +121,10 @@ metrics. The [transaction/savepoint example](examples/transactions.goose) preser
 original and recovery errors explicitly. [Realistic workload results](bench/results/workloads-2026-11-04/README.md)
 retain ten fixtures across five callers, whole-process peak RSS and matched registry
 measurements, including mixed/slower cases and the native-executable timing scope.
+
+`bind_zeroblob` binds a bounded zero-filled value without a caller input buffer.
+The [six-path comparison](bench/results/zeroblob-2026-11-05/README.md) includes the
+existing SQL function and reports mixed timings: both zero APIs avoid payload
+allocation at binding time. Materialization can still allocate or fail.
+The [correctness follow-up](tests/results/zeroblob-2026-11-05/README.md) fixes
+materialization OOM being mistaken for an empty BLOB and retains regression evidence.

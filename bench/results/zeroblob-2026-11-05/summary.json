@@ -1,0 +1,278 @@
+{
+  "source_commit": "ead19309bef4394ffc041f079d50e2a8d78b7388",
+  "sample_count": 270,
+  "allocator_probe_count": 30,
+  "statistic": "Median and observed min/max of nine process loop ns/operation; not confidence intervals.",
+  "rows": [
+    {
+      "bytes": 0,
+      "implementation": "goose",
+      "mode": "copy",
+      "count": 9,
+      "median_ns_per_op": 186.08291625976562,
+      "min_ns_per_op": 176.44943237304688,
+      "max_ns_per_op": 203.70858764648438
+    },
+    {
+      "bytes": 0,
+      "implementation": "goose",
+      "mode": "zero",
+      "count": 9,
+      "median_ns_per_op": 181.4647216796875,
+      "min_ns_per_op": 172.083251953125,
+      "max_ns_per_op": 193.78799438476562
+    },
+    {
+      "bytes": 0,
+      "implementation": "goose",
+      "mode": "sql",
+      "count": 9,
+      "median_ns_per_op": 199.8841552734375,
+      "min_ns_per_op": 186.88677978515625,
+      "max_ns_per_op": 216.00802612304688
+    },
+    {
+      "bytes": 0,
+      "implementation": "raw",
+      "mode": "copy",
+      "count": 9,
+      "median_ns_per_op": 157.45046997070312,
+      "min_ns_per_op": 146.01193237304688,
+      "max_ns_per_op": 164.16238403320312
+    },
+    {
+      "bytes": 0,
+      "implementation": "raw",
+      "mode": "zero",
+      "count": 9,
+      "median_ns_per_op": 144.12738037109375,
+      "min_ns_per_op": 131.37185668945312,
+      "max_ns_per_op": 154.37417602539062
+    },
+    {
+      "bytes": 0,
+      "implementation": "raw",
+      "mode": "sql",
+      "count": 9,
+      "median_ns_per_op": 172.73513793945312,
+      "min_ns_per_op": 160.97555541992188,
+      "max_ns_per_op": 187.69943237304688
+    },
+    {
+      "bytes": 4096,
+      "implementation": "goose",
+      "mode": "copy",
+      "count": 9,
+      "median_ns_per_op": 2210.4744567871094,
+      "min_ns_per_op": 2090.7314453125,
+      "max_ns_per_op": 6672.1290283203125
+    },
+    {
+      "bytes": 4096,
+      "implementation": "goose",
+      "mode": "zero",
+      "count": 9,
+      "median_ns_per_op": 2222.2342529296875,
+      "min_ns_per_op": 2141.26220703125,
+      "max_ns_per_op": 5462.156585693359
+    },
+    {
+      "bytes": 4096,
+      "implementation": "goose",
+      "mode": "sql",
+      "count": 9,
+      "median_ns_per_op": 2303.865753173828,
+      "min_ns_per_op": 2093.9764709472656,
+      "max_ns_per_op": 6600.0662841796875
+    },
+    {
+      "bytes": 4096,
+      "implementation": "raw",
+      "mode": "copy",
+      "count": 9,
+      "median_ns_per_op": 2236.5839233398438,
+      "min_ns_per_op": 2106.223907470703,
+      "max_ns_per_op": 5577.911773681641
+    },
+    {
+      "bytes": 4096,
+      "implementation": "raw",
+      "mode": "zero",
+      "count": 9,
+      "median_ns_per_op": 2841.9218139648438,
+      "min_ns_per_op": 2106.931884765625,
+      "max_ns_per_op": 6457.981658935547
+    },
+    {
+      "bytes": 4096,
+      "implementation": "raw",
+      "mode": "sql",
+      "count": 9,
+      "median_ns_per_op": 2254.301513671875,
+      "min_ns_per_op": 2095.0244140625,
+      "max_ns_per_op": 5680.4847412109375
+    },
+    {
+      "bytes": 65536,
+      "implementation": "goose",
+      "mode": "copy",
+      "count": 9,
+      "median_ns_per_op": 74304.04736328125,
+      "min_ns_per_op": 65402.59814453125,
+      "max_ns_per_op": 114294.12548828125
+    },
+    {
+      "bytes": 65536,
+      "implementation": "goose",
+      "mode": "zero",
+      "count": 9,
+      "median_ns_per_op": 75926.08203125,
+      "min_ns_per_op": 66460.1455078125,
+      "max_ns_per_op": 100429.3095703125
+    },
+    {
+      "bytes": 65536,
+      "implementation": "goose",
+      "mode": "sql",
+      "count": 9,
+      "median_ns_per_op": 71536.22021484375,
+      "min_ns_per_op": 50549.80712890625,
+      "max_ns_per_op": 86757.58203125
+    },
+    {
+      "bytes": 65536,
+      "implementation": "raw",
+      "mode": "copy",
+      "count": 9,
+      "median_ns_per_op": 77200.7041015625,
+      "min_ns_per_op": 52451.658203125,
+      "max_ns_per_op": 86357.97021484375
+    },
+    {
+      "bytes": 65536,
+      "implementation": "raw",
+      "mode": "zero",
+      "count": 9,
+      "median_ns_per_op": 74203.95703125,
+      "min_ns_per_op": 68590.95068359375,
+      "max_ns_per_op": 87593.36572265625
+    },
+    {
+      "bytes": 65536,
+      "implementation": "raw",
+      "mode": "sql",
+      "count": 9,
+      "median_ns_per_op": 72614.19091796875,
+      "min_ns_per_op": 67718.7998046875,
+      "max_ns_per_op": 80565.029296875
+    },
+    {
+      "bytes": 524288,
+      "implementation": "goose",
+      "mode": "copy",
+      "count": 9,
+      "median_ns_per_op": 702440.95703125,
+      "min_ns_per_op": 562488.83203125,
+      "max_ns_per_op": 850836.5625
+    },
+    {
+      "bytes": 524288,
+      "implementation": "goose",
+      "mode": "zero",
+      "count": 9,
+      "median_ns_per_op": 683125.140625,
+      "min_ns_per_op": 603231.76171875,
+      "max_ns_per_op": 731051.109375
+    },
+    {
+      "bytes": 524288,
+      "implementation": "goose",
+      "mode": "sql",
+      "count": 9,
+      "median_ns_per_op": 720655.90625,
+      "min_ns_per_op": 555752.04296875,
+      "max_ns_per_op": 859012.921875
+    },
+    {
+      "bytes": 524288,
+      "implementation": "raw",
+      "mode": "copy",
+      "count": 9,
+      "median_ns_per_op": 654665.69140625,
+      "min_ns_per_op": 545288.21875,
+      "max_ns_per_op": 1134525.375
+    },
+    {
+      "bytes": 524288,
+      "implementation": "raw",
+      "mode": "zero",
+      "count": 9,
+      "median_ns_per_op": 688261.9296875,
+      "min_ns_per_op": 571452.375,
+      "max_ns_per_op": 750334.96875
+    },
+    {
+      "bytes": 524288,
+      "implementation": "raw",
+      "mode": "sql",
+      "count": 9,
+      "median_ns_per_op": 681234.51953125,
+      "min_ns_per_op": 565914.96484375,
+      "max_ns_per_op": 723010.46484375
+    },
+    {
+      "bytes": 1048576,
+      "implementation": "goose",
+      "mode": "copy",
+      "count": 9,
+      "median_ns_per_op": 1777260.8359375,
+      "min_ns_per_op": 1712785.25,
+      "max_ns_per_op": 1862666.59375
+    },
+    {
+      "bytes": 1048576,
+      "implementation": "goose",
+      "mode": "zero",
+      "count": 9,
+      "median_ns_per_op": 1523908.34375,
+      "min_ns_per_op": 1445534.625,
+      "max_ns_per_op": 1691147.8984375
+    },
+    {
+      "bytes": 1048576,
+      "implementation": "goose",
+      "mode": "sql",
+      "count": 9,
+      "median_ns_per_op": 1561807.140625,
+      "min_ns_per_op": 1405418.859375,
+      "max_ns_per_op": 1677508.1328125
+    },
+    {
+      "bytes": 1048576,
+      "implementation": "raw",
+      "mode": "copy",
+      "count": 9,
+      "median_ns_per_op": 1531730.234375,
+      "min_ns_per_op": 1403401.140625,
+      "max_ns_per_op": 1718717.3125
+    },
+    {
+      "bytes": 1048576,
+      "implementation": "raw",
+      "mode": "zero",
+      "count": 9,
+      "median_ns_per_op": 1557157.2734375,
+      "min_ns_per_op": 1426936.75,
+      "max_ns_per_op": 1642345.46875
+    },
+    {
+      "bytes": 1048576,
+      "implementation": "raw",
+      "mode": "sql",
+      "count": 9,
+      "median_ns_per_op": 1541465.3046875,
+      "min_ns_per_op": 1450466.5,
+      "max_ns_per_op": 1654320.5546875
+    }
+  ]
+}

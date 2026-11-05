@@ -1,0 +1,536 @@
+{
+  "source_commit": "ead19309bef4394ffc041f079d50e2a8d78b7388",
+  "source_dirty": false,
+  "source_hashes": {
+    "CMakeLists.txt": "47d47b97f61c3461667f1158eb2d475b93b69af24073dac9b581bbea1ccf5193",
+    "sqlite.goose": "e437ee7ad2e1805ecaee35eb8c270c62e305c343b2cafb96b4378866a6f974e9",
+    "sqlite.build": "f40edf5884085360888b2c17be05a19a8f997523ba76fb3fef5abffe42ea6020",
+    "GOOSE_REVISION": "64e14b181dfe96743211738fb0f1b1f7798ea940da2ca50ff122e6f028c24e15",
+    "scripts/native-manifest.py": "776376630b521033583d741e365ab4bb298f6b75f48383c813c177916aa403a7",
+    "native/sqlite.c": "9274ad8cc4bd0214c4c507f1cc898c4272af06231617e479049a7db3534e6d85",
+    "native/sqlite.h": "03909542e92caa91debde45bc4d1945a76fff34f342a77ceb2b1b689c8270874",
+    "bench/zeroblob/raw.c": "87e8a0884ff28cf9c227cfbd7a23eafbdec32c0838f2618672540db3bfcb68c9",
+    "bench/zeroblob/runner.goose": "566e0777830ae205e7c0f33d2c8c870860cf9ec2bd9c80744503954a5d803b0e",
+    "bench/zeroblob/measure.py": "fb04e21dd02c8e07a9280dee8f6c57a8f58b1f58828c26a03061de629e3b7a7e",
+    "bench/zeroblob/README.md": "2ed3c60711923107fac679d1444918a79299652326e9f43c10ed20ae65b1a7fd",
+    "bench/alternatives/paired.py": "88b6d1010cf7d2c8bdeb1d2bb6637d2280eb954448de3beac432ddf38c089118",
+    "bench/alternatives/measure.py": "54b54c9fdc4e1ad02dd43573358b962b4852a01b0b40b325d6b9a46cccd98449"
+  },
+  "parent_started_utc_ns": 1793837720746483145,
+  "iterations": 32768,
+  "runs": 9,
+  "sizes": [
+    0,
+    4096,
+    65536,
+    524288,
+    1048576
+  ],
+  "modes": [
+    "copy",
+    "zero",
+    "sql"
+  ],
+  "order_seed": 219,
+  "affinity": [
+    6
+  ],
+  "os": "Linux-7.2.11-arch1-1-x86_64-with-glibc2.44",
+  "cpu_model": "Intel(R) Core(TM) Ultra 7 258V",
+  "governor": {
+    "6": "powersave"
+  },
+  "load_before": [
+    2.5693359375,
+    3.033203125,
+    4.03271484375
+  ],
+  "cleared_build_environment": [
+    "CFLAGS",
+    "CXXFLAGS",
+    "CPPFLAGS",
+    "LDFLAGS",
+    "CC",
+    "CXX",
+    "CMAKE_GENERATOR",
+    "CMAKE_TOOLCHAIN_FILE",
+    "CMAKE_PREFIX_PATH",
+    "CMAKE_C_COMPILER_LAUNCHER"
+  ],
+  "scope": "Six API paths; in-memory reused SELECT, owned output, every byte checked inside timing. Copy input and all output buffers preallocated. Lifecycle and same-statement priming excluded. Shared host; no exclusive-core, equal-policy, engine-speedup or incremental-RSS claim.",
+  "goose": {
+    "revision": "eadca409f68210893f366e60d0c2f0dc29a339be",
+    "version": "goose eadca40 (runtime 3025e5810379)",
+    "sha256": "2bdd604d01c3f46b03ddae80871b10de7f75e9e710ce92faa1a644b246472ab7"
+  },
+  "build_commands": [
+    [
+      "python3",
+      "scripts/native-manifest.py",
+      "--check"
+    ],
+    [
+      "$GOOSE",
+      "build",
+      "bench/zeroblob/runner.goose",
+      "--cc",
+      "gcc",
+      "-O2",
+      "-o",
+      "$BUILD/goose"
+    ],
+    [
+      "/usr/bin/gcc",
+      "-O2",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-UNDEBUG",
+      "-I",
+      "$SQLITE_INCLUDE",
+      "bench/zeroblob/raw.c",
+      "$SQLITE_LIBRARY",
+      "-pthread",
+      "-lm",
+      "-o",
+      "$BUILD/raw"
+    ],
+    [
+      "/usr/bin/gcc",
+      "-O2",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-UNDEBUG",
+      "-DGQ_DIAGNOSTIC",
+      "-I",
+      "$SQLITE_INCLUDE",
+      "bench/zeroblob/raw.c",
+      "$BUILD/cache/build/pkg/local/9b35b668/gcc-20260810-9d5f2359/cmake/pkg/libgoose_sqlite_native.a",
+      "$SQLITE_LIBRARY",
+      "-pthread",
+      "-lm",
+      "-o",
+      "$BUILD/diagnostic"
+    ]
+  ],
+  "native_build": {
+    "compiler": {
+      "file": "gcc",
+      "version": "gcc (GCC) 16.2.1 20260810",
+      "sha256": "8aac907d6fbf40394b424b5fa4a2ad1aa291dac7d3a0315c5b415c1f5ace1287"
+    },
+    "build_type": "Release",
+    "flags": [
+      [
+        "-O3 -DNDEBUG -fPIC",
+        "-Wall",
+        "-Wextra",
+        "-Werror"
+      ]
+    ],
+    "archive_sha256": "c9f98c91e728d29dec67e2f48a8ffc50b62b7c8617b624c2010e2f40365d2779",
+    "generated_runner_sha256": "69bfa501b105f20396c7039d0b8aef1a479c3e0442e4051e3b6dbb604aa05aea",
+    "sqlite_header_sha256": "59114192eef65d9428279ec4a4a433631f50d3ca20c202acdd49d2a6bb94fb39"
+  },
+  "sqlite_identity": [
+    "3.54.1",
+    "2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6alt1",
+    "ATOMIC_INTRINSICS=1",
+    "COMPILER=gcc-16.2.1 20260810",
+    "DEFAULT_AUTOVACUUM",
+    "DEFAULT_CACHE_SIZE=-2000",
+    "DEFAULT_FILE_FORMAT=4",
+    "DEFAULT_JOURNAL_SIZE_LIMIT=-1",
+    "DEFAULT_MMAP_SIZE=0",
+    "DEFAULT_PAGE_SIZE=4096",
+    "DEFAULT_PCACHE_INITSZ=20",
+    "DEFAULT_RECURSIVE_TRIGGERS",
+    "DEFAULT_SECTOR_SIZE=4096",
+    "DEFAULT_SYNCHRONOUS=2",
+    "DEFAULT_WAL_AUTOCHECKPOINT=1000",
+    "DEFAULT_WAL_SYNCHRONOUS=2",
+    "DEFAULT_WORKER_THREADS=0",
+    "DIRECT_OVERFLOW_READ",
+    "ENABLE_COLUMN_METADATA",
+    "ENABLE_DBSTAT_VTAB",
+    "ENABLE_FTS3",
+    "ENABLE_FTS3_PARENTHESIS",
+    "ENABLE_FTS4",
+    "ENABLE_FTS5",
+    "ENABLE_MATH_FUNCTIONS",
+    "ENABLE_PERCENTILE",
+    "ENABLE_PREUPDATE_HOOK",
+    "ENABLE_RTREE",
+    "ENABLE_SESSION",
+    "ENABLE_STAT4",
+    "ENABLE_STMTVTAB",
+    "ENABLE_UNLOCK_NOTIFY",
+    "HAVE_ISNAN",
+    "MALLOC_SOFT_LIMIT=1024",
+    "MAX_ATTACHED=10",
+    "MAX_COLUMN=2000",
+    "MAX_COMPOUND_SELECT=500",
+    "MAX_DEFAULT_PAGE_SIZE=8192",
+    "MAX_EXPR_DEPTH=10000",
+    "MAX_FUNCTION_ARG=1000",
+    "MAX_LENGTH=1000000000",
+    "MAX_LIKE_PATTERN_LENGTH=50000",
+    "MAX_MMAP_SIZE=0x7fff0000",
+    "MAX_PAGE_COUNT=0xfffffffe",
+    "MAX_PAGE_SIZE=65536",
+    "MAX_SCHEMA=10000000",
+    "MAX_SQL_LENGTH=1000000000",
+    "MAX_TRIGGER_DEPTH=1000",
+    "MAX_VARIABLE_NUMBER=250000",
+    "MAX_VDBE_OP=250000000",
+    "MAX_WORKER_THREADS=8",
+    "MUTEX_PTHREADS",
+    "SECURE_DELETE",
+    "SYSTEM_MALLOC",
+    "TEMP_STORE=1",
+    "THREADSAFE=1"
+  ],
+  "sqlite_libraries": {
+    "goose": {
+      "file": "libsqlite3.so.3.54.1",
+      "sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a"
+    },
+    "raw": {
+      "file": "libsqlite3.so.3.54.1",
+      "sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a"
+    },
+    "diagnostic": {
+      "file": "libsqlite3.so.3.54.1",
+      "sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a"
+    }
+  },
+  "binary_sha256": {
+    "goose": "63c158ea92b23bc4bd33a22edb0af2d0b3c183e60f41f5c45ded0436b32cb162",
+    "raw": "406b9760c9517789bde530193cfc58e8961ba7f878c1fa74f1bb7a4bfc59cf60",
+    "diagnostic": "79881845b470043492ec832c63d9121399d697e741b9c4504643f63982a75d5a"
+  },
+  "compiler_flags": {
+    "Goose": "--cc gcc -O2",
+    "raw C": [
+      "-O2",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-UNDEBUG"
+    ],
+    "diagnostic": [
+      "-O2",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-UNDEBUG",
+      "-DGQ_DIAGNOSTIC",
+      "$NATIVE_ARCHIVE"
+    ]
+  },
+  "compiler": {
+    "file": "gcc",
+    "version": "gcc (GCC) 16.2.1 20260810",
+    "sha256": "8aac907d6fbf40394b424b5fa4a2ad1aa291dac7d3a0315c5b415c1f5ace1287"
+  },
+  "build_label": "zeroblob-yb8lapgb",
+  "rss_scope": "GNU time %M: whole-process peak KiB including setup/priming/verification and small native launch footprint, not SQLite binding allocations",
+  "tools": {
+    "cmake": {
+      "file": "cmake",
+      "version": "cmake version 4.4.5",
+      "sha256": "9cb6fe1977c7f184c054af4ee478728440bc90430572110ef82f5635e42741a0"
+    },
+    "time": {
+      "file": "time",
+      "version": "time (GNU Time) 1.10",
+      "sha256": "ccc576561484fe2c3f83bbceabfeba78408e59ac9c9a8161ad2a017b1037663d"
+    }
+  },
+  "parent_completed_utc_ns": 1793837764480848665,
+  "load_after": [
+    3.251953125,
+    3.1513671875,
+    4.02392578125
+  ],
+  "complete": true,
+  "sample_count": 270,
+  "allocator_diagnostics": [
+    {
+      "driver": "raw-c-api",
+      "mode": "copy",
+      "bytes": 0,
+      "sqlite_before": 68720,
+      "sqlite_after_bind": 68720,
+      "sqlite_delta": 0,
+      "verified_bytes": 0
+    },
+    {
+      "driver": "raw-c-api",
+      "mode": "zero",
+      "bytes": 0,
+      "sqlite_before": 68720,
+      "sqlite_after_bind": 68720,
+      "sqlite_delta": 0,
+      "verified_bytes": 0
+    },
+    {
+      "driver": "raw-c-api",
+      "mode": "sql",
+      "bytes": 0,
+      "sqlite_before": 68792,
+      "sqlite_after_bind": 68792,
+      "sqlite_delta": 0,
+      "verified_bytes": 0
+    },
+    {
+      "driver": "checked-native-abi",
+      "mode": "copy",
+      "bytes": 0,
+      "sqlite_before": 68720,
+      "sqlite_after_bind": 68720,
+      "sqlite_delta": 0,
+      "verified_bytes": 0
+    },
+    {
+      "driver": "checked-native-abi",
+      "mode": "zero",
+      "bytes": 0,
+      "sqlite_before": 68720,
+      "sqlite_after_bind": 68720,
+      "sqlite_delta": 0,
+      "verified_bytes": 0
+    },
+    {
+      "driver": "checked-native-abi",
+      "mode": "sql",
+      "bytes": 0,
+      "sqlite_before": 68792,
+      "sqlite_after_bind": 68792,
+      "sqlite_delta": 0,
+      "verified_bytes": 0
+    },
+    {
+      "driver": "raw-c-api",
+      "mode": "copy",
+      "bytes": 4096,
+      "sqlite_before": 68720,
+      "sqlite_after_bind": 72816,
+      "sqlite_delta": 4096,
+      "verified_bytes": 4096
+    },
+    {
+      "driver": "raw-c-api",
+      "mode": "zero",
+      "bytes": 4096,
+      "sqlite_before": 68720,
+      "sqlite_after_bind": 68720,
+      "sqlite_delta": 0,
+      "verified_bytes": 4096
+    },
+    {
+      "driver": "raw-c-api",
+      "mode": "sql",
+      "bytes": 4096,
+      "sqlite_before": 68792,
+      "sqlite_after_bind": 68792,
+      "sqlite_delta": 0,
+      "verified_bytes": 4096
+    },
+    {
+      "driver": "checked-native-abi",
+      "mode": "copy",
+      "bytes": 4096,
+      "sqlite_before": 68720,
+      "sqlite_after_bind": 72816,
+      "sqlite_delta": 4096,
+      "verified_bytes": 4096
+    },
+    {
+      "driver": "checked-native-abi",
+      "mode": "zero",
+      "bytes": 4096,
+      "sqlite_before": 68720,
+      "sqlite_after_bind": 68720,
+      "sqlite_delta": 0,
+      "verified_bytes": 4096
+    },
+    {
+      "driver": "checked-native-abi",
+      "mode": "sql",
+      "bytes": 4096,
+      "sqlite_before": 68792,
+      "sqlite_after_bind": 68792,
+      "sqlite_delta": 0,
+      "verified_bytes": 4096
+    },
+    {
+      "driver": "raw-c-api",
+      "mode": "copy",
+      "bytes": 65536,
+      "sqlite_before": 68720,
+      "sqlite_after_bind": 134256,
+      "sqlite_delta": 65536,
+      "verified_bytes": 65536
+    },
+    {
+      "driver": "raw-c-api",
+      "mode": "zero",
+      "bytes": 65536,
+      "sqlite_before": 68720,
+      "sqlite_after_bind": 68720,
+      "sqlite_delta": 0,
+      "verified_bytes": 65536
+    },
+    {
+      "driver": "raw-c-api",
+      "mode": "sql",
+      "bytes": 65536,
+      "sqlite_before": 68792,
+      "sqlite_after_bind": 68792,
+      "sqlite_delta": 0,
+      "verified_bytes": 65536
+    },
+    {
+      "driver": "checked-native-abi",
+      "mode": "copy",
+      "bytes": 65536,
+      "sqlite_before": 68720,
+      "sqlite_after_bind": 134256,
+      "sqlite_delta": 65536,
+      "verified_bytes": 65536
+    },
+    {
+      "driver": "checked-native-abi",
+      "mode": "zero",
+      "bytes": 65536,
+      "sqlite_before": 68720,
+      "sqlite_after_bind": 68720,
+      "sqlite_delta": 0,
+      "verified_bytes": 65536
+    },
+    {
+      "driver": "checked-native-abi",
+      "mode": "sql",
+      "bytes": 65536,
+      "sqlite_before": 68792,
+      "sqlite_after_bind": 68792,
+      "sqlite_delta": 0,
+      "verified_bytes": 65536
+    },
+    {
+      "driver": "raw-c-api",
+      "mode": "copy",
+      "bytes": 524288,
+      "sqlite_before": 68720,
+      "sqlite_after_bind": 593008,
+      "sqlite_delta": 524288,
+      "verified_bytes": 524288
+    },
+    {
+      "driver": "raw-c-api",
+      "mode": "zero",
+      "bytes": 524288,
+      "sqlite_before": 68720,
+      "sqlite_after_bind": 68720,
+      "sqlite_delta": 0,
+      "verified_bytes": 524288
+    },
+    {
+      "driver": "raw-c-api",
+      "mode": "sql",
+      "bytes": 524288,
+      "sqlite_before": 68792,
+      "sqlite_after_bind": 68792,
+      "sqlite_delta": 0,
+      "verified_bytes": 524288
+    },
+    {
+      "driver": "checked-native-abi",
+      "mode": "copy",
+      "bytes": 524288,
+      "sqlite_before": 68720,
+      "sqlite_after_bind": 593008,
+      "sqlite_delta": 524288,
+      "verified_bytes": 524288
+    },
+    {
+      "driver": "checked-native-abi",
+      "mode": "zero",
+      "bytes": 524288,
+      "sqlite_before": 68720,
+      "sqlite_after_bind": 68720,
+      "sqlite_delta": 0,
+      "verified_bytes": 524288
+    },
+    {
+      "driver": "checked-native-abi",
+      "mode": "sql",
+      "bytes": 524288,
+      "sqlite_before": 68792,
+      "sqlite_after_bind": 68792,
+      "sqlite_delta": 0,
+      "verified_bytes": 524288
+    },
+    {
+      "driver": "raw-c-api",
+      "mode": "copy",
+      "bytes": 1048576,
+      "sqlite_before": 68720,
+      "sqlite_after_bind": 1117296,
+      "sqlite_delta": 1048576,
+      "verified_bytes": 1048576
+    },
+    {
+      "driver": "raw-c-api",
+      "mode": "zero",
+      "bytes": 1048576,
+      "sqlite_before": 68720,
+      "sqlite_after_bind": 68720,
+      "sqlite_delta": 0,
+      "verified_bytes": 1048576
+    },
+    {
+      "driver": "raw-c-api",
+      "mode": "sql",
+      "bytes": 1048576,
+      "sqlite_before": 68792,
+      "sqlite_after_bind": 68792,
+      "sqlite_delta": 0,
+      "verified_bytes": 1048576
+    },
+    {
+      "driver": "checked-native-abi",
+      "mode": "copy",
+      "bytes": 1048576,
+      "sqlite_before": 68720,
+      "sqlite_after_bind": 1117296,
+      "sqlite_delta": 1048576,
+      "verified_bytes": 1048576
+    },
+    {
+      "driver": "checked-native-abi",
+      "mode": "zero",
+      "bytes": 1048576,
+      "sqlite_before": 68720,
+      "sqlite_after_bind": 68720,
+      "sqlite_delta": 0,
+      "verified_bytes": 1048576
+    },
+    {
+      "driver": "checked-native-abi",
+      "mode": "sql",
+      "bytes": 1048576,
+      "sqlite_before": 68792,
+      "sqlite_after_bind": 68792,
+      "sqlite_delta": 0,
+      "verified_bytes": 1048576
+    }
+  ],
+  "allocator_scope": "Separate single-connection native processes, raw C and checked ABI. SQLITE_CONFIG_MEMSTATUS enabled before initialization; delta only spans binding, before step/materialization. All bytes verified afterward. SQLite allocator accounting excludes source/output malloc and Goose runtime heap."
+}

@@ -1,0 +1,437 @@
+{
+  "configurations": [
+    {
+      "acknowledged_crashes": 7,
+      "binary_sha256": "70680cd66a3922e86da4939a4e1e988a30cb07fa0cadbd85b6496ed61a024d68",
+      "checkpoint_fault_crash_points": 250,
+      "checkpoint_trials": 268,
+      "compile_flags_note": "CMake flags.make when available; empty for other generators",
+      "compiler": {
+        "sha256": "8aac907d6fbf40394b424b5fa4a2ad1aa291dac7d3a0315c5b415c1f5ace1287",
+        "version": "gcc (GCC) 16.2.1 20260810"
+      },
+      "configuration": "host-gcc",
+      "coverage": {
+        "crash-after-ack": {
+          "hit_trials": 7,
+          "skipped_groups": 0,
+          "trials": 7,
+          "unexercised_groups": 0
+        },
+        "crash-sync": {
+          "hit_trials": 51,
+          "skipped_groups": 0,
+          "trials": 58,
+          "unexercised_groups": 0
+        },
+        "crash-write": {
+          "hit_trials": 684,
+          "skipped_groups": 0,
+          "trials": 691,
+          "unexercised_groups": 0
+        },
+        "delete": {
+          "hit_trials": 6,
+          "skipped_groups": 0,
+          "trials": 20,
+          "unexercised_groups": 8
+        },
+        "full": {
+          "hit_trials": 1368,
+          "skipped_groups": 0,
+          "trials": 1382,
+          "unexercised_groups": 0
+        },
+        "read": {
+          "hit_trials": 880,
+          "skipped_groups": 0,
+          "trials": 894,
+          "unexercised_groups": 0
+        },
+        "shm-lock": {
+          "hit_trials": 68,
+          "skipped_groups": 0,
+          "trials": 82,
+          "unexercised_groups": 6
+        },
+        "shm-map": {
+          "hit_trials": 12,
+          "skipped_groups": 0,
+          "trials": 26,
+          "unexercised_groups": 8
+        },
+        "sync": {
+          "hit_trials": 102,
+          "skipped_groups": 0,
+          "trials": 116,
+          "unexercised_groups": 0
+        },
+        "truncate": {
+          "hit_trials": 6,
+          "skipped_groups": 0,
+          "trials": 20,
+          "unexercised_groups": 10
+        },
+        "write": {
+          "hit_trials": 1368,
+          "skipped_groups": 0,
+          "trials": 1382,
+          "unexercised_groups": 0
+        }
+      },
+      "fault_crash_points": 4552,
+      "provenance": {
+        "source_commit": "ead19309bef4394ffc041f079d50e2a8d78b7388",
+        "source_dirty": false,
+        "source_hashes": {
+          "CMakeLists.txt": "47d47b97f61c3461667f1158eb2d475b93b69af24073dac9b581bbea1ccf5193",
+          "native/sqlite.c": "9274ad8cc4bd0214c4c507f1cc898c4272af06231617e479049a7db3534e6d85",
+          "native/sqlite.h": "03909542e92caa91debde45bc4d1945a76fff34f342a77ceb2b1b689c8270874",
+          "scripts/test-recovery.py": "ce3524b2d11b7c23e18e932a7273deedfaf05b59881401162318e783b0e89a24",
+          "tests/recovery.c": "cea96e1baea69038cae5776dbb664b38813ed799e5896298f81097e3c67803a3"
+        }
+      },
+      "records_file": "recovery-records-1.jsonl",
+      "records_sha256": "c532f94a7d2b8c8bbefafc274c53ea9e641342ca025694e0a299e33cf6d46830",
+      "scope": "Single-threaded test-only VFS; failures before complete read/write/sync/truncate/delete/SHM-map/SHM-lock-acquisition calls; mmap disabled. Process crashes preserve OS cache; no torn-write/power-loss/reordering model. Fresh fixtures per cutpoint; all bytes and integrity checked. WAL-only checkpoint faults start after epoch1 commit and always require epoch1 plus a verified successful checkpoint retry before any write.",
+      "sqlite_identity": {
+        "source_id": "2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6alt1",
+        "version": "3.54.1"
+      },
+      "sqlite_library": {
+        "file": "libsqlite3.so.3.54.1",
+        "sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a"
+      },
+      "test_compile_flags": [
+        "C_FLAGS = -g -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -Wall -Wextra -Werror -UNDEBUG"
+      ],
+      "trials": 4678,
+      "unsupported_wal_groups": 0
+    },
+    {
+      "acknowledged_crashes": 7,
+      "binary_sha256": "984e297332ff484f6eded706ea5f74d1d84a66bb8b31bafb76231f84b35b8dee",
+      "checkpoint_fault_crash_points": 250,
+      "checkpoint_trials": 268,
+      "compile_flags_note": "CMake flags.make when available; empty for other generators",
+      "compiler": {
+        "sha256": "5cb1c0c669bf0d2655933374723967259e78704338c370101843575f524c91bb",
+        "version": "clang version 23.1.4"
+      },
+      "configuration": "host-clang",
+      "coverage": {
+        "crash-after-ack": {
+          "hit_trials": 7,
+          "skipped_groups": 0,
+          "trials": 7,
+          "unexercised_groups": 0
+        },
+        "crash-sync": {
+          "hit_trials": 51,
+          "skipped_groups": 0,
+          "trials": 58,
+          "unexercised_groups": 0
+        },
+        "crash-write": {
+          "hit_trials": 684,
+          "skipped_groups": 0,
+          "trials": 691,
+          "unexercised_groups": 0
+        },
+        "delete": {
+          "hit_trials": 6,
+          "skipped_groups": 0,
+          "trials": 20,
+          "unexercised_groups": 8
+        },
+        "full": {
+          "hit_trials": 1368,
+          "skipped_groups": 0,
+          "trials": 1382,
+          "unexercised_groups": 0
+        },
+        "read": {
+          "hit_trials": 880,
+          "skipped_groups": 0,
+          "trials": 894,
+          "unexercised_groups": 0
+        },
+        "shm-lock": {
+          "hit_trials": 68,
+          "skipped_groups": 0,
+          "trials": 82,
+          "unexercised_groups": 6
+        },
+        "shm-map": {
+          "hit_trials": 12,
+          "skipped_groups": 0,
+          "trials": 26,
+          "unexercised_groups": 8
+        },
+        "sync": {
+          "hit_trials": 102,
+          "skipped_groups": 0,
+          "trials": 116,
+          "unexercised_groups": 0
+        },
+        "truncate": {
+          "hit_trials": 6,
+          "skipped_groups": 0,
+          "trials": 20,
+          "unexercised_groups": 10
+        },
+        "write": {
+          "hit_trials": 1368,
+          "skipped_groups": 0,
+          "trials": 1382,
+          "unexercised_groups": 0
+        }
+      },
+      "fault_crash_points": 4552,
+      "provenance": {
+        "source_commit": "ead19309bef4394ffc041f079d50e2a8d78b7388",
+        "source_dirty": false,
+        "source_hashes": {
+          "CMakeLists.txt": "47d47b97f61c3461667f1158eb2d475b93b69af24073dac9b581bbea1ccf5193",
+          "native/sqlite.c": "9274ad8cc4bd0214c4c507f1cc898c4272af06231617e479049a7db3534e6d85",
+          "native/sqlite.h": "03909542e92caa91debde45bc4d1945a76fff34f342a77ceb2b1b689c8270874",
+          "scripts/test-recovery.py": "ce3524b2d11b7c23e18e932a7273deedfaf05b59881401162318e783b0e89a24",
+          "tests/recovery.c": "cea96e1baea69038cae5776dbb664b38813ed799e5896298f81097e3c67803a3"
+        }
+      },
+      "records_file": "recovery-records-1.jsonl",
+      "records_sha256": "c532f94a7d2b8c8bbefafc274c53ea9e641342ca025694e0a299e33cf6d46830",
+      "scope": "Single-threaded test-only VFS; failures before complete read/write/sync/truncate/delete/SHM-map/SHM-lock-acquisition calls; mmap disabled. Process crashes preserve OS cache; no torn-write/power-loss/reordering model. Fresh fixtures per cutpoint; all bytes and integrity checked. WAL-only checkpoint faults start after epoch1 commit and always require epoch1 plus a verified successful checkpoint retry before any write.",
+      "sqlite_identity": {
+        "source_id": "2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6alt1",
+        "version": "3.54.1"
+      },
+      "sqlite_library": {
+        "file": "libsqlite3.so.3.54.1",
+        "sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a"
+      },
+      "test_compile_flags": [
+        "C_FLAGS = -g -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -Wall -Wextra -Werror -UNDEBUG"
+      ],
+      "trials": 4678,
+      "unsupported_wal_groups": 0
+    },
+    {
+      "acknowledged_crashes": 7,
+      "binary_sha256": "608ee97903c25c313b7b6e7cd6875d08cbfc0af22ee9b168f59536eee72161d7",
+      "checkpoint_fault_crash_points": 250,
+      "checkpoint_trials": 268,
+      "compile_flags_note": "CMake flags.make when available; empty for other generators",
+      "compiler": {
+        "sha256": "5cb1c0c669bf0d2655933374723967259e78704338c370101843575f524c91bb",
+        "version": "clang version 23.1.4"
+      },
+      "configuration": "pinned-engine-clang",
+      "coverage": {
+        "crash-after-ack": {
+          "hit_trials": 7,
+          "skipped_groups": 0,
+          "trials": 7,
+          "unexercised_groups": 0
+        },
+        "crash-sync": {
+          "hit_trials": 51,
+          "skipped_groups": 0,
+          "trials": 58,
+          "unexercised_groups": 0
+        },
+        "crash-write": {
+          "hit_trials": 684,
+          "skipped_groups": 0,
+          "trials": 691,
+          "unexercised_groups": 0
+        },
+        "delete": {
+          "hit_trials": 6,
+          "skipped_groups": 0,
+          "trials": 20,
+          "unexercised_groups": 8
+        },
+        "full": {
+          "hit_trials": 1368,
+          "skipped_groups": 0,
+          "trials": 1382,
+          "unexercised_groups": 0
+        },
+        "read": {
+          "hit_trials": 880,
+          "skipped_groups": 0,
+          "trials": 894,
+          "unexercised_groups": 0
+        },
+        "shm-lock": {
+          "hit_trials": 68,
+          "skipped_groups": 0,
+          "trials": 82,
+          "unexercised_groups": 6
+        },
+        "shm-map": {
+          "hit_trials": 12,
+          "skipped_groups": 0,
+          "trials": 26,
+          "unexercised_groups": 8
+        },
+        "sync": {
+          "hit_trials": 102,
+          "skipped_groups": 0,
+          "trials": 116,
+          "unexercised_groups": 0
+        },
+        "truncate": {
+          "hit_trials": 6,
+          "skipped_groups": 0,
+          "trials": 20,
+          "unexercised_groups": 10
+        },
+        "write": {
+          "hit_trials": 1368,
+          "skipped_groups": 0,
+          "trials": 1382,
+          "unexercised_groups": 0
+        }
+      },
+      "fault_crash_points": 4552,
+      "provenance": {
+        "source_commit": "ead19309bef4394ffc041f079d50e2a8d78b7388",
+        "source_dirty": false,
+        "source_hashes": {
+          "CMakeLists.txt": "47d47b97f61c3461667f1158eb2d475b93b69af24073dac9b581bbea1ccf5193",
+          "native/sqlite.c": "9274ad8cc4bd0214c4c507f1cc898c4272af06231617e479049a7db3534e6d85",
+          "native/sqlite.h": "03909542e92caa91debde45bc4d1945a76fff34f342a77ceb2b1b689c8270874",
+          "scripts/test-recovery.py": "ce3524b2d11b7c23e18e932a7273deedfaf05b59881401162318e783b0e89a24",
+          "tests/recovery.c": "cea96e1baea69038cae5776dbb664b38813ed799e5896298f81097e3c67803a3"
+        }
+      },
+      "records_file": "recovery-records-1.jsonl",
+      "records_sha256": "c532f94a7d2b8c8bbefafc274c53ea9e641342ca025694e0a299e33cf6d46830",
+      "scope": "Single-threaded test-only VFS; failures before complete read/write/sync/truncate/delete/SHM-map/SHM-lock-acquisition calls; mmap disabled. Process crashes preserve OS cache; no torn-write/power-loss/reordering model. Fresh fixtures per cutpoint; all bytes and integrity checked. WAL-only checkpoint faults start after epoch1 commit and always require epoch1 plus a verified successful checkpoint retry before any write.",
+      "sqlite_identity": {
+        "source_id": "2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6ca76",
+        "version": "3.54.1"
+      },
+      "sqlite_library": {
+        "file": "libsqlite3.so.0",
+        "sha256": "80a0db09bacc2c3d6a418780f741530ef01d5d20eeea2d9579c5e84356b78307"
+      },
+      "test_compile_flags": [
+        "C_FLAGS = -g -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -Wall -Wextra -Werror -UNDEBUG"
+      ],
+      "trials": 4678,
+      "unsupported_wal_groups": 0
+    },
+    {
+      "acknowledged_crashes": 3,
+      "binary_sha256": "4a2167474ec11954bb0b6139cb297d20231e83bfa8ba9b22734bbe20f273e0a5",
+      "checkpoint_fault_crash_points": 0,
+      "checkpoint_trials": 19,
+      "compile_flags_note": "CMake flags.make when available; empty for other generators",
+      "compiler": {
+        "sha256": "5cb1c0c669bf0d2655933374723967259e78704338c370101843575f524c91bb",
+        "version": "clang version 23.1.4"
+      },
+      "configuration": "minimum-engine-clang",
+      "coverage": {
+        "crash-after-ack": {
+          "hit_trials": 3,
+          "skipped_groups": 4,
+          "trials": 7,
+          "unexercised_groups": 0
+        },
+        "crash-sync": {
+          "hit_trials": 43,
+          "skipped_groups": 4,
+          "trials": 50,
+          "unexercised_groups": 0
+        },
+        "crash-write": {
+          "hit_trials": 448,
+          "skipped_groups": 4,
+          "trials": 455,
+          "unexercised_groups": 0
+        },
+        "delete": {
+          "hit_trials": 6,
+          "skipped_groups": 8,
+          "trials": 20,
+          "unexercised_groups": 0
+        },
+        "full": {
+          "hit_trials": 896,
+          "skipped_groups": 8,
+          "trials": 910,
+          "unexercised_groups": 0
+        },
+        "read": {
+          "hit_trials": 424,
+          "skipped_groups": 8,
+          "trials": 438,
+          "unexercised_groups": 0
+        },
+        "shm-lock": {
+          "hit_trials": 0,
+          "skipped_groups": 8,
+          "trials": 14,
+          "unexercised_groups": 6
+        },
+        "shm-map": {
+          "hit_trials": 0,
+          "skipped_groups": 8,
+          "trials": 14,
+          "unexercised_groups": 6
+        },
+        "sync": {
+          "hit_trials": 86,
+          "skipped_groups": 8,
+          "trials": 100,
+          "unexercised_groups": 0
+        },
+        "truncate": {
+          "hit_trials": 2,
+          "skipped_groups": 8,
+          "trials": 16,
+          "unexercised_groups": 4
+        },
+        "write": {
+          "hit_trials": 896,
+          "skipped_groups": 8,
+          "trials": 910,
+          "unexercised_groups": 0
+        }
+      },
+      "fault_crash_points": 2804,
+      "provenance": {
+        "source_commit": "ead19309bef4394ffc041f079d50e2a8d78b7388",
+        "source_dirty": false,
+        "source_hashes": {
+          "CMakeLists.txt": "47d47b97f61c3461667f1158eb2d475b93b69af24073dac9b581bbea1ccf5193",
+          "native/sqlite.c": "9274ad8cc4bd0214c4c507f1cc898c4272af06231617e479049a7db3534e6d85",
+          "native/sqlite.h": "03909542e92caa91debde45bc4d1945a76fff34f342a77ceb2b1b689c8270874",
+          "scripts/test-recovery.py": "ce3524b2d11b7c23e18e932a7273deedfaf05b59881401162318e783b0e89a24",
+          "tests/recovery.c": "cea96e1baea69038cae5776dbb664b38813ed799e5896298f81097e3c67803a3"
+        }
+      },
+      "records_file": "recovery-records-2.jsonl",
+      "records_sha256": "a70edec0b88ae4eabdb30b9bb9ccf892db37be83679cf0276c7e745f410d2de2",
+      "scope": "Single-threaded test-only VFS; failures before complete read/write/sync/truncate/delete/SHM-map/SHM-lock-acquisition calls; mmap disabled. Process crashes preserve OS cache; no torn-write/power-loss/reordering model. Fresh fixtures per cutpoint; all bytes and integrity checked. WAL-only checkpoint faults start after epoch1 commit and always require epoch1 plus a verified successful checkpoint retry before any write.",
+      "sqlite_identity": {
+        "source_id": "2021-11-27 14:13:22 bd41822c7424d393a30e92ff6cb254d25c26769889c1499a18a0b9339f5d6c8a",
+        "version": "3.37.0"
+      },
+      "sqlite_library": {
+        "file": "libsqlite3.so.0",
+        "sha256": "1378156fc837ae07b178373e14e37b7620795c7262fc0ed18dff22b980397d4b"
+      },
+      "test_compile_flags": [
+        "C_FLAGS = -g -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -Wall -Wextra -Werror -UNDEBUG"
+      ],
+      "trials": 2934,
+      "unsupported_wal_groups": 76
+    }
+  ],
+  "scope": "Completed finite correctness campaigns; records include explicit unsupported-WAL skips. Process crashes preserve OS cache and do not model power loss."
+}

@@ -1,0 +1,658 @@
+{
+  "conclusion": "success",
+  "downloaded_full_log_sha256": "b0a19ea27c29f93b2cec48d678af98eb4297b321590843285c9e0a6c2ac02410",
+  "goose_revision": "eadca409f68210893f366e60d0c2f0dc29a339be",
+  "headSha": "ead19309bef4394ffc041f079d50e2a8d78b7388",
+  "jobs": [
+    {
+      "architecture_output": [],
+      "completedAt": "2026-11-05T00:19:00Z",
+      "conclusion": "success",
+      "databaseId": 126957341809,
+      "name": "thread-sanitizer",
+      "result_excerpts": [
+        {
+          "step": "Run python3 scripts/test-wal-engine.py --sanitizer thread",
+          "text": "{\"zeroblob_values_checked\":17,\"foreign_thread_checks\":2,\"reservation_bytes\":4096}"
+        }
+      ],
+      "startedAt": "2026-11-05T00:14:05Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-05T00:14:07Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-05T00:14:06Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:14:09Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "number": 2,
+          "startedAt": "2026-11-05T00:14:07Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:18:21Z",
+          "conclusion": "success",
+          "name": "Run sudo apt-get update && sudo apt-get install -y libsqlite3-dev clang cmake",
+          "number": 3,
+          "startedAt": "2026-11-05T00:14:09Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:18:57Z",
+          "conclusion": "success",
+          "name": "Run python3 scripts/test-wal-engine.py --sanitizer thread",
+          "number": 4,
+          "startedAt": "2026-11-05T00:18:21Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:18:57Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "number": 8,
+          "startedAt": "2026-11-05T00:18:57Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:18:57Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 9,
+          "startedAt": "2026-11-05T00:18:57Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/carabistouflette/goose-sqlite/actions/runs/41939789987/job/126957341809"
+    },
+    {
+      "architecture_output": [
+        "x86_64",
+        "64",
+        "eadca409f68210893f366e60d0c2f0dc29a339be"
+      ],
+      "completedAt": "2026-11-05T00:22:45Z",
+      "conclusion": "success",
+      "databaseId": 126957342229,
+      "name": "test (ubuntu-24.04)",
+      "result_excerpts": [
+        {
+          "step": "Run make check test",
+          "text": "sqlite zeroblob public tests passed"
+        },
+        {
+          "step": "Run make check test",
+          "text": "sqlite zeroblob public tests passed"
+        },
+        {
+          "step": "Run make check test",
+          "text": "sqlite standalone import passed (runner and native, isolated consumer/cache)"
+        },
+        {
+          "step": "Run make test-native CC=gcc",
+          "text": "sqlite BLOB materialization source=0 mode=0 failures=1"
+        },
+        {
+          "step": "Run make test-native CC=gcc",
+          "text": "sqlite BLOB materialization source=0 mode=1 failures=1"
+        },
+        {
+          "step": "Run make test-native CC=gcc",
+          "text": "sqlite BLOB materialization source=0 mode=2 failures=1"
+        },
+        {
+          "step": "Run make test-native CC=gcc",
+          "text": "sqlite BLOB materialization source=1 mode=0 failures=1"
+        },
+        {
+          "step": "Run make test-native CC=gcc",
+          "text": "sqlite BLOB materialization source=1 mode=1 failures=1"
+        },
+        {
+          "step": "Run make test-native CC=gcc",
+          "text": "sqlite BLOB materialization source=1 mode=2 failures=1"
+        },
+        {
+          "step": "Run make test-native CC=gcc",
+          "text": "{\"zeroblob_values_checked\":17,\"foreign_thread_checks\":2,\"reservation_bytes\":4096}"
+        },
+        {
+          "step": "Run make test-native CC=gcc",
+          "text": "Recovery passed: 2934 trials, 2804 fault/crash points, 76 unsupported WAL groups"
+        },
+        {
+          "step": "Run make test-native CC=clang",
+          "text": "sqlite BLOB materialization source=0 mode=0 failures=1"
+        },
+        {
+          "step": "Run make test-native CC=clang",
+          "text": "sqlite BLOB materialization source=0 mode=1 failures=1"
+        },
+        {
+          "step": "Run make test-native CC=clang",
+          "text": "sqlite BLOB materialization source=0 mode=2 failures=1"
+        },
+        {
+          "step": "Run make test-native CC=clang",
+          "text": "sqlite BLOB materialization source=1 mode=0 failures=1"
+        },
+        {
+          "step": "Run make test-native CC=clang",
+          "text": "sqlite BLOB materialization source=1 mode=1 failures=1"
+        },
+        {
+          "step": "Run make test-native CC=clang",
+          "text": "sqlite BLOB materialization source=1 mode=2 failures=1"
+        },
+        {
+          "step": "Run make test-native CC=clang",
+          "text": "{\"zeroblob_values_checked\":17,\"foreign_thread_checks\":2,\"reservation_bytes\":4096}"
+        },
+        {
+          "step": "Run make test-native CC=clang",
+          "text": "Recovery passed: 2934 trials, 2804 fault/crash points, 76 unsupported WAL groups"
+        },
+        {
+          "step": "Run python3 scripts/test-wal-engine.py",
+          "text": "{\"zeroblob_values_checked\":17,\"foreign_thread_checks\":2,\"reservation_bytes\":4096}"
+        },
+        {
+          "step": "Run python3 scripts/test-wal-engine.py",
+          "text": "sqlite BLOB materialization source=0 mode=0 failures=1"
+        },
+        {
+          "step": "Run python3 scripts/test-wal-engine.py",
+          "text": "sqlite BLOB materialization source=0 mode=1 failures=1"
+        },
+        {
+          "step": "Run python3 scripts/test-wal-engine.py",
+          "text": "sqlite BLOB materialization source=0 mode=2 failures=1"
+        },
+        {
+          "step": "Run python3 scripts/test-wal-engine.py",
+          "text": "sqlite BLOB materialization source=1 mode=0 failures=1"
+        },
+        {
+          "step": "Run python3 scripts/test-wal-engine.py",
+          "text": "sqlite BLOB materialization source=1 mode=1 failures=1"
+        },
+        {
+          "step": "Run python3 scripts/test-wal-engine.py",
+          "text": "sqlite BLOB materialization source=1 mode=2 failures=1"
+        },
+        {
+          "step": "Run python3 scripts/test-wal-engine.py",
+          "text": "Recovery passed: 4678 trials, 4552 fault/crash points, 0 unsupported WAL groups"
+        },
+        {
+          "step": "Run make fuzz-native FUZZ_RUNS=10000",
+          "text": "Done 10000 runs in 4 second(s)"
+        }
+      ],
+      "startedAt": "2026-11-05T00:14:06Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-05T00:14:07Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-05T00:14:07Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:14:08Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "number": 2,
+          "startedAt": "2026-11-05T00:14:07Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:14:11Z",
+          "conclusion": "success",
+          "name": "Run actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9",
+          "number": 3,
+          "startedAt": "2026-11-05T00:14:08Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:14:11Z",
+          "conclusion": "success",
+          "name": "Record and verify architecture",
+          "number": 4,
+          "startedAt": "2026-11-05T00:14:11Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:14:21Z",
+          "conclusion": "success",
+          "name": "Run sudo apt-get update && sudo apt-get install -y libsqlite3-dev pkg-config clang time",
+          "number": 5,
+          "startedAt": "2026-11-05T00:14:11Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:14:23Z",
+          "conclusion": "success",
+          "name": "Run make setup",
+          "number": 6,
+          "startedAt": "2026-11-05T00:14:21Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:14:30Z",
+          "conclusion": "success",
+          "name": "Run make check test",
+          "number": 7,
+          "startedAt": "2026-11-05T00:14:23Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:16:03Z",
+          "conclusion": "success",
+          "name": "Run make test-native CC=gcc",
+          "number": 8,
+          "startedAt": "2026-11-05T00:14:30Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:17:37Z",
+          "conclusion": "success",
+          "name": "Run make test-native CC=clang",
+          "number": 9,
+          "startedAt": "2026-11-05T00:16:03Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:22:02Z",
+          "conclusion": "success",
+          "name": "Run python3 scripts/test-wal-engine.py",
+          "number": 10,
+          "startedAt": "2026-11-05T00:17:37Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:22:08Z",
+          "conclusion": "success",
+          "name": "Run make fuzz-native FUZZ_RUNS=10000",
+          "number": 11,
+          "startedAt": "2026-11-05T00:22:02Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:22:10Z",
+          "conclusion": "success",
+          "name": "Run make bench BENCH_ITERATIONS=10",
+          "number": 12,
+          "startedAt": "2026-11-05T00:22:08Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:22:31Z",
+          "conclusion": "success",
+          "name": "Run /usr/bin/python3 bench/alternatives/measure.py --goose .toolchain/goose/build/goose --iterations 10 --runs 1 --output .build/alternative-smoke",
+          "number": 13,
+          "startedAt": "2026-11-05T00:22:10Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:22:36Z",
+          "conclusion": "success",
+          "name": "Run python3 bench/alternatives/paired.py --goose .toolchain/goose/build/goose --before-ref HEAD --after-ref HEAD --iterations 10 --runs 1 --output .build/paired-smoke",
+          "number": 14,
+          "startedAt": "2026-11-05T00:22:31Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:22:39Z",
+          "conclusion": "success",
+          "name": "Run python3 bench/storage/measure.py --goose .toolchain/goose/build/goose --iterations 10 --runs 1 --output .build/storage-smoke",
+          "number": 15,
+          "startedAt": "2026-11-05T00:22:36Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:22:41Z",
+          "conclusion": "success",
+          "name": "Run python3 bench/zeroblob/measure.py --goose .toolchain/goose/build/goose --iterations 10 --runs 1 --output .build/zeroblob-smoke",
+          "number": 16,
+          "startedAt": "2026-11-05T00:22:39Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:22:41Z",
+          "conclusion": "success",
+          "name": "Run git diff --exit-code && git diff --check",
+          "number": 17,
+          "startedAt": "2026-11-05T00:22:41Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:22:42Z",
+          "conclusion": "success",
+          "name": "Post Run actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9",
+          "number": 33,
+          "startedAt": "2026-11-05T00:22:41Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:22:42Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "number": 34,
+          "startedAt": "2026-11-05T00:22:42Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:22:42Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 35,
+          "startedAt": "2026-11-05T00:22:42Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/carabistouflette/goose-sqlite/actions/runs/41939789987/job/126957342229"
+    },
+    {
+      "architecture_output": [
+        "aarch64",
+        "64",
+        "eadca409f68210893f366e60d0c2f0dc29a339be"
+      ],
+      "completedAt": "2026-11-05T00:21:23Z",
+      "conclusion": "success",
+      "databaseId": 126957342278,
+      "name": "test (ubuntu-24.04-arm)",
+      "result_excerpts": [
+        {
+          "step": "Run make check test",
+          "text": "sqlite zeroblob public tests passed"
+        },
+        {
+          "step": "Run make check test",
+          "text": "sqlite zeroblob public tests passed"
+        },
+        {
+          "step": "Run make check test",
+          "text": "sqlite standalone import passed (runner and native, isolated consumer/cache)"
+        },
+        {
+          "step": "Run make test-native CC=gcc",
+          "text": "sqlite BLOB materialization source=0 mode=0 failures=1"
+        },
+        {
+          "step": "Run make test-native CC=gcc",
+          "text": "sqlite BLOB materialization source=0 mode=1 failures=1"
+        },
+        {
+          "step": "Run make test-native CC=gcc",
+          "text": "sqlite BLOB materialization source=0 mode=2 failures=1"
+        },
+        {
+          "step": "Run make test-native CC=gcc",
+          "text": "sqlite BLOB materialization source=1 mode=0 failures=1"
+        },
+        {
+          "step": "Run make test-native CC=gcc",
+          "text": "sqlite BLOB materialization source=1 mode=1 failures=1"
+        },
+        {
+          "step": "Run make test-native CC=gcc",
+          "text": "sqlite BLOB materialization source=1 mode=2 failures=1"
+        },
+        {
+          "step": "Run make test-native CC=gcc",
+          "text": "{\"zeroblob_values_checked\":17,\"foreign_thread_checks\":2,\"reservation_bytes\":4096}"
+        },
+        {
+          "step": "Run make test-native CC=gcc",
+          "text": "Recovery passed: 2934 trials, 2804 fault/crash points, 76 unsupported WAL groups"
+        },
+        {
+          "step": "Run make test-native CC=clang",
+          "text": "sqlite BLOB materialization source=0 mode=0 failures=1"
+        },
+        {
+          "step": "Run make test-native CC=clang",
+          "text": "sqlite BLOB materialization source=0 mode=1 failures=1"
+        },
+        {
+          "step": "Run make test-native CC=clang",
+          "text": "sqlite BLOB materialization source=0 mode=2 failures=1"
+        },
+        {
+          "step": "Run make test-native CC=clang",
+          "text": "sqlite BLOB materialization source=1 mode=0 failures=1"
+        },
+        {
+          "step": "Run make test-native CC=clang",
+          "text": "sqlite BLOB materialization source=1 mode=1 failures=1"
+        },
+        {
+          "step": "Run make test-native CC=clang",
+          "text": "sqlite BLOB materialization source=1 mode=2 failures=1"
+        },
+        {
+          "step": "Run make test-native CC=clang",
+          "text": "{\"zeroblob_values_checked\":17,\"foreign_thread_checks\":2,\"reservation_bytes\":4096}"
+        },
+        {
+          "step": "Run make test-native CC=clang",
+          "text": "Recovery passed: 2934 trials, 2804 fault/crash points, 76 unsupported WAL groups"
+        },
+        {
+          "step": "Run python3 scripts/test-wal-engine.py",
+          "text": "{\"zeroblob_values_checked\":17,\"foreign_thread_checks\":2,\"reservation_bytes\":4096}"
+        },
+        {
+          "step": "Run python3 scripts/test-wal-engine.py",
+          "text": "sqlite BLOB materialization source=0 mode=0 failures=1"
+        },
+        {
+          "step": "Run python3 scripts/test-wal-engine.py",
+          "text": "sqlite BLOB materialization source=0 mode=1 failures=1"
+        },
+        {
+          "step": "Run python3 scripts/test-wal-engine.py",
+          "text": "sqlite BLOB materialization source=0 mode=2 failures=1"
+        },
+        {
+          "step": "Run python3 scripts/test-wal-engine.py",
+          "text": "sqlite BLOB materialization source=1 mode=0 failures=1"
+        },
+        {
+          "step": "Run python3 scripts/test-wal-engine.py",
+          "text": "sqlite BLOB materialization source=1 mode=1 failures=1"
+        },
+        {
+          "step": "Run python3 scripts/test-wal-engine.py",
+          "text": "sqlite BLOB materialization source=1 mode=2 failures=1"
+        },
+        {
+          "step": "Run python3 scripts/test-wal-engine.py",
+          "text": "Recovery passed: 4678 trials, 4552 fault/crash points, 0 unsupported WAL groups"
+        },
+        {
+          "step": "Run make fuzz-native FUZZ_RUNS=10000",
+          "text": "Done 10000 runs in 4 second(s)"
+        }
+      ],
+      "startedAt": "2026-11-05T00:14:08Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-05T00:14:09Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-05T00:14:08Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:14:10Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "number": 2,
+          "startedAt": "2026-11-05T00:14:09Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:14:12Z",
+          "conclusion": "success",
+          "name": "Run actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9",
+          "number": 3,
+          "startedAt": "2026-11-05T00:14:10Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:14:12Z",
+          "conclusion": "success",
+          "name": "Record and verify architecture",
+          "number": 4,
+          "startedAt": "2026-11-05T00:14:12Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:14:26Z",
+          "conclusion": "success",
+          "name": "Run sudo apt-get update && sudo apt-get install -y libsqlite3-dev pkg-config clang time",
+          "number": 5,
+          "startedAt": "2026-11-05T00:14:12Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:14:28Z",
+          "conclusion": "success",
+          "name": "Run make setup",
+          "number": 6,
+          "startedAt": "2026-11-05T00:14:26Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:14:34Z",
+          "conclusion": "success",
+          "name": "Run make check test",
+          "number": 7,
+          "startedAt": "2026-11-05T00:14:28Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:15:46Z",
+          "conclusion": "success",
+          "name": "Run make test-native CC=gcc",
+          "number": 8,
+          "startedAt": "2026-11-05T00:14:34Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:16:58Z",
+          "conclusion": "success",
+          "name": "Run make test-native CC=clang",
+          "number": 9,
+          "startedAt": "2026-11-05T00:15:46Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:20:43Z",
+          "conclusion": "success",
+          "name": "Run python3 scripts/test-wal-engine.py",
+          "number": 10,
+          "startedAt": "2026-11-05T00:16:58Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:20:49Z",
+          "conclusion": "success",
+          "name": "Run make fuzz-native FUZZ_RUNS=10000",
+          "number": 11,
+          "startedAt": "2026-11-05T00:20:43Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:20:51Z",
+          "conclusion": "success",
+          "name": "Run make bench BENCH_ITERATIONS=10",
+          "number": 12,
+          "startedAt": "2026-11-05T00:20:49Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:21:12Z",
+          "conclusion": "success",
+          "name": "Run /usr/bin/python3 bench/alternatives/measure.py --goose .toolchain/goose/build/goose --iterations 10 --runs 1 --output .build/alternative-smoke",
+          "number": 13,
+          "startedAt": "2026-11-05T00:20:51Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:21:16Z",
+          "conclusion": "success",
+          "name": "Run python3 bench/alternatives/paired.py --goose .toolchain/goose/build/goose --before-ref HEAD --after-ref HEAD --iterations 10 --runs 1 --output .build/paired-smoke",
+          "number": 14,
+          "startedAt": "2026-11-05T00:21:12Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:21:18Z",
+          "conclusion": "success",
+          "name": "Run python3 bench/storage/measure.py --goose .toolchain/goose/build/goose --iterations 10 --runs 1 --output .build/storage-smoke",
+          "number": 15,
+          "startedAt": "2026-11-05T00:21:16Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:21:20Z",
+          "conclusion": "success",
+          "name": "Run python3 bench/zeroblob/measure.py --goose .toolchain/goose/build/goose --iterations 10 --runs 1 --output .build/zeroblob-smoke",
+          "number": 16,
+          "startedAt": "2026-11-05T00:21:18Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:21:20Z",
+          "conclusion": "success",
+          "name": "Run git diff --exit-code && git diff --check",
+          "number": 17,
+          "startedAt": "2026-11-05T00:21:20Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:21:20Z",
+          "conclusion": "success",
+          "name": "Post Run actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9",
+          "number": 33,
+          "startedAt": "2026-11-05T00:21:20Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:21:20Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "number": 34,
+          "startedAt": "2026-11-05T00:21:20Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-05T00:21:20Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 35,
+          "startedAt": "2026-11-05T00:21:20Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/carabistouflette/goose-sqlite/actions/runs/41939789987/job/126957342278"
+    }
+  ],
+  "log_excerpt_note": "Result excerpts selected from downloaded GitHub job log; raw full log is not retained because it includes hosted-runner setup paths. Job/step conclusions below are the API response.",
+  "status": "completed",
+  "url": "https://github.com/carabistouflette/goose-sqlite/actions/runs/41939789987",
+  "workflow_sha256": "542780d168fc2157970d84cb686e73e8c8c10370232a34c91fcc233ac8e1d7fa"
+}
