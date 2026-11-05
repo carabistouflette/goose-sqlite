@@ -23,7 +23,6 @@ check:
 	"$(GOOSE)" check examples/transactions.goose
 	"$(GOOSE)" check examples/items.goose
 	"$(GOOSE)" check bench/filebacked/runner.goose
-	"$(GOOSE)" check bench/filebacked/runner.goose
 	"$(GOOSE)" check bench/storage/runner.goose
 	"$(GOOSE)" check bench/bench.goose
 	"$(GOOSE)" check bench/alternatives/runner.goose
@@ -75,10 +74,6 @@ bench:
 .PHONY: bench-alternatives
 bench-alternatives:
 	python3 bench/alternatives/measure.py --goose "$(GOOSE)" --iterations $(BENCH_ITERATIONS) --output .build/alternative-results
-
-.PHONY: bench-filebacked
-bench-filebacked:
-	env -u LD_LIBRARY_PATH -u LD_PRELOAD -u LD_AUDIT /usr/bin/python3 bench/filebacked/measure.py --goose "$(GOOSE)" --output .build/filebacked-results
 
 .PHONY: bench-filebacked
 bench-filebacked:

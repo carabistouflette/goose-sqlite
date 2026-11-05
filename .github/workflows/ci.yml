@@ -44,7 +44,6 @@ jobs:
       - run: python3 bench/alternatives/paired.py --goose .toolchain/goose/build/goose --before-ref HEAD --after-ref HEAD --iterations 10 --runs 1 --output .build/paired-smoke
       - run: python3 bench/storage/measure.py --goose .toolchain/goose/build/goose --iterations 10 --runs 1 --output .build/storage-smoke
       - run: env -u LD_LIBRARY_PATH -u LD_PRELOAD -u LD_AUDIT /usr/bin/python3 bench/filebacked/measure.py --goose .toolchain/goose/build/goose --transactions 2 --batch 2 --runs 1 --smoke --journals delete --output .build/filebacked-smoke
-      - run: env -u LD_LIBRARY_PATH -u LD_PRELOAD -u LD_AUDIT /usr/bin/python3 bench/filebacked/measure.py --goose .toolchain/goose/build/goose --transactions 2 --batch 2 --runs 1 --smoke --journals delete --output .build/filebacked-smoke
       - run: python3 bench/zeroblob/measure.py --goose .toolchain/goose/build/goose --iterations 10 --runs 1 --output .build/zeroblob-smoke
       - run: git diff --exit-code && git diff --check
   thread-sanitizer:
