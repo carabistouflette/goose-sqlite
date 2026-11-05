@@ -3,6 +3,8 @@ name = "sqlite-filebacked-bench"
 version = "0.1.0"
 edition = "2021"
 publish = false
+autobins = false
+default-run = "sqlite-filebacked-bench"
 [dependencies]
 rusqlite = { version = "=0.41.1", default-features = false }
 [profile.release]
@@ -10,3 +12,11 @@ opt-level = 2
 lto = "thin"
 codegen-units = 16
 incremental = true
+
+[[bin]]
+name = "sqlite-filebacked-bench"
+path = "src/main.rs"
+
+[[bin]]
+name = "sqlite-mixedwal-bench"
+path = "src/bin/mixedwal.rs"

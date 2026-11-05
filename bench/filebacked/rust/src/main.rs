@@ -1,58 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 use rusqlite::types::ValueRef;
-use rusqlite::{params, Connection, Error, ErrorCode, OpenFlags, Statement};
+use rusqlite::{params, Connection, Error, ErrorCode, Statement};
 use std::error::Error as StdError;
-use std::time::{Duration, Instant};
+use std::time::Instant;
 
-#[derive(Debug, PartialEq)]
-struct Policy {
-    journal: String,
-    synchronous: i64,
-    page: i64,
-    cache: i64,
-    autocheckpoint: i64,
-    foreign_keys: i64,
-    trusted_schema: i64,
-    locking: String,
-    busy_ms: i64,
-}
-
-fn open(path: &str) -> rusqlite::Result<(Connection, Policy)> {
-    let db = Connection::open_with_flags(
-        path,
-        OpenFlags::SQLITE_OPEN_READ_WRITE
-            | OpenFlags::SQLITE_OPEN_NO_MUTEX
-            | OpenFlags::SQLITE_OPEN_PRIVATE_CACHE,
-    )?;
-    db.busy_timeout(Duration::ZERO)?;
-    db.execute_batch(
-        "PRAGMA synchronous=FULL; PRAGMA cache_size=-2000; \
-         PRAGMA foreign_keys=ON; PRAGMA trusted_schema=OFF; \
-         PRAGMA locking_mode=NORMAL; PRAGMA wal_autocheckpoint=1000;",
-    )?;
-    let policy = Policy {
-        journal: db.query_row("PRAGMA journal_mode", [], |row| row.get(0))?,
-        synchronous: db.query_row("PRAGMA synchronous", [], |row| row.get(0))?,
-        page: db.query_row("PRAGMA page_size", [], |row| row.get(0))?,
-        cache: db.query_row("PRAGMA cache_size", [], |row| row.get(0))?,
-        autocheckpoint: db.query_row("PRAGMA wal_autocheckpoint", [], |row| row.get(0))?,
-        foreign_keys: db.query_row("PRAGMA foreign_keys", [], |row| row.get(0))?,
-        trusted_schema: db.query_row("PRAGMA trusted_schema", [], |row| row.get(0))?,
-        locking: db.query_row("PRAGMA locking_mode", [], |row| row.get(0))?,
-        busy_ms: db.query_row("PRAGMA busy_timeout", [], |row| row.get(0))?,
-    };
-    assert!(policy.journal == "delete" || policy.journal == "wal");
-    assert_eq!(policy.synchronous, 2);
-    assert_eq!(policy.page, 4096);
-    assert_eq!(policy.cache, -2000);
-    assert_eq!(policy.autocheckpoint, 1000);
-    assert_eq!(policy.foreign_keys, 1);
-    assert_eq!(policy.trusted_schema, 0);
-    assert_eq!(policy.locking, "normal");
-    assert_eq!(policy.busy_ms, 0);
-    assert!(db.is_autocommit());
-    Ok((db, policy))
-}
+mod paths;
+use paths::open;
 
 fn insert(statement: &mut Statement<'_>, id: i64, payload: &[u8]) -> rusqlite::Result<()> {
     assert_eq!(statement.execute(params![id, payload])?, 1);
