@@ -21,6 +21,10 @@ const CHECKPOINT_FULL:     i64 = 1;
 const CHECKPOINT_RESTART:  i64 = 2;
 const CHECKPOINT_TRUNCATE: i64 = 3;
 
+const TXN_NONE:  i64 = 0;
+const TXN_READ:  i64 = 1;
+const TXN_WRITE: i64 = 2;
+
 struct Database { token: u64 = 0 }
 struct Statement { token: u64 = 0 }
 struct Blob { token: u64 = 0 }
@@ -144,6 +148,9 @@ fn column_name(stmt: Statement, column: i64, out: u8[>..]&) -> i64 {
 }
 fn changes(db: Database) -> i64, i64 {
     var value: i64 = 0; let code = native_status(db.token, 0, value); return value, code;
+}
+fn transaction_state(db: Database) -> i64, i64 {
+    var value: i64 = 0; let code = native_status(db.token, 3, value); return value, code;
 }
 fn last_insert_rowid(db: Database) -> i64, i64 {
     var value: i64 = 0; let code = native_status(db.token, 1, value); return value, code;

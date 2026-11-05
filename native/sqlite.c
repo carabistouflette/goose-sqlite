@@ -474,6 +474,10 @@ int64_t gq_status(uint64_t token, int64_t kind, void *out) {
     if (kind == 0) value = sqlite3_changes64(d->ptr);
     else if (kind == 1) value = sqlite3_last_insert_rowid(d->ptr);
     else if (kind == 2) value = sqlite3_get_autocommit(d->ptr);
+    else if (kind == 3) {
+        value = sqlite3_txn_state(d->ptr, "main");
+        if (value < SQLITE_TXN_NONE || value > SQLITE_TXN_WRITE) return GQ_STATE;
+    }
     else return GQ_INPUT;
     memcpy(out, &value, sizeof value);
     return SQLITE_OK;

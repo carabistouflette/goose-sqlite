@@ -33,6 +33,7 @@ static void *foreign(void *p) {
     int64_t value = 17;
     assert(gq_stmt_status(tokens[1],SQLITE_STMTSTATUS_RUN,0,&value) == GQ_HANDLE && value == 0);
     assert(gq_status(tokens[0], 0, &value) == GQ_HANDLE && value == 0);
+    value=17; assert(gq_status(tokens[0], 3, &value) == GQ_HANDLE && value == 0);
     uint8_t bytes[8];
     assert(gq_name(tokens[1], 0, (gq_output){bytes, 8}, &value) == GQ_HANDLE && value == 0);
     uint64_t d = open_db(":memory:", 0, 0);
@@ -152,6 +153,19 @@ int main(void) {
     memcpy(&name_size, unaligned+1, 8); assert(name_size == 0);
     assert(gq_status(d, 2, unaligned+1) == SQLITE_OK);
     memcpy(&name_size, unaligned+1, 8); assert(name_size == 1);
+    assert(gq_status(d, 3, unaligned+1) == SQLITE_OK);
+    memcpy(&name_size, unaligned+1, 8); assert(name_size == SQLITE_TXN_NONE);
+    assert(exec(d, "BEGIN IMMEDIATE") == SQLITE_OK);
+    assert(gq_status(d, 3, unaligned+1) == SQLITE_OK);
+    memcpy(&name_size, unaligned+1, 8); assert(name_size == SQLITE_TXN_WRITE);
+    assert(exec(d, "ROLLBACK") == SQLITE_OK);
+    assert(gq_status(d, 3, NULL) == GQ_INPUT);
+    assert(gq_status(d, INT64_MAX, unaligned+1) == GQ_INPUT);
+    memcpy(&name_size, unaligned+1, 8); assert(name_size == 0);
+    assert(gq_status(0, 3, unaligned+1) == GQ_HANDLE);
+    memcpy(&name_size, unaligned+1, 8); assert(name_size == 0);
+    assert(gq_status(s, 3, unaligned+1) == GQ_HANDLE);
+    memcpy(&name_size, unaligned+1, 8); assert(name_size == 0);
     assert(gq_status(s, 0, unaligned+1) == GQ_HANDLE);
     memcpy(&name_size, unaligned+1, 8); assert(name_size == 0);
 

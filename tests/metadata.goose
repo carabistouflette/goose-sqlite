@@ -1,7 +1,85 @@
 // SPDX-License-Identifier: Apache-2.0
 import sqlite from "..";
 import std;
+fn state(db: sqlite::Database, expected: i64, automatic: bool) {
+    let actual, code = sqlite::transaction_state(db);
+    let auto_mode, auto_code = sqlite::autocommit(db);
+    assert(code == sqlite::OK && actual == expected);
+    assert(auto_code == sqlite::OK && auto_mode == automatic);
+}
+fn transaction_states() {
+    let options = sqlite::Options { .. };
+    let db, opened = sqlite::open(":memory:", options);
+    assert(opened == sqlite::OK);
+    state(db, sqlite::TXN_NONE, true);
+    assert(sqlite::execute(db, "CREATE TABLE t(id INTEGER PRIMARY KEY, payload)") == sqlite::OK);
+    assert(sqlite::execute(db, "INSERT INTO t VALUES(1,zeroblob(4)),(2,zeroblob(4))") == sqlite::OK);
+    let cursor, prepared = sqlite::prepare(db, "SELECT * FROM t ORDER BY id");
+    assert(prepared == sqlite::OK);
+    state(db, sqlite::TXN_NONE, true);
+    assert(sqlite::step(cursor) == sqlite::ROW);
+    state(db, sqlite::TXN_READ, true);
+    state(db, sqlite::TXN_READ, true); // Introspection neither steps nor resets.
+    let id, id_code = sqlite::column_integer(cursor, 0);
+    assert(id_code == sqlite::OK && id == 1);
+    assert(sqlite::reset(cursor) == sqlite::OK);
+    state(db, sqlite::TXN_NONE, true);
+    assert(sqlite::step(cursor) == sqlite::ROW && sqlite::step(cursor) == sqlite::ROW);
+    assert(sqlite::step(cursor) == sqlite::DONE);
+    state(db, sqlite::TXN_NONE, true);
+    assert(sqlite::finalize(cursor) == sqlite::OK);
+    assert(sqlite::execute(db, "BEGIN DEFERRED") == sqlite::OK);
+    state(db, sqlite::TXN_NONE, false);
+    let read, read_code = sqlite::prepare(db, "SELECT * FROM t ORDER BY id");
+    assert(read_code == sqlite::OK && sqlite::step(read) == sqlite::ROW);
+    assert(sqlite::finalize(read) == sqlite::OK);
+    state(db, sqlite::TXN_READ, false);
+    assert(sqlite::execute(db, "SAVEPOINT nested") == sqlite::OK);
+    assert(sqlite::execute(db, "UPDATE t SET payload=zeroblob(5)") == sqlite::OK);
+    state(db, sqlite::TXN_WRITE, false);
+    assert(sqlite::execute(db, "ROLLBACK TO nested") == sqlite::OK);
+    state(db, sqlite::TXN_WRITE, false);
+    assert(sqlite::execute(db, "RELEASE nested") == sqlite::OK);
+    assert(sqlite::execute(db, "COMMIT") == sqlite::OK);
+    state(db, sqlite::TXN_NONE, true);
+    assert(sqlite::execute(db, "BEGIN IMMEDIATE") == sqlite::OK);
+    state(db, sqlite::TXN_WRITE, false);
+    assert(sqlite::execute(db, "INSERT OR ROLLBACK INTO t VALUES(1,NULL)") > 0);
+    state(db, sqlite::TXN_NONE, true);
+    let blob, blob_code = sqlite::blob_open(db, "t", "payload", 1, false);
+    assert(blob_code == sqlite::OK);
+    state(db, sqlite::TXN_READ, true);
+    assert(sqlite::blob_close(blob) == sqlite::OK);
+    state(db, sqlite::TXN_NONE, true);
+    assert(sqlite::execute(db, "BEGIN") == sqlite::OK);
+    let writable, write_code = sqlite::blob_open(db, "t", "payload", 1, true);
+    assert(write_code == sqlite::OK);
+    state(db, sqlite::TXN_WRITE, false);
+    assert(sqlite::blob_close(writable) == sqlite::OK);
+    assert(sqlite::execute(db, "ROLLBACK") == sqlite::OK);
+    state(db, sqlite::TXN_NONE, true);
+    assert(sqlite::execute(db, "BEGIN") == sqlite::OK);
+    let pending, pending_code = sqlite::prepare(db, "SELECT * FROM t ORDER BY id");
+    assert(pending_code == sqlite::OK && sqlite::step(pending) == sqlite::ROW);
+    assert(sqlite::execute(db, "COMMIT") == sqlite::OK);
+    state(db, sqlite::TXN_READ, true); // A pending cursor can outlive COMMIT.
+    assert(sqlite::finalize(pending) == sqlite::OK);
+    state(db, sqlite::TXN_NONE, true);
+    // TEMP activity is outside the main-schema state.
+    assert(sqlite::execute(db, "CREATE TEMP TABLE scratch(x)") == sqlite::OK);
+    assert(sqlite::execute(db, "BEGIN") == sqlite::OK);
+    assert(sqlite::execute(db, "INSERT INTO scratch VALUES(1)") == sqlite::OK);
+    state(db, sqlite::TXN_NONE, false);
+    assert(sqlite::execute(db, "ROLLBACK") == sqlite::OK);
+    assert(sqlite::close(db) == sqlite::OK);
+    let missing, missing_code = sqlite::transaction_state(db);
+    assert(missing == 0 && missing_code == sqlite::INVALID_HANDLE);
+    let empty = sqlite::Database { .. };
+    let invalid, invalid_code = sqlite::transaction_state(empty);
+    assert(invalid == 0 && invalid_code == sqlite::INVALID_HANDLE);
+}
 fn main() {
+    transaction_states();
     let options = sqlite::Options { .. };
     let db, code = sqlite::open(":memory:", options);
     assert(code == sqlite::OK);

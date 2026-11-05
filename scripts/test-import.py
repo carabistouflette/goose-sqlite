@@ -30,6 +30,8 @@ fn main() {
     let options = sqlite::Options { .. };
     let db, opened = sqlite::open(":memory:", options);
     assert(opened == sqlite::OK);
+    let state, state_code = sqlite::transaction_state(db);
+    assert(state_code == sqlite::OK && state == sqlite::TXN_NONE);
     let log, checkpointed, checkpoint_code = sqlite::checkpoint(db, sqlite::CHECKPOINT_PASSIVE);
     assert((checkpoint_code == sqlite::OK || checkpoint_code == 21) && log == -1 && checkpointed == -1);
     let stmt, prepared = sqlite::prepare(db, "SELECT :number AS id, :label AS label");

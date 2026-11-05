@@ -196,6 +196,22 @@ Check it after errors: ordinary constraint failures can leave an explicit
 transaction active, whereas INSERT OR ROLLBACK can end it. Scalar outputs are
 zero/false on invalid handles; always check the accompanying status.
 
+`transaction_state(db) -> state,code` reports the current **main-schema** state:
+`TXN_NONE` (0), `TXN_READ` (1), or `TXN_WRITE` (2). It neither steps/resets
+statements nor changes engine state. TEMP and other connections are outside its
+scope. Invalid handles return zero plus INVALID_HANDLE; zero is also a valid
+state, so always inspect the code. An unexpected engine state fails closed.
+
+Autocommit and transaction state answer different questions. BEGIN DEFERRED can
+have autocommit disabled with TXN_NONE before accessing main. A live implicit
+read cursor or read BLOB can have autocommit enabled with TXN_READ. Reset/finalize
+releases an implicit cursor's snapshot when no other resource retains it. Pending
+cursors can outlive COMMIT, so transaction completion alone does not guarantee
+TXN_NONE. ROLLBACK TO does not end the outer write transaction. Recheck after
+errors instead of caching state. This instantaneous observation is not a lock,
+reservation, snapshot age, contention indicator or guarantee checkpoint/commit
+will succeed. See [SQLite's contract](https://sqlite.org/c3ref/txn_state.html).
+
 Explicit transactions and savepoints need no additional execution interface:
 `execute(db,"BEGIN IMMEDIATE")`, `execute(db,"SAVEPOINT fixed_name")`,
 `execute(db,"ROLLBACK TO fixed_name")`, `execute(db,"RELEASE fixed_name")` and
