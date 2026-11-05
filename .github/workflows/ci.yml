@@ -35,6 +35,7 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y libsqlite3-dev pkg-config clang time
       - run: make setup
       - run: make check test
+      - run: python3 bench/mixedwal/test_protocol.py
       - run: make test-native CC=gcc
       - run: make test-native CC=clang
       - run: python3 scripts/test-wal-engine.py

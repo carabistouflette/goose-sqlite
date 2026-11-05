@@ -444,3 +444,9 @@ all-BUSY commit-floor behavior were separately checked. Shared-host/incidental
 build and coupled same-filesystem logging costs remain disclosed. Runtime/native/
 manifest/CMake/compiler-pin bytes remain unchanged from 8a1d0d7. The unresolved
 cold-engine TSan and serialized-engine-initialization scope remain unchanged.
+
+A final finite fault probe found that a broken actor's full stdin pipe could block
+the recorder command flush outside its deadline checks. Actor command pipes are
+now nonblocking; a real filled-pipe probe verified immediate backpressure failure,
+owned-child termination and closure of every stream. This recorder-only correction
+postdates the principal source and changes no production code or retained timing.

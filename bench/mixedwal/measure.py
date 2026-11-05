@@ -144,6 +144,8 @@ class Pair:
                                            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                            start_new_session=True)
                 self.children[role] = process
+                # A broken actor must not block command writes past the pair deadline.
+                os.set_blocking(process.stdin.fileno(), False)
                 for kind, pipe in (('stdout', process.stdout), ('stderr', process.stderr)):
                     target = (directory / (role + '-' + kind + '.txt')).open('wb')
                     self.streams.append(target)

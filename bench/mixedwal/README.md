@@ -141,3 +141,7 @@ principal matrix, full-parameter qualification, positive-WAL CI-engine smoke, an
 an explicitly incomplete development smoke. Containers preserve original member
 bytes with SHA256 manifests. `summarize.py` derives per-orientation summaries and
 archives into a new directory; `report.py RESULTS` generates its standalone chart.
+
+Actor stdin pipes are nonblocking. A broken worker that stops consuming commands
+cannot hold the parent inside a blocking flush beyond its deadline; pipe
+backpressure fails the pair and owned-group cleanup preserves diagnostics.

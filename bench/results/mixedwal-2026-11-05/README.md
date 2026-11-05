@@ -183,3 +183,9 @@ wrong policy/engine/epoch/payload/protocol, cap/deadline exhaustion and unexpect
 SQLite errors. [CONTRACT](../../mixedwal/CONTRACT.md) and
 [methodology](../../mixedwal/README.md) define finite bounds and metric scope.
 
+
+A recorder-only follow-up makes actor command pipes nonblocking after a finite
+fault probe demonstrated a full broken-worker stdin pipe could block its parent
+beyond the deadline. A real filled-pipe probe verifies immediate failure and full
+owned-group/stream cleanup. This correction postdates measured source 8133274; it
+does not rewrite these completed original records or change production code.
