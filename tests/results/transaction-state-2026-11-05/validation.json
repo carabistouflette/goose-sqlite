@@ -1,0 +1,109 @@
+{
+  "source_commit": "746f07c12ab540b5d66fb0528fda0cb1ea4915e3",
+  "scope": "Local correctness checks; no performance measurement.",
+  "source_hashes": {
+    "native/sqlite.c": "5b56fc40331eae3800bc0f5fd67394732bb1b61921b89148e8be60c5a4bb4c6d",
+    "native/sqlite.h": "03909542e92caa91debde45bc4d1945a76fff34f342a77ceb2b1b689c8270874",
+    "sqlite.goose": "cd25bf213c49b896e5878fd86a7102097b27b84a1e1fec880e33519b4a264ca7",
+    "sqlite.build": "53a29f4aa6038def97b10f669e82bf7d21c25f2dfc43cb43820090a3f2f2de3a",
+    "tests/native.c": "0079a4c9e013c96f5cbfc596e1be8b2f0078fcc859b691331560cb54c49e5bab",
+    "tests/metadata.goose": "0dfcdccd66904dca8f70b6e699bead1729cda343efa562e9f8cbf75d4223d0fd",
+    "scripts/test-import.py": "53f412c3f4813badd8a7c770e16841bd717f6d3d3fd8f6445173e56aed6c8067",
+    "GOOSE_REVISION": "64e14b181dfe96743211738fb0f1b1f7798ea940da2ca50ff122e6f028c24e15"
+  },
+  "checks": {
+    "public": {
+      "exit_status": 0,
+      "original_log_sha256": "5f53c693f91ecde00866d7fd2df7e8e24bc36581b466d932eafd92f1ba77c6fb",
+      "completion_excerpts": [
+        "sqlite public API tests passed",
+        "sqlite statement diagnostics passed",
+        "sqlite storage tests passed",
+        "sqlite zeroblob public tests passed",
+        "sqlite metadata/status tests passed",
+        "sqlite public API tests passed",
+        "sqlite metadata/status tests passed",
+        "sqlite storage tests passed",
+        "sqlite zeroblob public tests passed",
+        "sqlite statement diagnostics passed",
+        "sqlite file API tests passed",
+        "sqlite file API tests passed",
+        "sqlite checkpoint public tests passed",
+        "sqlite checkpoint public tests passed",
+        "sqlite transaction recovery example passed",
+        "sqlite transaction recovery example passed",
+        "sqlite standalone import passed (runner and native, isolated consumer/cache)"
+      ],
+      "note": "Observed successful completion. Original build log not included; excerpts omit paths."
+    },
+    "gcc": {
+      "exit_status": 0,
+      "original_log_sha256": "54c2c809675d294a417db5e667b2f257165dc335461fb7c6c5910f7d52ffea4d",
+      "completion_excerpts": [
+        "sqlite native tests passed"
+      ],
+      "note": "Observed successful completion. Original build log not included; excerpts omit paths."
+    },
+    "clang": {
+      "exit_status": 0,
+      "original_log_sha256": "54c2c809675d294a417db5e667b2f257165dc335461fb7c6c5910f7d52ffea4d",
+      "completion_excerpts": [
+        "sqlite native tests passed"
+      ],
+      "note": "Observed successful completion. Original build log not included; excerpts omit paths."
+    },
+    "min-native": {
+      "exit_status": 0,
+      "original_log_sha256": "54c2c809675d294a417db5e667b2f257165dc335461fb7c6c5910f7d52ffea4d",
+      "completion_excerpts": [
+        "sqlite native tests passed"
+      ],
+      "note": "Observed successful completion. Original build log not included; excerpts omit paths."
+    },
+    "min-public": {
+      "exit_status": 0,
+      "original_log_sha256": "a7d2f8ab7dac735900e522815de73e947899270e54032d28dbfddeb4947dab14",
+      "completion_excerpts": [
+        "sqlite metadata/status tests passed"
+      ],
+      "note": "Observed successful completion. Original build log not included; excerpts omit paths."
+    },
+    "min-compiled": {
+      "exit_status": 0,
+      "original_log_sha256": "1550353964da2b9733e0f901e78b8a9a53d3e0c3a030385370cbf9f5e694b580",
+      "completion_excerpts": [
+        "sqlite metadata/status tests passed"
+      ],
+      "note": "Observed successful completion. Original build log not included; excerpts omit paths."
+    },
+    "anonymous": {
+      "exit_status": 0,
+      "original_log_sha256": "1cbf795cf52722ef1305488eb6b7435d42d707315a8f605813f6212e114c3a3b",
+      "completion_excerpts": [
+        "sqlite standalone import passed (runner and native, isolated consumer/cache)"
+      ],
+      "note": "Observed successful completion. Original build log not included; excerpts omit paths."
+    }
+  },
+  "compiler_versions": {
+    "gcc": "gcc (GCC) 16.2.1 20260810",
+    "clang": "clang version 23.1.4"
+  },
+  "goose_revision": "eadca409f68210893f366e60d0c2f0dc29a339be",
+  "binaries": {
+    "gcc": "e4b84ab87fc7917f45a111f27d32bfdd8c6b649eec5b44a45a8e123e456acce2",
+    "clang": "e2b405706ae4a0d380690ac5bb60b5a2fb618de43c2413b5a51a2cdd0dbbec7b",
+    "minimum": "23b07cd54e8a533cd5500f22c73b14734ba8988e09e559a358ea0ac7630de945",
+    "minimum-public": "4d0ce4cb1e440700ffb2772e65d5ba1719dad2708d062a7451e651ba43e9917a"
+  },
+  "engine_libraries": {
+    "host": {
+      "file": "libsqlite3.so.3.54.1",
+      "sha256": "99ad85c87b9c2a461a670a1db545ca17b29d9208fe4e2887a5ff6942f2c2e61a"
+    },
+    "minimum": {
+      "file": "libsqlite3.so.0",
+      "sha256": "1378156fc837ae07b178373e14e37b7620795c7262fc0ed18dff22b980397d4b"
+    }
+  }
+}

@@ -399,3 +399,12 @@ Goose/raw-C copied, zero-binding and SQL controls on one loaded engine. Timings
 are mixed. Both zero APIs avoid payload allocation at binding time, while later
 materialization can allocate the contents. Earlier Python/Rust/C++ comparisons
 retain their original source/version scope.
+
+## Main-schema transaction state
+
+`transaction_state` exposes checked NONE/READ/WRITE observation alongside
+autocommit. This explains live implicit read snapshots relevant to existing
+checkpoint/backup restrictions. It covers main only, neither acquires nor
+releases transactions, and cannot predict external contention or checkpoint
+success. See [the API contract](api.md) and [validation](../tests/results/transaction-state-2026-11-05/README.md).
+This convenience adds no query-engine speedup or complete parity claim.

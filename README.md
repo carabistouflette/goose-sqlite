@@ -57,7 +57,7 @@ fn main() {
 ```
 
 Declare the package in your program's root file. A reviewed Git dependency can use
-`import sqlite from "carabistouflette/goose-sqlite@ead19309bef4394ffc041f079d50e2a8d78b7388";`.
+`import sqlite from "carabistouflette/goose-sqlite@746f07c12ab540b5d66fb0528fda0cb1ea4915e3";`.
 This pins the reviewed zero-filled BLOB, startup, checkpoint, metadata/status,
 storage and statement-diagnostics interface. Imports and namespace are `sqlite`.
 Applications must handle errors and clean up resources on their own error paths;
@@ -128,3 +128,8 @@ existing SQL function and reports mixed timings: both zero APIs avoid payload
 allocation at binding time. Materialization can still allocate or fail.
 The [correctness follow-up](tests/results/zeroblob-2026-11-05/README.md) fixes
 materialization OOM being mistaken for an empty BLOB and retains regression evidence.
+
+`transaction_state` reports the main database's NONE/READ/WRITE state, separately
+from autocommit. Live cursors can retain snapshots even after COMMIT. See the
+[contract](docs/api.md) and [validation](tests/results/transaction-state-2026-11-05/README.md).
+This is observation, not a checkpoint-success or performance guarantee.
