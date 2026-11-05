@@ -22,6 +22,8 @@ check:
 	"$(GOOSE)" check tests/zeroblob.goose
 	"$(GOOSE)" check examples/transactions.goose
 	"$(GOOSE)" check examples/items.goose
+	"$(GOOSE)" check bench/filebacked/runner.goose
+	"$(GOOSE)" check bench/filebacked/runner.goose
 	"$(GOOSE)" check bench/storage/runner.goose
 	"$(GOOSE)" check bench/bench.goose
 	"$(GOOSE)" check bench/alternatives/runner.goose
@@ -73,3 +75,11 @@ bench:
 .PHONY: bench-alternatives
 bench-alternatives:
 	python3 bench/alternatives/measure.py --goose "$(GOOSE)" --iterations $(BENCH_ITERATIONS) --output .build/alternative-results
+
+.PHONY: bench-filebacked
+bench-filebacked:
+	/usr/bin/python3 bench/filebacked/measure.py --goose "$(GOOSE)" --output .build/filebacked-results
+
+.PHONY: bench-filebacked
+bench-filebacked:
+	/usr/bin/python3 bench/filebacked/measure.py --goose "$(GOOSE)" --output .build/filebacked-results
