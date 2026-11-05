@@ -99,7 +99,7 @@ fn column_bytes(stmt: Statement, column: i64, kind: i64, out: u8[>..]&) -> i64 {
     }
     if code != OK { out.clear(); return code; }
     if size < 0 || size > available { out.clear(); return LIMIT; }
-    out.resize(size);
+    if size != out.len { out.resize(size); }
     return OK;
 }
 fn column_text(stmt: Statement, column: i64, out: u8[>..]&) -> i64 { return column_bytes(stmt, column, TEXT, out); }
