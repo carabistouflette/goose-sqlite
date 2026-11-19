@@ -4,13 +4,16 @@ PUBLIC_TEST_DIR ?= .build
 FUZZ_CC ?= clang
 FUZZ_RUNS ?= 10000
 BENCH_ITERATIONS ?= 10000
-.PHONY: setup format check test test-import test-native fuzz-native bench
+SANITIZER_CC ?= gcc
+.PHONY: setup format check test test-import test-native fuzz-native sanitize bench
 setup:
 	./scripts/setup-goose.sh
 format:
 	python3 scripts/native-manifest.py
 	"$(GOOSE)" format sqlite.goose examples tests bench
 check:
+	python3 -m py_compile scripts/sanitize.py scripts/sanitize-control.py
+	python3 tests/sanitize_driver.py
 	python3 scripts/native-manifest.py --check
 	"$(GOOSE)" format --check sqlite.goose examples tests bench
 	"$(GOOSE)" check tests/api.goose
@@ -69,6 +72,8 @@ fuzz-native:
 	mkdir -p .build/corpus .build/artifacts
 	cp tests/corpus/* .build/corpus/
 	UBSAN_OPTIONS=halt_on_error=1 .build/fuzz/goose_sqlite_fuzz .build/corpus -artifact_prefix=.build/artifacts/ -dict=tests/fuzz.dict -seed=219 -max_len=4096 -runs=$(FUZZ_RUNS)
+sanitize:
+	python3 scripts/sanitize.py --goose "$(abspath $(GOOSE))" --cc "$(SANITIZER_CC)"
 bench:
 	python3 bench/measure.py --goose "$(GOOSE)" --iterations $(BENCH_ITERATIONS) --output .build/bench-results
 
