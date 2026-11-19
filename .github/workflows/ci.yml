@@ -54,3 +54,17 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - run: sudo apt-get update && sudo apt-get install -y libsqlite3-dev clang cmake
       - run: python3 scripts/test-wal-engine.py --sanitizer thread
+  generated-sanitizers:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: .toolchain
+          key: goose-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('GOOSE_REVISION', 'scripts/setup-goose.sh') }}
+      - run: sudo apt-get update && sudo apt-get install -y libsqlite3-dev pkg-config clang
+      - run: make setup
+      - run: make sanitize SANITIZER_CC=gcc
+      - run: make sanitize SANITIZER_CC=clang

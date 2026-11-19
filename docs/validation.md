@@ -23,6 +23,37 @@ ThreadSanitizer. The workflows use the compiler pinned in
   [recovery tests](../tests/RECOVERY.md) and
   [concurrency tests](../tests/CONCURRENCY.md) for the detailed test contracts.
 
+## Generated-path sanitizers
+
+`make sanitize SANITIZER_CC=gcc` and `make sanitize SANITIZER_CC=clang` build
+the public API regressions with `scripts/sanitizer-cc.sh` as Goose's `--cc`, so
+the generated program, the Goose runtime and the package's native adapter are
+all compiled with `-fsanitize=address,undefined` and run with
+`ASAN_OPTIONS=detect_leaks=1 UBSAN_OPTIONS=halt_on_error=1`. `--standalone`
+keeps the runtime in the same build rather than reusing a cached object.
+
+What each layer covers in that path:
+
+| Layer | Instrumented by `make sanitize` |
+| --- | --- |
+| Generated Goose program | yes |
+| Goose runtime | yes |
+| Native adapter (`native/sqlite.c`) | yes |
+| SQLite linked dynamically from the system | **no** |
+
+The last row is the documented limit of
+[`docs/results/audit-2026-11-04.json`](results/audit-2026-11-04.json): the
+system `libsqlite3` is not built with these flags. The pinned-engine workflow
+covers SQLite compiled from source separately.
+
+The target also runs a negative control, `tests/sanitize_fault.goose`. It reads
+past a 16-byte heap buffer through `ffi::bytes`, which trusts the pointer and
+length it is given, so no Goose bounds check stands between the fault and the
+sanitizer. `scripts/sanitize-control.py` fails the target unless the run aborts
+with `AddressSanitizer: heap-buffer-overflow`. The control is sensitive: the
+same fault exits 0 silently when the same program is built without the
+sanitizer flags.
+
 ## ThreadSanitizer limitation
 
 The maintained TSan test initializes SQLite on one thread before starting its

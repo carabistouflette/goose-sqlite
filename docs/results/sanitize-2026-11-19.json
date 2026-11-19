@@ -1,0 +1,109 @@
+{
+  "record": "generated-path sanitizer coverage for goose-sqlite",
+  "date": "2026-11-19",
+  "scope": "make sanitize: generated Goose program, Goose runtime and native adapter under ASan/UBSan, with a sensitive negative control",
+  "base": {
+    "repository": "https://github.com/carabistouflette/goose-sqlite",
+    "public_main": "d45a15160d09fea0af44fdea7eb5ce7e6c663a81",
+    "branch": "quality/generated-sanitizers-20261119",
+    "branch_point": "d45a15160d09fea0af44fdea7eb5ce7e6c663a81"
+  },
+  "toolchain": {
+    "goose_revision": "eadca409f68210893f366e60d0c2f0dc29a339be",
+    "goose_binary": "/home/arobin/Work/Projects/goose-libs/libraries/goose-toml/.toolchain/goose/build/goose",
+    "goose_binary_sha256": "3cad45a18356bf97f4732f1da2012252afd77a652932ddb9c91c5551c04904be",
+    "goose_version": "goose eadca40 (runtime 3025e5810379)",
+    "gcc": "gcc (GCC) 16.2.1 20260810",
+    "clang": "clang version 23.1.4",
+    "sqlite_linked": "3.54.1 (system, dynamically linked)"
+  },
+  "sources": {
+    "scripts/sanitizer-cc.sh": "6a67b47eec420d5a782b42970dac21705da9883472b0a6c1e3eeb4fa7e03e928",
+    "scripts/sanitize-control.py": "039f1c1a62c32d4e6b2bb1be899390cfd97a7b0a3bfbf4b5c6389a73b962c8a7",
+    "tests/sanitize_fault.c": "8bab4842f9265eafb8fa8d3954a14273dd08cc6822fc804c8cf8fbcd23b4f24e",
+    "tests/sanitize_fault.goose": "7996df690a5854889406f4ba41431e8496dafba56e185d4db4d88d3e32b893f0",
+    "tests/sanitize_fault-cc.sh": "8728e3d0fe05eea8bcef3b0068a516ac037466be5c1e1249739cb7b3c63bb07e"
+  },
+  "coverage": {
+    "generated_goose_program": "instrumented",
+    "goose_runtime": "instrumented",
+    "native_adapter": "instrumented",
+    "sqlite_linked_dynamically": "NOT instrumented (system library; documented limit of docs/results/audit-2026-11-04.json)"
+  },
+  "positive_runs": [
+    {
+      "compiler": "gcc",
+      "command": "make sanitize SANITIZER_CC=gcc",
+      "exit": 0,
+      "tests": {
+        "tests/api.goose": "sqlite public API tests passed",
+        "tests/storage.goose": "sqlite storage tests passed",
+        "tests/diagnostics.goose": "sqlite statement diagnostics passed",
+        "tests/metadata.goose": "sqlite metadata/status tests passed",
+        "tests/zeroblob.goose": "sqlite zeroblob public tests passed"
+      }
+    },
+    {
+      "compiler": "clang",
+      "command": "make sanitize SANITIZER_CC=clang",
+      "exit": 0,
+      "tests": {
+        "tests/api.goose": "sqlite public API tests passed",
+        "tests/storage.goose": "sqlite storage tests passed",
+        "tests/diagnostics.goose": "sqlite statement diagnostics passed",
+        "tests/metadata.goose": "sqlite metadata/status tests passed",
+        "tests/zeroblob.goose": "sqlite zeroblob public tests passed"
+      }
+    }
+  ],
+  "instrumentation_evidence": {
+    "generated_translation_unit": {
+      "source": "/home/arobin/.goose/build/prog/api-d0f7e187/api.c",
+      "with_wrapper": {"__asan": 18, "__ubsan": 7},
+      "without_wrapper": {"__asan": 0, "__ubsan": 0},
+      "method": "compile the generated C to an object with scripts/sanitizer-cc.sh -c, then nm | grep -c"
+    },
+    "sanitize_binaries": {
+      "gcc": {"api": {"__asan": 23, "__ubsan": 7}, "storage": {"__asan": 23, "__ubsan": 7}, "diagnostics": {"__asan": 24, "__ubsan": 7}, "metadata": {"__asan": 25, "__ubsan": 7}, "zeroblob": {"__asan": 24, "__ubsan": 7}, "sanitize-fault": {"__asan": 14, "__ubsan": 7}},
+      "clang": {"api": {"__asan": 719, "__ubsan": 107}, "storage": {"__asan": 719, "__ubsan": 107}, "diagnostics": {"__asan": 719, "__ubsan": 107}, "metadata": {"__asan": 719, "__ubsan": 107}, "zeroblob": {"__asan": 719, "__ubsan": 107}, "sanitize-fault": {"__asan": 719, "__ubsan": 107}},
+      "note": "clang statically links its ASan/UBSan runtime, so its symbol counts are much higher than gcc's dynamic libasan.so.8/libubsan.so.1"
+    },
+    "native_adapter_library": {
+      "gcc_sanitized": {"path": "/home/arobin/.goose/build/pkg/local/a5d30426/gcc-20260810-20781b4e/cmake/pkg/libgoose_sqlite_native.a", "__asan": 21},
+      "clang_sanitized": {"path": "/home/arobin/.goose/build/pkg/local/a5d30426/clang-23.1.4-20781b4e/cmake/pkg/libgoose_sqlite_native.a", "__asan": 40},
+      "plain_build": {"path": "/home/arobin/.goose/build/pkg/local/a5d30426/gcc-20260810-9d5f2359/cmake/pkg/libgoose_sqlite_native.a", "__asan": 0},
+      "note": "distinct cache keys per compiler wrapper, so no stale non-sanitized native library is reused"
+    }
+  },
+  "negative_control": {
+    "program": "tests/sanitize_fault.goose",
+    "fault": "ffi::bytes reads 64 bytes from a 16-byte heap buffer; ffi trusts the pointer and length, so no Goose bounds check intervenes",
+    "gcc": {"exit": 1, "report": "AddressSanitizer: heap-buffer-overflow", "stack": "main_g -> gs_ffi_bytes -> gs_bld_append in the generated sanitize_fault.c"},
+    "clang": {"exit": 1, "report": "AddressSanitizer: heap-buffer-overflow", "stack": "main_g -> gs_ffi_bytes -> gs_bld_append in the generated sanitize_fault.c"},
+    "gate": "scripts/sanitize-control.py fails make sanitize unless the run aborts with AddressSanitizer: heap-buffer-overflow"
+  },
+  "sensitivity_control": {
+    "purpose": "prove the control is sensitive: the same fault must be silent without instrumentation",
+    "uninstrumented_build": "goose build tests/sanitize_fault.goose --cc <plain wrapper linking tests/sanitize_fault.c> --standalone",
+    "uninstrumented_exit": 0,
+    "uninstrumented_output": "",
+    "uninstrumented_asan_symbols": 0,
+    "conclusion": "instrumented run aborts, uninstrumented run is silent, so the control detects the instrumentation rather than a crash that would happen anyway"
+  },
+  "existing_targets": {
+    "make check": {"exit": 0, "note": "includes goose format --check over tests, which covers tests/sanitize_fault.goose"},
+    "make test": {"exit": 0},
+    "make test-native CC=gcc": {"exit": 0, "note": "run in two bounded invocations because the recovery step alone takes about 277s"},
+    "make test-native CC=clang": {"exit": 0, "note": "run in two bounded invocations for the same reason"},
+    "make fuzz-native FUZZ_RUNS=10000": {"exit": 0, "note": "Done 10000 runs in 5 second(s)"},
+    "scripts/test-wal-engine.py": {"exit": 0, "note": "pinned instrumented SQLite engine; unchanged by this work"},
+    "git diff --check": {"exit": 0}
+  },
+  "limitations": [
+    "The dynamically linked system SQLite 3.54.1 is not instrumented; only the adapter, runtime and generated program are.",
+    "The negative control injects its fault through ffi::bytes, which is documented to trust the caller's pointer and length. It proves the generated translation unit is instrumented and sensitive; it is not a claim that the public sqlite API has a memory bug.",
+    "Goose's own bounds, overflow and division checks stop most natural faults before the sanitizer sees them, which is why the control uses an unchecked ffi path rather than an out-of-range Goose index.",
+    "The scoped ThreadSanitizer cold-start limitation in docs/validation.md is unchanged and not addressed here.",
+    "Local shared-host results are not CI thresholds, universal rankings or a SOTA claim."
+  ]
+}
