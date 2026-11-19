@@ -8,7 +8,8 @@ connection or automatic statement retry.
 Use a focused branch and one Conventional Commit per coherent change. Keep
 generated files, private notes, credentials and local paths out of public commits.
 Behavior changes need regression tests. Run make format, make check test, native
-GCC/Clang sanitizer checks, and git diff --check when they apply. Update the native
+GCC/Clang sanitizer checks, `make sanitize SANITIZER_CC=gcc` and the same
+with clang for generated public paths, and git diff --check when they apply. Update the native
 manifest with make format.
 
 For compiler changes, review the full Goose commit in GOOSE_REVISION and run the

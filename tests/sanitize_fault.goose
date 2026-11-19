@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-// Negative control for `make sanitize`. ffi::bytes trusts the pointer and
-// length it is given, so this reads 64 bytes from a 16-byte heap buffer with
-// no Goose bounds check in the way: only the sanitizer can stop it. The
-// control is sensitive because the same fault is silent without ASan.
+// Runtime sensitivity control: the invalid FFI copy must be caught by ASan.
+// This alone can fire through an interceptor in a link-only build, so the
+// sanitize gate separately verifies instrumentation of the generated object.
 import ffi;
 
 extern fn undersized_buffer() -> u64 = "gs_test_undersized_buffer";

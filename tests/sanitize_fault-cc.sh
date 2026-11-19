@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: Apache-2.0
+# Historical runtime-only compiler wrapper (not the current generated-object gate).
 # The --cc for the negative control: the sanitizer flags of
 # scripts/sanitizer-cc.sh plus the fixture that hands the generated program an
 # undersized heap buffer.

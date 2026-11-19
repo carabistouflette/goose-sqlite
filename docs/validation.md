@@ -5,8 +5,8 @@ This page summarizes the test scope for runtime commit
 the public main revision reviewed for this documentation. A passing test suite
 does not prove the absence of bugs.
 
-The exact-head [CI run 42084238303](https://github.com/carabistouflette/goose-sqlite/actions/runs/42084238303)
-passed all three jobs: Linux x86-64, native Linux ARM64 and scoped
+The historical exact-head [CI run 42084238303](https://github.com/carabistouflette/goose-sqlite/actions/runs/42084238303)
+passed its then-existing three jobs: Linux x86-64, native Linux ARM64 and scoped
 ThreadSanitizer. The workflows use the compiler pinned in
 [GOOSE_REVISION](../GOOSE_REVISION).
 
@@ -25,34 +25,44 @@ ThreadSanitizer. The workflows use the compiler pinned in
 
 ## Generated-path sanitizers
 
-`make sanitize SANITIZER_CC=gcc` and `make sanitize SANITIZER_CC=clang` build
-the public API regressions with `scripts/sanitizer-cc.sh` as Goose's `--cc`, so
-the generated program, the Goose runtime and the package's native adapter are
-all compiled with `-fsanitize=address,undefined` and run with
-`ASAN_OPTIONS=detect_leaks=1 UBSAN_OPTIONS=halt_on_error=1`. `--standalone`
-keeps the runtime in the same build rather than reusing a cached object.
+`make sanitize SANITIZER_CC=gcc` and `make sanitize SANITIZER_CC=clang` run
+all seven public test programs through `scripts/sanitize.py`. File/checkpoint
+programs receive isolated database paths. Exact completion markers and empty
+stderr are required, rather than exit status alone. Tests are self-contained;
+this is not a rerun of the long native recovery or engine matrices.
 
-What each layer covers in that path:
+The compiler wrapper adds ASan/UBSan, `-O1 -g`, and `-UNDEBUG` after CMake's
+Release flags. The sanitizer-only profile links **non-PIE** (`-no-pie`), retaining
+the observed GCC16 libubsan/PIE linkage workaround; production builds are
+unaffected. `--standalone` includes the Goose runtime in the compiled program.
 
-| Layer | Instrumented by `make sanitize` |
+| Layer | Coverage in this path |
 | --- | --- |
-| Generated Goose program | yes |
-| Goose runtime | yes |
-| Native adapter (`native/sqlite.c`) | yes |
-| SQLite linked dynamically from the system | **no** |
+| Generated Goose program and runtime | instrumented, seven public programs run |
+| Native adapter | compiled through the sanitizer wrapper; native asserts enabled |
+| Dynamically linked system SQLite | **not instrumented** |
 
-The last row is the documented limit of
-[`docs/results/audit-2026-11-04.json`](results/audit-2026-11-04.json): the
-system `libsqlite3` is not built with these flags. The pinned-engine workflow
-covers SQLite compiled from source separately.
+The compiler path is a frozen copy addressed by wrapper content, resolved C
+compiler path/hash and Goose binary hash. Flag or compiler-content changes use
+a different path, avoiding stale native cache reuse from a mutable wrapper.
+The pinned compiler's final cache identifier still uses a 32-bit path hash;
+this is cache invalidation, not a cryptographic collision guarantee.
 
-The target also runs a negative control, `tests/sanitize_fault.goose`. It reads
-past a 16-byte heap buffer through `ffi::bytes`, which trusts the pointer and
-length it is given, so no Goose bounds check stands between the fault and the
-sanitizer. `scripts/sanitize-control.py` fails the target unless the run aborts
-with `AddressSanitizer: heap-buffer-overflow`. The control is sensitive: the
-same fault exits 0 silently when the same program is built without the
-sanitizer flags.
+The gate deliberately separates two claims. First, the generated control object
+must have undefined ASan **and** UBSan instrumentation references. Second, the
+invalid FFI copy must trigger ASan at runtime. A plain generated object linked
+with ASan reproduces the same interceptor error, but must be **rejected** by the
+object gate. Runtime interception alone never qualifies generated-TU compilation.
+This is not full path coverage or evidence of a SQLite API defect.
+
+Every run reserves a fresh ignored evidence directory. Commands, exits, compiler
+invocations, full stdout/stderr (including ASan reports), source/object hashes
+and summaries remain there, with a CI artifact upload. Exceptions and timeouts
+kill the owned command session and reap its leader. Each command is bounded at
+300 seconds; no hard memory/disk isolation is claimed. The historical
+`results/sanitize-2026-11-19.json` records the earlier gate and is not upgraded
+retroactively. Its interceptor-only control claim is superseded by the compound
+gate above; old CI duration descriptions are not current readiness evidence.
 
 ## ThreadSanitizer limitation
 

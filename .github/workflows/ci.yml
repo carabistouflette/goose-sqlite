@@ -68,3 +68,17 @@ jobs:
       - run: make setup
       - run: make sanitize SANITIZER_CC=gcc
       - run: make sanitize SANITIZER_CC=clang
+
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: generated-sanitizer-evidence
+          path: |
+            .build/sanitize-runs/**/*.json
+            .build/sanitize-runs/**/*.jsonl
+            .build/sanitize-runs/**/*.stdout
+            .build/sanitize-runs/**/*.stderr
+            .build/sanitize-runs/**/*.txt
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90

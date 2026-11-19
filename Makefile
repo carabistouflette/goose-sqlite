@@ -5,8 +5,6 @@ FUZZ_CC ?= clang
 FUZZ_RUNS ?= 10000
 BENCH_ITERATIONS ?= 10000
 SANITIZER_CC ?= gcc
-SANITIZE_DIR = .build/sanitize-$(notdir $(SANITIZER_CC))
-SANITIZE_RUN = ASAN_OPTIONS=detect_leaks=1 UBSAN_OPTIONS=halt_on_error=1
 .PHONY: setup format check test test-import test-native fuzz-native sanitize bench
 setup:
 	./scripts/setup-goose.sh
@@ -14,6 +12,8 @@ format:
 	python3 scripts/native-manifest.py
 	"$(GOOSE)" format sqlite.goose examples tests bench
 check:
+	python3 -m py_compile scripts/sanitize.py scripts/sanitize-control.py
+	python3 tests/sanitize_driver.py
 	python3 scripts/native-manifest.py --check
 	"$(GOOSE)" format --check sqlite.goose examples tests bench
 	"$(GOOSE)" check tests/api.goose
@@ -73,19 +73,7 @@ fuzz-native:
 	cp tests/corpus/* .build/corpus/
 	UBSAN_OPTIONS=halt_on_error=1 .build/fuzz/goose_sqlite_fuzz .build/corpus -artifact_prefix=.build/artifacts/ -dict=tests/fuzz.dict -seed=219 -max_len=4096 -runs=$(FUZZ_RUNS)
 sanitize:
-	mkdir -p "$(SANITIZE_DIR)"
-	SANITIZER_CC="$(SANITIZER_CC)" "$(GOOSE)" build tests/api.goose --cc "$(abspath scripts/sanitizer-cc.sh)" --standalone -o "$(SANITIZE_DIR)/api"
-	$(SANITIZE_RUN) "$(SANITIZE_DIR)/api"
-	SANITIZER_CC="$(SANITIZER_CC)" "$(GOOSE)" build tests/storage.goose --cc "$(abspath scripts/sanitizer-cc.sh)" --standalone -o "$(SANITIZE_DIR)/storage"
-	$(SANITIZE_RUN) "$(SANITIZE_DIR)/storage"
-	SANITIZER_CC="$(SANITIZER_CC)" "$(GOOSE)" build tests/diagnostics.goose --cc "$(abspath scripts/sanitizer-cc.sh)" --standalone -o "$(SANITIZE_DIR)/diagnostics"
-	$(SANITIZE_RUN) "$(SANITIZE_DIR)/diagnostics"
-	SANITIZER_CC="$(SANITIZER_CC)" "$(GOOSE)" build tests/metadata.goose --cc "$(abspath scripts/sanitizer-cc.sh)" --standalone -o "$(SANITIZE_DIR)/metadata"
-	$(SANITIZE_RUN) "$(SANITIZE_DIR)/metadata"
-	SANITIZER_CC="$(SANITIZER_CC)" "$(GOOSE)" build tests/zeroblob.goose --cc "$(abspath scripts/sanitizer-cc.sh)" --standalone -o "$(SANITIZE_DIR)/zeroblob"
-	$(SANITIZE_RUN) "$(SANITIZE_DIR)/zeroblob"
-	SANITIZER_CC="$(SANITIZER_CC)" "$(GOOSE)" build tests/sanitize_fault.goose --cc "$(abspath tests/sanitize_fault-cc.sh)" --standalone -o "$(SANITIZE_DIR)/sanitize-fault"
-	python3 scripts/sanitize-control.py --binary "$(SANITIZE_DIR)/sanitize-fault" --log "$(SANITIZE_DIR)/sanitize-fault.log"
+	python3 scripts/sanitize.py --goose "$(abspath $(GOOSE))" --cc "$(SANITIZER_CC)"
 bench:
 	python3 bench/measure.py --goose "$(GOOSE)" --iterations $(BENCH_ITERATIONS) --output .build/bench-results
 
