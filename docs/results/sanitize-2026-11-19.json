@@ -99,6 +99,14 @@
     "scripts/test-wal-engine.py": {"exit": 0, "note": "pinned instrumented SQLite engine; unchanged by this work"},
     "git diff --check": {"exit": 0}
   },
+  "hosted_ci": {
+    "head": "d71471af097c5ef490bc2afaf4d0ec99a382beb6",
+    "pull_request": "https://github.com/carabistouflette/goose-sqlite/pull/2",
+    "generated_sanitizers_job": "pass (3m1s and 2m42s on the two runs)",
+    "thread_sanitizer_job": "pass",
+    "test_jobs": "pending when this record was written; not waited on, no manual dispatch",
+    "note": "the new gate is green on hosted CI, so the target is not only a local observation"
+  },
   "limitations": [
     "The dynamically linked system SQLite 3.54.1 is not instrumented; only the adapter, runtime and generated program are.",
     "The negative control injects its fault through ffi::bytes, which is documented to trust the caller's pointer and length. It proves the generated translation unit is instrumented and sensitive; it is not a claim that the public sqlite API has a memory bug.",
